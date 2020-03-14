@@ -26,6 +26,8 @@
     "graphql-tag": "^2.10.3",
     "kiste": "^1.2.8",
     "koa": "^2.11.0",
+    "lodash.throttle": "^4.1.1",
+    "lodash.uniqby": "^4.7.0",
     "mysql": "^2.18.1",
     "nuxt": "^2.11.0",
     "reflect-metadata": "^0.1.13",
@@ -35,7 +37,8 @@
     "typeorm": "^0.2.24",
     "typeorm-typedi-extensions": "^0.2.3",
     "v-calendar": "^1.0.1",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-global-events": "^1.1.2"
   },
   "devDependencies": {
     "@moritzruth/eslint-config": "latest",

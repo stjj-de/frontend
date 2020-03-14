@@ -7012,6 +7012,11 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "^3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.topairs@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.topairs/-/lodash.topairs-4.3.0.tgz#3b6deaa37d60fb116713c46c5f17ea190ec48d64"
@@ -7021,6 +7026,11 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
+
+lodash.uniqby@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz#d99c07a669e9e6d24e1362dfe266c67616af1302"
+  integrity sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI=
 
 lodash.upperfirst@^4.3.1:
   version "4.3.1"
@@ -11037,6 +11047,11 @@ vue-eslint-parser@^7.0.0:
     espree "^6.1.2"
     esquery "^1.0.1"
     lodash "^4.17.15"
+
+vue-global-events@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-global-events/-/vue-global-events-1.1.2.tgz#aae6e221d095ab6fc82ce5d3a40ba3b9ebdfaab7"
+  integrity sha512-iZv/IBUNzVkwN+OraP6bxvcy/yld3snrfK8M5np5afAstFEPMj78xj+slereYycNQ7/W+pdYkSDKoK7hjT5BPw==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"

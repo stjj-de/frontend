@@ -60,16 +60,15 @@ module.exports = {
 
   kiste: {
     theme: {
-      contentPadding: "10px"
+      contentPadding: "10px",
+      colors: {
+        blue: "#0054f1/black/#3695d8"
+      }
     },
     navigationItems: [
       {
         label: "Start",
         to: "/"
-      },
-      {
-        label: "Aktuelles",
-        to: "/aktuelles"
       },
       {
         label: "Gruppierungen",
@@ -82,12 +81,12 @@ module.exports = {
     ],
     footerItems: [
       {
-        label: "Legal Notice",
-        to: "/legal-notice"
+        label: "impressum",
+        to: "/impressum"
       },
       {
-        label: "Privacy Policy",
-        to: "/privacy-policy"
+        label: "Datenschutzerklärung",
+        to: "/datenschutzerklaerung"
       }
     ]
   },

@@ -13,24 +13,16 @@
         Aktuelles
       </span>
       <div v-if="!$apollo.queries.posts.loading" class="_posts">
-        <article v-for="post in posts" class="_post" :key="post.id">
-          <span class="_post__title">{{ post.title }}</span>
-          <span class="_post__excerpt">{{ post.excerpt }}</span>
-          <div class="_post__footer">
-            <div class="_post__authors">
-              <UserImageWithPopup
-                v-for="(author, index) in post.authors"
-                :key="author.id"
-                :author="author"
-                :index="post.authors.length - index"
-              />
-            </div>
-            <span class="_post__publication-date">{{ new Date(post.publicationDate).toLocaleDateString() }}</span>
-          </div>
-        </article>
+        <PostCard
+          v-for="post in posts"
+          :key="post.id"
+          :post="post"
+        />
         <span v-if="posts.length === 0" class="_no-news">
           Zurzeit gibt es keine Neuigkeiten.
+          <nuxt-link class="link _show-all-posts" to="/posts">Ältere Artikel anzeigen</nuxt-link>
         </span>
+        <nuxt-link v-else class="link _show-all-posts" to="/posts">Alle Artikel anzeigen</nuxt-link>
       </div>
     </div>
   </section>
@@ -50,6 +42,7 @@
   ._calendar-section {
     padding: 20px;
     width: 350px;
+    max-width: 100%;
   }
 
   ._posts-section {
@@ -66,78 +59,34 @@
     }
   }
 
-  ._post {
-    padding: 40px 40px 30px;
-
-    border-radius: 10px;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-  }
-
-  ._post__title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  ._post__excerpt {
-    font-size: 1.1rem;
-  }
-
-  ._post__footer {
-    margin-top: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  ._post__authors {
-    display: flex;
-
-    & > *:not(:last-child) {
-      margin-right: 10px;
-    }
-  }
-
-  ._post__publication-date {
-    float: right;
-    font-size: 1.2rem;
-  }
-
   ._no-news {
     font-size: 1.3rem;
+  }
+
+  ._show-all-posts {
+    margin-left: auto;
+    font-size: 1.2rem;
+    display: inline-block;
   }
 </style>
 
 <script>
   import gql from "graphql-tag";
-  import UserImageWithPopup, { userFragment } from "@/components/UserImageWithPopup";
+  import PostCard, { postFragment as postCardPostFragment } from "@/components/PostCard";
 
   export default {
     name: "SecondIndexSection",
-    components: { UserImageWithPopup },
+    components: { PostCard },
     apollo: {
       posts: {
         query: gql`
           query {
-            posts(onlyRelevant: true, take: 2) {
-              slug
-              title
-              excerpt
-              authors {
-                id
-                name
-                position
-                image
-                ...UserFields
-              }
-              publicationDate
-              relevantUntil
+            posts(onlyRelevant: true) {
+              ...PostCardPostFields
             }
           }
 
-          ${userFragment}
+          ${postCardPostFragment}
         `
       }
     }
