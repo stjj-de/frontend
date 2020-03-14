@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "declaration": false,
+    "incremental": true,
+    "module": "commonjs",
+    "lib": [
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020"
+    ],
+    "pretty": true,
+    "target": "ES2016",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "strictPropertyInitialization": false,
+    "downlevelIteration": true,
+    "rootDir": "./server/src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./server/dist",
+    "esModuleInterop": true,
+    "importHelpers": true
+  },
+  "include": [
+    "server/src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
