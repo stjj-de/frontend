@@ -11,7 +11,7 @@ import {
   ResolverInterface,
   Root
 } from "type-graphql";
-import { FindOneOptions, getConnection, Raw, Repository } from "typeorm";
+import { FindOneOptions, Raw, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Post } from "../models/Post";
 import { PaginationArgs } from "../utils/PaginationArgs";
@@ -57,20 +57,17 @@ export class PostResolver implements ResolverInterface<Post> {
       ? { publicationDate: "DESC" }
       : undefined;
 
-    return getConnection().getRepository(Post)
-      .find({ where, skip, take, order: orderOption });
+    return this.postRepository.find({ where, skip, take, order: orderOption });
   }
 
   @Query(() => Post, { nullable: true })
   post(@Arg("id", () => Int) id: number) {
-    return getConnection().getRepository(Post)
-      .findOne({ where: { id } });
+    return this.postRepository.findOne({ where: { id } });
   }
 
   @Query(() => Post, { nullable: true })
   postBySlug(@Arg("slug") slug: string) {
-    return getConnection().getRepository(Post)
-      .findOne({ where: { slug } });
+    return this.postRepository.findOne({ where: { slug } });
   }
 
   @FieldResolver()

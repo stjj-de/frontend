@@ -1,17 +1,15 @@
 <template>
   <section class="second-index-section content">
     <div class="_calendar-section">
-      <span class="heading--4">
+      <h1 class="heading--3">
         Termine
-      </span>
-      <client-only>
-        <v-calendar is-expanded/>
-      </client-only>
+      </h1>
+      <EventCalendar/>
     </div>
     <div class="_posts-section">
-      <span class="heading--4">
+      <h1 class="heading--3">
         Aktuelles
-      </span>
+      </h1>
       <div v-if="!$apollo.queries.posts.loading" class="_posts">
         <PostCard
           v-for="post in posts"
@@ -73,10 +71,11 @@
 <script>
   import gql from "graphql-tag";
   import PostCard, { postFragment as postCardPostFragment } from "@/components/PostCard";
+  import EventCalendar from "@/components/EventCalendar";
 
   export default {
     name: "SecondIndexSection",
-    components: { PostCard },
+    components: { EventCalendar, PostCard },
     apollo: {
       posts: {
         query: gql`

@@ -14,8 +14,8 @@
         Mehr laden
       </KButton>
       <span class="_the-end" v-else>
-      Du hast das Ende erreicht.
-    </span>
+        Du hast das Ende erreicht.
+      </span>
     </div>
   </div>
 </template>

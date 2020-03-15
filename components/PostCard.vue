@@ -11,7 +11,7 @@
         <UserImageWithPopup
           v-for="(author, index) in post.authors"
           :key="author.id"
-          :author="author"
+          :user="author"
           :index="post.authors.length - index"
         />
       </div>

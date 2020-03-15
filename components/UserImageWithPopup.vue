@@ -13,8 +13,8 @@
     />
     <img
       class="_image"
-      :alt="author.name"
-      :src="getImageURL(author.image)"
+      :alt="user.name"
+      :src="getImageURL(user.image)"
     >
     <div
       class="_popup"
@@ -22,35 +22,31 @@
       :data-inverted="inverted"
     >
       <span class="_name">
-        {{ author.name }}
+        {{ user.name }}
       </span>
-      <span class="_position" v-if="author.position !== null">
-        {{ author.position }}
+      <span class="_position" v-if="user.position !== null">
+        {{ user.position }}
       </span>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+  $size: 40px;
+
   .user-image-with-popup {
     cursor: auto;
     position: relative;
-    transition: 400ms ease transform;
+    width: $size;
 
     &:focus {
       outline: none;
     }
+  }
 
-    &:hover, &:focus:not([data-ignore-focus]) {
-      &:not(:first-child) {
-        transform: translateX(8px);
-      }
-
-      & > ._popup {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
+  ._image:hover ~ ._popup, .user-image-with-popup:focus:not([data-ignore-focus]) > ._popup {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   ._image {
@@ -58,7 +54,7 @@
     z-index: 1;
 
     border-radius: 50%;
-    height: 40px;
+    height: $size;
   }
 
   ._popup {
@@ -119,7 +115,7 @@
     name: "UserImageWithPopup",
     components: { GlobalEvents },
     props: {
-      author: {
+      user: {
         type: Object,
         required: true
       },

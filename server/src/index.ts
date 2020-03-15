@@ -9,6 +9,7 @@ import consola from "consola";
 import { Builder, Nuxt } from "nuxt";
 import { ApolloServer } from "apollo-server-koa";
 import { initApollo } from "./data";
+import { createSampleData } from "./data/createSampleData";
 
 process.env.IS_SERVER_RUN = "true";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
