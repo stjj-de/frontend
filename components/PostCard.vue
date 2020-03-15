@@ -29,6 +29,7 @@
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.1);
 
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
     transition: 200ms ease box-shadow;
     &:hover {
       box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
