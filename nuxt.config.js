@@ -128,6 +128,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    transpile: ["@popperjs/core"],
     /*
     ** You can extend webpack config here
     */

@@ -27,11 +27,10 @@
       </nuxt-link>
       <div v-if="event.creators.length !== 0" class="_event-creators">
         <UserImageWithPopup
-          v-for="(creator, index) in event.creators"
+          v-for="creator in event.creators"
           class="_event-creator-image"
           :key="creator.id"
           :user="creator"
-          :index="event.creators.length - index"
         />
       </div>
     </div>

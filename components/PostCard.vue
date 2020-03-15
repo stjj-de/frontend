@@ -9,10 +9,9 @@
     <div class="_footer">
       <div class="_authors">
         <UserImageWithPopup
-          v-for="(author, index) in post.authors"
+          v-for="author in post.authors"
           :key="author.id"
           :user="author"
-          :index="post.authors.length - index"
         />
       </div>
       <span class="_publication-date">{{ publicationDateString }}</span>
@@ -60,6 +59,7 @@
 
   ._authors {
     display: flex;
+    justify-content: right;
 
     & > *:not(:last-child) {
       margin-right: 10px;

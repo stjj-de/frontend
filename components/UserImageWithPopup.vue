@@ -2,7 +2,6 @@
   <div
     class="user-image-with-popup"
     tabindex="0"
-    :style="`z-index: ${index}`"
     :data-ignore-focus="ignoreFocus"
     @click="onClick"
     @blur="ignoreFocus = false"
@@ -16,12 +15,19 @@
       class="_popup"
       ref="popup"
     >
-      <span class="_name">
+      <img
+        class="_popup-image"
+        :alt="user.name"
+        :src="getImageURL(user.image)"
+      >
+      <div class="_popup-text">
+        <span class="_name">
         {{ user.name }}
       </span>
-      <span class="_position" v-if="user.position !== null">
+        <span class="_position" v-if="user.position !== null">
         {{ user.position }}
       </span>
+      </div>
     </div>
   </div>
 </template>
@@ -42,17 +48,19 @@
 
   ._image:hover ~ ._popup, .user-image-with-popup:focus:not([data-ignore-focus]) > ._popup {
     opacity: 1;
-    pointer-events: auto;
   }
 
-  ._image {
+  ._image, ._popup-image {
     position: relative;
-    z-index: 1;
 
     border-radius: 50%;
     height: $size;
 
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  ._popup-image {
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
   }
 
   ._popup {
@@ -63,13 +71,21 @@
     position: absolute;
     top: -10px;
     left: -10px;
+    z-index: 2;
 
     background-color: white;
     border-radius: 10px;
     min-height: 60px;
-    padding: 10px 10px 10px 60px;
+    padding: 10px;
+    display: flex;
 
     transition: 200ms ease opacity;
+  }
+
+  ._popup-text {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
   }
 
   ._name {
@@ -103,10 +119,6 @@
       user: {
         type: Object,
         required: true
-      },
-      index: {
-        type: Number,
-        default: 0
       }
     },
     data: () => ({

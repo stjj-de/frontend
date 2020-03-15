@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc19",
+    "@popperjs/core": "^2.1.0",
     "apollo-server-koa": "^2.11.0",
     "consola": "^2.11.3",
     "cross-env": "^7.0.1",
