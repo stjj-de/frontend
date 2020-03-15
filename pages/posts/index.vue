@@ -5,22 +5,28 @@
       <PostCard v-for="post in posts" :key="post.id" :post="post"/>
     </div>
     <div class="_end-of-list">
-      <KButton
-        v-if="hasMore"
-        class="_load-more"
-        :loading="$apollo.queries.posts.loading"
-        @click="fetchMorePosts()"
-      >
-        Mehr laden
-      </KButton>
-      <span class="_the-end" v-else>
+      <transition mode="out-in" name="fade">
+        <KButton
+          v-if="hasMore"
+          class="_load-more"
+          :loading="$apollo.queries.posts.loading"
+          @click="fetchMorePosts()"
+        >
+          Mehr laden
+        </KButton>
+        <span class="_the-end" v-else>
         Du hast das Ende erreicht.
       </span>
+      </transition>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/transitions";
+
+  @include transitions.fade();
+
   ._posts {
     display: flex;
     flex-direction: column;

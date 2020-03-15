@@ -1,0 +1,8 @@
+@mixin fade($name: "fade", $duration: 500ms, $easing: linear) {
+  .#{$name}-enter-active, .#{$name}-leave-active {
+    transition: opacity $easing $duration;
+  }
+  .#{$name}-enter, .#{$name}-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+}
