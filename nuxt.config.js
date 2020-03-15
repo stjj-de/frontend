@@ -4,7 +4,6 @@ if (!isServerRun) {
   require("dotenv").config();
 }
 
-const isDevelopment = process.env.NODE_ENV === "development";
 const usesSSL = process.env.USES_SSL === "true";
 const publicHostAndPort = process.env.PUBLIC_HOST_AND_PORT;
 
@@ -16,6 +15,7 @@ module.exports = {
   head: {
     titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes",
     title: "Start",
+    html: { lang: "de" },
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -56,6 +56,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    "svg-to-vue-component/nuxt",
     "@nuxtjs/apollo"
   ],
 
@@ -128,7 +129,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    transpile: ["@popperjs/core"],
     /*
     ** You can extend webpack config here
     */
