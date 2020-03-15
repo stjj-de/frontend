@@ -6,9 +6,10 @@ module.exports = {
     browser: true,
     es6: true
   },
+  parser: "babel-eslint",
   parserOptions: {
-    parser: "babel-eslint",
-    sourceType: "module"
+    sourceType: "module",
+    ecmaVersion: 2018
   },
   extends: "@moritzruth",
   settings: {
@@ -53,6 +54,9 @@ module.exports = {
       ],
       rules: {
         "vue/no-unused-components": "warn"
+      },
+      parserOptions: {
+        parser: "babel-eslint"
       }
     }
   ]

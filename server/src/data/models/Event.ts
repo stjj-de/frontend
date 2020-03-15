@@ -3,7 +3,7 @@ import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 import { User } from "./User";
 import { Post } from "./Post";
 
-enum EventColor {
+export enum EventColor {
   GRAY = "gray",
   RED = "red",
   ORANGE = "orange",

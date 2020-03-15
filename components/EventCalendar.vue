@@ -42,7 +42,7 @@
           Mehr erfahren
         </nuxt-link>
       </div>
-      <span v-if="eventsOnDay !== undefined && eventsOnDay.length === 0" class="_no-events">Keine Termine</span>
+      <span v-if="eventsOnDay === undefined || eventsOnDay.length === 0" class="_no-events">Keine Termine</span>
       <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading"/>
     </div>
   </div>
@@ -83,10 +83,14 @@
   import gql from "graphql-tag";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import UserImageWithPopup, { userFragment as userImageWithPopupUserFragment } from "@/components/UserImageWithPopup";
+  import AsyncVCalendar from "@/components/AsyncVCalendar";
 
   export default {
     name: "EventCalendar",
-    components: { UserImageWithPopup, LoadingOverlay },
+    components: {
+      UserImageWithPopup, LoadingOverlay,
+      VCalendar: AsyncVCalendar
+    },
     data: () => ({
       isFirstPageChange: true,
       selectedDay: new Date().toISOString()

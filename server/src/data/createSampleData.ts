@@ -1,11 +1,11 @@
 import { getConnection } from "typeorm";
 import { Post } from "./models/Post";
 import { User } from "./models/User";
-import { Event } from "./models/Event";
+import { Event, EventColor } from "./models/Event";
 
 export async function createSampleData() {
   const event = new Event();
-  event.color = "#0eff39";
+  event.color = EventColor.GREEN;
   event.title = "Rock an de Kerch";
   event.description = "Rock an de Kerch ist ein jährlich stattfindendes Rockkonzert in der Kirche.";
   event.date = new Date();

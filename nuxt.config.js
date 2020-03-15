@@ -41,7 +41,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { ssr: false, src: "@/plugins/v-calendar.js" }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -81,7 +80,7 @@ module.exports = {
     ],
     footerItems: [
       {
-        label: "impressum",
+        label: "Impressum",
         to: "/impressum"
       },
       {

@@ -1,5 +1,6 @@
 <template>
   <div class="loading-overlay" :data-active="active">
+    <slot/>
   </div>
 </template>
 
@@ -11,9 +12,11 @@
     right: 0;
     bottom: 0;
     z-index: 100;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     pointer-events: none;
     opacity: 0;
