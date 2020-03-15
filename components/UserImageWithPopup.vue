@@ -7,10 +7,6 @@
     @click="onClick"
     @blur="ignoreFocus = false"
   >
-    <GlobalEvents
-      target="window"
-      @resize="onWindowResize"
-    />
     <img
       class="_image"
       :alt="user.name"
@@ -19,7 +15,6 @@
     <div
       class="_popup"
       ref="popup"
-      :data-inverted="inverted"
     >
       <span class="_name">
         {{ user.name }}
@@ -38,6 +33,7 @@
     cursor: auto;
     position: relative;
     width: $size;
+    margin: 5px;
 
     &:focus {
       outline: none;
@@ -55,6 +51,8 @@
 
     border-radius: 50%;
     height: $size;
+
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
   }
 
   ._popup {
@@ -72,15 +70,10 @@
     padding: 10px 10px 10px 60px;
 
     transition: 200ms ease opacity;
-
-    &[data-inverted] {
-      left: unset;
-      right: -10px;
-      padding: 10px 60px 10px 10px;
-    }
   }
 
   ._name {
+    position: relative;
     white-space: nowrap;
     font-size: 1.2rem;
   }
@@ -93,8 +86,6 @@
 
 <script>
   import gql from "graphql-tag";
-  import GlobalEvents from "vue-global-events";
-  import throttle from "lodash.throttle";
   import { getImageURL } from "@/assets/getUploadURL";
 
   export const userFragment = gql`
@@ -105,15 +96,9 @@
     }
   `;
 
-  const throttledOnWindowResize = throttle(vm => {
-    const element = vm.$refs.popup;
-
-    vm.inverted = element.getBoundingClientRect().right > window.innerWidth;
-  }, 200, { leading: true });
-
   export default {
     name: "UserImageWithPopup",
-    components: { GlobalEvents },
+    components: { },
     props: {
       user: {
         type: Object,
@@ -125,17 +110,13 @@
       }
     },
     data: () => ({
-      ignoreFocus: false,
-      inverted: false
+      ignoreFocus: false
     }),
     methods: {
       getImageURL,
       onClick(event) {
         event.preventDefault();
         this.ignoreFocus = true;
-      },
-      onWindowResize() {
-        throttledOnWindowResize(this);
       }
     }
   };

@@ -7,12 +7,7 @@
 </template>
 
 <style scoped lang="scss">
-  .index-page {
-    overflow: auto;
-    min-height: 100vh;
 
-    padding-bottom: 40px;
-  }
 </style>
 
 <script>

@@ -36,6 +36,10 @@ export class Event {
   @Column({ type: "datetime" })
   date: Date;
 
+  @Field(() => Date, { nullable: true })
+  @Column({ type: "datetime", nullable: true, default: null })
+  endDate: Date | null;
+
   @Field(() => [User])
   @ManyToMany(() => User)
   @JoinTable()

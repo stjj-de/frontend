@@ -11,28 +11,29 @@
       </client-only>
       <LoadingOverlay :active="$apollo.queries.eventsInMonth.loading"/>
     </div>
-    <span v-if="selectedDay === null" class="heading--6 _no-selection">
-      Kein Tag ausgewählt.
-    </span>
-    <div v-else class="_day-details-container">
-      <transition :name="dayDetailsTransitionName">
-        <div :key="selectedDay" class="_day-details">
-          <h2 class="heading--5">
-            {{ new Date(selectedDay).toLocaleDateString() }}
-          </h2>
+    <transition mode="out-in" :name="dayDetailsTransitionName">
+      <span v-if="selectedDay === null" :key="null" class="heading--6 _no-selection">
+        Kein Tag ausgewählt.
+      </span>
+      <div v-else :key="selectedDay" ref="dayDetails">
+        <h2 class="heading--5 _day-date">
+          {{ selectedDayString }}
+        </h2>
+        <div class="_day-details">
           <EventCalendarDayDetails v-if="!$apollo.queries.eventsOnDay.loading" :events="eventsOnDay"/>
+          <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading"/>
         </div>
-      </transition>
-      <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading"/>
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <style scoped lang="scss">
   @use "~@/assets/styles/transitions";
 
-  @include transitions.slide($name: "slide-left", $direction: "left", $duration: 300ms, $easing: ease);
-  @include transitions.slide($name: "slide-right", $direction: "right", $duration: 300ms, $easing: ease);
+  @include transitions.fade($duration: 200ms);
+  @include transitions.slide($name: "slide-left", $direction: "left", $duration: 200ms, $easing: ease);
+  @include transitions.slide($name: "slide-right", $direction: "right", $duration: 200ms, $easing: ease);
 
   ._calendar {
     position: relative;
@@ -44,43 +45,25 @@
     }
   }
 
-  ._day-details-container {
-    position: relative;
-    min-height: 150px;
+  ._day-date {
+    margin-bottom: 5px;
   }
 
   ._day-details {
-    position: absolute;
-    top: 0;
-  }
-
-  ._event-creators {
-    margin-bottom: 20px;
-  }
-
-  ._event-description {
-    font-size: 1.1rem;
-  }
-
-  ._event-more {
-    font-size: 1.1rem;
-  }
-
-  ._no-selection {
-    opacity: 0.5;
-  }
-
-  ._no-events {
-    font-size: 1.2rem;
+    position: relative;
+    min-height: 150px;
   }
 </style>
 
 <script>
   import gql from "graphql-tag";
+  import { format } from "date-fns";
+  import { de } from "date-fns/locale";
   import LoadingOverlay from "@/components/loading/LoadingOverlay";
-  import UserImageWithPopup, { userFragment as userImageWithPopupUserFragment } from "@/components/UserImageWithPopup";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
-  import EventCalendarDayDetails from "@/components/EventCalendar/EventCalendarDayDetails";
+  import EventCalendarDayDetails, {
+    eventFragment as eventCalendarDayDetailsEventFragment
+  } from "@/components/EventCalendar/EventCalendarDayDetails";
 
   export default {
     name: "EventCalendar",
@@ -113,20 +96,11 @@
         query: gql`
           query($date: String!) {
             eventsOnDay(date: $date) {
-              id
-              title
-              color
-              creators {
-                ...UserImageWithPopupUserFields
-              }
-              description
-              relatedPost {
-                slug
-              }
+              ...EventCalendarDayDetailsEventFields
             }
           }
 
-          ${userImageWithPopupUserFragment}
+          ${eventCalendarDayDetailsEventFragment}
         `,
         variables() {
           return {
@@ -157,11 +131,20 @@
         ];
       },
       dayDetailsTransitionName() {
-        if (this.previousSelectedDay === null || this.previousSelectedDay > this.selectedDay) {
+        if (this.previousSelectedDay === null || this.selectedDay === null) {
+          return "fade";
+        }
+
+        if (this.previousSelectedDay > this.selectedDay) {
           return "slide-right";
         }
 
         return "slide-left";
+      },
+      selectedDayString() {
+        if (this.selectedDay === null) return null;
+
+        return format(new Date(this.selectedDay), "eeeeee, d.L.y", { locale: de });
       }
     },
     methods: {
@@ -176,10 +159,16 @@
       },
       onDayClick(day) {
         this.selectedDay = day.id;
+
+        setTimeout(() => {
+          this.$refs.dayDetails.scrollIntoView({
+            behavior: "smooth"
+          });
+        }, 400);
       }
     },
     watch: {
-      selectedDay(newValue, oldValue) {
+      selectedDay(value, oldValue) {
         this.previousSelectedDay = oldValue;
       }
     }

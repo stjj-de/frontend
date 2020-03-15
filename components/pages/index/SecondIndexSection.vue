@@ -32,20 +32,23 @@
   .second-index-section {
     display: flex;
 
-    @media (max-width: 800px) {
+    @include screenSize.mobile {
       flex-direction: column-reverse;
     }
   }
 
   ._calendar-section {
-    padding: 20px;
-    width: 350px;
-    max-width: 100%;
+    flex-basis: 500px;
+
+    @include screenSize.notMobile {
+      padding: 20px;
+    }
   }
 
   ._posts-section {
-    padding: 20px;
-    min-width: 200px;
+    @include screenSize.notMobile {
+      padding: 20px;
+    }
   }
 
   ._posts {

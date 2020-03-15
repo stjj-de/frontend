@@ -53,7 +53,8 @@ module.exports = {
         "@moritzruth/eslint-config/vue"
       ],
       rules: {
-        "vue/no-unused-components": "warn"
+        "vue/no-unused-components": "warn",
+        "no-extra-parens": "off" // This does'nt work with some other rules
       },
       parserOptions: {
         parser: "babel-eslint"

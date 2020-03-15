@@ -15,7 +15,7 @@
           :index="post.authors.length - index"
         />
       </div>
-      <span class="_publication-date">{{ new Date(post.publicationDate).toLocaleDateString() }}</span>
+      <span class="_publication-date">{{ publicationDateString }}</span>
     </div>
   </nuxt-link>
 </template>
@@ -29,10 +29,10 @@
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.1);
 
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-    transition: 200ms ease box-shadow;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    transition: 400ms ease box-shadow;
     &:hover {
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -77,6 +77,8 @@
 
 <script>
   import gql from "graphql-tag";
+  import { de } from "date-fns/locale";
+  import { format } from "date-fns";
   import UserImageWithPopup, { userFragment as userImageWithPopupUserFragment } from "@/components/UserImageWithPopup";
 
   export const postFragment = gql`
@@ -105,6 +107,11 @@
       post: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      publicationDateString() {
+        return format(new Date(this.post.publicationDate), "d.L.y", { locale: de });
       }
     }
   };

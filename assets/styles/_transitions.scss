@@ -2,12 +2,12 @@
   .#{$name}-enter-active, .#{$name}-leave-active {
     transition: opacity $easing $duration;
   }
-  .#{$name}-enter, .#{$name}-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .#{$name}-enter, .#{$name}-leave-to {
     opacity: 0;
   }
 }
 
-@mixin slide($name: "slide", $direction: "right", $offset: 100px, $duration: 500ms, $easing: linear) {
+@mixin slide($name: "slide", $direction: "right", $offset: 50px, $duration: 500ms, $easing: linear) {
   .#{$name}-enter-active, .#{$name}-leave-active {
     transition: $easing $duration;
     transition-property: opacity, transform;
