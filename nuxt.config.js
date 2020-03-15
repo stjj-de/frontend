@@ -5,6 +5,8 @@ if (!isServerRun) {
 }
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const usesSSL = process.env.USES_SSL === "true";
+const publicHostAndPort = process.env.PUBLIC_HOST_AND_PORT;
 
 module.exports = {
   mode: "universal",
@@ -101,20 +103,16 @@ module.exports = {
     },
     clientConfigs: {
       default: {
+        // Only for SSR
         httpEndpoint: `http://127.0.0.1:${process.env.PORT}/graphql`,
-        // optional
-        // override HTTP endpoint in browser only
-        browserHttpEndpoint: "/graphql",
-        // optional
+        // Only for browser
+        browserHttpEndpoint: `http${usesSSL ? "s" : ""}://${publicHostAndPort}/graphql`,
         // See https://www.apollographql.com/docs/link/links/http.html#options
         httpLinkOptions: {
           credentials: "same-origin"
         },
-        // You can use `wss` for secure connection (recommended in production)
         // Use `null` to disable subscriptions
-        wsEndpoint: isDevelopment
-          ? `ws://127.0.0.1:${process.env.PORT}/graphql`
-          : `wss://${process.env.PUBLIC_HOST}/graphql`,
+        wsEndpoint: `ws${usesSSL ? "s" : ""}://${publicHostAndPort}/graphql`,
         // LocalStorage token
         tokenName: "apollo-token", // optional
         // Enable Automatic Query persisting with Apollo Engine

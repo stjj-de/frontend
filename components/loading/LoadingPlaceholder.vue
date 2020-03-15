@@ -15,7 +15,7 @@
 </style>
 
 <script>
-  import LoadingOverlay from "@/components/LoadingOverlay";
+  import LoadingOverlay from "@/components/loading/LoadingOverlay";
 
   export default {
     name: "LoadingPlaceholder",

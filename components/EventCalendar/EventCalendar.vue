@@ -14,48 +14,44 @@
     <span v-if="selectedDay === null" class="heading--6 _no-selection">
       Kein Tag ausgewählt.
     </span>
-    <div v-else class="_day-details">
-      <h2 class="heading--4">
-        {{ new Date(selectedDay).toLocaleDateString() }}
-      </h2>
-      <div
-        v-for="event in eventsOnDay"
-        :key="event.id"
-      >
-        <span class="heading--6">{{ event.title }}</span>
-        <div class="_event-creators">
-          <UserImageWithPopup
-            v-for="(creator, index) in event.creators"
-            :key="creator.id"
-            :user="creator"
-            :index="event.creators.length - index"
-          />
+    <div v-else class="_day-details-container">
+      <transition :name="dayDetailsTransitionName">
+        <div :key="selectedDay" class="_day-details">
+          <h2 class="heading--5">
+            {{ new Date(selectedDay).toLocaleDateString() }}
+          </h2>
+          <EventCalendarDayDetails v-if="!$apollo.queries.eventsOnDay.loading" :events="eventsOnDay"/>
         </div>
-        <span class="_event-description">
-          {{ event.description }}
-        </span>
-        <nuxt-link
-          v-if="event.relatedPost !== null"
-          class="link _event-more"
-          :to="`/posts/${event.relatedPost.slug}`"
-        >
-          Mehr erfahren
-        </nuxt-link>
-      </div>
-      <span v-if="eventsOnDay === undefined || eventsOnDay.length === 0" class="_no-events">Keine Termine</span>
+      </transition>
       <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading"/>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/transitions";
+
+  @include transitions.slide($name: "slide-left", $direction: "left", $duration: 300ms, $easing: ease);
+  @include transitions.slide($name: "slide-right", $direction: "right", $duration: 300ms, $easing: ease);
+
   ._calendar {
     position: relative;
+
+    &::v-deep {
+      .vc-day-content:focus {
+        background-color: rgba(0, 161, 210, 0.2);
+      }
+    }
+  }
+
+  ._day-details-container {
+    position: relative;
+    min-height: 150px;
   }
 
   ._day-details {
-    position: relative;
-    min-height: 150px;
+    position: absolute;
+    top: 0;
   }
 
   ._event-creators {
@@ -81,20 +77,23 @@
 
 <script>
   import gql from "graphql-tag";
-  import LoadingOverlay from "@/components/LoadingOverlay";
+  import LoadingOverlay from "@/components/loading/LoadingOverlay";
   import UserImageWithPopup, { userFragment as userImageWithPopupUserFragment } from "@/components/UserImageWithPopup";
-  import AsyncVCalendar from "@/components/AsyncVCalendar";
+  import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
+  import EventCalendarDayDetails from "@/components/EventCalendar/EventCalendarDayDetails";
 
   export default {
     name: "EventCalendar",
     components: {
-      UserImageWithPopup, LoadingOverlay,
+      EventCalendarDayDetails,
+      LoadingOverlay,
       VCalendar: AsyncVCalendar
     },
     data: () => ({
       isFirstPageChange: true,
       selectedDay: new Date().toISOString()
-        .slice(0, 10)
+        .slice(0, 10),
+      previousSelectedDay: null
     }),
     apollo: {
       eventsInMonth: {
@@ -156,6 +155,13 @@
             dates: new Date()
           }
         ];
+      },
+      dayDetailsTransitionName() {
+        if (this.previousSelectedDay === null || this.previousSelectedDay > this.selectedDay) {
+          return "slide-right";
+        }
+
+        return "slide-left";
       }
     },
     methods: {
@@ -170,6 +176,11 @@
       },
       onDayClick(day) {
         this.selectedDay = day.id;
+      }
+    },
+    watch: {
+      selectedDay(newValue, oldValue) {
+        this.previousSelectedDay = oldValue;
       }
     }
   };

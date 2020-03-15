@@ -1,4 +1,4 @@
-import VCalendarLoadingPlaceholder from "@/components/VCalendarLoadingPlaceholder";
+import VCalendarLoadingPlaceholder from "@/components/VCalendar/VCalendarLoadingPlaceholder";
 
 // eslint-disable-next-line import/no-default-export
 export default () => {

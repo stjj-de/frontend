@@ -1,6 +1,6 @@
 <template>
   <div class="loading-overlay" :data-active="active">
-    <slot/>
+    <span class="_text" v-if="$slots.default"><slot/></span>
   </div>
 </template>
 
@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
 
     pointer-events: none;
     opacity: 0;
@@ -53,6 +53,11 @@
 
       animation: 1s linear spin infinite;
     }
+  }
+
+  ._text {
+    margin-top: 20px;
+    position: relative;
   }
 
   @keyframes spin {

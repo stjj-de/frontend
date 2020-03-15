@@ -6,3 +6,30 @@
     opacity: 0;
   }
 }
+
+@mixin slide($name: "slide", $direction: "right", $offset: 100px, $duration: 500ms, $easing: linear) {
+  .#{$name}-enter-active, .#{$name}-leave-active {
+    transition: $easing $duration;
+    transition-property: opacity, transform;
+  }
+
+  .#{$name}-enter {
+    opacity: 0;
+
+    @if $direction == "right" {
+      transform: translateX(-#{$offset});
+    } @else if $direction == "left" {
+      transform: translateX(#{$offset});
+    }
+  }
+
+  .#{$name}-leave-to {
+    opacity: 0;
+
+    @if $direction == "right" {
+      transform: translateX(#{$offset});
+    } @else if $direction == "left" {
+      transform: translateX(-#{$offset});
+    }
+  }
+}

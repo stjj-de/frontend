@@ -71,7 +71,7 @@
 <script>
   import gql from "graphql-tag";
   import PostCard, { postFragment as postCardPostFragment } from "@/components/PostCard";
-  import EventCalendar from "@/components/EventCalendar";
+  import EventCalendar from "@/components/EventCalendar/EventCalendar";
 
   export default {
     name: "SecondIndexSection",
