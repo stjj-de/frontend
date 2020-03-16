@@ -17,12 +17,12 @@
     >
       <img
         class="_popup-image"
-        :alt="user.name"
+        :alt="user.displayName"
         :src="getImageURL(user.image)"
       >
       <div class="_popup-text">
         <span class="_name">
-        {{ user.name }}
+        {{ user.displayName }}
       </span>
         <span class="_position" v-if="user.position !== null">
         {{ user.position }}
@@ -101,16 +101,7 @@
 </style>
 
 <script>
-  import gql from "graphql-tag";
   import { getImageURL } from "@/assets/getUploadURL";
-
-  export const userFragment = gql`
-    fragment UserImageWithPopupUserFields on User {
-      name
-      position
-      image
-    }
-  `;
 
   export default {
     name: "UserImageWithPopup",

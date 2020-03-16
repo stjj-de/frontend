@@ -1,0 +1,5 @@
+fragment UserImageWithPopupUserFields on User {
+  displayName
+  position
+  image
+}

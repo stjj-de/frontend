@@ -1,0 +1,13 @@
+#import "@/components/UserImageWithPopup/userFragment.graphql"
+
+fragment PostCardPostFields on Post {
+  slug
+  title
+  excerpt
+  authors {
+    id
+    ...UserImageWithPopupUserFields
+  }
+  publicationDate
+  relevantUntil
+}

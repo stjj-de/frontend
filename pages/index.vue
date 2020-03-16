@@ -13,7 +13,7 @@
 <script>
   import KNavigationBar from "kiste/components/KNavigationBar";
   import FirstIndexSection from "@/components/pages/index/FirstIndexSection";
-  import SecondIndexSection from "@/components/pages/index/SecondIndexSection";
+  import SecondIndexSection from "@/components/pages/index/SecondIndexSection/SecondIndexSection";
 
   export default {
     name: "IndexPage",

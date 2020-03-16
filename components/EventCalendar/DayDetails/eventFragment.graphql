@@ -1,0 +1,17 @@
+#import "@/components/UserImageWithPopup/userFragment.graphql"
+
+fragment EventCalendarDayDetailsEventFields on Event {
+  id
+  date
+  endDate
+  title
+  description
+  color
+  creators {
+    id
+    ...UserImageWithPopupUserFields
+  }
+  relatedPost {
+    slug
+  }
+}

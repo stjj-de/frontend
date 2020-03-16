@@ -9,7 +9,7 @@
   "main": "server/dist/index.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development yarn build:server --watch",
-    "dev": "cross-env NODE_ENV=development nodemon --unhandled-rejections=strict . --watch server",
+    "dev": "cross-env NODE_ENV=development nodemon --unhandled-rejections=strict . --watch server --watch nuxt.config.js",
     "build": "yarn build:server && yarn build:nuxt",
     "build:server": "tsc --project tsconfig.json",
     "build:nuxt": "nuxt build",
@@ -25,7 +25,7 @@
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
-    "kiste": "^1.2.8",
+    "kiste": "^1.2.9",
     "koa": "^2.11.0",
     "lodash.uniqby": "^4.7.0",
     "mysql": "^2.18.1",

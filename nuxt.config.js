@@ -13,7 +13,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes",
+    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - Johannes",
     title: "Start",
     html: { lang: "de" },
     meta: [
@@ -129,6 +129,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    parallel: false,
     /*
     ** You can extend webpack config here
     */

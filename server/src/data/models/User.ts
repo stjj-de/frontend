@@ -10,8 +10,20 @@ export class User {
   id: string;
 
   @Field(() => String)
+  @Column({ unique: false })
+  username: string;
+
+  @Field(() => String)
+  @Column({ type: "varchar", nullable: true })
+  displayName: string | null;
+
+  @Field(() => String)
   @Column()
-  name: string;
+  firstName: string;
+
+  @Field(() => String)
+  @Column()
+  lastName: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "varchar", nullable: true })
@@ -29,4 +41,8 @@ export class User {
   @Field(() => String, { nullable: true })
   @Column({ type: "char", length: 32, nullable: true, default: null })
   image: string | null;
+
+  getDisplayName() {
+    return this.displayName === null ? `${this.firstName} ${this.lastName}` : this.displayName;
+  }
 }

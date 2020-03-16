@@ -76,29 +76,9 @@
 </style>
 
 <script>
-  import gql from "graphql-tag";
   import { de } from "date-fns/locale";
   import { format } from "date-fns";
-  import UserImageWithPopup, { userFragment as userImageWithPopupUserFragment } from "@/components/UserImageWithPopup";
-
-  export const postFragment = gql`
-    fragment PostCardPostFields on Post {
-      slug
-      title
-      excerpt
-      authors {
-        id
-        name
-        position
-        image
-        ...UserImageWithPopupUserFields
-      }
-      publicationDate
-      relevantUntil
-    }
-
-    ${userImageWithPopupUserFragment}
-  `;
+  import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
 
   export default {
     name: "PostCard",

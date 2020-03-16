@@ -11,4 +11,9 @@ export class UserResolver implements ResolverInterface<User> {
   async role(@Root() user: User) {
     return (await this.userRepository.findOne(user.id, { select: ["id"], relations: ["role"] }))!.role;
   }
+
+  @FieldResolver()
+  async displayName(@Root() user: User) {
+    return user.getDisplayName();
+  }
 }

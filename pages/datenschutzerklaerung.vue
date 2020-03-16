@@ -271,7 +271,8 @@
           href="https://www.activemind.de/datenschutz/datenschutzhinweis-generator/"
         >
           externe Datenschutzbeauftragte
-        </KExternalLink> (Version #2019-04-10).
+        </KExternalLink> (Version #20rs
+        19-04-10).
       </p>
     </div>
   </div>

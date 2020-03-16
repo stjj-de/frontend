@@ -72,8 +72,8 @@
 </style>
 
 <script>
-  import gql from "graphql-tag";
-  import PostCard, { postFragment as postCardPostFragment } from "@/components/PostCard";
+  import PostsQuery from "./postsQuery.graphql";
+  import PostCard from "@/components/PostCard/PostCard";
   import EventCalendar from "@/components/EventCalendar/EventCalendar";
 
   export default {
@@ -81,15 +81,7 @@
     components: { EventCalendar, PostCard },
     apollo: {
       posts: {
-        query: gql`
-          query {
-            posts(onlyRelevant: true) {
-              ...PostCardPostFields
-            }
-          }
-
-          ${postCardPostFragment}
-        `
+        query: PostsQuery
       }
     }
   };

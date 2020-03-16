@@ -1,0 +1,7 @@
+query EventCalendarEventsInMonth ($month: Int!, $year: Int!) {
+  eventsInMonth(month: $month, year: $year) {
+    id
+    color
+    date
+  }
+}

@@ -1,0 +1,7 @@
+#import "@/components/PostCard/postFragment.graphql"
+
+query SecondIndexSectionPosts {
+  posts(onlyRelevant: true) {
+    ...PostCardPostFields
+  }
+}

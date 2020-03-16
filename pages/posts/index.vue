@@ -55,7 +55,8 @@
   import uniqBy from "lodash.uniqby";
   import KNavigationBar from "kiste/components/KNavigationBar";
   import KButton from "kiste/components/KButton";
-  import PostCard, { postFragment as postCardPostFragment } from "@/components/PostCard";
+  import PostCardPostFields from "@/components/PostCard/postFragment.graphql";
+  import PostCard from "@/components/PostCard/PostCard";
 
   const POSTS_LOADED_AT_ONCE = 5;
 
@@ -75,11 +76,14 @@
           }
         }
 
-        ${postCardPostFragment}
+        ${PostCardPostFields}
         `,
         variables: {
           skip: 0,
           take: POSTS_LOADED_AT_ONCE
+        },
+        result({ data }) {
+          this.hasMore = Array.isArray(data.posts) && data.posts.length === POSTS_LOADED_AT_ONCE;
         }
       }
     },
@@ -89,16 +93,12 @@
           variables: {
             skip: this.posts.length
           },
-          updateQuery: (previousResult, { fetchMoreResult }) => {
-            this.hasMore = fetchMoreResult.posts.length === POSTS_LOADED_AT_ONCE;
-
-            return {
-              posts: uniqBy([
-                ...previousResult.posts,
-                ...fetchMoreResult.posts
-              ], post => post.id)
-            };
-          }
+          updateQuery: (previousResult, { fetchMoreResult }) => ({
+            posts: uniqBy([
+              ...previousResult.posts,
+              ...fetchMoreResult.posts
+            ], post => post.id)
+          })
         });
       }
     }

@@ -56,14 +56,13 @@
 </style>
 
 <script>
-  import gql from "graphql-tag";
   import { format } from "date-fns";
   import { de } from "date-fns/locale";
+  import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
+  import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
+  import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
   import LoadingOverlay from "@/components/loading/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
-  import EventCalendarDayDetails, {
-    eventFragment as eventCalendarDayDetailsEventFragment
-  } from "@/components/EventCalendar/EventCalendarDayDetails";
 
   export default {
     name: "EventCalendar",
@@ -80,28 +79,14 @@
     }),
     apollo: {
       eventsInMonth: {
-        query: gql`query($month: Int!, $year: Int!) {
-          eventsInMonth(month: $month, year: $year) {
-            id
-            color
-            date
-          }
-        }`,
+        query: EventsInMonthQuery,
         variables: {
           month: new Date().getMonth() + 1,
           year: new Date().getFullYear()
         }
       },
       eventsOnDay: {
-        query: gql`
-          query($date: String!) {
-            eventsOnDay(date: $date) {
-              ...EventCalendarDayDetailsEventFields
-            }
-          }
-
-          ${eventCalendarDayDetailsEventFragment}
-        `,
+        query: EventsOnDayQuery,
         variables() {
           return {
             date: this.selectedDay
