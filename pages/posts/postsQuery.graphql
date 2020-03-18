@@ -1,0 +1,8 @@
+#import "@/components/PostCard/postFragment.graphql"
+
+query($skip: Int!, $take: Int!) {
+  posts(take: $take, skip: $skip, onlyPublished: true, onlyRelevant: false) {
+    id
+    ...PostCardPostFields
+  }
+}

@@ -1,0 +1,5 @@
+mutation ($id: ID!, $password: String!) {
+  getOrCreateAuthenticationToken(id: $id, password: $password) {
+    token
+  }
+}

@@ -34,6 +34,9 @@
 
   export default {
     name: "ImpressumPage",
-    components: { KNavigationBar }
+    components: { KNavigationBar },
+    head: () => ({
+      title: "Impressum"
+    })
   };
 </script>

@@ -64,7 +64,8 @@ module.exports = {
     theme: {
       contentPadding: "10px",
       colors: {
-        blue: "#0054f1/black/#3695d8"
+        blue: "#0054f1/black/#3695d8",
+        red: "#ff2c42/black"
       }
     },
     navigationItems: [
@@ -89,6 +90,10 @@ module.exports = {
       {
         label: "Datenschutzerklärung",
         to: "/datenschutzerklaerung"
+      },
+      {
+        label: "Anmelden",
+        to: "/login"
       }
     ]
   },

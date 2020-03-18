@@ -10,7 +10,7 @@ export class User {
   id: string;
 
   @Field(() => String)
-  @Column({ unique: false })
+  @Column({ unique: true })
   username: string;
 
   @Field(() => String)
@@ -19,11 +19,7 @@ export class User {
 
   @Field(() => String)
   @Column()
-  firstName: string;
-
-  @Field(() => String)
-  @Column()
-  lastName: string;
+  name: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "varchar", nullable: true })
@@ -35,14 +31,18 @@ export class User {
   role: Role;
 
   @Field(() => String)
-  @Column()
+  @Column({ length: 60 })
   password: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "char", length: 32, nullable: true, default: null })
   image: string | null;
 
+  @Field(() => String)
+  @Column({ type: "varchar", length: 50, unique: true, nullable: true })
+  token: string | null;
+
   getDisplayName() {
-    return this.displayName === null ? `${this.firstName} ${this.lastName}` : this.displayName;
+    return this.displayName === null ? this.name : this.displayName;
   }
 }

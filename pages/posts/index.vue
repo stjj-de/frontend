@@ -1,24 +1,26 @@
 <template>
   <div class="posts-page content">
     <KNavigationBar title="Alle Artikel"/>
-    <div class="_posts">
-      <PostCard v-for="post in posts" :key="post.id" :post="post"/>
-    </div>
-    <div class="_end-of-list">
-      <transition mode="out-in" name="fade">
-        <KButton
-          v-if="hasMore"
-          class="_load-more"
-          :loading="$apollo.queries.posts.loading"
-          @click="fetchMorePosts()"
-        >
-          Mehr laden
-        </KButton>
-        <span class="_the-end" v-else>
-        Du hast das Ende erreicht.
-      </span>
-      </transition>
-    </div>
+    <main>
+      <div class="_posts">
+        <PostCard v-for="post in posts" :key="post.id" :post="post"/>
+      </div>
+      <div class="_end-of-list">
+        <transition mode="out-in" name="fade">
+          <KButton
+            v-if="hasMore"
+            class="_load-more"
+            :loading="$apollo.queries.posts.loading"
+            @click="fetchMorePosts()"
+          >
+            Mehr laden
+          </KButton>
+          <span class="_the-end" v-else>
+            Du hast das Ende erreicht.
+          </span>
+        </transition>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -51,11 +53,10 @@
 </style>
 
 <script>
-  import gql from "graphql-tag";
   import uniqBy from "lodash.uniqby";
   import KNavigationBar from "kiste/components/KNavigationBar";
   import KButton from "kiste/components/KButton";
-  import PostCardPostFields from "@/components/PostCard/postFragment.graphql";
+  import PostsQuery from "./postsQuery.graphql";
   import PostCard from "@/components/PostCard/PostCard";
 
   const POSTS_LOADED_AT_ONCE = 5;
@@ -63,21 +64,15 @@
   export default {
     name: "PostsPage",
     components: { PostCard, KNavigationBar, KButton },
+    head: () => ({
+      title: "Artikel-Archiv"
+    }),
     data: () => ({
       hasMore: true
     }),
     apollo: {
       posts: {
-        query: gql`
-        query($skip: Int!, $take: Int!) {
-          posts(take: $take, skip: $skip, onlyPublished: true, onlyRelevant: false) {
-            id
-            ...PostCardPostFields
-          }
-        }
-
-        ${PostCardPostFields}
-        `,
+        query: PostsQuery,
         variables: {
           skip: 0,
           take: POSTS_LOADED_AT_ONCE

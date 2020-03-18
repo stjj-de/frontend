@@ -5,6 +5,8 @@
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/spinner.scss";
+
   .loading-overlay {
     position: absolute;
     top: 0;
@@ -37,37 +39,17 @@
     }
 
     &::after {
-      $size: 50px;
-
       position: relative;
       z-index: 2;
-
       content: "";
 
-      border: 3px solid var(--colors-green);
-      border-top-color: transparent;
-      border-radius: 50%;
-
-      width: $size;
-      height: $size;
-
-      animation: 1s linear spin infinite;
+      @include spinner.spinner()
     }
   }
 
   ._text {
     margin-top: 20px;
     position: relative;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
   }
 </style>
 

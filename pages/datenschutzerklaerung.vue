@@ -1,7 +1,7 @@
 <template>
   <div class="privacy-policy-page">
     <KNavigationBar title="Datenschutzerklärung"/>
-    <div class="content formatted">
+    <main class="content formatted">
       <h1>
         Datenschutzerklärung
       </h1>
@@ -274,7 +274,7 @@
         </KExternalLink> (Version #20rs
         19-04-10).
       </p>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -288,6 +288,9 @@
 
   export default {
     name: "DatenschutzerklaerungPage",
-    components: { KNavigationBar, KExternalLink }
+    components: { KNavigationBar, KExternalLink },
+    head: () => ({
+      title: "Datenschutzerklärung"
+    })
   };
 </script>

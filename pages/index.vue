@@ -1,8 +1,10 @@
 <template>
   <div class="index-page">
     <KNavigationBar/>
-    <FirstIndexSection/>
-    <SecondIndexSection/>
+    <main>
+      <FirstIndexSection/>
+      <SecondIndexSection/>
+    </main>
   </div>
 </template>
 
@@ -17,6 +19,9 @@
 
   export default {
     name: "IndexPage",
-    components: { SecondIndexSection, FirstIndexSection, KNavigationBar }
+    components: { SecondIndexSection, FirstIndexSection, KNavigationBar },
+    head: () => ({
+      title: "Start"
+    })
   };
 </script>
