@@ -2,7 +2,7 @@
   <section class="second-index-section content">
     <div class="_calendar-section">
       <h1 class="heading--3">
-        Termine
+        Kalender
       </h1>
       <EventCalendar/>
     </div>

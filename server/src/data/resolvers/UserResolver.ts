@@ -48,6 +48,11 @@ export class UserResolver implements ResolverInterface<User> {
     return ((await this.userRepository.findOne({ username })) ?? null);
   }
 
+  @Query(() => User)
+  async me(@Ctx() context: Context) {
+    return context.user;
+  }
+
   @Mutation(() => TokenResponse)
   async getOrCreateAuthenticationToken(@Arg("id", () => ID) id: string, @Arg("password") password: string) {
     const user = await this.userRepository.findOne(id);

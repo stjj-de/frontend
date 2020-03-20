@@ -1,7 +1,7 @@
 <template>
   <div class="login-page" :data-logged-in="loggedIn">
     <div class="content _box-container">
-      <main class="_box">
+      <main class="_box" :data-show="showBox">
         <nuxt-link class="_back link" to="/">
           <ArrowLeftIcon class="_back-arrow"/>
           Zurück zur Startseite
@@ -124,6 +124,12 @@
     width: 400px;
     padding: 40px;
     overflow: hidden;
+
+    opacity: 0;
+    transition: 200ms ease opacity;
+    &[data-show] {
+      opacity: 1;
+    }
   }
 
   ._form {
@@ -151,16 +157,24 @@
 
   export default {
     name: "LoginPage",
-    layout: "admin",
+    layout: "only-app",
     components: { InputField, ArrowLeftIcon, KButton },
     head: () => ({
       title: "Anmelden"
     }),
+    created() {
+      if (this.$apolloHelpers.getToken() === undefined) {
+        this.showBox = true;
+      } else {
+        this.$router.push(this.nextURL);
+      }
+    },
     data() {
       return {
+        showBox: false,
         username: new InputFieldCompanion({
           keepShowingState: true,
-          defaultValue: "moritz.ruth",
+          defaultValue: "",
           transform: value => value.trim(),
           validate: value => {
             if (value === "") {

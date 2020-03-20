@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
 import { Role } from "./Role";
 
@@ -40,6 +40,7 @@ export class User {
 
   @Field(() => String)
   @Column({ type: "varchar", length: 50, unique: true, nullable: true })
+  @Index()
   token: string | null;
 
   getDisplayName() {
