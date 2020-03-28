@@ -1,40 +1,51 @@
 import {
-  Arg, FieldResolver, Int,
+  Args, ArgsType,
+  Field, FieldResolver,
   Query,
-  Resolver,
-  ResolverInterface, Root
+  Resolver, ResolverInterface, Root
 } from "type-graphql";
-import { Raw, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { lastDayOfMonth, startOfDay, endOfDay } from "date-fns";
+import { Inject } from "typedi";
 import { Event } from "../models/Event";
+import { PaginationArgs } from "../utils/PaginationArgs";
+import { SortOrder } from "../enums/SortOrder";
+import { EventSortField } from "../enums/EventSortField";
+import { EventController } from "../../controllers/EventController";
+import { argsToSortOptions, ISortArgs } from "../../utils/SortOptions";
+import { EventsPagination } from "../objectTypes/EventsPagination";
+
+@ArgsType()
+class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField | null> {
+  @Field(() => SortOrder, { defaultValue: SortOrder.ASCENDING })
+  order: SortOrder;
+
+  @Field(() => EventSortField, { nullable: true })
+  sortBy: EventSortField | null;
+
+  @Field(() => String, { nullable: true, description: "Filter by day or month. Format: yyyy-mm or yyyy-mm-dd." })
+  filter: string | null;
+}
 
 @Resolver(() => Event)
 export class EventResolver implements ResolverInterface<Event> {
   @InjectRepository(Event) private readonly eventRepository: Repository<Event>;
 
-  @Query(() => [Event])
-  eventsInMonth(@Arg("month", () => Int) month: number, @Arg("year", () => Int) year: number) {
-    const startDate = new Date(`${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-01T00:00:00Z`);
-    const endDate = lastDayOfMonth(startDate);
+  @Inject(() => EventController) private readonly eventController: EventController;
 
-    return this.eventRepository.find({
-      where: {
-        date: Raw(alias => `${alias} >= '${startDate.toISOString()}' AND ${alias} <= '${endDate.toISOString()}'`)
-      }
+  @Query(() => EventsPagination)
+  async events(@Args() args: GetEventsArgs): Promise<EventsPagination> {
+    const { hasMore, events } = await this.eventController.getEvents({
+      filter: args.filter ?? undefined,
+      skip: args.skip,
+      take: args.take ?? undefined,
+      ...argsToSortOptions(args)
     });
-  }
 
-  @Query(() => [Event])
-  eventsOnDay(@Arg("date") date: string) {
-    const startDate = startOfDay(new Date(date));
-    const endDate = endOfDay(startDate);
-
-    return this.eventRepository.find({
-      where: {
-        date: Raw(alias => `${alias} >= '${startDate.toISOString()}' AND ${alias} <= '${endDate.toISOString()}'`)
-      }
-    });
+    return {
+      hasMore,
+      items: events
+    };
   }
 
   @FieldResolver()

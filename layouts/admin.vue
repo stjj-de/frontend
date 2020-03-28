@@ -1,13 +1,11 @@
 <template>
   <div class="admin-layout">
-    <KApp>
-      <div class="_container">
-        <AdminNavigation/>
-        <div class="_content">
-          <transition name="admin-page">
-            <nuxt/>
-          </transition>
-        </div>
+    <KApp class="_container">
+      <AdminNavigation/>
+      <div class="_content">
+        <transition name="admin-page">
+          <nuxt/>
+        </transition>
       </div>
     </KApp>
   </div>
@@ -19,30 +17,28 @@
 
   @include transitions.fade($name: "admin-page", $duration: 400ms);
 
-  .admin-layout {
-    width: 100vw;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
   ._container {
+    overflow: hidden;
+    width: 100vw;
+    padding: 0;
+
     display: flex;
     justify-content: flex-start;
-    overflow: hidden;
   }
 
   ._content {
-    max-width: 100%;
-    width: var(--content-width);
+    padding: 0 60px;
+    width: calc(100vw - 350px);
   }
 
-  @include screenSize.mobile {
+  @media(max-width: 1000px) {
     ._container {
       flex-direction: column;
     }
 
     ._content {
-      padding: 0 var(--content-padding);
+      padding: 80px 20px 0;
+      width: 100vw;
     }
   }
 </style>
@@ -53,6 +49,7 @@
 
   export default {
     name: "AdminLayout",
+    middleware: ["auth"],
     components: { AdminNavigation, KApp }
   };
 </script>

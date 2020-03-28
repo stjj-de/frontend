@@ -1,7 +1,9 @@
 #import "./DayDetails/eventFragment.graphql"
 
-query EventCalendarEventsOnDay ($date: String!) {
-  eventsOnDay(date: $date) {
-    ...EventCalendarDayDetailsEventFields
+query EventCalendarEventsOnDay ($filter: String!) {
+  events(filter: $filter) {
+    items {
+      ...EventCalendarDayDetailsEventFields
+    }
   }
 }

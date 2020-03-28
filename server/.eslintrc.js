@@ -18,6 +18,7 @@ module.exports = {
     "max-len": ["warn", { code: 180 }],
     "unicorn/prevent-abbreviations": ["warn", {
       whitelist: {
+        args: true,
         Args: true
       }
     }]

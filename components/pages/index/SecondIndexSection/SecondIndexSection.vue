@@ -1,5 +1,5 @@
 <template>
-  <section class="second-index-section content">
+  <section class="second-index-section">
     <div class="_calendar-section">
       <h1 class="heading--3">
         Kalender

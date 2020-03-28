@@ -1,7 +1,7 @@
 #import "@/components/PostCard/postFragment.graphql"
 
 query($skip: Int!, $take: Int!) {
-  posts(take: $take, skip: $skip, onlyPublished: true, onlyRelevant: false) {
+  posts(take: $take, skip: $skip, onlyPublished: true, onlyRelevant: false, order: DESCENDING, sortBy: PUBLICATION_DATE) {
     id
     ...PostCardPostFields
   }

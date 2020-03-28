@@ -15,6 +15,10 @@
         :autocomplete="autocomplete"
         :disabled="companion.disabled"
         :spellcheck="disableSpellcheck ? 'false' : 'true'"
+        :min="companion.min"
+        :max="companion.max"
+        :step="companion.step"
+        v-on="$listeners"
         @input="onInput"
         @blur="onBlur"
       />
@@ -43,6 +47,8 @@
   .input-field {
     margin-top: 10px;
     position: relative;
+    width: 100%;
+    height: 100%;
 
     &[data-invalid] {
       color: var(--colors-red);
@@ -65,6 +71,8 @@
     position: relative;
     border-radius: 5px;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
 
   ._disabled-overlay {
@@ -89,10 +97,12 @@
   }
 
   ._input {
+    width: 100%;
+    height: 100%;
+
     padding: 10px;
     border-radius: 5px;
     border: 2px solid var(--colors-background-a);
-    width: 100%;
     font-size: 1.2rem;
     font-family: "Sen", sans-serif;
     background-color: var(--colors-background);

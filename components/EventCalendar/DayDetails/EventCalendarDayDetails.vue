@@ -6,7 +6,7 @@
       class="_event"
     >
       <h3 class="_event-header">
-        <span class="_event-color" :class="getColorClass(event.color)"></span>
+        <span class="_event-color" :style="getDotStyle(event.color)"></span>
         <span class="heading--6 _event-title">{{ event.title }}</span>
       </h3>
       <div class="_event-date">
@@ -39,6 +39,8 @@
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/dot";
+
   ._event:not(:last-child) {
     margin-bottom: 30px;
   }
@@ -53,12 +55,7 @@
   }
 
   ._event-color {
-    $size: 10px;
-
-    display: inline-block;
-    width: $size;
-    height: $size;
-    border-radius: 50%;
+    @include dot.dot();
 
     margin-right: 5px;
     position: relative;
@@ -95,6 +92,7 @@
   import { de } from "date-fns/locale";
   import { format } from "date-fns";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
+  import { getCSSColorForEventColor } from "@/assets/getCSSColorForEventColor";
 
   export default {
     name: "EventCalendarDayDetails",
@@ -111,8 +109,8 @@
       }
     },
     methods: {
-      getColorClass(color) {
-        return `vc-bg-${color.toLowerCase()}-600`;
+      getDotStyle(color) {
+        return `background-color: ${getCSSColorForEventColor(color)}`;
       },
       getEventStartDateString(event) {
         return format(new Date(event.date), "HH:mm", { locale: de });

@@ -1,5 +1,7 @@
 import debounce from "lodash.debounce";
 
+const ALLOWED_TYPES = ["text", "password", "number"];
+
 export class InputFieldCompanion {
   constructor({
     defaultValue = "",
@@ -9,10 +11,13 @@ export class InputFieldCompanion {
     validateOrSaveAsync = null,
     debounceWait = 800,
     disabled = false,
-    transform = null
+    transform = null,
+    min,
+    max,
+    stepSize
   }) {
-    if (!["text", "password"].includes(type)) {
-      throw new Error("type must be 'text' or 'password'");
+    if (!ALLOWED_TYPES.includes(type)) {
+      throw new Error("type must be 'text', 'number' or 'password'");
     }
 
     this.type = type;
@@ -28,6 +33,15 @@ export class InputFieldCompanion {
     this._cancelValidateOrSaveHandlers = [];
     this._instance = null; // is set by the component
     this.touched = false;
+    this.min = min;
+    this.max = max;
+    this.stepSize = stepSize === undefined ? 1 : stepSize;
+
+    if ([min, max, stepSize].some(value => value !== undefined)) {
+      if (this.type !== "number") {
+        throw new Error("min, max and stepSize are only allowed with type 'number'.");
+      }
+    }
 
     this._debouncedRunValidateOrSaveAsync = debounce(this._runValidateOrSaveAsync, debounceWait);
 

@@ -1,15 +1,24 @@
 <template>
   <div class="index-page">
     <KNavigationBar/>
-    <main>
+    <main class="content">
       <FirstIndexSection/>
       <SecondIndexSection/>
+      <span class="_image-credits formatted">
+        Bild der Kirche St. Josef von
+        <a href="https://commons.wikimedia.org/wiki/User:Mstp77">atreyu</a>
+        /
+        <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA</a>
+      </span>
     </main>
   </div>
 </template>
 
 <style scoped lang="scss">
-
+  ._image-credits {
+    display: block;
+    margin-top: 20px;
+  }
 </style>
 
 <script>

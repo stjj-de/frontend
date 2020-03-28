@@ -14,17 +14,18 @@ import { ApolloError } from "apollo-server-koa";
 import { User } from "../models/User";
 import { EmptyResponse } from "../objectTypes/EmptyResponse";
 import { Context } from "../Context";
+import { getSafeUser } from "../utils/getSafeUser";
 import * as bcrypt from "bcrypt";
 import nanoid from "nanoid/async";
 
 @ObjectType()
 export class TokenResponse {
+  @Field(() => String)
+  token: string;
+
   constructor(token: string) {
     this.token = token;
   }
-
-  @Field(() => String)
-  token: string;
 }
 
 const createInvalidIDError = () => new ApolloError("There is no user with the specified id.", "INVALID_ID");
@@ -89,9 +90,10 @@ export class UserResolver implements ResolverInterface<User> {
 
   @Mutation(() => TokenResponse)
   async regenerateAuthenticationToken(@Ctx() context: Context) {
-    context.user.token = await nanoid(50);
-    await this.userRepository.save(context.user);
+    const user = getSafeUser(context);
+    user.token = await nanoid(50);
+    await this.userRepository.save(user);
 
-    return new TokenResponse(context.user.token);
+    return new TokenResponse(user.token);
   }
 }

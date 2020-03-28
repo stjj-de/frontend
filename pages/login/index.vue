@@ -148,12 +148,13 @@
 </style>
 
 <script>
-  import KButton from "kiste/components/KButton";
   import UserQuery from "./userQuery.graphql";
   import GetOrCreateAuthenticationTokenMutation from "./getOrCreateAuthenticationTokenMutation.graphql";
+  import KButton from "kiste/components/KButton";
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
-  import InputField from "@/components/InputField";
-  import { InputFieldCompanion } from "@/assets/InputFieldCompanion";
+  import InputField from "@/components/InputField/InputField";
+  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
+  import { isLoggedIn } from "@/assets/isLoggedIn";
 
   export default {
     name: "LoginPage",
@@ -163,7 +164,7 @@
       title: "Anmelden"
     }),
     created() {
-      if (this.$apolloHelpers.getToken() === undefined) {
+      if (isLoggedIn(this)) {
         this.showBox = true;
       } else {
         this.$router.push(this.nextURL);

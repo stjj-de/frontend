@@ -60,6 +60,12 @@ module.exports = {
       parserOptions: {
         parser: "babel-eslint"
       }
+    },
+    {
+      files: "middleware/*.js",
+      rules: {
+        "import/no-default-export": "off"
+      }
     }
   ]
 };

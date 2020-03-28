@@ -1,5 +1,5 @@
 <template>
-  <section class="first-index-section content">
+  <section class="first-index-section">
     <div class="_container">
       <span class="_title-line1">
         Katholische Kirchengemeinde
@@ -8,7 +8,6 @@
         St.Josef - St. Johannes
       </span>
       <img class="_image" src="/Furpach_St_Josef.jpeg" alt="Die Kirche St. Josef"/>
-      <!-- TODO: Add attribution for this image: https://commons.wikimedia.org/wiki/File:Furpach_St._Josef_01.JPG -->
     </div>
   </section>
 </template>

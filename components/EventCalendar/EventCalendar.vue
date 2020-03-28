@@ -61,7 +61,7 @@
   import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
   import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
   import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
-  import LoadingOverlay from "@/components/loading/LoadingOverlay";
+  import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
 
   export default {
@@ -81,20 +81,22 @@
       eventsInMonth: {
         query: EventsInMonthQuery,
         variables: {
-          month: new Date().getMonth() + 1,
-          year: new Date().getFullYear()
-        }
+          filter: new Date().toISOString()
+            .slice(0, 7)
+        },
+        update: data => data.events.items
       },
       eventsOnDay: {
         query: EventsOnDayQuery,
         variables() {
           return {
-            date: this.selectedDay
+            filter: this.selectedDay
           };
         },
         skip() {
           return this.selectedDay === null;
-        }
+        },
+        update: data => data.events.items
       }
     },
     computed: {

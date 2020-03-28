@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-overlay" :data-active="active">
+  <div class="loading-overlay" :data-active="active" :style="style">
     <span class="_text" v-if="$slots.default"><slot/></span>
   </div>
 </template>
@@ -22,7 +22,7 @@
 
     pointer-events: none;
     opacity: 0;
-    transition: 200ms ease opacity;
+    transition: 400ms ease opacity;
 
     &[data-active] {
       pointer-events: auto;
@@ -60,6 +60,21 @@
       active: {
         type: Boolean,
         default: false
+      },
+      transitionDelay: {
+        type: Number,
+        default: 0
+      }
+    },
+    computed: {
+      style() {
+        if (this.active) {
+          return {
+            transitionDelay: this.transitionDelay + "ms"
+          };
+        }
+
+        return {};
       }
     }
   };

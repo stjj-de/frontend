@@ -11,18 +11,19 @@ import {
   ResolverInterface,
   Root
 } from "type-graphql";
-import { FindOneOptions, Raw, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, Raw, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Post } from "../models/Post";
 import { PaginationArgs } from "../utils/PaginationArgs";
+import { SortOrder } from "../enums/SortOrder";
 
-enum PostOrder {
-  PUBLICATION_DATE = "publication_date"
+enum PostSortField {
+  PUBLICATION_DATE = "publicationDate"
 }
 
-registerEnumType(PostOrder, {
-  name: "PostOrder",
-  description: "The order in which the posts will be returned."
+registerEnumType(PostSortField, {
+  name: "PostSortField",
+  description: "The field by which the data will be sorted."
 });
 
 @ArgsType()
@@ -33,8 +34,11 @@ export class GetPostsArgs extends PaginationArgs {
   @Field(() => Boolean, { defaultValue: true })
   onlyPublished: boolean;
 
-  @Field(() => PostOrder, { nullable: true })
-  orderBy: PostOrder | null;
+  @Field(() => PostSortField, { nullable: true })
+  sortBy: PostSortField | null;
+
+  @Field(() => SortOrder, { defaultValue: SortOrder.DESCENDING })
+  order: SortOrder;
 }
 
 @Resolver(() => Post)
@@ -43,7 +47,7 @@ export class PostResolver implements ResolverInterface<Post> {
 
   @Query(() => [Post], { nullable: true })
   posts(@Args() { skip, take, ...arguments_ }: GetPostsArgs) {
-    const where: FindOneOptions<Post>["where"] = {};
+    const where: FindManyOptions<Post>["where"] = {};
 
     if (arguments_.onlyRelevant) {
       where.relevantUntil = Raw(alias => `${alias} > NOW()`);
@@ -53,11 +57,11 @@ export class PostResolver implements ResolverInterface<Post> {
       where.publicationDate = Raw(alias => `${alias} < NOW()`);
     }
 
-    const orderOption: FindOneOptions<Post>["order"] = arguments_.orderBy === PostOrder.PUBLICATION_DATE
-      ? { publicationDate: "DESC" }
-      : undefined;
+    const order: FindManyOptions<Post>["order"] =
+      arguments_.sortBy === PostSortField.PUBLICATION_DATE
+        ? { publicationDate: arguments_.order } : undefined;
 
-    return this.postRepository.find({ where, skip, take, order: orderOption });
+    return this.postRepository.find({ where, skip, order, take } as FindManyOptions<Post>);
   }
 
   @Query(() => Post, { nullable: true })

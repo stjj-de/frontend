@@ -1,0 +1,6 @@
+@mixin dot($size: 10px) {
+  display: inline-block;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}

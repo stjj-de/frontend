@@ -1,7 +1,7 @@
 #import "@/components/PostCard/postFragment.graphql"
 
 query SecondIndexSectionPosts {
-  posts(onlyRelevant: true) {
+  posts(onlyRelevant: true, order: DESCENDING, sortBy: PUBLICATION_DATE) {
     ...PostCardPostFields
   }
 }

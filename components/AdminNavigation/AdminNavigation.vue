@@ -1,41 +1,41 @@
 <template>
-  <nav class="admin-navigation" :data-open="open">
-    <div class="_toggle" @click="open = !open">
+  <div class="admin-navigation" :data-open="open">
+    <div class="admin-navigation__toggle" @click="open = !open">
       <span></span>
       <span></span>
       <span></span>
     </div>
-    <div class="_container">
+    <nav class="admin-navigation__container">
       <LoadingPlaceholder v-if="$apollo.queries.me.loading" height="80px"/>
       <nuxt-link
         v-else
-        class="_profile"
+        class="admin-navigation__profile"
         :to="`/admin/users/${me.id}`"
         v-ripple.400="'rgba(0,0,0,0.1)'"
         @click="open = false"
       >
-        <img class="_image" alt="Dein Profilbild" :src="getImageURL(me.image)">
-        <div class="_logged-in-as">
+        <img class="admin-navigation__image" alt="Dein Profilbild" :src="getImageURL(me.image)">
+        <div class="admin-navigation__logged-in-as">
           Angemeldet als
-          <span class="_name">{{ me.name.split(" ")[0] }}</span>
+          <span class="admin-navigation__name">{{ me.name }}</span>
         </div>
       </nuxt-link>
       <nuxt-link
         v-for="(item, index) in $options.items"
         :key="index"
-        class="_item"
+        class="admin-navigation__item"
         :to="item.to"
         v-ripple.400="'rgba(0,0,0,0.1)'"
         @click.native="open = false"
       >
-        <component :is="item.icon" class="_icon"/>
+        <component :is="item.icon" class="admin-navigation__icon"/>
         {{ item.label }}
       </nuxt-link>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
   @use "~kiste/css/mixins/screenSize";
 
   .admin-navigation {
@@ -43,7 +43,6 @@
     flex-shrink: 0;
     height: 100vh;
     box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
-    margin-right: 60px;
 
     &[data-open] {
       ._toggle > span {
@@ -60,28 +59,25 @@
         }
       }
 
-      ._container {
+      .admin-navigation__container {
         pointer-events: auto;
         opacity: 1;
       }
     }
   }
 
-  ._container {
+  .admin-navigation__container {
     width: 100%;
     height: 100%;
-
-    position: sticky;
-    top: 0;
   }
 
-  ._logged-in-as {
+  .admin-navigation__logged-in-as {
     display: flex;
     flex-direction: column;
     font-size: 1.3rem;
   }
 
-  ._profile {
+  .admin-navigation__profile {
     display: flex;
     align-items: center;
     padding: 10px 30px 10px 20px;
@@ -96,17 +92,17 @@
     }
   }
 
-  ._name {
+  .admin-navigation__name {
     font-size: 1.8rem;
   }
 
-  ._image {
+  .admin-navigation__image {
     border-radius: 50%;
     margin-right: 20px;
     height: 50px;
   }
 
-  ._item {
+  .admin-navigation__item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -117,21 +113,21 @@
     text-decoration: none;
     font-size: 1.5rem;
 
+    transition: 100ms linear background-color;
     &.nuxt-link-active, &:hover {
       background-color: rgba(35, 174, 255, 0.1);
     }
   }
 
-  ._icon {
+  .admin-navigation__icon {
     width: 30px;
   }
 
-  ._toggle {
+  .admin-navigation__toggle {
     display: none;
 
     position: relative;
     left: 30px;
-    z-index: 2;
 
     & > span {
       display: block;
@@ -164,23 +160,31 @@
       align-items: center;
       box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.2);
       margin: 0;
-    }
 
-    ._toggle {
-      display: block;
-    }
-
-    ._container {
-      position: absolute;
+      position: fixed;
       top: 0;
-      left: 0;
-      padding-top: $height;
+      z-index: 1;
 
+      background-color: var(--colors-background);
+    }
+
+    .admin-navigation__toggle {
+      display: block;
+      z-index: 2;
+    }
+
+    .admin-navigation__container {
+      padding-top: $height;
       background-color: var(--colors-background);
 
       pointer-events: none;
       opacity: 0;
       transition: 200ms linear opacity;
+
+      position: absolute;
+      top: 0;
+      z-index: 1;
+      height: 100vh;
     }
   }
 </style>
@@ -191,8 +195,8 @@
   import PencilIcon from "@/assets/icons/pencil.svg";
   import UsersIcon from "@/assets/icons/users.svg";
   import { getImageURL } from "@/assets/getUploadURL";
-  import LoadingOverlay from "@/components/loading/LoadingOverlay";
-  import LoadingPlaceholder from "@/components/loading/LoadingPlaceholder";
+  import LoadingOverlay from "@/components/LoadingOverlay";
+  import LoadingPlaceholder from "@/components/LoadingPlaceholder";
 
   const ITEMS = [
     {
