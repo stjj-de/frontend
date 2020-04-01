@@ -1,60 +1,61 @@
 <template>
   <div class="event-calendar-day-details">
     <div
-      v-for="event in sortedEvents"
+      v-for="event in computedEvents"
       :key="event.id"
-      class="_event"
+      class="event-calendar-day-details__event"
     >
-      <h3 class="_event-header">
-        <span class="_event-color" :style="getDotStyle(event.color)"></span>
-        <span class="heading--6 _event-title">{{ event.title }}</span>
+      <h3 class="event-calendar-day-details__event-header">
+        <span class="event-calendar-day-details__event-color" :style="getDotStyle(event.color)"></span>
+        <span class="heading--6 event-calendar-day-details__event-title">{{ event.title }}</span>
       </h3>
-      <div class="_event-date">
-        <span>{{ getEventStartDateString(event) }}</span>
-        <span v-if="event.endDate">
-          - {{ getEventEndDateString(event) }}
-        </span>
+      <div class="event-calendar-day-details__event-date">
+        {{ event.__displayedTime }}
       </div>
-      <p class="_event-description">
+      <p class="event-calendar-day-details__event-description">
         {{ event.description }}
       </p>
       <nuxt-link
         v-if="event.relatedPost !== null"
-        class="link _event-more"
+        class="link event-calendar-day-details__event-more"
         :to="`/posts/${event.relatedPost.slug}`"
       >
         Mehr erfahren
       </nuxt-link>
-      <div v-if="event.creators.length !== 0" class="_event-creators">
+      <div v-if="event.creators.length !== 0" class="event-calendar-day-details__event-creators">
         <UserImageWithPopup
           v-for="creator in event.creators"
-          class="_event-creator-image"
           :key="creator.id"
           :user="creator"
         />
       </div>
     </div>
-    <span v-if="events === undefined || events.length === 0" class="_no-events">Keine Termine</span>
+    <span
+      v-if="events === undefined || events.length === 0"
+      class="event-calendar-day-details__no-events"
+    >
+      Keine Termine
+    </span>
   </div>
 </template>
 
 <style scoped lang="scss">
   @use "~@/assets/styles/dot";
 
-  ._event:not(:last-child) {
+  .event-calendar-day-details__event:not(:last-child) {
     margin-bottom: 30px;
   }
 
-  ._event-date {
+  .event-calendar-day-details__event-date {
     margin-bottom: 10px;
     font-size: 1.2rem;
   }
 
-  ._event-title {
+  .event-calendar-day-details__event-title {
     display: inline;
   }
 
-  ._event-color {
+  .event-calendar-day-details__event-color {
     @include dot.dot();
 
     margin-right: 5px;
@@ -62,7 +63,7 @@
     top: -2px;
   }
 
-  ._event-creators {
+  .event-calendar-day-details__event-creators {
     margin-top: 15px;
     margin-bottom: -10px;
 
@@ -73,26 +74,28 @@
     }
   }
 
-  ._event-description {
+  .event-calendar-day-details__event-description {
     font-size: 1.1rem;
   }
 
-  ._event-more {
+  .event-calendar-day-details__event-more {
     font-size: 1.1rem;
     display: block;
     margin-top: 10px;
   }
 
-  ._no-events {
+  .event-calendar-day-details__no-events {
     font-size: 1.2rem;
   }
 </style>
 
 <script>
-  import { de } from "date-fns/locale";
+  import cloneDeep from "lodash.clonedeep";
   import { format } from "date-fns";
+  import { dateFnsLocale } from "@/assets/dateFnsLocale";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
   import { getCSSColorForEventColor } from "@/assets/getCSSColorForEventColor";
+  import { isFullDay } from "@/assets/isFullDay";
 
   export default {
     name: "EventCalendarDayDetails",
@@ -104,42 +107,66 @@
       }
     },
     computed: {
-      sortedEvents() {
-        return [...this.events].sort((eventA, eventB) => eventA.date.localeCompare(eventB.date));
+      computedEvents() {
+        const events = cloneDeep(this.events);
+
+        events.forEach(event => {
+          const dateObjects = {
+            start: new Date(event.date),
+            end: event.endDate === null ? null : new Date(event.endDate)
+          };
+
+          if (dateObjects.end && isFullDay(dateObjects.start, dateObjects.end)) {
+            event.__displayedTime = "Ganztägig";
+            event.__fullDay = true;
+          } else {
+            event.__displayedTime = format(dateObjects.start, "HH:mm", { locale: dateFnsLocale });
+
+            if (event.endDate !== null) {
+              let template = "";
+              const { start, end } = dateObjects;
+
+              const includeYear = end.getFullYear() !== start.getFullYear();
+              const includeDayAndMonth = includeYear ||
+                start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth();
+
+              if (includeDayAndMonth) {
+                template += "d.L";
+              }
+
+              if (includeYear) {
+                template += ".y";
+              }
+
+              if (template !== "") {
+                template += " ";
+              }
+
+              template += "HH:mm";
+
+              event.__displayedTime += " - " + format(end, template, { locale: dateFnsLocale });
+            }
+
+            event.__fullDay = false;
+          }
+        });
+
+        return events.sort((a, b) => {
+          if (a.__fullDay && b.__fullDay) {
+            return 0;
+          } else if (!a.__fullDay && b.__fullDay) {
+            return -1;
+          } else if (a.__fullDay && !b.__fullDay) {
+            return 1;
+          }
+
+          return a.date.localeCompare(b.date);
+        });
       }
     },
     methods: {
       getDotStyle(color) {
         return `background-color: ${getCSSColorForEventColor(color)}`;
-      },
-      getEventStartDateString(event) {
-        return format(new Date(event.date), "HH:mm", { locale: de });
-      },
-      getEventEndDateString(event) {
-        const start = new Date(event.date);
-        const end = new Date(event.endDate);
-
-        let template = "";
-
-        const includeYear = end.getFullYear() !== start.getFullYear();
-        const includeDayAndMonth = includeYear ||
-          start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth();
-
-        if (includeDayAndMonth) {
-          template += "d.L";
-        }
-
-        if (includeYear) {
-          template += ".y";
-        }
-
-        if (template !== "") {
-          template += " ";
-        }
-
-        template += "HH:mm";
-
-        return format(end, template, { locale: de });
       }
     }
   };

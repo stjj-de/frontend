@@ -1,13 +1,13 @@
 <template>
   <section class="first-index-section">
-    <div class="_container">
-      <span class="_title-line1">
+    <div class="first-index-section__container">
+      <span class="first-index-section__title-line1">
         Katholische Kirchengemeinde
       </span>
-      <span class="_title-line2">
+      <span class="first-index-section__title-line2">
         St.Josef - St. Johannes
       </span>
-      <img class="_image" src="/Furpach_St_Josef.jpeg" alt="Die Kirche St. Josef"/>
+      <img class="first-index-section__image" src="/Furpach_St_Josef.jpeg" alt="Die Kirche St. Josef"/>
     </div>
   </section>
 </template>
@@ -15,18 +15,18 @@
 <style scoped lang="scss">
   @use "~kiste/css/mixins/screenSize";
 
-  ._container {
+  .first-index-section__container {
     position: relative;
   }
 
-  ._image {
+  .first-index-section__image {
     position: relative;
     z-index: -1;
     width: 100%;
     height: auto;
   }
 
-  ._title-line1, ._title-line2 {
+  .first-index-section__title-line1, .first-index-section__title-line2 {
     position: absolute;
 
     display: block;
@@ -46,7 +46,7 @@
     }
   }
 
-  ._title-line1 {
+  .first-index-section__title-line1 {
     top: 5%;
     left: 3%;
 
@@ -55,7 +55,7 @@
     }
   }
 
-  ._title-line2 {
+  .first-index-section__title-line2 {
     top: 14%;
     left: 3%;
 

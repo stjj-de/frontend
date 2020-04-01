@@ -54,9 +54,9 @@
 
 <script>
   import uniqBy from "lodash.uniqby";
+  import PostsQuery from "./postsQuery.graphql";
   import KNavigationBar from "kiste/components/KNavigationBar";
   import KButton from "kiste/components/KButton";
-  import PostsQuery from "./postsQuery.graphql";
   import PostCard from "@/components/PostCard/PostCard";
 
   const POSTS_LOADED_AT_ONCE = 5;

@@ -2,41 +2,41 @@
   <div class="login-page" :data-logged-in="loggedIn">
     <div class="content _box-container">
       <main class="_box" :data-show="showBox">
-        <nuxt-link class="_back link" to="/">
-          <ArrowLeftIcon class="_back-arrow"/>
-          Zurück zur Startseite
-        </nuxt-link>
-        <div class="_heading-container">
-          <h1 class="heading--3 _heading" :data-visible="!loggedIn">
+        <LoadingOverlay :active="loggedIn" :transition-delay="150">
+          Du wirst angemeldet
+        </LoadingOverlay>
+        <div class="_box-content">
+          <nuxt-link class="_back link" to="/">
+            <ArrowLeftIcon class="_back-arrow"/>
+            Zurück zur Startseite
+          </nuxt-link>
+          <h1 class="heading--3 _heading">
             Anmelden
           </h1>
-          <h1 class="heading--3 _heading _welcome" :data-visible="loggedIn">
-            Willkommen
-          </h1>
+          <form class="_form" action="javascript:" @submit="submit()">
+            <InputField
+              label="Benutzername"
+              autocomplete="username"
+              disable-spellcheck
+              :companion="username"
+            />
+            <InputField
+              label="Passwort"
+              autocomplete="current-password"
+              :companion="password"
+            />
+            <div class="_buttons">
+              <KButton
+                class="_next-step"
+                is-submit
+                :loading="submitLoading"
+                :disabled="!(password.valid && username.valid)"
+              >
+                Anmelden
+              </KButton>
+            </div>
+          </form>
         </div>
-        <form class="_form" action="javascript:" @submit="submit()">
-          <InputField
-            label="Benutzername"
-            autocomplete="username"
-            disable-spellcheck
-            :companion="username"
-          />
-          <InputField
-            label="Passwort"
-            autocomplete="current-password"
-            :companion="password"
-          />
-          <div class="_buttons">
-            <KButton
-              class="_next-step"
-              is-submit
-              :loading="submitLoading"
-              :disabled="!(password.valid && username.valid)"
-            >
-              Anmelden
-            </KButton>
-          </div>
-        </form>
       </main>
     </div>
   </div>
@@ -47,60 +47,33 @@
     height: 100vh;
 
     background: #025ded;
-    background: linear-gradient(203deg, #3895ed 10%, #7700c6 90%);
+    background: linear-gradient(203deg, #3895ed 0%, #7700c6 100%);
     background-size: 100% 200%;
 
     background-position: 0 100%;
-    transition: 1s ease background-position;
+    transition: 2s ease background-position;
 
     &[data-logged-in] {
       background-position: 0 0;
 
-      ._back {
-        opacity: 0;
-      }
-
-      ._form {
+      ._box-content {
         opacity: 0;
       }
     }
   }
 
-  ._heading-container {
-    position: relative;
-    height: 70px;
+  ._box-content {
+    transition: 300ms ease opacity;
   }
-
-  $logged-in-transition: 300ms ease opacity;
 
   ._heading {
     margin-bottom: 0;
-
-    position: absolute;
-    top: 0;
-
-    opacity: 0;
-    transition: $logged-in-transition;
-
-    &[data-visible] {
-      opacity: 1;
-    }
-  }
-
-  ._welcome {
-    text-align: center;
-    display: block;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   ._back {
     font-size: 1.2rem;
     top: 10px;
     left: 10px;
-
-    opacity: 1;
-    transition: $logged-in-transition;
   }
 
   ._back-arrow {
@@ -125,16 +98,13 @@
     padding: 40px;
     overflow: hidden;
 
+    position: relative;
+
     opacity: 0;
     transition: 200ms ease opacity;
     &[data-show] {
       opacity: 1;
     }
-  }
-
-  ._form {
-    opacity: 1;
-    transition: $logged-in-transition;
   }
 
   ._buttons {
@@ -155,19 +125,20 @@
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
   import { isLoggedIn } from "@/assets/isLoggedIn";
+  import LoadingOverlay from "@/components/LoadingOverlay";
 
   export default {
     name: "LoginPage",
     layout: "only-app",
-    components: { InputField, ArrowLeftIcon, KButton },
+    components: { LoadingOverlay, InputField, ArrowLeftIcon, KButton },
     head: () => ({
       title: "Anmelden"
     }),
     created() {
       if (isLoggedIn(this)) {
-        this.showBox = true;
+        this.$router.replace(this.nextURL);
       } else {
-        this.$router.push(this.nextURL);
+        this.showBox = true;
       }
     },
     data() {
@@ -252,6 +223,7 @@
           } else {
             throw new Error("Unexpected Apollo error: " + result.errors[0].message);
           }
+
           return;
         }
 

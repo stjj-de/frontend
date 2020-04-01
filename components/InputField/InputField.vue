@@ -4,10 +4,10 @@
       target="window"
       @resize="recomputeErrorTextHeight"
     />
-    <span v-if="!hideLabel" class="_label">{{ label }}</span>
-    <div class="_input-container">
+    <span v-if="!hideLabel" class="input-field__label">{{ label }}</span>
+    <div class="input-field__input-container">
       <input
-        class="_input"
+        class="input-field__input"
         ref="input"
         :aria-label="label"
         :value="companion.value"
@@ -22,20 +22,20 @@
         @input="onInput"
         @blur="onBlur"
       />
-      <span class="_disabled-overlay"></span>
+      <span class="input-field__disabled-overlay"></span>
     </div>
     <div
-      class="_state"
+      class="input-field__state"
       :data-state="String(this.companion._state)"
       :data-keep-showing-state="this.companion.keepShowingState">
-      <div class="_cross"></div>
-      <div class="_spinner"></div>
-      <div class="_tick"></div>
+      <div class="input-field__cross"></div>
+      <div class="input-field__spinner"></div>
+      <div class="input-field__tick"></div>
     </div>
-    <span class="_error" :style="errorStyle">
+    <span class="input-field__error" :style="errorStyle">
       {{ this.companion._lazyErrorText }}
     </span>
-    <span class="_error-invisible" ref="invisibleError">
+    <span class="input-field__error--invisible" aria-hidden="true" ref="invisibleError">
       {{ this.companion._error }}
     </span>
   </div>
@@ -45,7 +45,7 @@
   @use "~@/assets/styles/spinner.scss";
 
   .input-field {
-    margin-top: 10px;
+    margin-top: 15px;
     position: relative;
     width: 100%;
     height: 100%;
@@ -53,29 +53,28 @@
     &[data-invalid] {
       color: var(--colors-red);
 
-      ._input {
+      .input-field__input {
         border-color: var(--colors-red);
       }
     }
   }
 
-  ._label {
+  .input-field__label {
     display: block;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: 5px;
 
     transition: 100ms linear color;
   }
 
-  ._input-container {
+  .input-field__input-container {
     position: relative;
-    border-radius: 5px;
     overflow: hidden;
     width: 100%;
     height: 100%;
   }
 
-  ._disabled-overlay {
+  .input-field__disabled-overlay {
     content: "";
     display: block;
     position: absolute;
@@ -90,21 +89,26 @@
     opacity: 0;
     transition: 200ms ease opacity;
 
-    ._input:disabled ~ & {
+    .input-field__input:disabled ~ & {
       pointer-events: auto;
       opacity: 0.1;
     }
   }
 
-  ._input {
+  .input-field__input {
+    box-shadow: inset 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+
     width: 100%;
     height: 100%;
 
     padding: 10px;
-    border-radius: 5px;
-    border: 2px solid var(--colors-background-a);
+    border-radius: 5px 5px 0 0;
+    border: none;
+    border-bottom: 2px solid var(--colors-background-a);
+
     font-size: 1.2rem;
     font-family: "Sen", sans-serif;
+
     background-color: var(--colors-background);
 
     transition: 200ms linear;
@@ -116,7 +120,7 @@
     }
   }
 
-  ._state {
+  .input-field__state {
     position: absolute;
     top: 41px;
     right: 10px;
@@ -155,20 +159,20 @@
       }
     }
 
-    &[data-state=loading] > ._spinner {
+    &[data-state=loading] > .input-field__spinner {
       opacity: 1;
     }
 
-    &[data-state=success] > ._tick {
+    &[data-state=success] > .input-field__tick {
       opacity: 1;
     }
 
-    &[data-state=failed] > ._cross {
+    &[data-state=failed] > .input-field__cross {
       opacity: 1;
     }
   }
 
-  ._tick {
+  .input-field__tick {
     border: 2px solid var(--colors-green);
     border-top-color: transparent;
     border-right-color: transparent;
@@ -178,9 +182,11 @@
     width: 18px;
     height: 10px;
     top: 2px;
+
+    background-color: transparent;
   }
 
-  ._cross {
+  .input-field__cross {
     height: 100%;
     width: 100%;
     position: relative;
@@ -203,12 +209,12 @@
     }
   }
 
-  ._spinner {
-    @include spinner.spinner($size: 20px, $color: currentColor);
+  .input-field__spinner {
+    @include spinner.spinner($size: 20px, $color: var(--colors-green), $thickness: 2px);
     height: 100%;
   }
 
-  ._error {
+  .input-field__error {
     display: block;
     margin-top: 10px;
     overflow: hidden;
@@ -218,7 +224,7 @@
     transition: 300ms ease height;
   }
 
-  ._error-invisible {
+  .input-field__error--invisible {
     position: absolute;
     top: 0;
     display: block;

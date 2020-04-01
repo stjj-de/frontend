@@ -1,6 +1,5 @@
 import debounce from "lodash.debounce";
 import isEqual from "lodash.isequal";
-import Vue from "vue";
 
 export class DataTableCompanion {
   constructor({
@@ -13,7 +12,8 @@ export class DataTableCompanion {
     sortBy,
     sortOrder = "DESCENDING",
     fetch,
-    fetchDebounceTimeout = 500
+    fetchDebounceTimeout = 500,
+    userDefinedVariables = []
   }) {
     this._columns = columns;
     this._pageIndex = 0;
@@ -25,9 +25,10 @@ export class DataTableCompanion {
     this.itemsPerPage = itemsPerPage;
     this.sortBy = sortBy;
     this.sortOrder = sortOrder;
-    this.fetch = fetch;
+    this.fetchFn = fetch;
     this.tableBodyInstance = null;
     this.bodyWidth = "100%";
+    this.userDefinedVariables = userDefinedVariables;
 
     this._lastFetchVariables = [];
 
@@ -42,7 +43,7 @@ export class DataTableCompanion {
       this._loading = true;
 
       this._lastFetchVariables = fetchVariables;
-      const { items, hasMore } = await this.fetch(...fetchVariables);
+      const { items, hasMore } = await this.fetchFn(...fetchVariables);
 
       if (!isEqual(fetchVariables, this._currentFetchVariables)) {
         // the variables changed while the fetch was running
@@ -57,7 +58,7 @@ export class DataTableCompanion {
   }
 
   get _currentFetchVariables() {
-    return [this.pageIndex, this.sortBy, this.sortOrder];
+    return [this.pageIndex, this.sortBy, this.sortOrder, ...this.userDefinedVariables];
   }
 
   get lastFetchVariables() {
@@ -96,5 +97,9 @@ export class DataTableCompanion {
 
   updateBodyWidth() {
     this.bodyWidth = this.tableBodyInstance.getWidth() + "px";
+  }
+
+  fetch() {
+    this._fetchPage();
   }
 }

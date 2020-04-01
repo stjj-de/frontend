@@ -35,6 +35,7 @@ export class EventResolver implements ResolverInterface<Event> {
 
   @Query(() => EventsPagination)
   async events(@Args() args: GetEventsArgs): Promise<EventsPagination> {
+    console.log(args.filter);
     const { hasMore, events } = await this.eventController.getEvents({
       filter: args.filter ?? undefined,
       skip: args.skip,

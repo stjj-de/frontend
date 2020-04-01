@@ -1,31 +1,96 @@
 <template>
-  <div class="events-page">
+  <main class="events-page">
     <h1 class="heading--1 _heading">
       Ereignisse
     </h1>
+    <div class="_filter">
+      <span class="heading--5">Filter</span>
+      <select v-model="dateFilter" class="_filter-select">
+        <option :value="null">
+          Keiner
+        </option>
+        <option value="day">
+          An diesem Tag
+        </option>
+        <option value="span">
+          In dieser Zeitspanne
+        </option>
+      </select>
+      <div class="_picker" :data-enabled="dateFilter !== null">
+        <client-only>
+          <v-date-picker
+            v-if="dateFilterNotNull === 'span'"
+            v-model="dateSpanFilter"
+            is-inline
+            mode="range"
+            @input="onPickerInput"
+          />
+          <v-date-picker
+            v-else
+            v-model="dateDayFilter"
+            is-inline
+            @input="onPickerInput"
+          />
+        </client-only>
+      </div>
+    </div>
     <DataTable :companion="table" loading-text="Ereignisse werden geladen">
       <template v-slot:date="row">
         {{ new Date(row).toLocaleDateString() }}
       </template>
     </DataTable>
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">
+  ._filter-select {
+    font-size: 1.2rem;
+  }
 
+  ._picker {
+    margin-top: 10px;
+    position: relative;
+
+    &[data-enabled] {
+      &::after {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background-color: white;
+      opacity: 0.8;
+      transition: 100ms linear opacity;
+    }
+  }
+
+  ._filter {
+    margin-bottom: 20px;
+  }
 </style>
 
 <script>
-  import { de } from "date-fns/locale";
   import { format } from "date-fns";
   import EventsQuery from "./eventsQuery.graphql";
+  import { dateFnsLocale } from "@/assets/dateFnsLocale";
+  import { isFullDay } from "@/assets/isFullDay";
   import DataTable from "@/components/DataTable/DataTable";
+  import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
   import EventsTableColorColumn from "@/components/pages/admin/events/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
 
-  const formatDateWithTime = date => format(new Date(date), "d.L.yyyy, HH:mm", { locale: de });
-  const formatDate = date => format(new Date(date), "d.L.yyyy", { locale: de });
-  const isFullDay = (startDateString, endDateString) => {
+  const formatDateWithTime = date => format(new Date(date), "d.L.yyyy, HH:mm", { locale: dateFnsLocale });
+  const formatDate = date => format(new Date(date), "d.L.yyyy", { locale: dateFnsLocale });
+  const _isFullDay = (startDateString, endDateString) => {
     if (endDateString === null) {
       return false;
     }
@@ -34,17 +99,21 @@
     const endDate = new Date(endDateString);
 
     // 86400000 = a full day
-    return startDate.getHours() === 0 && endDate.getHours() === 0 && endDate - startDate === 86400000;
+    return isFullDay(startDate, endDate);
   };
 
   const ITEMS_PER_PAGE = 10;
 
   export default {
     name: "EventsPage",
-    components: { DataTable },
+    components: { DataTable, VDatePicker },
     layout: "admin",
     data() {
       return {
+        dateFilter: null,
+        dateFilterNotNull: "day",
+        dateSpanFilter: {},
+        dateDayFilter: null,
         table: new DataTableCompanion({
           columns: {
             color: {
@@ -60,7 +129,7 @@
             },
             date: {
               name: "Datum",
-              transform: (date, row) => isFullDay(date, row.endDate) ? formatDate(date) : formatDateWithTime(date),
+              transform: (date, row) => _isFullDay(date, row.endDate) ? formatDate(date) : formatDateWithTime(date),
               width: 160,
               sortable: true
             },
@@ -68,7 +137,7 @@
               name: "Enddatum",
               transform: (endDate, row) => endDate === null
                 ? "nicht festgelegt"
-                : (isFullDay(row.date, endDate)
+                : (_isFullDay(row.date, endDate)
                   ? "ganztägig"
                   : formatDateWithTime(endDate)),
               width: 180
@@ -84,7 +153,8 @@
                 skip: pageIndex * ITEMS_PER_PAGE,
                 take: ITEMS_PER_PAGE,
                 order: sortOrder,
-                sortBy: sortBy.toUpperCase()
+                sortBy: sortBy.toUpperCase(),
+                filter: this.filterString
               },
               fetchPolicy: "network-only"
             });
@@ -94,8 +164,64 @@
         })
       };
     },
+    computed: {
+      filterString() {
+        switch (this.dateFilter) {
+          case "day":
+            if (this.dateDayFilter !== null) {
+              return this.dateDayFilter.toISOString().slice(0, 10);
+            }
+
+            break;
+
+          case "span":
+            if (this.dateSpanFilter && this.dateSpanFilter.start && this.dateSpanFilter.end) {
+              return [
+                this.dateSpanFilter.start.toISOString().slice(0, 10),
+                this.dateSpanFilter.end.toISOString().slice(0, 10)
+              ].join(":");
+            }
+
+            break;
+        }
+
+        return undefined;
+      }
+    },
     beforeMount() {
       this.table.initialize();
+    },
+    watch: {
+      dateFilter() {
+        if (this.dateFilter === null) {
+          this.updateUserDefinedVariables();
+          this.table.pageIndex = 0;
+          this.table.fetch();
+        } else {
+          if (this.dateFilter !== this.dateFilterNotNull) {
+            this.dateDayFilter = null;
+            this.dateSpanFilter = {};
+          }
+
+          this.dateFilterNotNull = this.dateFilter;
+          this.updateUserDefinedVariables();
+          this.table.fetch();
+        }
+      }
+    },
+    methods: {
+      onPickerInput() {
+        this.updateUserDefinedVariables();
+        this.table.pageIndex = 0;
+        this.table.fetch();
+      },
+      updateUserDefinedVariables() {
+        if (this.filterString === undefined) {
+          this.table.userDefinedVariables = [];
+        } else {
+          this.table.userDefinedVariables = [this.filterString];
+        }
+      }
     }
   };
 </script>

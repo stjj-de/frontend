@@ -4,17 +4,17 @@
     tag="article"
     :to="`/posts/${post.slug}`"
   >
-    <nuxt-link class="_title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
-    <span class="_excerpt">{{ post.excerpt }}</span>
-    <div class="_footer">
-      <div class="_authors">
+    <nuxt-link class="post-card__title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
+    <span class="post-card__excerpt">{{ post.excerpt }}</span>
+    <div class="post-card__footer">
+      <div class="post-card__authors">
         <UserImageWithPopup
           v-for="author in post.authors"
           :key="author.id"
           :user="author"
         />
       </div>
-      <span class="_publication-date">{{ publicationDateString }}</span>
+      <span class="post-card__publication-date">{{ publicationDateString }}</span>
     </div>
   </nuxt-link>
 </template>
@@ -35,7 +35,7 @@
     }
   }
 
-  ._title {
+  .post-card__title {
     font-weight: bold;
     font-size: 1.2rem;
     display: block;
@@ -44,11 +44,11 @@
     color: var(--colors-background-c)
   }
 
-  ._excerpt {
+  .post-card__excerpt {
     font-size: 1.1rem;
   }
 
-  ._footer {
+  .post-card__footer {
     margin-top: 20px;
 
     display: flex;
@@ -57,7 +57,7 @@
     align-items: flex-end;
   }
 
-  ._authors {
+  .post-card__authors {
     display: flex;
     justify-content: right;
 
@@ -66,7 +66,7 @@
     }
   }
 
-  ._publication-date {
+  .post-card__publication-date {
     margin-top: 10px;
     margin-left: auto;
     padding-left: 20px;
@@ -76,8 +76,8 @@
 </style>
 
 <script>
-  import { de } from "date-fns/locale";
   import { format } from "date-fns";
+  import { dateFnsLocale } from "@/assets/dateFnsLocale";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
 
   export default {
@@ -91,7 +91,7 @@
     },
     computed: {
       publicationDateString() {
-        return format(new Date(this.post.publicationDate), "d.L.y", { locale: de });
+        return format(new Date(this.post.publicationDate), "d.L.y", { locale: dateFnsLocale });
       }
     }
   };

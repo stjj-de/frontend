@@ -23,6 +23,9 @@ module.exports = {
     "unicorn/filename-case": "off",
     "nuxt/no-cjs-in-config": "off"
   },
+  globals: {
+    process: true
+  },
   overrides: [
     {
       files: ["webpack.resolve.js", "nuxt.config.js", "ormconfig.js"],
@@ -62,7 +65,7 @@ module.exports = {
       }
     },
     {
-      files: "middleware/*.js",
+      files: ["middleware/*", "components/**/*"],
       rules: {
         "import/no-default-export": "off"
       }

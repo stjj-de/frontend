@@ -1,6 +1,6 @@
 <template>
   <div class="event-calendar">
-    <div class="_calendar">
+    <div class="event-calendar__calendar">
       <client-only>
         <v-calendar
           is-expanded
@@ -12,16 +12,18 @@
       <LoadingOverlay :active="$apollo.queries.eventsInMonth.loading"/>
     </div>
     <transition mode="out-in" :name="dayDetailsTransitionName">
-      <span v-if="selectedDay === null" :key="null" class="heading--6 _no-selection">
+      <span v-if="selectedDay === null" :key="null" class="heading--6 event-calendar__no-selection">
         Kein Tag ausgewählt.
       </span>
       <div v-else :key="selectedDay" ref="dayDetails">
         <h2 class="heading--5 _day-date">
           {{ selectedDayString }}
         </h2>
-        <div class="_day-details">
+        <div class="event-calendar__day-details">
           <EventCalendarDayDetails v-if="!$apollo.queries.eventsOnDay.loading" :events="eventsOnDay"/>
-          <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading"/>
+          <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading">
+            Termine werden geladen
+          </LoadingOverlay>
         </div>
       </div>
     </transition>
@@ -35,7 +37,7 @@
   @include transitions.slide($name: "slide-left", $direction: "left", $duration: 200ms, $easing: ease);
   @include transitions.slide($name: "slide-right", $direction: "right", $duration: 200ms, $easing: ease);
 
-  ._calendar {
+  .event-calendar__calendar {
     position: relative;
 
     &::v-deep {
@@ -45,11 +47,11 @@
     }
   }
 
-  ._day-date {
+  .event-calendar__day-date {
     margin-bottom: 5px;
   }
 
-  ._day-details {
+  .event-calendar__day-details {
     position: relative;
     min-height: 150px;
   }
@@ -57,10 +59,10 @@
 
 <script>
   import { format } from "date-fns";
-  import { de } from "date-fns/locale";
   import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
   import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
   import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
+  import { dateFnsLocale } from "@/assets/dateFnsLocale";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
 
@@ -131,7 +133,7 @@
       selectedDayString() {
         if (this.selectedDay === null) return null;
 
-        return format(new Date(this.selectedDay), "eeeeee, d.L.y", { locale: de });
+        return format(new Date(this.selectedDay), "eeeeee, d.L.y", { locale: dateFnsLocale });
       }
     },
     methods: {
@@ -142,7 +144,9 @@
         }
 
         this.selectedDay = null;
-        this.$apollo.queries.eventsInMonth.refetch(page);
+        this.$apollo.queries.eventsInMonth.refetch({
+          filter: String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0")
+        });
       },
       onDayClick(day) {
         this.selectedDay = day.id;

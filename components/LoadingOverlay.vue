@@ -1,6 +1,6 @@
 <template>
   <div class="loading-overlay" :data-active="active" :style="style">
-    <span class="_text" v-if="$slots.default"><slot/></span>
+    <span class="loading-overlay__text" v-if="$slots.default" :aria-hidden="String(active)"><slot/></span>
   </div>
 </template>
 
@@ -47,7 +47,7 @@
     }
   }
 
-  ._text {
+  .loading-overlay__text {
     margin-top: 20px;
     position: relative;
   }

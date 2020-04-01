@@ -1,9 +1,9 @@
 <template>
-  <div class="users-page">
+  <main class="users-page">
     <h1 class="heading--1 _heading">
       Benutzer
     </h1>
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">

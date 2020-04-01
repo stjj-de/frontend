@@ -32,10 +32,7 @@
 </style>
 
 <script>
-  import KNavigationBar from "kiste/components/KNavigationBar";
-
   export default {
-    components: { KNavigationBar },
     props: {
       error: {
         type: Object,

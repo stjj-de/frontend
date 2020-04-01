@@ -1,7 +1,7 @@
 <template>
-  <main class="admin-page">
+  <div>
 
-  </main>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -10,7 +10,6 @@
 
 <script>
   export default {
-    name: "AdminPage",
-    layout: "admin"
+    name: "EditEventPage"
   };
 </script>

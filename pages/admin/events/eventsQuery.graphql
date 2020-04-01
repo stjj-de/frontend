@@ -1,7 +1,7 @@
 #import "@/components/UserImageWithPopup/userFragment.graphql"
 
-query ($skip: Int!, $take: Int!, $sortBy: EventSortField, $order: SortOrder) {
-  events(sortBy: $sortBy, order: $order, skip: $skip, take: $take) {
+query ($skip: Int!, $take: Int!, $sortBy: EventSortField, $order: SortOrder, $filter: String) {
+  events(sortBy: $sortBy, order: $order, skip: $skip, take: $take, filter: $filter) {
     items {
       id
       title

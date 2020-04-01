@@ -1,15 +1,17 @@
 <template>
   <div class="data-table">
-    <div class="data-table__table">
-      <div class="data-table__head" :style="`min-width: ${companion.bodyWidth}`">
+    <div class="data-table__table" role="table">
+      <div class="data-table__head" :style="`min-width: ${companion.bodyWidth}`" role="rowheader">
         <div
           class="data-table__head-column data-table__head-select-column"
           title="Auswählen"
+          role="columnheader"
         ></div>
         <div
           v-for="(column, key) in companion.columns"
           :key="key"
           class="data-table__head-column"
+          role="columnheader"
           @click="onHeadColumnClick(key)"
           @keydown.enter="onHeadColumnClick(key)"
           :style="getHeadColumnStyle(key)"
@@ -71,7 +73,7 @@
   }
 
   .data-table__table {
-    overflow-x: auto;
+    overflow-x: scroll;
     width: 100%;
   }
 

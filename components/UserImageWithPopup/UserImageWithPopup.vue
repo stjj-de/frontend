@@ -7,24 +7,24 @@
     @blur="ignoreFocus = false"
   >
     <img
-      class="_image"
+      class="user-image-with-popup__image"
       :alt="user.name"
       :src="getImageURL(user.image)"
     >
     <div
-      class="_popup"
+      class="user-image-with-popup__popup"
       ref="popup"
     >
       <img
-        class="_popup-image"
+        class="user-image-with-popup__popup-image"
         :alt="user.displayName"
         :src="getImageURL(user.image)"
       >
-      <div class="_popup-text">
-        <span class="_name">
+      <div class="user-image-with-popup__popup-text">
+        <span class="user-image-with-popup__name">
         {{ user.displayName }}
       </span>
-        <span class="_position" v-if="user.position !== null">
+        <span class="user-image-with-popup__position" v-if="user.position !== null">
         {{ user.position }}
       </span>
       </div>
@@ -46,11 +46,12 @@
     }
   }
 
-  ._image:hover ~ ._popup, .user-image-with-popup:focus:not([data-ignore-focus]) > ._popup {
+  .user-image-with-popup__image:hover ~ .user-image-with-popup__popup,
+  .user-image-with-popup:focus:not([data-ignore-focus]) > .user-image-with-popup__popup {
     opacity: 1;
   }
 
-  ._image, ._popup-image {
+  .user-image-with-popup__image, .user-image-with-popup__popup-image {
     position: relative;
 
     border-radius: 50%;
@@ -59,11 +60,11 @@
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
   }
 
-  ._popup-image {
+  .user-image-with-popup__popup-image {
     box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
   }
 
-  ._popup {
+  .user-image-with-popup__popup {
     pointer-events: none;
     opacity: 0;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
@@ -82,19 +83,19 @@
     transition: 200ms ease opacity;
   }
 
-  ._popup-text {
+  .user-image-with-popup__popup-text {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
   }
 
-  ._name {
+  .user-image-with-popup__name {
     position: relative;
     white-space: nowrap;
     font-size: 1.2rem;
   }
 
-  ._position {
+  .user-image-with-popup__position {
     white-space: nowrap;
     font-size: 1rem;
   }

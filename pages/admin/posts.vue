@@ -1,9 +1,9 @@
 <template>
-  <div class="posts-page">
+  <main class="posts-page">
     <h1 class="heading--1 _heading">
       Artikel
     </h1>
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">

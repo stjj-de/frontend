@@ -27,8 +27,9 @@
   }
 
   ._content {
-    padding: 0 60px;
     width: calc(100vw - 350px);
+    margin-left: 350px;
+    padding: 20px 60px 50px;
   }
 
   @media(max-width: 1000px) {
@@ -39,6 +40,7 @@
     ._content {
       padding: 80px 20px 0;
       width: 100vw;
+      margin-left: 0;
     }
   }
 </style>

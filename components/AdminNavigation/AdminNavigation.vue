@@ -44,6 +44,10 @@
     height: 100vh;
     box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
 
+    position: fixed;
+    top: 0;
+    bottom: 0;
+
     &[data-open] {
       ._toggle > span {
         &:nth-child(1) {
@@ -163,7 +167,7 @@
 
       position: fixed;
       top: 0;
-      z-index: 1;
+      z-index: 200;
 
       background-color: var(--colors-background);
     }

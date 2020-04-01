@@ -4,7 +4,6 @@ import { endOfDay, startOfDay, parseISO, startOfMonth, endOfMonth } from "date-f
 import { Event } from "../data/models/Event";
 import { EventSortField } from "../data/enums/EventSortField";
 import { SortOptions } from "../utils/SortOptions";
-import { EventsPagination } from "../data/objectTypes/EventsPagination";
 
 export interface GetEventsOptions {
   skip?: number;
@@ -12,6 +11,8 @@ export interface GetEventsOptions {
   sort?: SortOptions<EventSortField>;
   filter?: string;
 }
+
+const createInvalidFormatError = () => new Error("Invalid filter string. Required format: yyyy-mm, yyyy-mm-dd or yyyy-mm-dd:yyyy-mm-dd.");
 
 export class EventController {
   @InjectRepository(Event) private readonly eventRepository: Repository<Event>;
@@ -27,22 +28,36 @@ export class EventController {
 
     const where: FindManyOptions<Event>["where"] = {};
     if (options.filter) {
-      const partsCount = options.filter.split("-").length;
+      const dates = options.filter.split(":");
 
-      const filterDate = parseISO(options.filter);
       let startDate: Date;
       let endDate: Date;
 
-      if (partsCount === 2) {
-        // filter by month
-        startDate = startOfMonth(filterDate);
-        endDate = endOfMonth(filterDate);
-      } else if (partsCount === 3) {
-        // filter by day
-        startDate = startOfDay(filterDate);
-        endDate = endOfDay(startDate);
+      if (dates.length === 2) {
+        if (dates.some(date => date.split("-").length !== 3)) {
+          throw createInvalidFormatError();
+        }
+
+        startDate = startOfDay(parseISO(dates[0]));
+        endDate = endOfDay(parseISO(dates[1]));
+      } else if (dates.length === 1) {
+        const partsCount = options.filter.split("-").length;
+
+        const filterDate = parseISO(options.filter);
+
+        if (partsCount === 2) {
+          // filter by month
+          startDate = startOfMonth(filterDate);
+          endDate = endOfMonth(filterDate);
+        } else if (partsCount === 3) {
+          // filter by day
+          startDate = startOfDay(filterDate);
+          endDate = endOfDay(startDate);
+        } else {
+          throw createInvalidFormatError();
+        }
       } else {
-        throw new Error("Invalid filter string. Required format: yyyy-mm or yyyy-mm-dd");
+        throw createInvalidFormatError();
       }
 
       where.date = Raw(alias => `${alias} >= '${startDate.toISOString()}' AND ${alias} <= '${endDate.toISOString()}'`);
@@ -58,7 +73,7 @@ export class EventController {
     const hasMore = options.take === undefined ? false : events.length === options.take + 1;
 
     return {
-      events: events.slice(0, -1),
+      events: hasMore ? events.slice(0, -1) : events,
       hasMore
     };
   }

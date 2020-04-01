@@ -1,5 +1,5 @@
 <template>
-  <LoadingPlaceholder width="280px" height="270px">
+  <LoadingPlaceholder width="100%" height="270px">
     Kalender wird geladen
   </LoadingPlaceholder>
 </template>

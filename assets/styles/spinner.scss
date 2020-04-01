@@ -1,5 +1,5 @@
-@mixin spinner($size: 50px, $color: var(--colors-green)) {
-  border: 3px solid $color;
+@mixin spinner($size: 50px, $color: var(--colors-green), $thickness: 3px) {
+  border: $thickness solid $color;
   border-top-color: transparent;
   border-radius: 50%;
 

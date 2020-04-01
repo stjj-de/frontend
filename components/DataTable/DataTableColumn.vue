@@ -1,6 +1,7 @@
 <template>
   <div
     class="data-table__column"
+    role="cell"
     :style="style"
   >
     <component

@@ -105,7 +105,7 @@ export class InputFieldCompanion {
       this.validateOrSaveAsync(transformedValue, handler => {
         this._cancelValidateOrSaveHandlers.push(handler);
       }).then(error => {
-        if (transformedValue !== this.transformedValue) return;
+        if (transformedValue !== this.transformedValue || this._state === null) return;
 
         if (error) {
           this._error = error;

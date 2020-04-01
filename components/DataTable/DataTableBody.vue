@@ -10,8 +10,9 @@
         :key="row[companion.specialKeys.id]"
         class="data-table__row"
         tabindex="0"
+        role="row"
       >
-        <div class="data-table__column data-table__column--select">
+        <div class="data-table__column data-table__column--select" role="cell">
           <input
             class="data-table__checkbox"
             type="checkbox"
@@ -87,6 +88,13 @@
     mounted() {
       this.companion.tableBodyInstance = this;
       this.companion.updateBodyWidth();
+    },
+    watch: {
+      "companion.items"() {
+        this.$nextTick(() => {
+          this.companion.updateBodyWidth();
+        });
+      }
     },
     methods: {
       getWidth() {

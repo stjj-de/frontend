@@ -1,7 +1,7 @@
 <template>
-  <div class="post-page">
+  <main class="post-page">
 
-  </div>
+  </main>
 </template>
 
 <style scoped lang="scss">
