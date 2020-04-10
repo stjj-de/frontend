@@ -3,7 +3,7 @@ import {
   Args,
   ArgsType,
   Field,
-  FieldResolver,
+  FieldResolver, ID,
   Int,
   Query,
   registerEnumType,
@@ -65,8 +65,8 @@ export class PostResolver implements ResolverInterface<Post> {
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Arg("id", () => Int) id: number) {
-    return this.postRepository.findOne({ where: { id } });
+  post(@Arg("id", () => ID) id: string) {
+    return this.postRepository.findOne(id);
   }
 
   @Query(() => Post, { nullable: true })

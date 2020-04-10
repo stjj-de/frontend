@@ -62,9 +62,10 @@
   import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
   import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
   import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
-  import { dateFnsLocale } from "@/assets/dateFnsLocale";
+  import { dateFnsLocale } from "@/assets/dateUtils";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
+  import { toFilterStringDate } from "@/assets/dateUtils";
 
   export default {
     name: "EventCalendar",
@@ -75,16 +76,14 @@
     },
     data: () => ({
       isFirstPageChange: true,
-      selectedDay: new Date().toISOString()
-        .slice(0, 10),
+      selectedDay: toFilterStringDate(new Date(), true),
       previousSelectedDay: null
     }),
     apollo: {
       eventsInMonth: {
         query: EventsInMonthQuery,
         variables: {
-          filter: new Date().toISOString()
-            .slice(0, 7)
+          filter: toFilterStringDate(new Date(), false)
         },
         update: data => data.events.items
       },

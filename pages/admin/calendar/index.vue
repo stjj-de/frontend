@@ -1,7 +1,7 @@
 <template>
-  <main class="events-page">
+  <main class="calendar-page">
     <h1 class="heading--1 _heading">
-      Ereignisse
+      Kalender
     </h1>
     <div class="_filter">
       <span class="heading--5">Filter</span>
@@ -34,11 +34,24 @@
         </client-only>
       </div>
     </div>
-    <DataTable :companion="table" loading-text="Ereignisse werden geladen">
-      <template v-slot:date="row">
-        {{ new Date(row).toLocaleDateString() }}
+    <DataTable
+      :companion="table"
+      loading-text="Ereignisse werden geladen"
+      @row-click="onRowClick"
+    >
+      <template v-slot:empty-state>
+        <div class="_no-results">
+          <span class="_no-results-emoji">
+            😕
+          </span>
+          Keine Ergebnisse.
+        </div>
       </template>
     </DataTable>
+    <EditEventModal
+      :event-id="editModalEventID"
+      @close="editModalEventID = null"
+    />
   </main>
 </template>
 
@@ -51,6 +64,8 @@
     margin-top: 10px;
     position: relative;
 
+    max-width: 258px;
+
     &[data-enabled] {
       &::after {
         opacity: 0;
@@ -61,7 +76,7 @@
     &::after {
       content: "";
       position: absolute;
-      z-index: 20;
+      z-index: 10;
       top: 0;
       left: 0;
       right: 0;
@@ -76,17 +91,33 @@
   ._filter {
     margin-bottom: 20px;
   }
+
+  ._no-results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    font-size: 1.3rem;
+  }
+
+  ._no-results-emoji {
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
 </style>
 
 <script>
   import { format } from "date-fns";
   import EventsQuery from "./eventsQuery.graphql";
-  import { dateFnsLocale } from "@/assets/dateFnsLocale";
-  import { isFullDay } from "@/assets/isFullDay";
+  import { dateFnsLocale } from "@/assets/dateUtils";
   import DataTable from "@/components/DataTable/DataTable";
   import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
   import EventsTableColorColumn from "@/components/pages/admin/events/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
+  import { isFullDay, toFilterStringDate } from "@/assets/dateUtils";
+  import EditEventModal from "@/components/pages/admin/events/EditEventModal/EditEventModal";
 
   const formatDateWithTime = date => format(new Date(date), "d.L.yyyy, HH:mm", { locale: dateFnsLocale });
   const formatDate = date => format(new Date(date), "d.L.yyyy", { locale: dateFnsLocale });
@@ -98,15 +129,14 @@
     const startDate = new Date(startDateString);
     const endDate = new Date(endDateString);
 
-    // 86400000 = a full day
     return isFullDay(startDate, endDate);
   };
 
   const ITEMS_PER_PAGE = 10;
 
   export default {
-    name: "EventsPage",
-    components: { DataTable, VDatePicker },
+    name: "CalendarPage",
+    components: { EditEventModal, DataTable, VDatePicker },
     layout: "admin",
     data() {
       return {
@@ -114,6 +144,7 @@
         dateFilterNotNull: "day",
         dateSpanFilter: {},
         dateDayFilter: null,
+        editModalEventID: null,
         table: new DataTableCompanion({
           columns: {
             color: {
@@ -169,7 +200,7 @@
         switch (this.dateFilter) {
           case "day":
             if (this.dateDayFilter !== null) {
-              return this.dateDayFilter.toISOString().slice(0, 10);
+              return toFilterStringDate(this.dateDayFilter, true);
             }
 
             break;
@@ -177,8 +208,8 @@
           case "span":
             if (this.dateSpanFilter && this.dateSpanFilter.start && this.dateSpanFilter.end) {
               return [
-                this.dateSpanFilter.start.toISOString().slice(0, 10),
-                this.dateSpanFilter.end.toISOString().slice(0, 10)
+                toFilterStringDate(this.dateSpanFilter.start, true),
+                toFilterStringDate(this.dateSpanFilter.end, true)
               ].join(":");
             }
 
@@ -221,6 +252,9 @@
         } else {
           this.table.userDefinedVariables = [this.filterString];
         }
+      },
+      onRowClick(id) {
+        this.editModalEventID = id;
       }
     }
   };

@@ -6,7 +6,21 @@
     />
     <span v-if="!hideLabel" class="input-field__label">{{ label }}</span>
     <div class="input-field__input-container">
+      <textarea
+        v-if="companion.type === 'textarea'"
+        class="input-field__input"
+        ref="input"
+        v-text="companion.value"
+        :aria-label="label"
+        :autocomplete="autocomplete"
+        :disabled="companion.disabled"
+        :spellcheck="String(disableSpellcheck)"
+        :aria-required="String(Boolean(companion.required))"
+        @input="onInput"
+        @blur="onBlur"
+      ></textarea>
       <input
+        v-else
         class="input-field__input"
         ref="input"
         :aria-label="label"
@@ -14,11 +28,11 @@
         :type="companion.type"
         :autocomplete="autocomplete"
         :disabled="companion.disabled"
-        :spellcheck="disableSpellcheck ? 'false' : 'true'"
+        :spellcheck="String(disableSpellcheck)"
         :min="companion.min"
         :max="companion.max"
         :step="companion.step"
-        v-on="$listeners"
+        :aria-required="String(Boolean(companion.required))"
         @input="onInput"
         @blur="onBlur"
       />
@@ -26,8 +40,11 @@
     </div>
     <div
       class="input-field__state"
-      :data-state="String(this.companion._state)"
-      :data-keep-showing-state="this.companion.keepShowingState">
+      :class="{
+        [`input-field__state--${String(this.companion._state)}`]: true,
+        'input-field__state--keep': keepShowingState
+      }"
+    >
       <div class="input-field__cross"></div>
       <div class="input-field__spinner"></div>
       <div class="input-field__tick"></div>
@@ -35,7 +52,7 @@
     <span class="input-field__error" :style="errorStyle">
       {{ this.companion._lazyErrorText }}
     </span>
-    <span class="input-field__error--invisible" aria-hidden="true" ref="invisibleError">
+    <span class="input-field__invisible-error" aria-hidden="true" ref="invisibleError">
       {{ this.companion._error }}
     </span>
   </div>
@@ -48,7 +65,6 @@
     margin-top: 15px;
     position: relative;
     width: 100%;
-    height: 100%;
 
     &[data-invalid] {
       color: var(--colors-red);
@@ -71,7 +87,6 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 100%;
   }
 
   .input-field__disabled-overlay {
@@ -95,11 +110,13 @@
     }
   }
 
+  $input-height: 45px;
+
   .input-field__input {
     box-shadow: inset 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 
     width: 100%;
-    height: 100%;
+    height: $input-height;
 
     padding: 10px;
     border-radius: 5px 5px 0 0;
@@ -118,6 +135,12 @@
 
       border-color: var(--colors-green);
     }
+  }
+
+  textarea.input-field__input {
+    resize: vertical;
+    min-height: $input-height * 2;
+    max-height: $input-height * 10;
   }
 
   .input-field__state {
@@ -142,32 +165,32 @@
       transition: 200ms ease opacity;
     }
 
-    &[data-state=null] {
+    &.input-field__state--null {
       opacity: 0;
     }
 
-    &[data-state=loading] {
+    &.input-field__state--loading {
       opacity: 1;
     }
 
-    &[data-state=success], &[data-state=failed] {
+    &.input-field__state--success, &.input-field__state--failed {
       opacity: 1;
 
-      &:not([data-keep-showing-state]) {
+      &:not(.input-field__state--keep) {
         transition-delay: 1500ms;
         opacity: 0;
       }
     }
 
-    &[data-state=loading] > .input-field__spinner {
+    &.input-field__state--loading > .input-field__spinner {
       opacity: 1;
     }
 
-    &[data-state=success] > .input-field__tick {
+    &.input-field__state--success > .input-field__tick {
       opacity: 1;
     }
 
-    &[data-state=failed] > .input-field__cross {
+    &.input-field__state--failed > .input-field__cross {
       opacity: 1;
     }
   }
@@ -224,7 +247,7 @@
     transition: 300ms ease height;
   }
 
-  .input-field__error--invisible {
+  .input-field__invisible-error {
     position: absolute;
     top: 0;
     display: block;
@@ -258,6 +281,10 @@
       disableSpellcheck: {
         type: Boolean,
         default: false
+      },
+      keepShowingState: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({
@@ -268,7 +295,7 @@
         return !this.companion.disabled && this.companion.touched;
       },
       errorStyle() {
-        return this.showPossibleError ? `height: ${this.errorTextHeight}px` : "";
+        return this.showPossibleError ? `height: ${this.errorTextHeight + 1}px` : "";
       },
       error() {
         return this.companion._error;
@@ -292,7 +319,7 @@
       onInput(event) {
         this.companion.touched = true;
         this.companion.value = event.target.value;
-        this.companion._onChange();
+        this.companion._onInput();
       },
       onBlur() {
         this.companion.touched = true;

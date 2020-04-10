@@ -44,8 +44,8 @@
     "typeorm-typedi-extensions": "^0.2.3",
     "v-calendar": "^1.0.1",
     "vue": "^2.6.11",
+    "vue-focus-lock": "^1.4.0",
     "vue-global-events": "^1.1.2",
-    "vue-simple-portal": "^1.0.3",
     "vue-switches": "^2.0.1"
   },
   "devDependencies": {

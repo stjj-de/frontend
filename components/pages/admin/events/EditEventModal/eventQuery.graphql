@@ -1,0 +1,18 @@
+query ($id: ID!) {
+  event(id: $id) {
+    title
+    description
+    color
+    date
+    endDate
+    relatedPost {
+      id
+      title
+    }
+    creators {
+      id
+      displayName
+      image
+    }
+  }
+}

@@ -92,10 +92,10 @@
 <script>
   import cloneDeep from "lodash.clonedeep";
   import { format } from "date-fns";
-  import { dateFnsLocale } from "@/assets/dateFnsLocale";
+  import { dateFnsLocale } from "@/assets/dateUtils";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
   import { getCSSColorForEventColor } from "@/assets/getCSSColorForEventColor";
-  import { isFullDay } from "@/assets/isFullDay";
+  import { isFullDay } from "@/assets/dateUtils";
 
   export default {
     name: "EventCalendarDayDetails",

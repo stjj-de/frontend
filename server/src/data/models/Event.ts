@@ -28,11 +28,11 @@ export class Event {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Field(() => String)
+  @Field()
   @Column()
   title: string;
 
-  @Field(() => Date)
+  @Field()
   @Column({ type: "datetime" })
   date: Date;
 
@@ -40,10 +40,10 @@ export class Event {
   @Column({ type: "datetime", nullable: true, default: null })
   endDate: Date | null;
 
-  @Field(() => [User])
-  @ManyToMany(() => User)
+  @Field()
+  @ManyToOne(() => User)
   @JoinTable()
-  creators: User[];
+  creator: User;
 
   @Field(() => EventColor)
   @Column({
@@ -53,9 +53,9 @@ export class Event {
   })
   color: EventColor;
 
-  @Field(() => String, { nullable: true })
-  @Column({ type: "varchar", nullable: true, default: null })
-  description: string | null;
+  @Field()
+  @Column({ type: "varchar", default: "" })
+  description: string;
 
   @Field(() => Post, { nullable: true })
   @ManyToOne(() => Post, { nullable: true })

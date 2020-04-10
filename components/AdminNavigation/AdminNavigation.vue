@@ -167,7 +167,7 @@
 
       position: fixed;
       top: 0;
-      z-index: 200;
+      z-index: 20;
 
       background-color: var(--colors-background);
     }
@@ -209,8 +209,8 @@
       icon: PencilIcon
     },
     {
-      label: "Ereignisse",
-      to: "/admin/events",
+      label: "Kalender",
+      to: "/admin/calendar",
       icon: CalendarIcon
     },
     {

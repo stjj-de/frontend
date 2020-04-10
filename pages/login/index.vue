@@ -18,6 +18,7 @@
               label="Benutzername"
               autocomplete="username"
               disable-spellcheck
+              keep-showing-state
               :companion="username"
             />
             <InputField
@@ -145,13 +146,11 @@
       return {
         showBox: false,
         username: new InputFieldCompanion({
-          keepShowingState: true,
           defaultValue: "",
           transform: value => value.trim(),
+          required: "Bitte gib deinen Benutzernamen ein.",
           validate: value => {
-            if (value === "") {
-              return "Bitte gib deinen Benutzernamen ein.";
-            } else if (value.includes(" ")) {
+            if (value.includes(" ")) {
               return "Benutzernamen enthalten keine Leerzeichen.";
             }
           },
@@ -173,12 +172,8 @@
         password: new InputFieldCompanion({
           defaultValue: "",
           type: "password",
-          transform: value => value.trim(),
-          validate: value => {
-            if (value === "") {
-              return "Bitte gib dein Passwort ein.";
-            }
-          }
+          required: "Bitte gib dein Passwort ein.",
+          transform: value => value.trim()
         }),
         userID: 2,
         submitLoading: false,

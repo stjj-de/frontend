@@ -1,10 +1,20 @@
+@font-face {
+  font-family: "color-emoji";
+  src: local("Apple Color Emoji"),
+  local("Segoe UI Emoji"),
+  local("Segoe UI Symbol"),
+  local("Noto Color Emoji");
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html, body {
   font-size: 16px;
-  font-family: "Sen", sans-serif;
+  font-family: "Sen", color-emoji, sans-serif;
 
   scroll-behavior: smooth;
   overflow-x: hidden;

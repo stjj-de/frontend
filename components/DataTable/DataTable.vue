@@ -15,14 +15,14 @@
           @click="onHeadColumnClick(key)"
           @keydown.enter="onHeadColumnClick(key)"
           :style="getHeadColumnStyle(key)"
-          :tabindex="column.sortable ? '0' : false"
-          :data-sortable="column.sortable"
-          v-ripple.400="column.sortable ? 'rgba(0,0,0,0.1)' : 'transparent'"
+          :tabindex="isColumnSortable(column) ? '0' : false"
+          :data-sortable="isColumnSortable(column)"
+          v-ripple.400="isColumnSortable(column) ? 'rgba(0,0,0,0.1)' : 'transparent'"
         >
           {{ column.name }}
           <div
             class="data-table__sort-arrow-container"
-            :data-order="companion.sortBy === key ? companion.sortOrder : false"
+            :data-order="!isEmpty && companion.sortBy === key ? companion.sortOrder : false"
           >
             <ArrowDownIcon
               v-if="column.sortable"
@@ -43,7 +43,12 @@
             :key="companion.lastFetchVariables.join('-')"
             :companion="companion"
             :page-index="companion.pageIndex"
-          />
+            @row-click="onRowClick"
+          >
+            <template v-slot:empty-state>
+              <slot name="empty-state"/>
+            </template>
+          </DataTableBody>
         </transition>
       </div>
     </div>
@@ -73,7 +78,7 @@
   }
 
   .data-table__table {
-    overflow-x: scroll;
+    overflow-x: auto;
     width: 100%;
   }
 
@@ -184,8 +189,13 @@
         required: true
       }
     },
+    computed: {
+      isEmpty: vm => vm.companion.items.length === 0
+    },
     methods: {
       onHeadColumnClick(key) {
+        if (this.isEmpty) return;
+
         const column = this.companion.columns[key];
 
         if (column.sortable) {
@@ -212,6 +222,12 @@
         style.textAlign = column.headTextAlign || "inherit";
 
         return style;
+      },
+      isColumnSortable(column) {
+        return !this.isEmpty && column.sortable;
+      },
+      onRowClick(id, row) {
+        this.$emit("row-click", id, row);
       }
     }
   };

@@ -1,13 +1,13 @@
 import debounce from "lodash.debounce";
 
-const ALLOWED_TYPES = ["text", "password", "number"];
+const ALLOWED_TYPES = ["text", "password", "number", "textarea"];
 
 export class InputFieldCompanion {
   constructor({
     defaultValue = "",
     type = "text",
-    keepShowingState = true,
     validate = null,
+    required = false,
     validateOrSaveAsync = null,
     debounceWait = 800,
     disabled = false,
@@ -22,20 +22,22 @@ export class InputFieldCompanion {
 
     this.type = type;
     this.value = defaultValue;
-    this.keepShowingState = keepShowingState;
     this.validate = validate;
     this.validateOrSaveAsync = validateOrSaveAsync;
     this.disabled = disabled;
     this.transform = transform;
+    this.required = required;
+    this.min = min;
+    this.max = max;
+    this.stepSize = stepSize === undefined ? 1 : stepSize;
+
     this._state = null;
     this._error = null;
     this._lazyErrorText = "";
     this._cancelValidateOrSaveHandlers = [];
     this._instance = null; // is set by the component
+
     this.touched = false;
-    this.min = min;
-    this.max = max;
-    this.stepSize = stepSize === undefined ? 1 : stepSize;
 
     if ([min, max, stepSize].some(value => value !== undefined)) {
       if (this.type !== "number") {
@@ -60,6 +62,16 @@ export class InputFieldCompanion {
     this.touched = true;
   }
 
+  setValueAndReset(value) {
+    this.value = value;
+    this.reset();
+  }
+
+  reset() {
+    this.touched = false;
+    this._runValidate();
+  }
+
   setError(error, focus = false) {
     if (error === null) return;
 
@@ -75,7 +87,7 @@ export class InputFieldCompanion {
     this._instance.focus();
   }
 
-  _onChange() {
+  _onInput() {
     this._runValidate();
 
     if (this._error === null && this.validateOrSaveAsync !== null) {
@@ -85,7 +97,17 @@ export class InputFieldCompanion {
   }
 
   _runValidate() {
-    this._error = this.validate === null ? null : this.validate(this.transformedValue) || null;
+    if (this.required) {
+      if (this.transformedValue === "") {
+        this._error = this.required === true ? "Bitte gib etwas ein." : this.required;
+      } else {
+        this._error = null;
+      }
+    }
+
+    if (this._error === null) {
+      this._error = this.validate === null ? null : this.validate(this.transformedValue) || null;
+    }
 
     if (this._error !== null) {
       this._lazyErrorText = this._error;

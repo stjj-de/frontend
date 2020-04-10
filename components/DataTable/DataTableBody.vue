@@ -11,6 +11,7 @@
         class="data-table__row"
         tabindex="0"
         role="row"
+        @click="onRowClick(row)"
       >
         <div class="data-table__column data-table__column--select" role="cell">
           <input
@@ -25,6 +26,12 @@
           :column="column"
           :row="row"
         />
+      </div>
+      <div
+        v-if="companion.items.length === 0"
+        class="data-table__empty-state"
+      >
+        <slot name="empty-state"/>
       </div>
     </template>
   </div>
@@ -59,6 +66,10 @@
     width: $size;
     height: $size;
   }
+
+  .data-table__empty-state {
+    height: 100%;
+  }
 </style>
 
 <script>
@@ -81,7 +92,7 @@
     computed: {
       style() {
         const style = {};
-        style.minHeight = (this.companion.itemsPerPage * 50) + "px";
+        style.height = (this.companion.itemsPerPage * 50) + "px";
         return style;
       }
     },
@@ -102,6 +113,9 @@
       },
       onWindowResize() {
         this.companion.updateBodyWidth();
+      },
+      onRowClick(row) {
+        this.$emit("row-click", row[this.companion.specialKeys.id], row);
       }
     }
   };
