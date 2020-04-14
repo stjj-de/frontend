@@ -1,6 +1,6 @@
 <template>
   <div class="privacy-policy-page">
-    <KNavigationBar title="Datenschutzerklärung"/>
+    <NavigationBar title="Datenschutzerklärung"/>
     <main class="content formatted">
       <h1>
         Datenschutzerklärung
@@ -45,7 +45,7 @@
       </p>
       <p>
         Eine Liste der Aufsichtsbehörden (für den nichtöffentlichen Bereich) mit Anschrift finden Sie unter:
-        <KExternalLink href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html"/>.
+        <ExternalLink href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html"/>.
       </p>
       <h2>
         Erfassung allgemeiner Informationen beim Besuch unserer Website
@@ -117,7 +117,7 @@
       </p>
       <p>
         Die Datenschutzrichtlinie des Bibliothekbetreibers Google finden Sie hier:
-        <KExternalLink href="https://www.google.com/policies/privacy/"/>
+        <ExternalLink href="https://www.google.com/policies/privacy/"/>
       </p>
       <h3>
         Rechtsgrundlage
@@ -142,15 +142,15 @@
       </p>
       <p>
         Weitere Informationen zu Google Web Fonts finden Sie unter
-        <KExternalLink href="https://developers.google.com/fonts/faq"/> und in der Datenschutzerklärung von Google:
-        <KExternalLink href="https://www.google.com/policies/privacy/"/>.
+        <ExternalLink href="https://developers.google.com/fonts/faq"/> und in der Datenschutzerklärung von Google:
+        <ExternalLink href="https://www.google.com/policies/privacy/"/>.
       </p>
       <h3>
         Drittlandtransfer
       </h3>
       <p>
         Google verarbeitet Ihre Daten in den USA und hat sich dem EU_US Privacy Shield unterworfen
-        <KExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
+        <ExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
       </p>
       <h3>
         Bereitstellung vorgeschrieben oder erforderlich
@@ -188,8 +188,8 @@
         Weitere Informationen zu Zweck und Umfang der Datenerhebung und ihrer Verarbeitung durch YouTube erhalten Sie in
         den Datenschutzerklärungen des Anbieters, Dort erhalten Sie auch weitere Informationen zu Ihren diesbezüglichen
         Rechten und Einstellungsmöglichkeiten zum Schutze Ihrer Privatsphäre
-        (<KExternalLink href="https://policies.google.com/privacy"/>). Google verarbeitet Ihre Daten in den USA und hat
-        sich dem EU-US Privacy Shield unterworfen <KExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
+        (<ExternalLink href="https://policies.google.com/privacy"/>). Google verarbeitet Ihre Daten in den USA und hat
+        sich dem EU-US Privacy Shield unterworfen <ExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
       </p>
       <h3>
         Rechtsgrundlage
@@ -215,14 +215,14 @@
       </p>
       <p>
         Weitere Informationen zum Datenschutz bei „YouTube“ finden Sie in der Datenschutzerklärung des Anbieters unter:
-        <KExternalLink href="https://www.google.de/intl/de/policies/privacy/"/>
+        <ExternalLink href="https://www.google.de/intl/de/policies/privacy/"/>
       </p>
       <h3>
         Drittlandtransfer
       </h3>
       <p>
         Google verarbeitet Ihre Daten in den USA und hat sich dem EU_US Privacy Shield unterworfen
-        <KExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
+        <ExternalLink href="https://www.privacyshield.gov/EU-US-Framework"/>.
       </p>
       <h3>
         Bereitstellung vorgeschrieben oder erforderlich
@@ -267,11 +267,11 @@
       </p>
       <p>
         Die Datenschutzerklärung wurde mithilfe der activeMind AG erstellt, den Experten für
-        <KExternalLink
+        <ExternalLink
           href="https://www.activemind.de/datenschutz/datenschutzhinweis-generator/"
         >
           externe Datenschutzbeauftragte
-        </KExternalLink> (Version #20rs
+        </ExternalLink> (Version #20rs
         19-04-10).
       </p>
     </main>
@@ -279,16 +279,16 @@
 </template>
 
 <style scoped lang="scss">
-  @use "~kiste/css/formatting";
+
 </style>
 
 <script>
-  import KNavigationBar from "kiste/components/KNavigationBar.vue";
-  import KExternalLink from "kiste/components/KExternalLink.vue";
+  import NavigationBar from "@/components/NavigationBar";
+  import ExternalLink from "@/components/ExternalLink";
 
   export default {
     name: "DatenschutzerklaerungPage",
-    components: { KNavigationBar, KExternalLink },
+    components: { ExternalLink, NavigationBar },
     head: () => ({
       title: "Datenschutzerklärung"
     })

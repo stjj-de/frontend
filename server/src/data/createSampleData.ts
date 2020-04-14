@@ -9,15 +9,10 @@ export async function createSampleData() {
   event.title = "Rock an de Kerch";
   event.description = "Rock an de Kerch ist ein jährlich stattfindendes Rockkonzert in der Kirche.";
   event.date = new Date();
-  event.creators = [
-    (await getConnection().getRepository(User)
-      .findOne(1)
-    )!
-  ];
-  event.relatedPost = (
-    await getConnection().getRepository(Post)
-      .findOne(2)
-  )!;
+  event.creator = (await getConnection().getRepository(User)
+    .findOne(1))!;
+  event.relatedPost = (await getConnection().getRepository(Post)
+    .findOne(2))!;
   await getConnection().getRepository(Event)
     .save(event);
 

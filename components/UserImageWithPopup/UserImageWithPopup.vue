@@ -57,17 +57,17 @@
     border-radius: 50%;
     height: $size;
 
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3); // TODO: Replace with variable
   }
 
   .user-image-with-popup__popup-image {
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3); // TODO: Replace with variable
   }
 
   .user-image-with-popup__popup {
     pointer-events: none;
     opacity: 0;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1); // TODO: Replace with variable
 
     position: absolute;
     top: -10px;
@@ -102,7 +102,7 @@
 </style>
 
 <script>
-  import { getImageURL } from "@/assets/getUploadURL";
+  import { getImageURL } from "@/assets/js/getUploadURL";
 
   export default {
     name: "UserImageWithPopup",

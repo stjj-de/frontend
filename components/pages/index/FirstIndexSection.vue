@@ -13,7 +13,7 @@
 </template>
 
 <style scoped lang="scss">
-  @use "~kiste/css/mixins/screenSize";
+  @use "~@/assets/styles/screenSize";
 
   .first-index-section__container {
     position: relative;

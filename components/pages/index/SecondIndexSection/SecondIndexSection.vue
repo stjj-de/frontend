@@ -32,7 +32,7 @@
 </template>
 
 <style scoped lang="scss">
-  @use "~kiste/css/mixins/screenSize";
+  @use "~@/assets/styles/screenSize";
 
   .second-index-section {
     display: flex;
@@ -61,7 +61,7 @@
     flex-direction: column;
 
     & > *:not(:last-child) {
-      margin-bottom: var(--gutter-size);
+      margin-bottom: 20px;
     }
   }
 

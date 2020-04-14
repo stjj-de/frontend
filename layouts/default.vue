@@ -1,8 +1,8 @@
 <template>
-  <KApp class="default-layout">
+  <div class="default-layout">
     <nuxt/>
-    <KFooter/>
-  </KApp>
+    <MyFooter/>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -12,11 +12,10 @@
 </style>
 
 <script>
-  import KApp from "kiste/components/KApp";
-  import KFooter from "kiste/components/KFooter";
+  import MyFooter from "@/components/MyFooter";
 
   export default {
     name: "DefaultLayout",
-    components: { KApp, KFooter }
+    components: { MyFooter }
   };
 </script>

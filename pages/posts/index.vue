@@ -1,20 +1,20 @@
 <template>
   <div class="posts-page content">
-    <KNavigationBar title="Alle Artikel"/>
+    <NavigationBar title="Alle Artikel"/>
     <main>
       <div class="_posts">
         <PostCard v-for="post in posts" :key="post.id" :post="post"/>
       </div>
       <div class="_end-of-list">
         <transition mode="out-in" name="fade">
-          <KButton
+          <MyButton
             v-if="hasMore"
             class="_load-more"
             :loading="$apollo.queries.posts.loading"
             @click="fetchMorePosts()"
           >
             Mehr laden
-          </KButton>
+          </MyButton>
           <span class="_the-end" v-else>
             Du hast das Ende erreicht.
           </span>
@@ -55,15 +55,15 @@
 <script>
   import uniqBy from "lodash.uniqby";
   import PostsQuery from "./postsQuery.graphql";
-  import KNavigationBar from "kiste/components/KNavigationBar";
-  import KButton from "kiste/components/KButton";
   import PostCard from "@/components/PostCard/PostCard";
+  import NavigationBar from "@/components/NavigationBar";
+  import MyButton from "@/components/MyButton";
 
   const POSTS_LOADED_AT_ONCE = 5;
 
   export default {
     name: "PostsPage",
-    components: { PostCard, KNavigationBar, KButton },
+    components: { MyButton, NavigationBar, PostCard },
     head: () => ({
       title: "Artikel-Archiv"
     }),

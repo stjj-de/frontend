@@ -1,6 +1,6 @@
 <template>
   <div class="impressum-page">
-    <KNavigationBar title="Impressum"/>
+    <NavigationBar title="Impressum"/>
     <main class="content">
       <h1 class="heading--1">
         Impressum
@@ -30,11 +30,11 @@
 </style>
 
 <script>
-  import KNavigationBar from "kiste/components/KNavigationBar";
+  import NavigationBar from "@/components/NavigationBar";
 
   export default {
     name: "ImpressumPage",
-    components: { KNavigationBar },
+    components: { NavigationBar },
     head: () => ({
       title: "Impressum"
     })

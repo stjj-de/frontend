@@ -13,7 +13,7 @@
 </style>
 
 <script>
-  import { getCSSColorForEventColor } from "@/assets/getCSSColorForEventColor";
+  import { getCSSColorForEventColor } from "@/assets/js/getCSSColorForEventColor";
 
   export default {
     name: "EventsTableColorColumn",

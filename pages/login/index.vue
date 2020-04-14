@@ -27,14 +27,14 @@
               :companion="password"
             />
             <div class="_buttons">
-              <KButton
+              <MyButton
                 class="_next-step"
                 is-submit
                 :loading="submitLoading"
                 :disabled="!(password.valid && username.valid)"
               >
                 Anmelden
-              </KButton>
+              </MyButton>
             </div>
           </form>
         </div>
@@ -121,17 +121,17 @@
 <script>
   import UserQuery from "./userQuery.graphql";
   import GetOrCreateAuthenticationTokenMutation from "./getOrCreateAuthenticationTokenMutation.graphql";
-  import KButton from "kiste/components/KButton";
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import { isLoggedIn } from "@/assets/isLoggedIn";
+  import { isLoggedIn } from "@/assets/js/isLoggedIn";
   import LoadingOverlay from "@/components/LoadingOverlay";
+  import MyButton from "@/components/MyButton";
 
   export default {
     name: "LoginPage",
     layout: "only-app",
-    components: { LoadingOverlay, InputField, ArrowLeftIcon, KButton },
+    components: { MyButton, LoadingOverlay, InputField, ArrowLeftIcon },
     head: () => ({
       title: "Anmelden"
     }),

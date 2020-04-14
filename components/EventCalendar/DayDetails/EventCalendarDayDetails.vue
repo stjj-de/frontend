@@ -22,13 +22,11 @@
       >
         Mehr erfahren
       </nuxt-link>
-      <div v-if="event.creators.length !== 0" class="event-calendar-day-details__event-creators">
-        <UserImageWithPopup
-          v-for="creator in event.creators"
-          :key="creator.id"
-          :user="creator"
-        />
-      </div>
+      <UserImageWithPopup
+        v-if="event.creator !== null"
+        class="event-calendar-day-details__event-creator"
+        :user="creator"
+      />
     </div>
     <span
       v-if="events === undefined || events.length === 0"
@@ -92,10 +90,10 @@
 <script>
   import cloneDeep from "lodash.clonedeep";
   import { format } from "date-fns";
-  import { dateFnsLocale } from "@/assets/dateUtils";
+  import { dateFnsLocale } from "@/assets/js/dateUtils";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
-  import { getCSSColorForEventColor } from "@/assets/getCSSColorForEventColor";
-  import { isFullDay } from "@/assets/dateUtils";
+  import { getCSSColorForEventColor } from "@/assets/js/getCSSColorForEventColor";
+  import { isFullDay } from "@/assets/js/dateUtils";
 
   export default {
     name: "EventCalendarDayDetails",

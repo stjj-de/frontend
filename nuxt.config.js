@@ -5,7 +5,7 @@ if (!isServerRun) {
 }
 
 const usesSSL = process.env.USES_SSL === "true";
-const publicHostAndPort = process.env.PUBLIC_HOST_AND_PORT;
+const publicHostAndPort = process.env.PUBLIC_HOST + ":" + process.env.PUBLIC_PORT;
 
 module.exports = {
   mode: "universal",
@@ -43,14 +43,14 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    "@/plugins/vue-ripple-directive"
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    "@nuxtjs/eslint-module",
-    "kiste/nuxt"
+    "@nuxtjs/eslint-module"
   ],
   /*
   ** Nuxt.js modules
@@ -59,44 +59,6 @@ module.exports = {
     "svg-to-vue-component/nuxt",
     "@nuxtjs/apollo"
   ],
-
-  kiste: {
-    theme: {
-      contentPadding: "10px",
-      colors: {
-        blue: "#0054f1/black/#3695d8",
-        red: "#ff2c42/black"
-      }
-    },
-    navigationItems: [
-      {
-        label: "Start",
-        to: "/"
-      },
-      {
-        label: "Gruppierungen",
-        to: "/gruppierungen"
-      },
-      {
-        label: "Mediathek",
-        to: "/mediathek"
-      }
-    ],
-    footerItems: [
-      {
-        label: "Impressum",
-        to: "/impressum"
-      },
-      {
-        label: "Datenschutzerklärung",
-        to: "/datenschutzerklaerung"
-      },
-      {
-        label: "Anmelden",
-        to: "/login"
-      }
-    ]
-  },
 
   apollo: {
     cookieAttributes: {
@@ -135,6 +97,7 @@ module.exports = {
   */
   build: {
     parallel: false,
+    transpile: ["vue-ripple-directive"],
     /*
     ** You can extend webpack config here
     */

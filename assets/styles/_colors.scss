@@ -1,0 +1,12 @@
+$background: white;
+$background-c: black;
+$background-a: darken($background, 40%);
+$blue: #2583f5;
+$blue-c: white;
+$red: #e25252;
+$red-c: white;
+$green: #55c459;
+$green-c: white;
+
+$hover-and-focus: transparentize($background-c, 0.92);
+$active: transparentize($background-c, 0.87);

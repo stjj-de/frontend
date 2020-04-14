@@ -11,7 +11,8 @@ export class InputFieldCompanion {
     validateOrSaveAsync = null,
     debounceWait = 800,
     disabled = false,
-    transform = null,
+    transform = value => value,
+    readonly = false,
     min,
     max,
     stepSize
@@ -22,6 +23,7 @@ export class InputFieldCompanion {
 
     this.type = type;
     this.value = defaultValue;
+    this.savedValue = this.value;
     this.validate = validate;
     this.validateOrSaveAsync = validateOrSaveAsync;
     this.disabled = disabled;
@@ -30,6 +32,7 @@ export class InputFieldCompanion {
     this.min = min;
     this.max = max;
     this.stepSize = stepSize === undefined ? 1 : stepSize;
+    this.readonly = readonly;
 
     this._state = null;
     this._error = null;
@@ -55,7 +58,15 @@ export class InputFieldCompanion {
   }
 
   get transformedValue() {
-    return this.transform === null ? this.value : this.transform(this.value);
+    return this.transform(this.value);
+  }
+
+  get changed() {
+    return this.transformedValue !== this.savedValue;
+  }
+
+  setSavedValueToCurrent() {
+    this.savedValue = this.value;
   }
 
   touch() {
@@ -68,15 +79,19 @@ export class InputFieldCompanion {
   }
 
   reset() {
+    this.setSavedValueToCurrent();
     this.touched = false;
+    this._error = null;
+
     this._runValidate();
   }
 
   setError(error, focus = false) {
-    if (error === null) return;
-
     this._error = error;
-    this._lazyErrorText = this._error;
+
+    if (error !== null) {
+      this._lazyErrorText = this._error;
+    }
 
     if (focus) {
       this.focus();
@@ -87,13 +102,17 @@ export class InputFieldCompanion {
     this._instance.focus();
   }
 
-  _onInput() {
+  runAllValidations() {
     this._runValidate();
 
     if (this._error === null && this.validateOrSaveAsync !== null) {
       this._state = "loading";
       this._debouncedRunValidateOrSaveAsync();
     }
+  }
+
+  _onInput() {
+    this.runAllValidations();
   }
 
   _runValidate() {

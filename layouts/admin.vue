@@ -1,23 +1,17 @@
 <template>
   <div class="admin-layout">
-    <KApp class="_container">
-      <AdminNavigation/>
-      <div class="_content">
-        <transition name="admin-page">
-          <nuxt/>
-        </transition>
-      </div>
-    </KApp>
+    <AdminNavigation/>
+    <div class="admin-layout__content">
+      <nuxt/>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-  @use "~kiste/css/mixins/screenSize";
+  @use "~@/assets/styles/screenSize";
   @use "~@/assets/styles/transitions";
 
-  @include transitions.fade($name: "admin-page", $duration: 400ms);
-
-  ._container {
+  .admin-layout {
     overflow: hidden;
     width: 100vw;
     padding: 0;
@@ -26,19 +20,19 @@
     justify-content: flex-start;
   }
 
-  ._content {
+  .admin-layout__content {
     width: calc(100vw - 350px);
     margin-left: 350px;
-    padding: 20px 60px 50px;
+    padding: 20px 60px 20px;
   }
 
   @media(max-width: 1000px) {
-    ._container {
+    .admin-layout {
       flex-direction: column;
     }
 
-    ._content {
-      padding: 80px 20px 0;
+    .admin-layout__content {
+      padding: 80px 20px 20px;
       width: 100vw;
       margin-left: 0;
     }
@@ -46,12 +40,11 @@
 </style>
 
 <script>
-  import KApp from "kiste/components/KApp";
   import AdminNavigation from "@/components/AdminNavigation/AdminNavigation";
 
   export default {
     name: "AdminLayout",
     middleware: ["auth"],
-    components: { AdminNavigation, KApp }
+    components: { AdminNavigation }
   };
 </script>

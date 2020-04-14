@@ -1,5 +1,3 @@
-#import "@/components/UserImageWithPopup/userFragment.graphql"
-
 query ($skip: Int!, $take: Int!, $sortBy: EventSortField, $order: SortOrder, $filter: String) {
   events(sortBy: $sortBy, order: $order, skip: $skip, take: $take, filter: $filter) {
     items {
@@ -8,9 +6,6 @@ query ($skip: Int!, $take: Int!, $sortBy: EventSortField, $order: SortOrder, $fi
       color
       date
       endDate
-      creators {
-        ...UserImageWithPopupUserFields
-      }
     }
     hasMore
   }

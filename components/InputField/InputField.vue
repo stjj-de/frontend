@@ -14,27 +14,32 @@
         :aria-label="label"
         :autocomplete="autocomplete"
         :disabled="companion.disabled"
-        :spellcheck="String(disableSpellcheck)"
+        :spellcheck="String(!disableSpellcheck)"
         :aria-required="String(Boolean(companion.required))"
+        :readonly="companion.readonly"
         @input="onInput"
         @blur="onBlur"
+        @focus="onFocus"
       ></textarea>
       <input
         v-else
         class="input-field__input"
         ref="input"
+        :placeholder="placeholder"
         :aria-label="label"
         :value="companion.value"
         :type="companion.type"
         :autocomplete="autocomplete"
         :disabled="companion.disabled"
-        :spellcheck="String(disableSpellcheck)"
+        :spellcheck="String(!disableSpellcheck)"
         :min="companion.min"
         :max="companion.max"
         :step="companion.step"
         :aria-required="String(Boolean(companion.required))"
+        :readonly="companion.readonly"
         @input="onInput"
         @blur="onBlur"
+        @focus="onFocus"
       />
       <span class="input-field__disabled-overlay"></span>
     </div>
@@ -58,8 +63,9 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-  @use "~@/assets/styles/spinner.scss";
+<style lang="scss">
+  @use "~@/assets/styles/spinner";
+  @use "~@/assets/styles/colors";
 
   .input-field {
     margin-top: 15px;
@@ -67,10 +73,10 @@
     width: 100%;
 
     &[data-invalid] {
-      color: var(--colors-red);
+      color: colors.$red;
 
       .input-field__input {
-        border-color: var(--colors-red);
+        border-color: colors.$red;
       }
     }
   }
@@ -98,7 +104,7 @@
     right: 0;
     bottom: 0;
 
-    background-color: var(--colors-background-a);
+    background-color: colors.$background-c;
 
     pointer-events: none;
     opacity: 0;
@@ -121,25 +127,25 @@
     padding: 10px;
     border-radius: 5px 5px 0 0;
     border: none;
-    border-bottom: 2px solid var(--colors-background-a);
+    border-bottom: 2px solid lighten(colors.$background-c, 80%);
 
     font-size: 1.2rem;
     font-family: "Sen", sans-serif;
 
-    background-color: var(--colors-background);
+    background-color: colors.$background;
 
     transition: 200ms linear;
     transition-property: border-color;
     &:focus {
       outline: none;
 
-      border-color: var(--colors-green);
+      border-color: colors.$green;
     }
   }
 
   textarea.input-field__input {
     resize: vertical;
-    min-height: $input-height * 2;
+    min-height: $input-height * 3;
     max-height: $input-height * 10;
   }
 
@@ -196,7 +202,7 @@
   }
 
   .input-field__tick {
-    border: 2px solid var(--colors-green);
+    border: 2px solid colors.$green;
     border-top-color: transparent;
     border-right-color: transparent;
 
@@ -222,7 +228,7 @@
       display: block;
       width: 20px;
       height: 3px;
-      background-color: var(--colors-red);
+      background-color: colors.$red;
 
       transform: rotate(45deg);
     }
@@ -233,7 +239,7 @@
   }
 
   .input-field__spinner {
-    @include spinner.spinner($size: 20px, $color: var(--colors-green), $thickness: 2px);
+    @include spinner.spinner($size: 20px, $color: colors.$green, $thickness: 2px);
     height: 100%;
   }
 
@@ -241,7 +247,7 @@
     display: block;
     margin-top: 10px;
     overflow: hidden;
-    color: var(--colors-red);
+    color: colors.$red;
 
     height: 0;
     transition: 300ms ease height;
@@ -285,6 +291,10 @@
       keepShowingState: {
         type: Boolean,
         default: false
+      },
+      placeholder: {
+        type: String,
+        default: ""
       }
     },
     data: () => ({
@@ -323,6 +333,9 @@
       },
       onBlur() {
         this.companion.touched = true;
+      },
+      onFocus() {
+        this.$emit("focus");
       },
       recomputeErrorTextHeight() {
         this.$nextTick(() => {

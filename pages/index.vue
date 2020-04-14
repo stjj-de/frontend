@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <KNavigationBar/>
+    <NavigationBar/>
     <main class="content">
       <FirstIndexSection/>
       <SecondIndexSection/>
@@ -22,13 +22,13 @@
 </style>
 
 <script>
-  import KNavigationBar from "kiste/components/KNavigationBar";
   import FirstIndexSection from "@/components/pages/index/FirstIndexSection";
   import SecondIndexSection from "@/components/pages/index/SecondIndexSection/SecondIndexSection";
+  import NavigationBar from "@/components/NavigationBar";
 
   export default {
     name: "IndexPage",
-    components: { SecondIndexSection, FirstIndexSection, KNavigationBar },
+    components: { NavigationBar, SecondIndexSection, FirstIndexSection },
     head: () => ({
       title: "Start"
     })

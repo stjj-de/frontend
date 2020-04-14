@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 import { User } from "./User";
 import { Post } from "./Post";

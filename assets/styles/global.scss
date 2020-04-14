@@ -1,21 +1,43 @@
-@font-face {
-  font-family: "color-emoji";
-  src: local("Apple Color Emoji"),
-  local("Segoe UI Emoji"),
-  local("Segoe UI Symbol"),
-  local("Noto Color Emoji");
-}
+@use "./colors";
+@use "./content";
+@use "./formatted";
+
+// General
 
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body {
+  font-family: "Sen", sans-serif;
   font-size: 16px;
-  font-family: "Sen", color-emoji, sans-serif;
+  padding: 0;
+  margin: 0;
 
-  scroll-behavior: smooth;
+  width: 100vw;
   overflow-x: hidden;
+  min-height: 100vh;
+
+  background: colors.$background;
+  color: colors.$background-c;
+}
+
+// Transitions
+
+.page-enter-active, .page-leave-active {
+  transition: 100ms ease opacity;
+}
+
+.page-enter, .page-leave-to {
+  opacity: 0;
+}
+
+.page-enter-to, .page-leave {
+  opacity: 1;
+}
+
+// Other
+
+.content {
+  @include content.content();
 }

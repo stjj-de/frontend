@@ -42,7 +42,7 @@
 
     &::v-deep {
       .vc-day-content:focus {
-        background-color: rgba(0, 161, 210, 0.2);
+        background-color: rgba(0, 161, 210, 0.2); // TODO: Replace with variable
       }
     }
   }
@@ -62,10 +62,10 @@
   import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
   import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
   import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
-  import { dateFnsLocale } from "@/assets/dateUtils";
+  import { dateFnsLocale } from "@/assets/js/dateUtils";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
-  import { toFilterStringDate } from "@/assets/dateUtils";
+  import { toFilterStringDate } from "@/assets/js/dateUtils";
 
   export default {
     name: "EventCalendar",

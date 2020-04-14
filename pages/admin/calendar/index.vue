@@ -5,7 +5,7 @@
     </h1>
     <div class="_filter">
       <span class="heading--5">Filter</span>
-      <select v-model="dateFilter" class="_filter-select">
+      <select aria-label="Filter" v-model="dateFilter" class="_filter-select">
         <option :value="null">
           Keiner
         </option>
@@ -36,7 +36,7 @@
     </div>
     <DataTable
       :companion="table"
-      loading-text="Ereignisse werden geladen"
+      loading-text="Termine werden geladen"
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
@@ -44,13 +44,22 @@
           <span class="_no-results-emoji">
             😕
           </span>
-          Keine Ergebnisse.
+          Keine Termine passen zu deinem Filter.
         </div>
+      </template>
+      <template v-slot:buttons>
+        <MyButton
+          variant="blue"
+          @click="openEditEventModal(null)"
+        >
+          Erstellen
+        </MyButton>
       </template>
     </DataTable>
     <EditEventModal
       :event-id="editModalEventID"
-      @close="editModalEventID = null"
+      :active="editModalActive"
+      @close="onEditModalClose"
     />
   </main>
 </template>
@@ -111,13 +120,14 @@
 <script>
   import { format } from "date-fns";
   import EventsQuery from "./eventsQuery.graphql";
-  import { dateFnsLocale } from "@/assets/dateUtils";
+  import { dateFnsLocale } from "@/assets/js/dateUtils";
   import DataTable from "@/components/DataTable/DataTable";
   import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
   import EventsTableColorColumn from "@/components/pages/admin/events/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import { isFullDay, toFilterStringDate } from "@/assets/dateUtils";
+  import { isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
   import EditEventModal from "@/components/pages/admin/events/EditEventModal/EditEventModal";
+  import MyButton from "@/components/MyButton";
 
   const formatDateWithTime = date => format(new Date(date), "d.L.yyyy, HH:mm", { locale: dateFnsLocale });
   const formatDate = date => format(new Date(date), "d.L.yyyy", { locale: dateFnsLocale });
@@ -136,7 +146,7 @@
 
   export default {
     name: "CalendarPage",
-    components: { EditEventModal, DataTable, VDatePicker },
+    components: { MyButton, EditEventModal, DataTable, VDatePicker },
     layout: "admin",
     data() {
       return {
@@ -145,6 +155,7 @@
         dateSpanFilter: {},
         dateDayFilter: null,
         editModalEventID: null,
+        editModalActive: false,
         table: new DataTableCompanion({
           columns: {
             color: {
@@ -246,6 +257,17 @@
         this.table.pageIndex = 0;
         this.table.fetch();
       },
+      onEditModalClose(canceled) {
+        this.editModalActive = false;
+
+        if (!canceled) {
+          this.table.invalidateLastFetch();
+          this.table.fetch();
+        }
+      },
+      onRowClick(id) {
+        this.openEditEventModal(id);
+      },
       updateUserDefinedVariables() {
         if (this.filterString === undefined) {
           this.table.userDefinedVariables = [];
@@ -253,8 +275,9 @@
           this.table.userDefinedVariables = [this.filterString];
         }
       },
-      onRowClick(id) {
+      openEditEventModal(id) {
         this.editModalEventID = id;
+        this.editModalActive = true;
       }
     }
   };

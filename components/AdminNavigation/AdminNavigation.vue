@@ -9,7 +9,7 @@
       <LoadingPlaceholder v-if="$apollo.queries.me.loading" height="80px"/>
       <nuxt-link
         v-else
-        class="admin-navigation__profile"
+        class="admin-navigation__profile admin-navigation__item"
         :to="`/admin/users/${me.id}`"
         v-ripple.400="'rgba(0,0,0,0.1)'"
         @click="open = false"
@@ -36,13 +36,14 @@
 </template>
 
 <style lang="scss">
-  @use "~kiste/css/mixins/screenSize";
+  @use "~@/assets/styles/screenSize";
+  @use "~@/assets/styles/colors";
 
   .admin-navigation {
     width: 350px;
     flex-shrink: 0;
     height: 100vh;
-    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 40px 0 transparentize(colors.$background, 0.1);
 
     position: fixed;
     top: 0;
@@ -81,19 +82,41 @@
     font-size: 1.3rem;
   }
 
-  .admin-navigation__profile {
+  .admin-navigation__item {
     display: flex;
     align-items: center;
-    padding: 10px 30px 10px 20px;
-    margin: 5px 0;
+    justify-content: space-between;
+    padding: 10px 30px;
+
+    margin: 5px 5px;
+    border-radius: 5px;
 
     color: black;
     text-decoration: none;
     font-size: 1.5rem;
 
-    &.nuxt-link-active, &:hover {
-      background-color: rgba(35, 174, 255, 0.1);
+    transition: 100ms linear background-color;
+    &:hover, &:focus {
+      background-color: colors.$hover-and-focus;
     }
+
+    &.nuxt-link-active {
+      background-color: colors.$active;
+    }
+  }
+
+  .admin-navigation__icon {
+    width: 30px;
+  }
+
+  .admin-navigation__profile {
+    display: flex;
+    align-items: center;
+    padding: 10px 30px 10px 20px;
+
+    color: black;
+    text-decoration: none;
+    font-size: 1.5rem;
   }
 
   .admin-navigation__name {
@@ -106,27 +129,6 @@
     height: 50px;
   }
 
-  .admin-navigation__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 30px;
-
-    margin: 5px 0;
-    color: black;
-    text-decoration: none;
-    font-size: 1.5rem;
-
-    transition: 100ms linear background-color;
-    &.nuxt-link-active, &:hover {
-      background-color: rgba(35, 174, 255, 0.1);
-    }
-  }
-
-  .admin-navigation__icon {
-    width: 30px;
-  }
-
   .admin-navigation__toggle {
     display: none;
 
@@ -136,7 +138,7 @@
     & > span {
       display: block;
 
-      background-color: var(--colors-background-c);
+      background-color: colors.$background-c;
 
       width: 30px;
       height: 2px;
@@ -169,7 +171,7 @@
       top: 0;
       z-index: 20;
 
-      background-color: var(--colors-background);
+      background-color: colors.$background;
     }
 
     .admin-navigation__toggle {
@@ -179,7 +181,7 @@
 
     .admin-navigation__container {
       padding-top: $height;
-      background-color: var(--colors-background);
+      background-color: colors.$background;
 
       pointer-events: none;
       opacity: 0;
@@ -198,7 +200,7 @@
   import CalendarIcon from "@/assets/icons/calendar.svg";
   import PencilIcon from "@/assets/icons/pencil.svg";
   import UsersIcon from "@/assets/icons/users.svg";
-  import { getImageURL } from "@/assets/getUploadURL";
+  import { getImageURL } from "@/assets/js/getUploadURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
 

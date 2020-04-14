@@ -20,6 +20,8 @@
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/colors";
+
   .post-card {
     cursor: pointer;
 
@@ -41,7 +43,7 @@
     display: block;
     margin-bottom: 5px;
     text-decoration: none;
-    color: var(--colors-background-c)
+    color: colors.$background-c;
   }
 
   .post-card__excerpt {
@@ -77,7 +79,7 @@
 
 <script>
   import { format } from "date-fns";
-  import { dateFnsLocale } from "@/assets/dateUtils";
+  import { dateFnsLocale } from "@/assets/js/dateUtils";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
 
   export default {

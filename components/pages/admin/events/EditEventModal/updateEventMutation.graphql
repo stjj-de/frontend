@@ -1,0 +1,16 @@
+mutation ($id: ID!, $event: UpdateEventInput!) {
+  updateEvent(id: $id, event: $event) {
+    id
+    title
+    color
+    creator {
+      id
+    }
+    date
+    endDate
+    description
+    relatedPost {
+      id
+    }
+  }
+}

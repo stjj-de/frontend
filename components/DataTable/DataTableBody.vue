@@ -11,14 +11,9 @@
         class="data-table__row"
         tabindex="0"
         role="row"
+        v-ripple.400="'rgba(0,0,0,0.1)'"
         @click="onRowClick(row)"
       >
-        <div class="data-table__column data-table__column--select" role="cell">
-          <input
-            class="data-table__checkbox"
-            type="checkbox"
-          />
-        </div>
         <DataTableColumn
           v-for="(column, key) in companion.columns"
           :key="key"
@@ -38,6 +33,8 @@
 </template>
 
 <style lang="scss">
+  @use "~@/assets/styles/colors";
+
   .data-table__body {
     width: max-content;
     min-width: 100%;
@@ -48,16 +45,12 @@
     align-items: center;
 
     height: 50px;
-    border-bottom: 1px solid var(--colors-background-a);
+    border-bottom: 1px solid colors.$background-a;
 
     transition: 100ms linear background-color;
-    &:focus {
+    &:hover, &:focus {
       outline: none;
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    &:hover {
-      background-color: rgba(0, 137, 255, 0.1);
+      background-color: colors.$hover-and-focus;
     }
   }
 

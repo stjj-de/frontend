@@ -4,14 +4,13 @@ import {
   ArgsType,
   Field,
   FieldResolver, ID,
-  Int,
   Query,
   registerEnumType,
   Resolver,
   ResolverInterface,
   Root
 } from "type-graphql";
-import { FindManyOptions, FindOneOptions, Raw, Repository } from "typeorm";
+import { FindManyOptions, Raw, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Post } from "../models/Post";
 import { PaginationArgs } from "../utils/PaginationArgs";

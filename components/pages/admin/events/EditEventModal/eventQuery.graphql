@@ -9,10 +9,5 @@ query ($id: ID!) {
       id
       title
     }
-    creators {
-      id
-      displayName
-      image
-    }
   }
 }

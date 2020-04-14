@@ -1,4 +1,4 @@
-import { isLoggedIn } from "@/assets/isLoggedIn";
+import { isLoggedIn } from "@/assets/js/isLoggedIn";
 
 export default function(context) {
   if (!isLoggedIn(context.app)) {

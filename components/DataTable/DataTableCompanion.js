@@ -102,4 +102,8 @@ export class DataTableCompanion {
   fetch() {
     this._fetchPage();
   }
+
+  invalidateLastFetch() {
+    this._lastFetchVariables = [];
+  }
 }

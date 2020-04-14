@@ -1,6 +1,6 @@
 import {
   Arg,
-  Args, ArgsType,
+  Args, ArgsType, Ctx,
   Field, FieldResolver, ID, InputType, Mutation,
   Query,
   Resolver, ResolverInterface, Root
@@ -16,8 +16,9 @@ import { EventSortField } from "../enums/EventSortField";
 import { EventController } from "../../controllers/EventController";
 import { argsToSortOptions, ISortArgs } from "../../utils/SortOptions";
 import { EventsPagination } from "../objectTypes/EventsPagination";
-import { User } from "../models/User";
 import { Post } from "../models/Post";
+import { AuthenticatedContext } from "../Context";
+import { EmptyResponse } from "../objectTypes/EmptyResponse";
 
 @ArgsType()
 class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField | null> {
@@ -32,23 +33,39 @@ class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField |
 }
 
 @InputType()
-class CreateAndUpdateEventInput {
+class CreateEventInput {
   @Field() title: string;
 
   @Field() date: Date;
 
-  @Field(() => Date, { nullable: true }) endDate: Date | null;
+  @Field(() => Date, { nullable: true, defaultValue: null }) endDate: Date | null;
 
   @Field(() => EventColor, { defaultValue: EventColor.GRAY }) color: EventColor;
 
   @Field({ defaultValue: "" }) description: string;
 
-  @Field(() => ID, { nullable: true }) relatedPostId: string | null;
+  @Field(() => ID, { nullable: true, defaultValue: null }) relatedPostId: string | null;
+}
+
+@InputType()
+class UpdateEventInput {
+  @Field(() => String, { nullable: true }) title?: string;
+
+  @Field(() => Date, { nullable: true }) date?: Date;
+
+  @Field(() => Date, { nullable: true }) endDate?: Date | null;
+
+  @Field(() => EventColor, { nullable: true }) color?: EventColor;
+
+  @Field(() => String, { nullable: true }) description?: string;
+
+  @Field(() => ID, { nullable: true }) relatedPostId?: string | null;
 }
 
 @Resolver(() => Event)
 export class EventResolver implements ResolverInterface<Event> {
   @InjectRepository(Event) private readonly eventRepository: Repository<Event>;
+
   @InjectRepository(Post) private readonly postRepository: Repository<Post>;
 
   @Inject(() => EventController) private readonly eventController: EventController;
@@ -74,31 +91,66 @@ export class EventResolver implements ResolverInterface<Event> {
   }
 
   @Mutation(() => Event)
-  async updateEvent(@Arg("id") id: string, @Arg("event") data: CreateAndUpdateEventInput): Promise<Event> {
-    // TODO: Only allow editing of own events for normal users
+  async updateEvent(@Arg("id", () => ID) id: string, @Arg("event") data: UpdateEventInput): Promise<Event> {
     const event = await this.eventRepository.findOne(id);
 
     if (event === undefined) {
       throw new ApolloError("There is no event with the specified ID.");
     }
 
-    Object.assign(event, data);
+    return this.applyDataToEventAndSave(event, data);
+  }
 
-    if (data.relatedPostId !== null) {
-      const relatedPost = await this.postRepository.findOne(data.relatedPostId);
+  @Mutation(() => Event)
+  async createEvent(@Arg("event") data: CreateEventInput, @Ctx() context: AuthenticatedContext): Promise<Event> {
+    const event = new Event();
+    event.creator = context.user;
 
-      if (relatedPost === undefined) {
-        throw new ApolloError("There is no post with the specified ID.");
-      } else {
-        event.relatedPost = relatedPost;
-      }
+    return this.applyDataToEventAndSave(event, data);
+  }
+
+  @Mutation(() => EmptyResponse)
+  async deleteEvent(@Arg("id", () => ID) id: string) {
+    const event = await this.eventRepository.findOne(id);
+
+    if (event === undefined) {
+      throw new ApolloError("There is no event with the specified ID.");
     }
 
-    return this.eventRepository.save(event);
+    await this.eventRepository.remove(event);
+    return new EmptyResponse();
   }
 
   @FieldResolver()
   async relatedPost(@Root() event: Event) {
     return (await this.eventRepository.findOne(event.id, { relations: ["relatedPost"] }))!.relatedPost;
+  }
+
+  @FieldResolver()
+  async creator(@Root() event: Event) {
+    return (await this.eventRepository.findOne(event.id, { relations: ["creator"] }))!.creator;
+  }
+
+  private async applyDataToEventAndSave(event: Event, data: CreateEventInput | UpdateEventInput) {
+    event.title = data.title ?? event.title;
+    event.date = data.date ?? event.date;
+    event.endDate = data.endDate === undefined ? event.endDate : data.endDate;
+    event.description = data.description ?? event.description;
+
+    if (data.relatedPostId !== undefined) {
+      if (data.relatedPostId === null) {
+        event.relatedPost = null;
+      } else {
+        const relatedPost = await this.postRepository.findOne(data.relatedPostId);
+
+        if (relatedPost === undefined) {
+          throw new ApolloError("There is no post with the specified ID.");
+        } else {
+          event.relatedPost = relatedPost;
+        }
+      }
+    }
+
+    return this.eventRepository.save(event);
   }
 }

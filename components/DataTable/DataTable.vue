@@ -3,11 +3,6 @@
     <div class="data-table__table" role="table">
       <div class="data-table__head" :style="`min-width: ${companion.bodyWidth}`" role="rowheader">
         <div
-          class="data-table__head-column data-table__head-select-column"
-          title="Auswählen"
-          role="columnheader"
-        ></div>
-        <div
           v-for="(column, key) in companion.columns"
           :key="key"
           class="data-table__head-column"
@@ -53,23 +48,33 @@
       </div>
     </div>
     <div class="data-table__footer">
-      <KButton
-        class="data-table__page-button"
-        @click="companion.pageIndex -= 1"
-        :disabled="companion.pageIndex === 0"
-      >
-        <ArrowLeftIcon class="data-table__arrow-icon"/>
-      </KButton>
-      <span>Seite {{ companion.pageIndex + 1 }}</span>
-      <KButton class="data-table__page-button" @click="companion.pageIndex += 1" :disabled="!companion.hasNextPage">
-        <ArrowRightIcon class="data-table__arrow-icon"/>
-      </KButton>
+      <div class="data-table__custom-buttons">
+        <slot name="buttons"/>
+      </div>
+      <div class="data-table__page-buttons">
+        <MyButton
+          class="data-table__page-button"
+          @click="companion.pageIndex -= 1"
+          :disabled="companion.pageIndex === 0"
+        >
+          <ArrowLeftIcon class="data-table__arrow-icon"/>
+        </MyButton>
+        <span class="data-table__page">Seite {{ companion.pageIndex + 1 }}</span>
+        <MyButton
+          class="data-table__page-button"
+          @click="companion.pageIndex += 1"
+          :disabled="!companion.hasNextPage"
+        >
+          <ArrowRightIcon class="data-table__arrow-icon"/>
+        </MyButton>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
   @use "~@/assets/styles/transitions";
+  @use "~@/assets/styles/colors";
 
   @include transitions.fade($name: "data-table__fade", $duration: 200ms);
 
@@ -83,7 +88,7 @@
   }
 
   .data-table__head {
-    border-bottom: 2px solid var(--colors-background-a);
+    border-bottom: 2px solid colors.$background-a;
     display: flex;
     align-items: center;
   }
@@ -91,16 +96,17 @@
   .data-table__head-column {
     padding: 5px 10px 10px;
     user-select: none;
+    flex-shrink: 0;
 
     &[data-sortable] {
       transition: 200ms linear background-color;
       &:hover {
-        background-color: rgba(0,0,0,0.02);
+        background-color: transparentize(colors.$background, 0.8);
       }
 
       &:focus {
         outline: none;
-        background-color: rgba(0,0,0,0.05);
+        background-color: transparentize(colors.$background, 0.5);
       }
     }
   }
@@ -147,24 +153,33 @@
   }
 
   .data-table__footer {
-    border-top: 2px solid var(--colors-background-a);
+    border-top: 2px solid colors.$background-a;
 
     height: 50px;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    padding: 5px 10px 2px;
+    padding-top: 5px;
     overflow: hidden;
+  }
+
+  .data-table__custom-buttons {
+    justify-self: flex-start;
   }
 
   .data-table__arrow-icon {
     height: 15px;
   }
 
+  .data-table__page {
+    margin: 0 10px;
+  }
+
   .data-table__page-button {
-    width: 20px;
-    margin: 0 5px;
+    min-width: 0!important;
+    width: 40px;
+    padding: 0!important;
   }
 </style>
 
@@ -172,13 +187,13 @@
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
   import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
-  import KButton from "kiste/components/KButton";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import DataTableBody from "@/components/DataTable/DataTableBody";
+  import MyButton from "@/components/MyButton";
 
   export default {
     name: "DataTable",
-    components: { DataTableBody, LoadingOverlay, ArrowLeftIcon, ArrowRightIcon, ArrowDownIcon, KButton },
+    components: { MyButton, DataTableBody, LoadingOverlay, ArrowLeftIcon, ArrowRightIcon, ArrowDownIcon },
     props: {
       loadingText: {
         type: String,

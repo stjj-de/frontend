@@ -1,0 +1,8 @@
+@mixin content($padding: 20px) {
+  $width: 1000px;
+
+  max-width: calc(100vw - #{$padding} * 2);
+  width: $width;
+  padding: 0 $padding;
+  margin: 0 auto;
+}

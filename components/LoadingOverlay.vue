@@ -5,7 +5,8 @@
 </template>
 
 <style scoped lang="scss">
-  @use "~@/assets/styles/spinner.scss";
+  @use "~@/assets/styles/spinner";
+  @use "~@/assets/styles/colors";
 
   .loading-overlay {
     position: absolute;
@@ -34,8 +35,8 @@
       content: "";
       width: 100%;
       height: 100%;
-      opacity: 0.6;
-      background-color: var(--colors-background);
+      opacity: var(--opacity);
+      background-color: colors.$background;
     }
 
     &::after {
@@ -64,13 +65,18 @@
       transitionDelay: {
         type: Number,
         default: 0
+      },
+      opacity: {
+        type: String,
+        default: "0.6"
       }
     },
     computed: {
       style() {
         if (this.active) {
           return {
-            transitionDelay: this.transitionDelay + "ms"
+            "transitionDelay": this.transitionDelay + "ms",
+            "--opacity": this.opacity
           };
         }
 
