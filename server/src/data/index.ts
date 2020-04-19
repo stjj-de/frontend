@@ -8,8 +8,6 @@ import { EventResolver } from "./resolvers/EventResolver";
 import { Context } from "./Context";
 import { User } from "./models/User";
 
-// TODO: Use Query complexity https://typegraphql.com/docs/complexity.html
-
 export async function initApollo() {
   const schema = await buildSchema({
     resolvers: [PostResolver, UserResolver, EventResolver],

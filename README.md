@@ -2,21 +2,24 @@
 
 > Website of the Parish of St. Josef / Johannes
 
-## Build Setup
+## Roadmap
+> Sorted by priority
+### First release
+- Display church service date + management
+- Allow uploading videos
+- Add "Mediathek" + management
+- Add permission checks to administration queries and mutations
+- Use [query complexity](https://typegraphql.com/docs/complexity.html)
 
-``` bash
-# install dependencies
-$ yarn install
+### After that
+- Add presentation of the groups + dynamic text editing
+- Allow uploading photos and files
+- Allow using images in posts
+- Add user management
+- Add role and permission management
+- Add presentation of the kindergartens
+- Use [Blurhash](https://blurha.sh) for all images
 
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+### At some point in the future
+- Own account for every valet
+- Messdienerplan-Management

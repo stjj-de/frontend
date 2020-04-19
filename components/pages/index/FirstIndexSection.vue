@@ -32,10 +32,8 @@
     display: block;
     font-weight: 800;
 
-    // TODO: Replace this with max() as soon as it's generally supported.
     font-size: 4.6vw;
 
-    // Set this to the content-width
     @media (min-width: 1020px) {
       font-size: 47px;
     }
