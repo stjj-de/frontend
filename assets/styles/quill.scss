@@ -1,0 +1,81 @@
+@use "formatted/heading";
+@use "formatted/paragraph";
+@use "formatted/blockquote";
+@use "formatted/list";
+
+.ql-snow {
+  &.ql-toolbar {
+    .ql-header.ql-picker {
+      width: 115px;
+
+      .ql-picker-item, .ql-picker-label {
+        &[data-value="1"]::before {
+          content: "Überschrift 1";
+        }
+
+        &[data-value="2"]::before {
+          content: "Überschrift 2";
+        }
+
+        &[data-value="3"]::before {
+          content: "Überschrift 3";
+        }
+      }
+    }
+  }
+
+  .ql-editor {
+    h1 {
+      @extend %heading--1;
+    }
+
+    h2 {
+      @extend %heading--2;
+    }
+
+    h3 {
+      @extend %heading--3;
+    }
+
+    h4 {
+      @extend %heading--4;
+    }
+
+    h5 {
+      @extend %heading--5;
+    }
+
+    h6 {
+      @extend %heading--6;
+    }
+
+    p {
+      @extend %paragraph;
+    }
+
+    blockquote {
+      @extend %blockquote;
+    }
+
+    ul > li {
+      list-style-type: disc;
+    }
+
+    ol > li {
+      list-style-type: decimal;
+    }
+
+    ul, ol {
+      @extend %list;
+
+      & > li {
+        margin-left: 20px;
+        padding-left: 0;
+
+        &::before {
+          content: none;
+        }
+      }
+    }
+  }
+}

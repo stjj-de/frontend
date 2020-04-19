@@ -2,9 +2,11 @@
 @use "heading";
 @use "paragraph";
 @use "blockquote";
+@use "list";
 
 $_elements: (
-  "paragraph": ("p", "ul"),
+  "list": ("ul", "ol"),
+  "paragraph": "p",
   "link": "a",
   "heading--1": "h1",
   "heading--2": "h2",

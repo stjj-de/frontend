@@ -35,6 +35,6 @@ export class Post {
   excerpt: string;
 
   @Field(() => String)
-  @Column({ type: "varchar", default: "" })
+  @Column({ type: "text", default: "" })
   content: string;
 }

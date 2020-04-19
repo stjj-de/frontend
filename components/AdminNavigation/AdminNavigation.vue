@@ -6,30 +6,36 @@
       <span></span>
     </div>
     <nav class="admin-navigation__container">
-      <LoadingPlaceholder v-if="$apollo.queries.me.loading" height="80px"/>
-      <nuxt-link
-        v-else
-        class="admin-navigation__profile admin-navigation__item"
-        :to="`/admin/users/${me.id}`"
-        v-ripple.400="'rgba(0,0,0,0.1)'"
-        @click="open = false"
-      >
-        <img class="admin-navigation__image" alt="Dein Profilbild" :src="getImageURL(me.image)">
-        <div class="admin-navigation__logged-in-as">
-          Angemeldet als
-          <span class="admin-navigation__name">{{ me.name }}</span>
-        </div>
-      </nuxt-link>
-      <nuxt-link
-        v-for="(item, index) in $options.items"
-        :key="index"
-        class="admin-navigation__item"
-        :to="item.to"
-        v-ripple.400="'rgba(0,0,0,0.1)'"
-        @click.native="open = false"
-      >
-        <component :is="item.icon" class="admin-navigation__icon"/>
-        {{ item.label }}
+      <div class="admin-navigation__top">
+        <LoadingPlaceholder v-if="$apollo.queries.me.loading" height="80px"/>
+        <nuxt-link
+          v-else
+          class="admin-navigation__profile admin-navigation__item"
+          :to="`/admin/users/${me.id}`"
+          v-ripple.400="'rgba(0,0,0,0.1)'"
+          @click="open = false"
+        >
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getImageURL(me.image)">
+          <div class="admin-navigation__logged-in-as">
+            Angemeldet als
+            <span class="admin-navigation__name">{{ me.name }}</span>
+          </div>
+        </nuxt-link>
+        <nuxt-link
+          v-for="(item, index) in $options.items"
+          :key="index"
+          class="admin-navigation__item"
+          :to="item.to"
+          v-ripple.400="'rgba(0,0,0,0.1)'"
+          @click.native="open = false"
+        >
+          <component :is="item.icon" class="admin-navigation__icon"/>
+          {{ item.label }}
+        </nuxt-link>
+      </div>
+      <nuxt-link class="link admin-navigation__back admin-navigation__item" to="/">
+        <ArrowLeftIcon class="admin-navigation__icon"/>
+        Zurück zur Seite
       </nuxt-link>
     </nav>
   </div>
@@ -74,6 +80,16 @@
   .admin-navigation__container {
     width: 100%;
     height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
+  }
+
+  .admin-navigation__top {
+    display: flex;
+    flex-direction: column;
   }
 
   .admin-navigation__logged-in-as {
@@ -100,7 +116,7 @@
       background-color: colors.$hover-and-focus;
     }
 
-    &.nuxt-link-active {
+    &.nuxt-link-active:not(.admin-navigation__back) {
       background-color: colors.$active;
     }
   }
@@ -156,6 +172,16 @@
     }
   }
 
+  .admin-navigation__back {
+    justify-content: flex-start;
+    font-size: 1.2rem;
+    padding-left: 10px;
+
+    & > :first-child {
+      margin-right: 10px;
+    }
+  }
+
   @media(max-width: 1000px) {
     $height: 70px;
 
@@ -198,6 +224,7 @@
 <script>
   import MeQuery from "./MeQuery.graphql";
   import CalendarIcon from "@/assets/icons/calendar.svg";
+  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import PencilIcon from "@/assets/icons/pencil.svg";
   import UsersIcon from "@/assets/icons/users.svg";
   import { getImageURL } from "@/assets/js/getUploadURL";
@@ -224,7 +251,7 @@
 
   export default {
     name: "AdminNavigation",
-    components: { LoadingPlaceholder, LoadingOverlay },
+    components: { LoadingPlaceholder, LoadingOverlay, ArrowLeftIcon },
     data: () => ({
       open: false
     }),

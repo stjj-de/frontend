@@ -94,6 +94,7 @@
 
   .edit-post-page__content-section {
     flex-grow: 1;
+    flex-basis: 0;
     padding-right: 20px;
   }
 
@@ -108,7 +109,7 @@
     justify-content: flex-end;
 
     .my-button:not(:last-child) {
-      margin-right: 5px;
+      margin-right: 10px;
     }
   }
 
