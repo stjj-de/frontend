@@ -26,6 +26,7 @@
     cursor: pointer;
 
     padding: 40px 40px 30px;
+    width: 100%;
 
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.1);

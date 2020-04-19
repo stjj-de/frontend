@@ -2,7 +2,9 @@
 
 query($skip: Int!, $take: Int!) {
   posts(take: $take, skip: $skip, onlyPublished: true, onlyRelevant: false, order: DESCENDING, sortBy: PUBLICATION_DATE) {
-    id
-    ...PostCardPostFields
+    items {
+      ...PostCardPostFields
+    }
+    hasMore
   }
 }

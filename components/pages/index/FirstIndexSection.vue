@@ -21,13 +21,13 @@
 
   .first-index-section__image {
     position: relative;
-    z-index: -1;
     width: 100%;
     height: auto;
   }
 
   .first-index-section__title-line1, .first-index-section__title-line2 {
     position: absolute;
+    z-index: 1;
 
     display: block;
     font-weight: 800;

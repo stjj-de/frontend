@@ -1,0 +1,13 @@
+#import "@/components/UserImageWithPopup/userFragment.graphql"
+
+query ($slug: String!) {
+  postBySlug(slug: $slug) {
+    title
+    authors {
+      id
+      ...UserImageWithPopupUserFields
+    }
+    content
+    publicationDate
+  }
+}

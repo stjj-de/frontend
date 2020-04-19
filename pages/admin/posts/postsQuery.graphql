@@ -1,5 +1,5 @@
 query ($skip: Int!, $take: Int!, $sortBy: PostSortField, $order: SortOrder) {
-  posts(sortBy: $sortBy, order: $order, skip: $skip, take: $take) {
+  posts(sortBy: $sortBy, order: $order, skip: $skip, take: $take, onlyPublished: false, onlyRelevant: false) {
     items {
       id
       title

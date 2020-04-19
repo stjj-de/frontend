@@ -43,7 +43,7 @@
   }
 
   .second-index-section__calendar-section {
-    flex-basis: 500px;
+    flex-basis: 400px;
 
     @include screenSize.notMobile {
       padding: 20px;
@@ -51,7 +51,12 @@
   }
 
   .second-index-section__posts-section {
+    flex-basis: 0;
+    width: 100%;
+
     @include screenSize.notMobile {
+      flex-basis: 600px;
+      flex-grow: 1;
       padding: 20px;
     }
   }
@@ -86,7 +91,8 @@
     components: { EventCalendar, PostCard },
     apollo: {
       posts: {
-        query: PostsQuery
+        query: PostsQuery,
+        update: data => data.posts.items
       }
     }
   };

@@ -112,6 +112,10 @@
     font-weight: bold;
     display: block;
 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
     opacity: 0;
     transform: translateY(10px);
     transition: 200ms ease;
@@ -143,6 +147,10 @@
     pointer-events: none;
     transition: 200ms ease opacity;
     border: none;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
   }
 
   .navigation-bar__link {
@@ -162,7 +170,7 @@
     &::after {
       content: "";
       position: absolute;
-      top: 30px;
+      top: 40px;
       left: 0;
       width: 100%;
       height: 2px;
@@ -173,7 +181,7 @@
     }
 
     &:not(:last-child) {
-      margin-right: 40px;
+      margin-bottom: 20px;
     }
   }
 
@@ -227,13 +235,17 @@
       background: transparent;
     }
 
-    .navigation-bar__link-container:not(:last-child) {
+    .navigation-bar__link:not(:last-child) {
       margin-bottom: 0;
-      margin-right: 40px;
+      margin-right: 20px;
     }
 
     .navigation-bar__link {
       font-size: 1.3rem;
+
+      &::after {
+        top: 30px;
+      }
     }
   }
 </style>
@@ -247,9 +259,13 @@
       to: "/"
     },
     {
-      label: "Gruppierungen",
-      to: "/gruppierungen"
+      label: "Aktuelles",
+      to: "/posts"
     },
+    // {
+    //   label: "Gruppierungen",
+    //   to: "/gruppierungen"
+    // },
     {
       label: "Mediathek",
       to: "/mediathek"

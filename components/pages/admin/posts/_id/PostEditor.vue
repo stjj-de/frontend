@@ -5,7 +5,6 @@
       :editor-toolbar="editorToolbar"
       @input="value => $emit('input', value)"
     />
-    <TransformInternalLinks class="formatted quill-enduser" :html="value"/>
   </div>
 </template>
 
@@ -27,13 +26,10 @@
   import "quill/dist/quill.core.css";
   import "quill/dist/quill.snow.css";
   import "@/assets/styles/quill.scss";
-  import { transformQuillLinks } from "@/assets/js/transformQuillLinks";
-  import TransformInternalLinks from "@/components/TransformInternalLinks";
 
   export default {
     name: "PostEditor",
     components: {
-      TransformInternalLinks,
       VueEditor: () => process.server
         ? Promise.resolve()
         : import("vue2-editor/dist/vue2-editor.core").then(m => m.VueEditor)

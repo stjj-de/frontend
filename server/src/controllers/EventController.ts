@@ -4,7 +4,6 @@ import { endOfDay, startOfDay, parseISO, startOfMonth, endOfMonth } from "date-f
 import { Event } from "../data/models/Event";
 import { EventSortField } from "../data/enums/EventSortField";
 import { SortOptions } from "../utils/SortOptions";
-import { Post } from "../data/models/Post";
 
 export interface GetEventsOptions {
   skip?: number;

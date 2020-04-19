@@ -2,20 +2,25 @@
   <div class="posts-page content">
     <NavigationBar title="Alle Artikel"/>
     <main>
-      <div class="_posts">
-        <PostCard v-for="post in posts" :key="post.id" :post="post"/>
+      <div class="posts-page__posts">
+        <PostCard
+          v-for="post in posts.items"
+          :key="post.id"
+          class="posts-page__post"
+          :post="post"
+        />
       </div>
-      <div class="_end-of-list">
-        <transition mode="out-in" name="fade">
+      <div class="posts-page__end-of-list">
+        <transition mode="out-in" name="posts-page__fade">
           <MyButton
-            v-if="hasMore"
-            class="_load-more"
+            v-if="posts.hasMore"
+            class="posts-page__load-more"
             :loading="$apollo.queries.posts.loading"
             @click="fetchMorePosts()"
           >
             Mehr laden
           </MyButton>
-          <span class="_the-end" v-else>
+          <span class="posts-page__the-end" v-else>
             Du hast das Ende erreicht.
           </span>
         </transition>
@@ -27,19 +32,19 @@
 <style scoped lang="scss">
   @use "~@/assets/styles/transitions";
 
-  @include transitions.fade();
+  @include transitions.fade($name: "posts-page__fade");
 
-  ._posts {
+  .posts-page__posts {
     display: flex;
     flex-direction: column;
     justify-items: center;
 
     & > *:not(:last-child) {
-      margin-bottom: var(--gutter-size);
+      margin-bottom: 20px;
     }
   }
 
-  ._end-of-list {
+  .posts-page__end-of-list {
     height: 100px;
 
     display: flex;
@@ -47,7 +52,7 @@
     align-items: center;
   }
 
-  ._the-end {
+  .posts-page__the-end {
     font-size: 1.2rem;
   }
 </style>
@@ -59,7 +64,7 @@
   import NavigationBar from "@/components/NavigationBar";
   import MyButton from "@/components/MyButton";
 
-  const POSTS_LOADED_AT_ONCE = 5;
+  const POSTS_LOADED_AT_ONCE = 10;
 
   export default {
     name: "PostsPage",
@@ -67,18 +72,12 @@
     head: () => ({
       title: "Artikel-Archiv"
     }),
-    data: () => ({
-      hasMore: true
-    }),
     apollo: {
       posts: {
         query: PostsQuery,
         variables: {
           skip: 0,
           take: POSTS_LOADED_AT_ONCE
-        },
-        result({ data }) {
-          this.hasMore = Array.isArray(data.posts) && data.posts.length === POSTS_LOADED_AT_ONCE;
         }
       }
     },
@@ -86,13 +85,17 @@
       fetchMorePosts() {
         this.$apollo.queries.posts.fetchMore({
           variables: {
-            skip: this.posts.length
+            skip: this.posts.items.length
           },
           updateQuery: (previousResult, { fetchMoreResult }) => ({
-            posts: uniqBy([
-              ...previousResult.posts,
-              ...fetchMoreResult.posts
-            ], post => post.id)
+            posts: {
+              __typename: previousResult.posts.__typename,
+              items: uniqBy([
+                ...previousResult.posts.items,
+                ...fetchMoreResult.posts.items
+              ], post => post.id),
+              hasMore: fetchMoreResult.posts.hasMore
+            }
           })
         });
       }

@@ -9,16 +9,12 @@
       width: 115px;
 
       .ql-picker-item, .ql-picker-label {
-        &[data-value="1"]::before {
-          content: "Überschrift 1";
-        }
+        &[data-value] {
+          --level: attr(data-value);
 
-        &[data-value="2"]::before {
-          content: "Überschrift 2";
-        }
-
-        &[data-value="3"]::before {
-          content: "Überschrift 3";
+          &::before {
+            content: "Überschrift " var(--level);
+          }
         }
       }
     }

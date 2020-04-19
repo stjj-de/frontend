@@ -25,7 +25,7 @@ class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField |
   @Field(() => SortOrder, { defaultValue: SortOrder.ASCENDING })
   order: SortOrder;
 
-  @Field(() => EventSortField, { nullable: true })
+  @Field(() => EventSortField, { nullable: true, defaultValue: null })
   sortBy: EventSortField | null;
 
   @Field(() => String, { nullable: true, description: "Filter by day (yyyy-mm-dd), month (yyyy-mm) or a day span(yyyy-mm-dd:yyyy-mm-dd)." })

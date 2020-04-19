@@ -21,7 +21,7 @@
     align-items: center;
     text-align: center;
 
-    min-height: 100%;
+    min-height: 100vh;
   }
 
   ._back-link {

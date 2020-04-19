@@ -2,6 +2,8 @@
 
 query SecondIndexSectionPosts {
   posts(onlyRelevant: true, order: DESCENDING, sortBy: PUBLICATION_DATE) {
-    ...PostCardPostFields
+    items {
+      ...PostCardPostFields
+    }
   }
 }

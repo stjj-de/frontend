@@ -16,7 +16,7 @@
         Kein Tag ausgewählt.
       </span>
       <div v-else :key="selectedDay" ref="dayDetails">
-        <h2 class="heading--5 _day-date">
+        <h2 class="heading--4 _day-date">
           {{ selectedDayString }}
         </h2>
         <div class="event-calendar__day-details">

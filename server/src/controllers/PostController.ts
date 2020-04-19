@@ -26,16 +26,17 @@ export class PostController {
     const where: FindManyOptions<Post>["where"] = {};
 
     if (options.onlyRelevant) {
-      where.relevantUntil = Raw(alias => `${alias} > NOW()`);
+      where.relevantUntil = Raw(alias => `${alias} IS NULL OR ${alias} > NOW()`);
     }
 
     if (options.onlyPublished) {
-      where.publicationDate = Raw(alias => `${alias} < NOW()`);
+      where.publicationDate = Raw(alias => `${alias} <= NOW()`);
     }
 
     const events = await this.postRepository.find({
       skip: options.skip,
       take: options.take === undefined ? undefined : options.take + 1,
+      where,
       order
     });
 

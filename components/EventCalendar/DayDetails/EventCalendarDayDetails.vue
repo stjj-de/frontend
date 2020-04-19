@@ -5,10 +5,10 @@
       :key="event.id"
       class="event-calendar-day-details__event"
     >
-      <h3 class="event-calendar-day-details__event-header">
+      <div class="event-calendar-day-details__event-header">
         <span class="event-calendar-day-details__event-color" :style="getDotStyle(event.color)"></span>
-        <span class="heading--6 event-calendar-day-details__event-title">{{ event.title }}</span>
-      </h3>
+        <span class="heading--5 event-calendar-day-details__event-title">{{ event.title }}</span>
+      </div>
       <div class="event-calendar-day-details__event-date">
         {{ event.__displayedTime }}
       </div>
@@ -25,7 +25,7 @@
       <UserImageWithPopup
         v-if="event.creator !== null"
         class="event-calendar-day-details__event-creator"
-        :user="creator"
+        :user="event.creator"
       />
     </div>
     <span
@@ -44,13 +44,14 @@
     margin-bottom: 30px;
   }
 
-  .event-calendar-day-details__event-date {
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-  }
-
   .event-calendar-day-details__event-title {
     display: inline;
+  }
+
+  .event-calendar-day-details__event-date {
+    margin-top: 4px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
   }
 
   .event-calendar-day-details__event-color {
@@ -61,7 +62,7 @@
     top: -2px;
   }
 
-  .event-calendar-day-details__event-creators {
+  .event-calendar-day-details__event-creator {
     margin-top: 15px;
     margin-bottom: -10px;
 
