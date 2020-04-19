@@ -1,6 +1,7 @@
 @use "link";
 @use "heading";
 @use "paragraph";
+@use "blockquote";
 
 $_elements: (
   "paragraph": ("p", "ul"),
@@ -11,6 +12,7 @@ $_elements: (
   "heading--4": "h4",
   "heading--5": "h5",
   "heading--6": "h6",
+  "blockquote": "blockquote"
 );
 
 @each $class, $tags in $_elements {

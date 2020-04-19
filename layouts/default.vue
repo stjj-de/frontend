@@ -6,9 +6,6 @@
 </template>
 
 <style scoped lang="scss">
-  .k-footer {
-    margin-top: 50px;
-  }
 </style>
 
 <script>

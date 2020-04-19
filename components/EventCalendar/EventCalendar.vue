@@ -42,7 +42,7 @@
 
     &::v-deep {
       .vc-day-content:focus {
-        background-color: rgba(0, 161, 210, 0.2); // TODO: Replace with variable
+        background-color: rgba(0, 161, 210, 0.2);
       }
     }
   }

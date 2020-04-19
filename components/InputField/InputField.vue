@@ -1,5 +1,12 @@
 <template>
-  <div class="input-field" :data-invalid="companion._error !== null && showPossibleError">
+  <div
+    class="input-field"
+    :class="{
+      [`input-field--${this.companion._state}`]: this.companion._state !== null,
+      'input-field--keep-showing-state': keepShowingState,
+      'input-field--invalid': companion._error !== null && showPossibleError
+    }"
+  >
     <GlobalEvents
       target="window"
       @resize="recomputeErrorTextHeight"
@@ -11,6 +18,7 @@
         class="input-field__input"
         ref="input"
         v-text="companion.value"
+        :placeholder="placeholder"
         :aria-label="label"
         :autocomplete="autocomplete"
         :disabled="companion.disabled"
@@ -43,13 +51,7 @@
       />
       <span class="input-field__disabled-overlay"></span>
     </div>
-    <div
-      class="input-field__state"
-      :class="{
-        [`input-field__state--${String(this.companion._state)}`]: true,
-        'input-field__state--keep': keepShowingState
-      }"
-    >
+    <div class="input-field__state">
       <div class="input-field__cross"></div>
       <div class="input-field__spinner"></div>
       <div class="input-field__tick"></div>
@@ -72,7 +74,7 @@
     position: relative;
     width: 100%;
 
-    &[data-invalid] {
+    &.input-field--invalid {
       color: colors.$red;
 
       .input-field__input {
@@ -156,7 +158,7 @@
     width: 20px;
     height: 20px;
 
-    opacity: 1;
+    opacity: 0;
     transition: 200ms ease opacity;
 
     display: flex;
@@ -171,34 +173,34 @@
       transition: 200ms ease opacity;
     }
 
-    &.input-field__state--null {
-      opacity: 0;
+    .input-field--loading & {
+      opacity: 1;
     }
+  }
 
-    &.input-field__state--loading {
+  .input-field--success, .input-field--failed {
+    .input-field__state {
       opacity: 1;
     }
 
-    &.input-field__state--success, &.input-field__state--failed {
-      opacity: 1;
-
-      &:not(.input-field__state--keep) {
+    &:not(.input-field--keep-showing-state) {
+      .input-field__state {
         transition-delay: 1500ms;
         opacity: 0;
       }
     }
+  }
 
-    &.input-field__state--loading > .input-field__spinner {
-      opacity: 1;
-    }
+  .input-field--loading .input-field__spinner {
+    opacity: 1;
+  }
 
-    &.input-field__state--success > .input-field__tick {
-      opacity: 1;
-    }
+  .input-field--success .input-field__tick {
+    opacity: 1;
+  }
 
-    &.input-field__state--failed > .input-field__cross {
-      opacity: 1;
-    }
+  .input-field--failed .input-field__cross {
+    opacity: 1;
   }
 
   .input-field__tick {
@@ -292,6 +294,10 @@
         type: Boolean,
         default: false
       },
+      forceShowError: {
+        type: Boolean,
+        default: false
+      },
       placeholder: {
         type: String,
         default: ""
@@ -302,7 +308,7 @@
     }),
     computed: {
       showPossibleError() {
-        return !this.companion.disabled && this.companion.touched;
+        return this.forceShowError || (!this.companion.disabled && this.companion.touched);
       },
       errorStyle() {
         return this.showPossibleError ? `height: ${this.errorTextHeight + 1}px` : "";

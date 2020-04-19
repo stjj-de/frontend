@@ -1,6 +1,6 @@
 <template>
   <main class="calendar-page">
-    <h1 class="heading--1 _heading">
+    <h1 class="heading--1">
       Kalender
     </h1>
     <div class="_filter">
@@ -49,8 +49,8 @@
       </template>
       <template v-slot:buttons>
         <MyButton
-          variant="blue"
-          @click="openEditEventModal(null)"
+          variant="primary"
+          @click="openEditEventModal('')"
         >
           Erstellen
         </MyButton>
@@ -118,19 +118,15 @@
 </style>
 
 <script>
-  import { format } from "date-fns";
   import EventsQuery from "./eventsQuery.graphql";
-  import { dateFnsLocale } from "@/assets/js/dateUtils";
   import DataTable from "@/components/DataTable/DataTable";
   import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
   import EventsTableColorColumn from "@/components/pages/admin/events/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import { isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
+  import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
   import EditEventModal from "@/components/pages/admin/events/EditEventModal/EditEventModal";
   import MyButton from "@/components/MyButton";
 
-  const formatDateWithTime = date => format(new Date(date), "d.L.yyyy, HH:mm", { locale: dateFnsLocale });
-  const formatDate = date => format(new Date(date), "d.L.yyyy", { locale: dateFnsLocale });
   const _isFullDay = (startDateString, endDateString) => {
     if (endDateString === null) {
       return false;

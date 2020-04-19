@@ -43,7 +43,7 @@
     width: 350px;
     flex-shrink: 0;
     height: 100vh;
-    box-shadow: 0 0 40px 0 transparentize(colors.$background, 0.1);
+    box-shadow: 0 0 40px 0 transparentize(colors.$background-c, 0.9);
 
     position: fixed;
     top: 0;

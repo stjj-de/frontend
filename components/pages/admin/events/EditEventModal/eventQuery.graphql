@@ -7,7 +7,7 @@ query ($id: ID!) {
     endDate
     relatedPost {
       id
-      title
+      slug
     }
   }
 }

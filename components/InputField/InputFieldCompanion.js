@@ -66,7 +66,7 @@ export class InputFieldCompanion {
   }
 
   setSavedValueToCurrent() {
-    this.savedValue = this.value;
+    this.savedValue = this.transformedValue;
   }
 
   touch() {
@@ -106,8 +106,13 @@ export class InputFieldCompanion {
     this._runValidate();
 
     if (this._error === null && this.validateOrSaveAsync !== null) {
-      this._state = "loading";
-      this._debouncedRunValidateOrSaveAsync();
+      if (this.changed) {
+        this._state = "loading";
+        this._debouncedRunValidateOrSaveAsync();
+      } else {
+        this._state = null;
+        this._error = null;
+      }
     }
   }
 
@@ -124,7 +129,7 @@ export class InputFieldCompanion {
       }
     }
 
-    if (this._error === null) {
+    if (!this.required || this._error === null) {
       this._error = this.validate === null ? null : this.validate(this.transformedValue) || null;
     }
 

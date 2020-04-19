@@ -4,6 +4,7 @@ import { endOfDay, startOfDay, parseISO, startOfMonth, endOfMonth } from "date-f
 import { Event } from "../data/models/Event";
 import { EventSortField } from "../data/enums/EventSortField";
 import { SortOptions } from "../utils/SortOptions";
+import { Post } from "../data/models/Post";
 
 export interface GetEventsOptions {
   skip?: number;
@@ -19,11 +20,10 @@ export class EventController {
 
   async getEvents(options: GetEventsOptions) {
     const order: FindManyOptions<Event>["order"] = {};
-    switch (options.sort?.by) {
-      case EventSortField.TITLE: order.title = options.sort.order; break;
-      case EventSortField.COLOR: order.color = options.sort.order; break;
-      case EventSortField.DATE: order.date = options.sort.order; break;
-      case EventSortField.END_DATE: order.endDate = options.sort.order; break;
+
+    if (options.sort) {
+      // @ts-ignore
+      order[options.sort.by] = options.sort.order;
     }
 
     const where: FindManyOptions<Event>["where"] = {};

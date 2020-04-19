@@ -2,6 +2,7 @@
   <div
     class="my-modal"
     :class="classes"
+    @keydown.esc="close()"
   >
     <div
       class="my-modal__backdrop"

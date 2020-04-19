@@ -30,11 +30,11 @@ export class Post {
   @Column({ type: "datetime", nullable: true, default: null })
   relevantUntil: Date | null;
 
-  @Field(() => String, { nullable: true })
-  @Column({ type: "varchar", nullable: true, default: null })
-  excerpt: string | null;
+  @Field(() => String)
+  @Column({ type: "varchar", default: "" })
+  excerpt: string;
 
   @Field(() => String)
-  @Column({ type: "json", default: "{}" })
+  @Column({ type: "varchar", default: "" })
   content: string;
 }

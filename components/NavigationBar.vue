@@ -146,20 +146,34 @@
   }
 
   .navigation-bar__link {
+    position: relative;
     color: colors.$background-c;
     text-decoration: none;
     font-size: 2rem;
 
     transition: 200ms transform ease;
-  }
 
-  @keyframes navigation-bar__gradient {
-    from {
-      background-position: 0 0;
+    &:hover {
+      &::after {
+        opacity: 1;
+      }
     }
 
-    to {
-      background-position: 100% 100%;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 30px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: colors.$background-c;
+
+      opacity: 0;
+      transition: 200ms ease opacity;
+    }
+
+    &:not(:last-child) {
+      margin-right: 40px;
     }
   }
 

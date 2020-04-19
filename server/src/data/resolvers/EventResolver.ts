@@ -15,10 +15,10 @@ import { SortOrder } from "../enums/SortOrder";
 import { EventSortField } from "../enums/EventSortField";
 import { EventController } from "../../controllers/EventController";
 import { argsToSortOptions, ISortArgs } from "../../utils/SortOptions";
-import { EventsPagination } from "../objectTypes/EventsPagination";
 import { Post } from "../models/Post";
 import { AuthenticatedContext } from "../Context";
 import { EmptyResponse } from "../objectTypes/EmptyResponse";
+import { PaginatedEventResponse } from "../objectTypes/PaginatedEventResponse";
 
 @ArgsType()
 class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField | null> {
@@ -28,7 +28,7 @@ class GetEventsArgs extends PaginationArgs implements ISortArgs<EventSortField |
   @Field(() => EventSortField, { nullable: true })
   sortBy: EventSortField | null;
 
-  @Field(() => String, { nullable: true, description: "Filter by day or month. Format: yyyy-mm or yyyy-mm-dd." })
+  @Field(() => String, { nullable: true, description: "Filter by day (yyyy-mm-dd), month (yyyy-mm) or a day span(yyyy-mm-dd:yyyy-mm-dd)." })
   filter: string | null;
 }
 
@@ -44,22 +44,22 @@ class CreateEventInput {
 
   @Field({ defaultValue: "" }) description: string;
 
-  @Field(() => ID, { nullable: true, defaultValue: null }) relatedPostId: string | null;
+  @Field(() => ID, { nullable: true, defaultValue: null }) relatedPostID: string | null;
 }
 
 @InputType()
 class UpdateEventInput {
-  @Field(() => String, { nullable: true }) title?: string;
+  @Field(() => String, { nullable: true }) title?: string | null;
 
-  @Field(() => Date, { nullable: true }) date?: Date;
+  @Field(() => Date, { nullable: true }) date?: Date | null;
 
   @Field(() => Date, { nullable: true }) endDate?: Date | null;
 
-  @Field(() => EventColor, { nullable: true }) color?: EventColor;
+  @Field(() => EventColor, { nullable: true }) color?: EventColor | null;
 
-  @Field(() => String, { nullable: true }) description?: string;
+  @Field(() => String, { nullable: true }) description?: string | null;
 
-  @Field(() => ID, { nullable: true }) relatedPostId?: string | null;
+  @Field(() => ID, { nullable: true }) relatedPostID?: string | null;
 }
 
 @Resolver(() => Event)
@@ -70,8 +70,8 @@ export class EventResolver implements ResolverInterface<Event> {
 
   @Inject(() => EventController) private readonly eventController: EventController;
 
-  @Query(() => EventsPagination)
-  async events(@Args() args: GetEventsArgs): Promise<EventsPagination> {
+  @Query(() => PaginatedEventResponse)
+  async events(@Args() args: GetEventsArgs): Promise<PaginatedEventResponse> {
     const { hasMore, events } = await this.eventController.getEvents({
       filter: args.filter ?? undefined,
       skip: args.skip,
@@ -85,9 +85,17 @@ export class EventResolver implements ResolverInterface<Event> {
     };
   }
 
-  @Query(() => Event)
+  @Query(() => Event, { nullable: true })
   event(@Arg("id", () => ID) id: string) {
     return this.eventRepository.findOne(id);
+  }
+
+  @Mutation(() => Event)
+  async createEvent(@Arg("event") data: CreateEventInput, @Ctx() context: AuthenticatedContext): Promise<Event> {
+    const event = new Event();
+    event.creator = context.user;
+
+    return this.applyDataToEventAndSave(event, data);
   }
 
   @Mutation(() => Event)
@@ -97,14 +105,6 @@ export class EventResolver implements ResolverInterface<Event> {
     if (event === undefined) {
       throw new ApolloError("There is no event with the specified ID.");
     }
-
-    return this.applyDataToEventAndSave(event, data);
-  }
-
-  @Mutation(() => Event)
-  async createEvent(@Arg("event") data: CreateEventInput, @Ctx() context: AuthenticatedContext): Promise<Event> {
-    const event = new Event();
-    event.creator = context.user;
 
     return this.applyDataToEventAndSave(event, data);
   }
@@ -133,15 +133,16 @@ export class EventResolver implements ResolverInterface<Event> {
 
   private async applyDataToEventAndSave(event: Event, data: CreateEventInput | UpdateEventInput) {
     event.title = data.title ?? event.title;
+    event.color = data.color ?? event.color;
     event.date = data.date ?? event.date;
     event.endDate = data.endDate === undefined ? event.endDate : data.endDate;
     event.description = data.description ?? event.description;
 
-    if (data.relatedPostId !== undefined) {
-      if (data.relatedPostId === null) {
+    if (data.relatedPostID !== undefined) {
+      if (data.relatedPostID === null) {
         event.relatedPost = null;
       } else {
-        const relatedPost = await this.postRepository.findOne(data.relatedPostId);
+        const relatedPost = await this.postRepository.findOne(data.relatedPostID);
 
         if (relatedPost === undefined) {
           throw new ApolloError("There is no post with the specified ID.");

@@ -1,6 +1,7 @@
 <template>
   <button
     class="my-button"
+    :key="rippleColor"
     :class="classes"
     :type="isSubmit ? 'submit' : 'button'"
     :disabled="this.loading || this.disabled"
@@ -17,9 +18,8 @@
   @use "~@/assets/styles/colors";
 
   $color-variants: (
-    "green": (colors.$green, colors.$green-c),
-    "blue": (colors.$blue, colors.$blue-c),
-    "red": (colors.$red, colors.$red-c)
+    "primary": (colors.$blue, colors.$blue-c),
+    "danger": (colors.$red, colors.$red-c)
   );
 
   .my-button {
@@ -43,7 +43,7 @@
     box-shadow: 0 5px 14px 0 transparentize(colors.$background-c, 0.7);
     background-color: transparent;
 
-    transition: 200ms ease background-color;
+    transition: 500ms ease;
     transition-property: background-color, box-shadow;
 
     &:focus {
@@ -69,27 +69,27 @@
         $background: list.nth($colors, 1);
         $background-c: list.nth($colors, 2);
 
-        background: $background;
+        background-color: $background;
         color: $background-c;
 
         &:disabled {
           $amount: 0.4;
-          background: transparentize($background, $amount);
+          background-color: transparentize($background, $amount);
           color: transparentize($background-c, $amount);
         }
 
         &:focus:not(:disabled) {
-          background: transparentize($background, 0.06);
+          background-color: transparentize($background, 0.06);
         }
 
         &:hover:not(:disabled) {
-          background: transparentize($background, 0.07);
+          background-color: transparentize($background, 0.07);
         }
       }
     }
 
-    &.my-button--outline {
-      background: colors.$background;
+    &.my-button--secondary {
+      background-color: colors.$background;
       color: colors.$background-c;
 
       border: 1px solid transparentize(colors.$background-c, 0.8);
@@ -102,7 +102,7 @@
 
       &:focus, &:hover {
         &:not(:disabled) {
-          background: colors.$hover-and-focus;
+          background-color: colors.$hover-and-focus;
         }
       }
     }
@@ -193,8 +193,8 @@
       },
       variant: {
         type: String,
-        default: "outline",
-        validate: value => ["green", "blue", "red", "outline"].includes(value)
+        default: "secondary",
+        validate: value => ["primary", "secondary", "danger"].includes(value)
       }
     },
     computed: {
@@ -209,7 +209,7 @@
         });
       },
       rippleColor() {
-        return this.loading || this.disabled ? "transparent" : "rgba(0, 0, 0, 0.15)";
+        return (this.loading || this.disabled) ? "transparent" : "rgba(0, 0, 0, 0.15)";
       }
     },
     methods: {

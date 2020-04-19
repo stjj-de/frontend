@@ -15,6 +15,7 @@
     overflow: hidden;
     width: 100vw;
     padding: 0;
+    min-height: 100vh;
 
     display: flex;
     justify-content: flex-start;

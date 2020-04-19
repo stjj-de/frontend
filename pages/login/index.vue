@@ -30,6 +30,7 @@
               <MyButton
                 class="_next-step"
                 is-submit
+                variant="primary"
                 :loading="submitLoading"
                 :disabled="!(password.valid && username.valid)"
               >

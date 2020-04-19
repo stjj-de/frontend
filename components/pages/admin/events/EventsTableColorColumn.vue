@@ -1,5 +1,5 @@
 <template>
-  <span class="events-table-color-column" :style="style"></span>
+  <span class="events-table-color-column" :style="style" :title="title"></span>
 </template>
 
 <style scoped lang="scss">
@@ -9,11 +9,12 @@
     @include dot.dot(12px);
     margin: 0 auto;
     display: block;
+    background: var(--color);
   }
 </style>
 
 <script>
-  import { getCSSColorForEventColor } from "@/assets/js/getCSSColorForEventColor";
+  import { eventColors, getCSSColorForEventColor } from "@/assets/js/eventColors";
 
   export default {
     name: "EventsTableColorColumn",
@@ -24,8 +25,14 @@
       }
     },
     computed: {
+      name() {
+        return this.data.toLowerCase();
+      },
       style() {
-        return `background-color: ${getCSSColorForEventColor(this.data)}`;
+        return `--color: ${getCSSColorForEventColor(this.name)}`;
+      },
+      title() {
+        return eventColors[this.name].title;
       }
     }
   };

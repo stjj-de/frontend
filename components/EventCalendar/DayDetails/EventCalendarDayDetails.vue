@@ -92,7 +92,7 @@
   import { format } from "date-fns";
   import { dateFnsLocale } from "@/assets/js/dateUtils";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
-  import { getCSSColorForEventColor } from "@/assets/js/getCSSColorForEventColor";
+  import { getCSSColorForEventColor } from "@/assets/js/eventColors";
   import { isFullDay } from "@/assets/js/dateUtils";
 
   export default {
@@ -164,7 +164,7 @@
     },
     methods: {
       getDotStyle(color) {
-        return `background-color: ${getCSSColorForEventColor(color)}`;
+        return `background-color: ${getCSSColorForEventColor(color.toLowerCase())}`;
       }
     }
   };

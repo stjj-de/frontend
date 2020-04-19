@@ -230,6 +230,7 @@
 
         if (column.width === undefined) {
           style.flexGrow = "1";
+          style.flexBasis = "0";
         } else {
           style.width = column.width + "px";
         }

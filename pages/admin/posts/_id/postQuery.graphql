@@ -1,0 +1,11 @@
+query ($id: ID!) {
+  post(id: $id) {
+    id
+    title
+    slug
+    publicationDate
+    relevantUntil
+    content
+    excerpt
+  }
+}

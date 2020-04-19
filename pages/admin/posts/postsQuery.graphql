@@ -1,0 +1,12 @@
+query ($skip: Int!, $take: Int!, $sortBy: PostSortField, $order: SortOrder) {
+  posts(sortBy: $sortBy, order: $order, skip: $skip, take: $take) {
+    items {
+      id
+      title
+      slug
+      relevantUntil
+      publicationDate
+    }
+    hasMore
+  }
+}

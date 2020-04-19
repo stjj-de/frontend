@@ -4,7 +4,7 @@ export enum EventSortField {
   TITLE = "title",
   COLOR = "color",
   DATE = "date",
-  END_DATE = "end_date"
+  END_DATE = "endDate"
 }
 
 registerEnumType(EventSortField, {

@@ -33,6 +33,8 @@
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/colors";
+
   $size: 40px;
 
   .user-image-with-popup {
@@ -57,17 +59,17 @@
     border-radius: 50%;
     height: $size;
 
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3); // TODO: Replace with variable
+    box-shadow: 0 3px 10px 0 transparentize(colors.$background-c, 0.7);
   }
 
   .user-image-with-popup__popup-image {
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3); // TODO: Replace with variable
+    box-shadow: 0 3px 5px 0 transparentize(colors.$background-c, 0.7);
   }
 
   .user-image-with-popup__popup {
     pointer-events: none;
     opacity: 0;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1); // TODO: Replace with variable
+    box-shadow: 0 2px 10px 0 transparentize(colors.$background-c, 0.9);
 
     position: absolute;
     top: -10px;

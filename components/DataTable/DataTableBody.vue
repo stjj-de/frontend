@@ -43,6 +43,8 @@
   .data-table__row {
     display: flex;
     align-items: center;
+    cursor: default;
+    user-select: none;
 
     height: 50px;
     border-bottom: 1px solid colors.$background-a;

@@ -22,6 +22,10 @@ html, body {
   color: colors.$background-c;
 }
 
+html, body, #__nuxt, #__layout {
+  min-height: 100vh;
+}
+
 // Transitions
 
 .page-enter-active, .page-leave-active {

@@ -2,7 +2,7 @@
   <footer class="my-footer">
     <nuxt-link
       v-for="item in $options.items"
-      class="my-footer__link underlined-link"
+      class="my-footer__link link"
       :key="item.label"
       :to="item.to"
       @click.native.passive="open = false"
