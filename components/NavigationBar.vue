@@ -107,8 +107,7 @@
   }
 
   .navigation-bar__title {
-    font-size: 2rem;
-    text-transform: uppercase;
+    font-size: 1.4rem;
     font-weight: bold;
     display: block;
 
@@ -260,7 +259,11 @@
     },
     {
       label: "Aktuelles",
-      to: "/posts"
+      to: "/aktuelles"
+    },
+    {
+      label: "Gottesdienste",
+      to: "/gottesdienste"
     },
     // {
     //   label: "Gruppierungen",

@@ -2,9 +2,9 @@
   <nuxt-link
     class="post-card"
     tag="article"
-    :to="`/posts/${post.slug}`"
+    :to="`/aktuelles/${post.slug}`"
   >
-    <nuxt-link class="post-card__title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
+    <nuxt-link class="post-card__title" :to="`/aktuelles/${post.slug}`">{{ post.title }}</nuxt-link>
     <span class="post-card__excerpt">{{ post.excerpt }}</span>
     <div class="post-card__footer">
       <div class="post-card__authors">
@@ -21,21 +21,15 @@
 
 <style scoped lang="scss">
   @use "~@/assets/styles/colors";
+  @use "~@/assets/styles/card";
 
   .post-card {
+    @include card.all;
+
     cursor: pointer;
 
-    padding: 40px 40px 30px;
+    padding-bottom: 30px;
     width: 100%;
-
-    border-radius: 10px;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-    transition: 400ms ease box-shadow;
-    &:hover {
-      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
-    }
   }
 
   .post-card__title {

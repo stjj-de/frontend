@@ -5,8 +5,6 @@
 ## Roadmap
 > Sorted by priority
 ### First release
-- Display Gottesdienst date + management
-- Allow uploading videos
 - Add "Mediathek" + management
 - Add permission checks to administration queries and mutations
 - Use [query complexity](https://typegraphql.com/docs/complexity.html)
@@ -17,7 +15,7 @@
 - Allow using images in posts
 - Add user management
 - Add role and permission management
-- Add presentation of the kindergartens
+- Add presentation of the kindergartens and the groups
 - Use [Blurhash](https://blurha.sh) for all images
 
 ### At some point in the future

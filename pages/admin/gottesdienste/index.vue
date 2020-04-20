@@ -1,16 +1,16 @@
 <template>
-  <main class="gottesdienste-page">
+  <main class="gottesdienste-admin-page">
     <h1 class="heading--1">
       Gottesdienste
     </h1>
-    <div class="gottesdienste-page__gottesdienste">
+    <div class="gottesdienste-admin-page__gottesdienste">
       <LoadingOverlay opacity="1" :active="$apollo.queries.gottesdienste.loading">
         Gottesdienste werden geladen
       </LoadingOverlay>
       <GottesdienstCard
         v-for="gottesdienst in gottesdienste"
         :key="gottesdienst.id"
-        class="gottesdienste-page__gottesdienst"
+        class="gottesdienste-admin-page__gottesdienst"
         :gottesdienst="gottesdienst"
         @edit="editGottesdienst(gottesdienst.id)"
         @delete="confirmDeleteModalID = gottesdienst.id"
@@ -49,12 +49,12 @@
 </template>
 
 <style scoped lang="scss">
-  .gottesdienste-page__gottesdienste {
+  .gottesdienste-admin-page__gottesdienste {
     position: relative;
     min-height: 400px;
   }
 
-  .gottesdienste-page__gottesdienst {
+  .gottesdienste-admin-page__gottesdienst {
     &:not(:last-child) {
       margin-bottom: 40px;
     }
@@ -72,7 +72,7 @@
   import LoadingOverlay from "@/components/LoadingOverlay";
 
   export default {
-    name: "GottesdienstePage",
+    name: "GottesdiensteAdminPage",
     components: { LoadingOverlay, MyButton, MyModal, EditGottesdienstModal, GottesdienstCard },
     layout: "admin",
     data: () => ({

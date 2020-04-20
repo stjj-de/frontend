@@ -52,7 +52,7 @@
     },
     computed: {
       label() {
-        const url = URL(this.href);
+        const url = new URL(this.href);
         let label = "";
 
         if (this.showProtocol) {

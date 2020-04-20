@@ -15,7 +15,7 @@
         </div>
       </div>
       <TransformInternalLinks
-        class="quill-enduser formatted"
+        class="quill-enduser formatted post-page__article"
         tag="article"
         :html="post.content"
       />
@@ -29,7 +29,7 @@
   .post-page__meta {
     width: 400px;
     max-width: 100%;
-    margin: 0 auto;
+    margin: 20px auto 40px;
   }
 
   .post-page__title {
@@ -54,22 +54,27 @@
   }
 
   .post-page__authors {
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
+  .post-page__article {
+    border: 2px solid transparentize(colors.$background-c, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+  }
 </style>
 
 <script>
+  import { format } from "date-fns";
+  import { de as dateFnsLocale } from "date-fns/locale";
   import PostBySlugQuery from "./postBySlugQuery.graphql";
   import NavigationBar from "@/components/NavigationBar";
   import "@/assets/styles/quill-enduser.scss";
   import TransformInternalLinks from "@/components/TransformInternalLinks";
-  import { ensureDateObject, formatDate } from "@/assets/js/dateUtils";
   import UserImageWithPopup from "@/components/UserImageWithPopup/UserImageWithPopup";
-  import { format } from "date-fns";
-  import { de as dateFnsLocale } from "date-fns/locale";
 
   export default {
     name: "PostPage",

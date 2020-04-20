@@ -1,8 +1,8 @@
 <template>
   <div class="posts-page content">
-    <NavigationBar title="Alle Artikel"/>
+    <NavigationBar title="Aktuelles"/>
     <main>
-      <div class="posts-page__posts">
+      <div class="posts-page__posts" v-if="posts">
         <PostCard
           v-for="post in posts.items"
           :key="post.id"
@@ -67,10 +67,10 @@
   const POSTS_LOADED_AT_ONCE = 10;
 
   export default {
-    name: "PostsPage",
+    name: "AktuellesPage",
     components: { MyButton, NavigationBar, PostCard },
     head: () => ({
-      title: "Artikel-Archiv"
+      title: "Aktuelles"
     }),
     apollo: {
       posts: {

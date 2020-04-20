@@ -22,11 +22,11 @@
 
 <style lang="scss">
   @use "~@/assets/styles/colors";
+  @use "~@/assets/styles/card";
 
   .gottesdienst-card {
-    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 30px;
+    @include card.all;
+
     font-size: 1.2rem;
   }
 
@@ -53,6 +53,7 @@
 
 <script>
   import MyButton from "@/components/MyButton";
+
   export default {
     name: "GottesdienstCard",
     components: { MyButton },

@@ -4,6 +4,11 @@
       <h1 class="heading--3">
         Kalender
       </h1>
+      <span class="second-index-section__gottesdienste-info">
+        Aus Gründen der Übersichtlichkeit sind
+        <nuxt-link class="link" to="/gottesdienste">Gottesdienste</nuxt-link>
+        nicht im Kalender eingetragen.
+      </span>
       <EventCalendar/>
     </div>
     <div class="second-index-section__posts-section">
@@ -40,6 +45,12 @@
     @include screenSize.mobile {
       flex-direction: column-reverse;
     }
+  }
+
+  .second-index-section__gottesdienste-info {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
   }
 
   .second-index-section__calendar-section {
