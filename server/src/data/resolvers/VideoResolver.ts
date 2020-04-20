@@ -1,4 +1,4 @@
-import { Arg, Args, ArgsType, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, ArgsType, Authorized, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server-koa";
@@ -53,6 +53,7 @@ export class VideoResolver {
     return this.videoRepository.findOne(id);
   }
 
+  @Authorized()
   @Mutation(() => Video, { nullable: true })
   async createVideo(@Arg("videoIDOrURL") videoIDOrURL: string): Promise<Video | null> {
     let title;
@@ -79,6 +80,7 @@ export class VideoResolver {
     return video;
   }
 
+  @Authorized()
   @Mutation(() => Video)
   async updateVideo(@Arg("id", () => ID) id: string, @Arg("video") data: UpdateVideoInput): Promise<Video> {
     const video = await this.videoRepository.findOne(id);
@@ -90,6 +92,7 @@ export class VideoResolver {
     return this.applyDataToVideoAndSave(video, data);
   }
 
+  @Authorized()
   @Mutation(() => EmptyResponse)
   async deleteVideo(@Arg("id", () => ID) id: string) {
     const video = await this.videoRepository.findOne(id);

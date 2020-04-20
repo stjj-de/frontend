@@ -11,7 +11,7 @@ export interface ISortArgs<T> {
 }
 
 export function argsToSortOptions<T>(args: ISortArgs<T>): {} | { sort: SortOptions<NonNullable<T>>; } {
-  if (args.sortBy === null) {
+  if (!args.sortBy) {
     return {};
   }
 

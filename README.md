@@ -5,7 +5,6 @@
 ## Roadmap
 > Sorted by priority
 ### First release
-- Add permission checks to administration queries and mutations
 - Use [query complexity](https://typegraphql.com/docs/complexity.html)
 
 ### After that

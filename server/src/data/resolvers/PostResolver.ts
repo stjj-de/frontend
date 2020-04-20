@@ -1,7 +1,7 @@
 import {
   Arg,
   Args,
-  ArgsType, Ctx,
+  ArgsType, Authorized, Ctx,
   Field,
   FieldResolver, ID, InputType, Mutation,
   Query,
@@ -17,11 +17,12 @@ import { Post } from "../models/Post";
 import { PaginationArgs } from "../utils/PaginationArgs";
 import { SortOrder } from "../enums/SortOrder";
 import { EmptyResponse } from "../objectTypes/EmptyResponse";
-import { AuthenticatedContext } from "../Context";
+import { AuthenticatedContext, Context } from "../Context";
 import { PostSortField } from "../enums/PostSortField";
 import { PostController } from "../../controllers/PostController";
 import { argsToSortOptions, ISortArgs } from "../../utils/SortOptions";
 import { PaginatedPostResponse } from "../objectTypes/PaginatedPostResponse";
+import { assertAuthentication } from "../utils/assertAuthentication";
 
 @ArgsType()
 export class GetPostsArgs extends PaginationArgs implements ISortArgs<PostSortField | null> {
@@ -31,7 +32,7 @@ export class GetPostsArgs extends PaginationArgs implements ISortArgs<PostSortFi
   @Field(() => Boolean, { defaultValue: true })
   onlyPublished: boolean;
 
-  @Field(() => PostSortField, { nullable: true })
+  @Field(() => PostSortField, { nullable: true, defaultValue: PostSortField.PUBLICATION_DATE })
   sortBy: PostSortField | null;
 
   @Field(() => SortOrder, { defaultValue: SortOrder.DESCENDING })
@@ -60,7 +61,11 @@ export class PostResolver implements ResolverInterface<Post> {
   @Inject(() => PostController) private readonly postController: PostController;
 
   @Query(() => PaginatedPostResponse)
-  async posts(@Args() args: GetPostsArgs): Promise<PaginatedPostResponse> {
+  async posts(@Ctx() context: Context, @Args() args: GetPostsArgs): Promise<PaginatedPostResponse> {
+    if (!args.onlyPublished) {
+      assertAuthentication(context);
+    }
+
     const { hasMore, posts } = await this.postController.getPosts({
       skip: args.skip,
       take: args.take ?? undefined,
@@ -85,6 +90,7 @@ export class PostResolver implements ResolverInterface<Post> {
     return this.postRepository.findOne({ where: { slug } });
   }
 
+  @Authorized()
   @Mutation(() => Post)
   async createPost(@Arg("title") title: string, @Arg("slug") slug: string, @Ctx() context: AuthenticatedContext): Promise<Post> {
     const post = new Post();
@@ -97,6 +103,7 @@ export class PostResolver implements ResolverInterface<Post> {
     return post;
   }
 
+  @Authorized()
   @Mutation(() => Post)
   async updatePost(@Arg("id", () => ID) id: string, @Arg("post") data: UpdatePostInput): Promise<Post> {
     const post = await this.postRepository.findOne(id);
@@ -108,6 +115,7 @@ export class PostResolver implements ResolverInterface<Post> {
     return this.applyDataToPostAndSave(post, data);
   }
 
+  @Authorized()
   @Mutation(() => EmptyResponse)
   async deletePost(@Arg("id", () => ID) id: string) {
     const event = await this.postRepository.findOne(id);

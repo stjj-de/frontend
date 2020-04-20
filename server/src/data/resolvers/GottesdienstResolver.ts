@@ -1,4 +1,4 @@
-import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server-koa";
@@ -43,11 +43,13 @@ export class GottesdienstResolver {
     return this.gottesdienstRepository.find();
   }
 
+  @Authorized()
   @Mutation(() => Gottesdienst)
   async createGottesdienst(@Arg("gottesdienst") data: CreateGottesdienstInput): Promise<Gottesdienst> {
     return this.applyDataToGottesdienstAndSave(new Gottesdienst(), data);
   }
 
+  @Authorized()
   @Mutation(() => Gottesdienst)
   async updateGottesdienst(@Arg("id", () => ID) id: string, @Arg("gottesdienst") data: UpdateGottesdienstInput): Promise<Gottesdienst> {
     const event = await this.gottesdienstRepository.findOne(id);
@@ -59,6 +61,7 @@ export class GottesdienstResolver {
     return this.applyDataToGottesdienstAndSave(event, data);
   }
 
+  @Authorized()
   @Mutation(() => EmptyResponse)
   async deleteGottesdienst(@Arg("id", () => ID) id: string) {
     const event = await this.gottesdienstRepository.findOne(id);

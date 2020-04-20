@@ -1,6 +1,6 @@
 import {
   Arg,
-  Args, ArgsType, Ctx,
+  Args, ArgsType, Authorized, Ctx,
   Field, FieldResolver, ID, InputType, Mutation,
   Query,
   Resolver, ResolverInterface, Root
@@ -90,6 +90,7 @@ export class EventResolver implements ResolverInterface<Event> {
     return this.eventRepository.findOne(id);
   }
 
+  @Authorized()
   @Mutation(() => Event)
   async createEvent(@Arg("event") data: CreateEventInput, @Ctx() context: AuthenticatedContext): Promise<Event> {
     const event = new Event();
@@ -98,6 +99,7 @@ export class EventResolver implements ResolverInterface<Event> {
     return this.applyDataToEventAndSave(event, data);
   }
 
+  @Authorized()
   @Mutation(() => Event)
   async updateEvent(@Arg("id", () => ID) id: string, @Arg("event") data: UpdateEventInput): Promise<Event> {
     const event = await this.eventRepository.findOne(id);
@@ -109,6 +111,7 @@ export class EventResolver implements ResolverInterface<Event> {
     return this.applyDataToEventAndSave(event, data);
   }
 
+  @Authorized()
   @Mutation(() => EmptyResponse)
   async deleteEvent(@Arg("id", () => ID) id: string) {
     const event = await this.eventRepository.findOne(id);

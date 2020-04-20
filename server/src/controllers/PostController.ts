@@ -40,8 +40,6 @@ export class PostController {
       order
     });
 
-    console.log(posts);
-
     const hasMore = options.take === undefined ? false : posts.length === options.take + 1;
 
     return {

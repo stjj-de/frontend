@@ -1,5 +1,5 @@
 import {
-  Arg, Ctx, Field,
+  Arg, Authorized, Ctx, Field,
   FieldResolver,
   ID,
   Mutation,
@@ -13,8 +13,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server-koa";
 import { User } from "../models/User";
 import { EmptyResponse } from "../objectTypes/EmptyResponse";
-import { Context } from "../Context";
-import { getSafeUser } from "../utils/getSafeUser";
+import { AuthenticatedContext } from "../Context";
 import * as bcrypt from "bcrypt";
 import nanoid from "nanoid/async";
 
@@ -35,11 +34,6 @@ export class UserResolver implements ResolverInterface<User> {
   @InjectRepository(User) private readonly userRepository: Repository<User>;
 
   @FieldResolver()
-  async role(@Root() user: User) {
-    return (await this.userRepository.findOne(user.id, { select: ["id"], relations: ["role"] }))!.role;
-  }
-
-  @FieldResolver()
   async displayName(@Root() user: User) {
     return user.getDisplayName();
   }
@@ -49,8 +43,9 @@ export class UserResolver implements ResolverInterface<User> {
     return ((await this.userRepository.findOne({ username })) ?? null);
   }
 
+  @Authorized()
   @Query(() => User)
-  async me(@Ctx() context: Context) {
+  async me(@Ctx() context: AuthenticatedContext) {
     return context.user;
   }
 
@@ -88,9 +83,9 @@ export class UserResolver implements ResolverInterface<User> {
     return new EmptyResponse();
   }
 
+  @Authorized()
   @Mutation(() => TokenResponse)
-  async regenerateAuthenticationToken(@Ctx() context: Context) {
-    const user = getSafeUser(context);
+  async regenerateAuthenticationToken(@Ctx() { user }: AuthenticatedContext) {
     user.token = await nanoid(50);
     await this.userRepository.save(user);
 

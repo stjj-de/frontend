@@ -14,7 +14,12 @@ export async function initApollo() {
   const schema = await buildSchema({
     resolvers: [PostResolver, UserResolver, EventResolver, GottesdienstResolver, VideoResolver],
     container: Container,
-    validate: false
+    validate: false,
+    authChecker: resolverData => {
+      // eslint-disable-next-line prefer-destructuring
+      const context: Context = resolverData.context;
+      return context.user !== null;
+    }
   });
 
   return new ApolloServer({
