@@ -5,13 +5,13 @@
 ## Roadmap
 > Sorted by priority
 ### First release
-- Use [query complexity](https://typegraphql.com/docs/complexity.html)
+- Allow uploading photos and files
 
 ### After that
-- Add presentation of the groups + dynamic text editing
-- Allow uploading photos and files
-- Allow using images in posts
 - Add user management
+- Use [query complexity](https://typegraphql.com/docs/complexity.html)
+- Add presentation of the groups + dynamic text editing
+- Allow using images in posts
 - Add role and permission management
 - Add presentation of the kindergartens
 - Use [Blurhash](https://blurha.sh) for all images
