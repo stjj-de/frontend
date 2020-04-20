@@ -1,19 +1,19 @@
 <template>
   <div class="login-page" :data-logged-in="loggedIn">
-    <div class="content _box-container">
-      <main class="_box" :data-show="showBox">
+    <div class="content login-page__box-container">
+      <main class="login-page__box" :data-show="showBox">
         <LoadingOverlay :active="loggedIn" :transition-delay="150">
           Du wirst angemeldet
         </LoadingOverlay>
         <div class="_box-content">
-          <nuxt-link class="_back link" to="/">
-            <ArrowLeftIcon class="_back-arrow"/>
+          <nuxt-link class="login-page__back link" to="/">
+            <ArrowLeftIcon class="login-page__back-arrow"/>
             Zurück zur Startseite
           </nuxt-link>
-          <h1 class="heading--3 _heading">
+          <h1 class="heading--3 login-page__heading">
             Anmelden
           </h1>
-          <form class="_form" action="javascript:" @submit="submit()">
+          <form class="login-page__form" action="javascript:" @submit="submit()">
             <InputField
               label="Benutzername"
               autocomplete="username"
@@ -26,17 +26,15 @@
               autocomplete="current-password"
               :companion="password"
             />
-            <div class="_buttons">
-              <MyButton
-                class="_next-step"
-                is-submit
-                variant="primary"
-                :loading="submitLoading"
-                :disabled="!(password.valid && username.valid)"
-              >
-                Anmelden
-              </MyButton>
-            </div>
+            <MyButton
+              class="login-page__button"
+              is-submit
+              variant="primary"
+              :loading="submitLoading"
+              :disabled="!(password.valid && username.valid)"
+            >
+              Anmelden
+            </MyButton>
           </form>
         </div>
       </main>
@@ -58,40 +56,40 @@
     &[data-logged-in] {
       background-position: 0 0;
 
-      ._box-content {
+      .login-page__box-content {
         opacity: 0;
       }
     }
   }
 
-  ._box-content {
+  .login-page__box-content {
     transition: 300ms ease opacity;
   }
 
-  ._heading {
+  .login-page__heading {
     margin-bottom: 0;
   }
 
-  ._back {
+  .login-page__back {
     font-size: 1.2rem;
     top: 10px;
     left: 10px;
   }
 
-  ._back-arrow {
+  .login-page__back-arrow {
     width: 20px;
     position: relative;
     top: 3px;
   }
 
-  ._box-container {
+  .login-page__box-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
   }
 
-  ._box {
+  .login-page__box {
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 10px 100px 20px rgba(0, 0, 0, 0.4);
@@ -109,13 +107,10 @@
     }
   }
 
-  ._buttons {
-    display: flex;
-    justify-content: flex-end;
-
-    & > *:not(:last-child) {
-      margin-right: 5px;
-    }
+  .login-page__button {
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
   }
 </style>
 
@@ -131,7 +126,7 @@
 
   export default {
     name: "LoginPage",
-    layout: "only-app",
+    layout: "none",
     components: { MyButton, LoadingOverlay, InputField, ArrowLeftIcon },
     head: () => ({
       title: "Anmelden"

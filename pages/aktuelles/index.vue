@@ -1,8 +1,8 @@
 <template>
   <div class="posts-page content">
     <NavigationBar title="Aktuelles"/>
-    <main>
-      <div class="posts-page__posts" v-if="posts">
+    <main v-if="posts">
+      <div class="posts-page__posts">
         <PostCard
           v-for="post in posts.items"
           :key="post.id"

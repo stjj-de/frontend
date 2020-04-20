@@ -30,15 +30,16 @@
   }
 
   @include screenSize.mobile {
-
     .my-footer {
+      height: auto;
       flex-direction: column;
-      margin-bottom: 10px;
+      padding-top: 30px;
+      padding-bottom: 20px;
     }
 
     .my-footer__link:not(:last-child) {
       margin-right: 0;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
   }
 </style>

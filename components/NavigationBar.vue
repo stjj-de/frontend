@@ -1,44 +1,46 @@
 <template>
   <div class="navigation-bar" :class="classes">
     <div class="navigation-bar__placeholder"></div>
-    <nav class="navigation-bar__content">
-      <div class="navigation-bar__title-container">
-      <span
-        class="navigation-bar__title"
-        :class="{ 'navigation-bar__title--show': showTitle }"
-      >
-        {{ title }}
-      </span>
+    <div class="navigation-bar__container-1">
+      <div class="navigation-bar__container-2">
+        <div class="navigation-bar__title-container">
+        <span
+          class="navigation-bar__title"
+          :class="{ 'navigation-bar__title--show': showTitle }"
+        >
+          {{ title }}
+        </span>
+        </div>
+        <nav class="navigation-bar__content">
+          <template v-for="item in $options.items">
+            <nuxt-link
+              v-if="item.to"
+              :key="item.label"
+              class="navigation-bar__link"
+              :to="item.to"
+              @click.native.passive="open = false"
+            >
+              {{ item.label }}
+            </nuxt-link>
+            <a
+              v-else
+              class="navigation-bar__link"
+              :key="item.label"
+              rel="noopener"
+              :href="item.href"
+              @click.passive="open = false"
+            >
+              {{ item.label }}
+            </a>
+          </template>
+        </nav>
+        <div class="navigation-bar__toggle" @click="open = !open">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
-      <div class="navigation-bar__toggle" @click="open = !open">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="navigation-bar__links">
-        <template v-for="item in $options.items">
-          <nuxt-link
-            v-if="item.to"
-            :key="item.label"
-            class="navigation-bar__link"
-            :to="item.to"
-            @click.native.passive="open = false"
-          >
-            {{ item.label }}
-          </nuxt-link>
-          <a
-            v-else
-            class="navigation-bar__link"
-            :key="item.label"
-            rel="noopener"
-            :href="item.href"
-            @click.passive="open = false"
-          >
-            {{ item.label }}
-          </a>
-        </template>
-      </div>
-    </nav>
+    </div>
   </div>
 </template>
 
@@ -46,7 +48,6 @@
   @use "~@/assets/styles/screenSize";
   @use "~@/assets/styles/colors";
   @use "~@/assets/styles/content";
-  @use "~@/assets/styles/z-indexes";
 
   body {
     --navigation-bar-height: 80px;
@@ -56,23 +57,28 @@
     height: var(--navigation-bar-height);
   }
 
-  .navigation-bar__content {
+  .navigation-bar__container-1 {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: z-indexes.$navigation-bar;
+    z-index: 1000;
 
     height: var(--navigation-bar-height);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
 
     .navigation-bar--show-background & {
       background: colors.$background;
     }
+  }
+
+  .navigation-bar__container-2 {
+    width: 100%;
+    height: 100%;
+    padding: 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .navigation-bar__toggle {
@@ -101,13 +107,15 @@
 
   .navigation-bar__title-container {
     height: 100%;
+    width: 100%;
     overflow: hidden;
     display: flex;
     align-items: center;
+    padding-right: 20px;
   }
 
   .navigation-bar__title {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
     display: block;
 
@@ -126,7 +134,7 @@
     }
   }
 
-  .navigation-bar__links {
+  .navigation-bar__content {
     position: fixed;
     top: 0;
     left: 0;
@@ -146,10 +154,6 @@
     pointer-events: none;
     transition: 200ms ease opacity;
     border: none;
-
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
   }
 
   .navigation-bar__link {
@@ -199,7 +203,7 @@
       }
     }
 
-    .navigation-bar__links {
+    .navigation-bar__content {
       opacity: 1;
       pointer-events: auto;
     }
@@ -210,8 +214,9 @@
       --navigation-bar-height: 100px;
     }
 
-    .navigation-bar__content {
-      @include content.content(40px);
+    .navigation-bar__container-2 {
+      @include content.content;
+      padding: 0 10px;
     }
 
     .navigation-bar__title {
@@ -222,7 +227,7 @@
       display: none;
     }
 
-    .navigation-bar__links {
+    .navigation-bar__content {
       position: static;
       width: auto;
       height: auto;

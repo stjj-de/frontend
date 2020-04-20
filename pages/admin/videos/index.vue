@@ -9,7 +9,7 @@
       @row-click="id => editVideo(id)"
     >
       <template v-slot:empty-state>
-        <AdminDataTableEmptyState item-type="Video"/>
+        <AdminDataTableEmptyState items-name="Videos"/>
       </template>
       <template v-slot:buttons>
         <MyButton

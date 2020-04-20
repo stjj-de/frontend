@@ -23,11 +23,16 @@
         />
         <span v-if="posts.length === 0" class="second-index-section__no-news">
           Zurzeit gibt es keine Neuigkeiten.
-          <nuxt-link class="link second-index-section__show-all-posts" to="/posts">Ältere Artikel anzeigen</nuxt-link>
+          <nuxt-link
+            class="link second-index-section__show-all-posts"
+            to="/aktuelles"
+          >
+            Ältere Artikel anzeigen
+          </nuxt-link>
         </span>
         <nuxt-link
           v-else
-          class="link second-index-section__show-all-posts" to="/posts"
+          class="link second-index-section__show-all-posts" to="/aktuelles"
         >
           Alle Artikel anzeigen
         </nuxt-link>
@@ -78,6 +83,10 @@
 
     & > *:not(:last-child) {
       margin-bottom: 20px;
+    }
+
+    @include screenSize.mobile {
+      margin: 0 -10px;
     }
   }
 

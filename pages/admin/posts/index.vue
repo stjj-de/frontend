@@ -9,7 +9,7 @@
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
-        <AdminDataTableEmptyState item-type="Artikel"/>
+        <AdminDataTableEmptyState items-name="Artikel"/>
       </template>
       <template v-slot:buttons>
         <MyButton

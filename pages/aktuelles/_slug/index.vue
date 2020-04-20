@@ -25,6 +25,7 @@
 
 <style scoped lang="scss">
   @use "~@/assets/styles/colors";
+  @use "~@/assets/styles/screenSize";
 
   .post-page__meta {
     width: 400px;
@@ -61,9 +62,12 @@
   }
 
   .post-page__article {
-    border: 2px solid transparentize(colors.$background-c, 0.8);
-    padding: 40px;
     border-radius: 10px;
+
+    @include screenSize.notMobile {
+      border: 2px solid transparentize(colors.$background-c, 0.8);
+      padding: 40px;
+    }
   }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <NavigationBar/>
+    <NavigationBar title="Start"/>
     <main class="content">
       <FirstIndexSection/>
       <SecondIndexSection/>

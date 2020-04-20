@@ -3,7 +3,7 @@
     <span class="admin-data-table-empty-state__emoji">
       😕
     </span>
-    Keine {{ itemType }}s gefunden.
+    Keine {{ itemsName }} gefunden.
   </div>
 </template>
 
@@ -28,7 +28,7 @@
   export default {
     name: "AdminDataTableEmptyState",
     props: {
-      itemType: {
+      itemsName: {
         type: String,
         required: true
       }

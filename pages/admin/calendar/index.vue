@@ -40,7 +40,7 @@
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
-        <AdminDataTableEmptyState item-type="Termin"/>
+        <AdminDataTableEmptyState items-name="Termine"/>
       </template>
       <template v-slot:buttons>
         <MyButton
