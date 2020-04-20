@@ -56,6 +56,9 @@
   export default {
     name: "VideosAdminPage",
     components: { EditVideoModal, CreateVideoModal, AdminDataTableEmptyState, MyButton, DataTable },
+    head: () => ({
+      title: "Videos / Administration"
+    }),
     layout: "admin",
     data() {
       return {

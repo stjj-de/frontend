@@ -52,6 +52,9 @@
   export default {
     name: "PostsAdminPage",
     components: { AdminDataTableEmptyState, CreatePostModal, MyButton, DataTable },
+    head: () => ({
+      title: "Artikel / Administration"
+    }),
     layout: "admin",
     data() {
       return {

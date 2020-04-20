@@ -83,6 +83,11 @@
   export default {
     name: "PostPage",
     components: { UserImageWithPopup, TransformInternalLinks, NavigationBar },
+    head() {
+      return {
+        title: `${this.post.title} / Aktuelles`
+      };
+    },
     async asyncData({ error, app, params }) {
       const $apollo = app.apolloProvider.defaultClient;
 

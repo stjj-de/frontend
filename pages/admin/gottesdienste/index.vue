@@ -74,6 +74,9 @@
   export default {
     name: "GottesdiensteAdminPage",
     components: { LoadingOverlay, MyButton, MyModal, EditGottesdienstModal, GottesdienstCard },
+    head: () => ({
+      title: "Gottesdienste / Administration"
+    }),
     layout: "admin",
     data: () => ({
       editModalActive: false,

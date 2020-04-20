@@ -145,6 +145,9 @@
   export default {
     name: "MediathekPage",
     components: { MyButton, YoutubeThumbnail, NavigationBar },
+    head: () => ({
+      title: "Mediathek"
+    }),
     apollo: {
       videos: {
         query: VideosQuery,

@@ -152,6 +152,9 @@
   export default {
     name: "EditPostPage",
     components: { LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
+    head: () => ({
+      title: "Artikel bearbeiten / Administration"
+    }),
     layout: "admin",
     data() {
       return {

@@ -50,6 +50,9 @@
   export default {
     name: "GottesdienstePage",
     components: { GottesdienstCard, NavigationBar },
+    head: () => ({
+      title: "Gottesdienste"
+    }),
     apollo: {
       gottesdienste: GottesdiensteQuery
     }

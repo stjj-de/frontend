@@ -5,7 +5,6 @@
 ## Roadmap
 > Sorted by priority
 ### First release
-- Add "Mediathek" + management
 - Add permission checks to administration queries and mutations
 - Use [query complexity](https://typegraphql.com/docs/complexity.html)
 

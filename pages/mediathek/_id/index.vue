@@ -63,6 +63,11 @@
   export default {
     name: "VideoPage",
     components: { NavigationBar, ArrowLeftIcon },
+    head() {
+      return {
+        title: `Video: ${this.video.title} / Mediathek`
+      };
+    },
     data: () => ({
       video: null
     }),

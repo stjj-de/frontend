@@ -139,6 +139,9 @@
   export default {
     name: "CalendarPage",
     components: { AdminDataTableEmptyState, MyButton, EditEventModal, DataTable, VDatePicker },
+    head: () => ({
+      title: "Kalender / Administration"
+    }),
     layout: "admin",
     data() {
       return {

@@ -4,7 +4,7 @@
     <main class="content">
       <FirstIndexSection/>
       <SecondIndexSection/>
-      <span class="_image-credits formatted">
+      <span class="index-page__image-credits formatted">
         Bild der Kirche St. Josef von
         <a href="https://commons.wikimedia.org/wiki/User:Mstp77">atreyu</a>
         /
@@ -15,7 +15,7 @@
 </template>
 
 <style scoped lang="scss">
-  ._image-credits {
+  .index-page__image-credits {
     display: block;
     margin-top: 20px;
   }
