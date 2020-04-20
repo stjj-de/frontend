@@ -216,7 +216,11 @@
           this.startDate = today.toISOString();
           this.endDate = null;
           this.color = "gray";
-          this.fields.startDate.setSavedValueToCurrent();
+
+          this.$nextTick(() => {
+            this.fields.startDate.reset();
+            this.fields.endDate.reset();
+          });
         } else {
           this.fetchEvent();
         }
