@@ -26,11 +26,11 @@ export class PostController {
     const where: FindManyOptions<Post>["where"] = {};
 
     if (options.onlyRelevant) {
-      where.relevantUntil = Raw(alias => `${alias} IS NULL OR ${alias} > NOW()`);
+      where.relevantUntil = Raw(alias => `(${alias} IS NULL OR ${alias} > NOW())`);
     }
 
     if (options.onlyPublished) {
-      where.publicationDate = Raw(alias => `${alias} <= NOW()`);
+      where.publicationDate = Raw(alias => `(${alias} IS NOT NULL AND ${alias} <= NOW())`);
     }
 
     const posts = await this.postRepository.find({
@@ -39,6 +39,8 @@ export class PostController {
       where,
       order
     });
+
+    console.log(posts);
 
     const hasMore = options.take === undefined ? false : posts.length === options.take + 1;
 
