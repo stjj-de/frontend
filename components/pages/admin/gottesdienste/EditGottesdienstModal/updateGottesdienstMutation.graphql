@@ -1,0 +1,5 @@
+mutation ($id: ID!, $gottesdienst: UpdateGottesdienstInput!) {
+  updateGottesdienst(id: $id, gottesdienst: $gottesdienst) {
+    id
+  }
+}

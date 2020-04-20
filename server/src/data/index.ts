@@ -5,12 +5,13 @@ import { getRepository } from "typeorm";
 import { PostResolver } from "./resolvers/PostResolver";
 import { UserResolver } from "./resolvers/UserResolver";
 import { EventResolver } from "./resolvers/EventResolver";
+import { GottesdienstResolver } from "./resolvers/GottesdienstResolver";
 import { Context } from "./Context";
 import { User } from "./models/User";
 
 export async function initApollo() {
   const schema = await buildSchema({
-    resolvers: [PostResolver, UserResolver, EventResolver],
+    resolvers: [PostResolver, UserResolver, EventResolver, GottesdienstResolver],
     container: Container,
     validate: false
   });

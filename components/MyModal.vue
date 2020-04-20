@@ -21,8 +21,8 @@
               {{ title }}
             </h1>
           </header>
-          <main class="my-modal__content">
-            <LoadingOverlay opacity="1" :active="loading !== false">
+          <main class="my-modal__content" :style="`min-height: ${loading ? '120px' : 'unset'}`">
+            <LoadingOverlay opacity="1" :active="loading">
               {{ loadingText }}
             </LoadingOverlay>
             <slot/>

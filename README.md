@@ -5,7 +5,7 @@
 ## Roadmap
 > Sorted by priority
 ### First release
-- Display church service date + management
+- Display Gottesdienst date + management
 - Allow uploading videos
 - Add "Mediathek" + management
 - Add permission checks to administration queries and mutations

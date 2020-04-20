@@ -1,0 +1,8 @@
+query ($id: ID!) {
+  gottesdienst(id: $id) {
+    id
+    time
+    location
+    description
+  }
+}

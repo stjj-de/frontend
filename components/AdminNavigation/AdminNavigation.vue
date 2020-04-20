@@ -226,7 +226,8 @@
   import CalendarIcon from "@/assets/icons/calendar.svg";
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import PencilIcon from "@/assets/icons/pencil.svg";
-  import UsersIcon from "@/assets/icons/users.svg";
+  import ChurchIcon from "@/assets/icons/church.svg";
+  // import UsersIcon from "@/assets/icons/users.svg";
   import { getImageURL } from "@/assets/js/getUploadURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
@@ -237,15 +238,20 @@
       to: "/admin/posts",
       icon: PencilIcon
     },
+    // {
+    //   label: "Benutzer",
+    //   to: "/admin/users",
+    //   icon: UsersIcon
+    // },
     {
       label: "Kalender",
       to: "/admin/calendar",
       icon: CalendarIcon
     },
     {
-      label: "Benutzer",
-      to: "/admin/users",
-      icon: UsersIcon
+      label: "Gottesdienste",
+      to: "/admin/gottesdienste",
+      icon: ChurchIcon
     }
   ];
 

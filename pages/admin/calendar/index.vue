@@ -3,9 +3,9 @@
     <h1 class="heading--1">
       Kalender
     </h1>
-    <div class="_filter">
+    <div class="calendar-page__filter">
       <span class="heading--5">Filter</span>
-      <select aria-label="Filter" v-model="dateFilter" class="_filter-select">
+      <select class="calendar-page__filter-select" aria-label="Filter" v-model="dateFilter">
         <option :value="null">
           Keiner
         </option>
@@ -16,7 +16,7 @@
           In dieser Zeitspanne
         </option>
       </select>
-      <div class="_picker" :data-enabled="dateFilter !== null">
+      <div class="calendar-page__picker" :data-enabled="dateFilter !== null">
         <client-only>
           <v-date-picker
             v-if="dateFilterNotNull === 'span'"
@@ -40,8 +40,8 @@
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
-        <div class="_no-results">
-          <span class="_no-results-emoji">
+        <div class="calendar-page__no-results">
+          <span class="calendar-page__no-results-emoji">
             😕
           </span>
           Keine Termine passen zu deinem Filter.
@@ -65,11 +65,11 @@
 </template>
 
 <style scoped lang="scss">
-  ._filter-select {
+  .calendar-page__filter-select {
     font-size: 1.2rem;
   }
 
-  ._picker {
+  .calendar-page__picker {
     margin-top: 10px;
     position: relative;
 
@@ -97,11 +97,11 @@
     }
   }
 
-  ._filter {
+  .calendar-page__filter {
     margin-bottom: 20px;
   }
 
-  ._no-results {
+  .calendar-page__no-results {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -111,7 +111,7 @@
     font-size: 1.3rem;
   }
 
-  ._no-results-emoji {
+  .calendar-page__no-results-emoji {
     font-size: 4rem;
     margin-bottom: 20px;
   }
@@ -121,10 +121,10 @@
   import EventsQuery from "./eventsQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
-  import EventsTableColorColumn from "@/components/pages/admin/events/EventsTableColorColumn";
+  import EventsTableColorColumn from "@/components/pages/admin/calendar/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
   import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
-  import EditEventModal from "@/components/pages/admin/events/EditEventModal/EditEventModal";
+  import EditEventModal from "@/components/pages/admin/calendar/EditEventModal/EditEventModal";
   import MyButton from "@/components/MyButton";
 
   const _isFullDay = (startDateString, endDateString) => {

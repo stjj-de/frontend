@@ -82,18 +82,10 @@
         Deine Änderungen gehen verloren.
       </template>
       <template v-slot:buttons="{ close: _close }">
-        <MyButton
-          class="edit-event-modal__cancel"
-          variant="primary"
-          @click="_close()"
-        >
+        <MyButton variant="primary" @click="_close()">
           Abbrechen
         </MyButton>
-        <MyButton
-          class="edit-event-modal__back"
-          variant="danger"
-          @click="close()"
-        >
+        <MyButton variant="danger" @click="close()">
           Verwerfen
         </MyButton>
       </template>
@@ -108,18 +100,10 @@
         Diese Aktion kann nicht rückganging gemacht werden.
       </template>
       <template v-slot:buttons="{ close: _close }">
-        <MyButton
-          class="edit-event-modal__cancel"
-          variant="primary"
-          @click="_close()"
-        >
+        <MyButton variant="primary" @click="_close()">
           Abbrechen
         </MyButton>
-        <MyButton
-          class="edit-event-modal__back"
-          variant="danger"
-          @click="delete_()"
-        >
+        <MyButton variant="danger" @click="delete_()">
           Löschen
         </MyButton>
       </template>
@@ -151,7 +135,7 @@
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
   import MyButton from "@/components/MyButton";
-  import EventColorPicker from "@/components/pages/admin/events/EventColorPicker";
+  import EventColorPicker from "@/components/pages/admin/calendar/EventColorPicker";
   import DateTimeField from "@/components/DateTimeField";
 
   const today = startOfDay(new Date());
