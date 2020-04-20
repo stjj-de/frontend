@@ -64,8 +64,6 @@
   import NavigationBar from "@/components/NavigationBar";
   import MyButton from "@/components/MyButton";
 
-  const POSTS_LOADED_AT_ONCE = 10;
-
   export default {
     name: "AktuellesPage",
     components: { MyButton, NavigationBar, PostCard },
@@ -77,7 +75,7 @@
         query: PostsQuery,
         variables: {
           skip: 0,
-          take: POSTS_LOADED_AT_ONCE
+          take: 10
         }
       }
     },

@@ -35,3 +35,7 @@ export function isAtStartOfDay(date) {
   // Milliseconds are ignored, because they are not displayed either.
   return _date.getHours() === 0 && _date.getMinutes() === 0 && _date.getSeconds() === 0;
 }
+
+export function formatDateWithOptionalTime(date) {
+  return isAtStartOfDay(date) ? formatDate(date) : formatDateWithTime(date);
+}

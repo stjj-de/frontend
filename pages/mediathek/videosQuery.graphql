@@ -1,0 +1,11 @@
+query ($skip: Int!, $take: Int!){
+  videos(skip: $skip, take: $take) {
+    items {
+      id
+      publicationDate
+      title
+      videoID
+    }
+    hasMore
+  }
+}

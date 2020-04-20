@@ -37,11 +37,11 @@
   import VideosQuery from "./videosQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import { formatDate, formatDateWithTime, isAtStartOfDay } from "@/assets/js/dateUtils";
   import MyButton from "@/components/MyButton";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
   import CreateVideoModal from "@/components/pages/admin/videos/CreateVideoModal/CreateVideoModal";
   import EditVideoModal from "@/components/pages/admin/videos/EditVideoModal/EditVideoModal";
+  import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
 
   const ITEMS_PER_PAGE = 10;
 
@@ -50,7 +50,7 @@
       return "Nicht festgelegt";
     }
 
-    return isAtStartOfDay(date) ? formatDate(date) : formatDateWithTime(date);
+    return formatDateWithOptionalTime(date);
   };
 
   export default {

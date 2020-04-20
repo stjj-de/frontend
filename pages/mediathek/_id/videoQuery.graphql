@@ -1,0 +1,8 @@
+query ($id: ID!) {
+  video(id: $id) {
+    id
+    publicationDate
+    title
+    videoID
+  }
+}

@@ -33,7 +33,7 @@
   import PostsQuery from "./postsQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import { formatDate, formatDateWithTime, isAtStartOfDay } from "@/assets/js/dateUtils";
+  import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
   import MyButton from "@/components/MyButton";
   import CreatePostModal from "@/components/pages/admin/posts/CreatePostModal/CreatePostModal";
   import "izitoast/dist/css/iziToast.min.css";
@@ -46,7 +46,7 @@
       return "Nicht festgelegt";
     }
 
-    return isAtStartOfDay(date) ? formatDate(date) : formatDateWithTime(date);
+    return formatDateWithOptionalTime(date);
   };
 
   export default {
