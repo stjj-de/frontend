@@ -104,7 +104,7 @@
     justify-content: space-between;
     padding: 10px 30px;
 
-    margin: 5px 5px;
+    margin: 3px 5px;
     border-radius: 5px;
 
     color: black;

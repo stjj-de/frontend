@@ -1,17 +1,17 @@
 <template>
-  <div class="admin-layout">
+  <div class="admin-page">
     <AdminNavigation/>
-    <div class="admin-layout__content">
-      <nuxt/>
+    <div class="admin-page__content">
+      <nuxt-child/>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-  @use "~@/assets/styles/screenSize";
-  @use "~@/assets/styles/transitions";
+  @use "~@/assets/styles/_screenSize.scss";
+  @use "~@/assets/styles/_transitions.scss";
 
-  .admin-layout {
+  .admin-page {
     overflow: hidden;
     width: 100vw;
     padding: 0;
@@ -21,18 +21,18 @@
     justify-content: flex-start;
   }
 
-  .admin-layout__content {
+  .admin-page__content {
     width: calc(100vw - 350px);
     margin-left: 350px;
     padding: 20px 60px 20px;
   }
 
   @media(max-width: 1000px) {
-    .admin-layout {
+    .admin-page {
       flex-direction: column;
     }
 
-    .admin-layout__content {
+    .admin-page__content {
       padding: 80px 20px 20px;
       width: 100vw;
       margin-left: 0;
@@ -44,7 +44,7 @@
   import AdminNavigation from "@/components/AdminNavigation/AdminNavigation";
 
   export default {
-    name: "AdminLayout",
+    name: "AdminPage",
     middleware: ["auth"],
     components: { AdminNavigation }
   };

@@ -1,11 +1,12 @@
 <template>
   <div class="default-layout">
     <nuxt/>
-    <MyFooter/>
+    <MyFooter v-if="!isAdmin"/>
   </div>
 </template>
 
 <style scoped lang="scss">
+
 </style>
 
 <script>
@@ -13,6 +14,11 @@
 
   export default {
     name: "DefaultLayout",
-    components: { MyFooter }
+    components: { MyFooter },
+    computed: {
+      isAdmin() {
+        return this.$route.path.startsWith("/admin");
+      }
+    }
   };
 </script>

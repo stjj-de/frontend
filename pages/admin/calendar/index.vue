@@ -142,7 +142,6 @@
     head: () => ({
       title: "Kalender / Administration"
     }),
-    layout: "admin",
     data() {
       return {
         dateFilter: null,

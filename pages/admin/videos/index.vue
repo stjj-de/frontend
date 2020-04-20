@@ -59,7 +59,6 @@
     head: () => ({
       title: "Videos / Administration"
     }),
-    layout: "admin",
     data() {
       return {
         createVideoModalActive: false,

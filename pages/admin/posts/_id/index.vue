@@ -155,7 +155,6 @@
     head: () => ({
       title: "Artikel bearbeiten / Administration"
     }),
-    layout: "admin",
     data() {
       return {
         publicationDate: null,

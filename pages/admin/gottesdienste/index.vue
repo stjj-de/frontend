@@ -77,7 +77,6 @@
     head: () => ({
       title: "Gottesdienste / Administration"
     }),
-    layout: "admin",
     data: () => ({
       editModalActive: false,
       editModalGottesdienstID: null,

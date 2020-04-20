@@ -55,7 +55,6 @@
     head: () => ({
       title: "Artikel / Administration"
     }),
-    layout: "admin",
     data() {
       return {
         createPostModalActive: false,
