@@ -6,12 +6,13 @@ import { PostResolver } from "./resolvers/PostResolver";
 import { UserResolver } from "./resolvers/UserResolver";
 import { EventResolver } from "./resolvers/EventResolver";
 import { GottesdienstResolver } from "./resolvers/GottesdienstResolver";
+import { VideoResolver } from "./resolvers/VideoResolver";
 import { Context } from "./Context";
 import { User } from "./models/User";
 
 export async function initApollo() {
   const schema = await buildSchema({
-    resolvers: [PostResolver, UserResolver, EventResolver, GottesdienstResolver],
+    resolvers: [PostResolver, UserResolver, EventResolver, GottesdienstResolver, VideoResolver],
     container: Container,
     validate: false
   });

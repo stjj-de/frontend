@@ -57,7 +57,8 @@
     "vue-select": "^3.10.0",
     "vue-switches": "^2.0.1",
     "vue2-editor": "^2.10.2",
-    "weekstart": "^1.0.1"
+    "weekstart": "^1.0.1",
+    "ytdl-core": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",

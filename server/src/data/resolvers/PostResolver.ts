@@ -61,7 +61,7 @@ export class PostResolver implements ResolverInterface<Post> {
 
   @Query(() => PaginatedPostResponse)
   async posts(@Args() args: GetPostsArgs): Promise<PaginatedPostResponse> {
-    const { hasMore, events } = await this.postController.getPosts({
+    const { hasMore, posts } = await this.postController.getPosts({
       skip: args.skip,
       take: args.take ?? undefined,
       onlyPublished: args.onlyPublished,
@@ -71,7 +71,7 @@ export class PostResolver implements ResolverInterface<Post> {
 
     return {
       hasMore,
-      items: events
+      items: posts
     };
   }
 

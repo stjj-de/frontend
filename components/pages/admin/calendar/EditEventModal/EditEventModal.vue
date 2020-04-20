@@ -58,13 +58,11 @@
       </template>
       <template v-slot:buttons>
         <MyButton
-          class="edit-event-modal__cancel"
           @click="onCancel()"
         >
           Abbrechen
         </MyButton>
         <MyButton
-          class="edit-event-modal__save"
           :disabled="!changed || !valid"
           variant="primary"
           @click="save()"
@@ -73,41 +71,8 @@
         </MyButton>
       </template>
     </MyModal>
-    <MyModal
-      title="Änderungen verwerfen?"
-      closable
-      :active.sync="confirmCancelModalActive"
-    >
-      <template v-slot:default>
-        Deine Änderungen gehen verloren.
-      </template>
-      <template v-slot:buttons="{ close: _close }">
-        <MyButton variant="primary" @click="_close()">
-          Abbrechen
-        </MyButton>
-        <MyButton variant="danger" @click="close()">
-          Verwerfen
-        </MyButton>
-      </template>
-    </MyModal>
-    <MyModal
-      title="Termin löschen?"
-      closable
-      width="400px"
-      :active.sync="confirmDeleteModalActive"
-    >
-      <template v-slot:default>
-        Diese Aktion kann nicht rückganging gemacht werden.
-      </template>
-      <template v-slot:buttons="{ close: _close }">
-        <MyButton variant="primary" @click="_close()">
-          Abbrechen
-        </MyButton>
-        <MyButton variant="danger" @click="delete_()">
-          Löschen
-        </MyButton>
-      </template>
-    </MyModal>
+    <ConfirmCancelModal :active.sync="confirmCancelModalActive" @confirm="close(true)"/>
+    <ConfirmDeleteModal item-type="Termin" :active.sync="confirmDeleteModalActive" @confirm="delete_()"/>
   </div>
 </template>
 
@@ -126,7 +91,7 @@
   import "vue-datetime/dist/vue-datetime.css";
 
   import { startOfDay } from "date-fns";
-  import EventsQuery from "./eventQuery.graphql";
+  import EventQuery from "./eventQuery.graphql";
   import PostBySlugQuery from "./postBySlugQuery.graphql";
   import CreateEventMutation from "./createEventMutation.graphql";
   import UpdateEventMutation from "./updateEventMutation.graphql";
@@ -137,12 +102,16 @@
   import MyButton from "@/components/MyButton";
   import EventColorPicker from "@/components/pages/admin/calendar/EventColorPicker";
   import DateTimeField from "@/components/DateTimeField";
+  import ConfirmCancelModal from "@/components/ConfirmCancelModal";
+  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
   const today = startOfDay(new Date());
 
   export default {
     name: "EditEventModal",
-    components: { DateTimeField, EventColorPicker, MyButton, InputField, MyModal },
+    components: {
+      ConfirmDeleteModal, ConfirmCancelModal, DateTimeField, EventColorPicker, MyButton, InputField, MyModal
+    },
     props: {
       eventId: {
         type: null,
@@ -272,7 +241,6 @@
         this.fields.endDate.setError(null);
       },
       close(canceled = false) {
-        this.confirmCancelModalActive = false;
         this.$emit("close", canceled);
       },
       async fetchEvent() {
@@ -282,7 +250,7 @@
         this.loadingText = "Termin wird geladen";
 
         const { data: { event } } = await this.$apollo.query({
-          query: EventsQuery,
+          query: EventQuery,
           variables: {
             id: eventId
           },
@@ -359,7 +327,6 @@
         this.close();
       },
       async delete_() {
-        this.confirmDeleteModalActive = false;
         this.loading = true;
         this.loadingText = "Termin wird gelöscht";
 

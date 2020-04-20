@@ -1,0 +1,11 @@
+query ($skip: Int!, $take: Int!, $order: SortOrder) {
+  videos(order: $order, skip: $skip, take: $take, onlyPublished: false) {
+    items {
+      id
+      title
+      publicationDate
+      videoID
+    }
+    hasMore
+  }
+}

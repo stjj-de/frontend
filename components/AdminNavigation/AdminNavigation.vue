@@ -227,6 +227,7 @@
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import PencilIcon from "@/assets/icons/pencil.svg";
   import ChurchIcon from "@/assets/icons/church.svg";
+  import VideoIcon from "@/assets/icons/video.svg";
   // import UsersIcon from "@/assets/icons/users.svg";
   import { getImageURL } from "@/assets/js/getUploadURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
@@ -252,6 +253,11 @@
       label: "Gottesdienste",
       to: "/admin/gottesdienste",
       icon: ChurchIcon
+    },
+    {
+      label: "Videos",
+      to: "/admin/videos",
+      icon: VideoIcon
     }
   ];
 

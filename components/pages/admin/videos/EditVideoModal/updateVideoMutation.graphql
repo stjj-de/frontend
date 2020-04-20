@@ -1,0 +1,5 @@
+mutation ($id: ID!, $video: UpdateVideoInput!) {
+  updateVideo(id: $id, video: $video) {
+    id
+  }
+}

@@ -40,12 +40,7 @@
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
-        <div class="calendar-page__no-results">
-          <span class="calendar-page__no-results-emoji">
-            😕
-          </span>
-          Keine Termine passen zu deinem Filter.
-        </div>
+        <AdminDataTableEmptyState item-type="Termin"/>
       </template>
       <template v-slot:buttons>
         <MyButton
@@ -126,6 +121,7 @@
   import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
   import EditEventModal from "@/components/pages/admin/calendar/EditEventModal/EditEventModal";
   import MyButton from "@/components/MyButton";
+  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
 
   const _isFullDay = (startDateString, endDateString) => {
     if (endDateString === null) {
@@ -142,7 +138,7 @@
 
   export default {
     name: "CalendarPage",
-    components: { MyButton, EditEventModal, DataTable, VDatePicker },
+    components: { AdminDataTableEmptyState, MyButton, EditEventModal, DataTable, VDatePicker },
     layout: "admin",
     data() {
       return {

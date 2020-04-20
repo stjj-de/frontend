@@ -33,17 +33,17 @@ export class PostController {
       where.publicationDate = Raw(alias => `${alias} <= NOW()`);
     }
 
-    const events = await this.postRepository.find({
+    const posts = await this.postRepository.find({
       skip: options.skip,
       take: options.take === undefined ? undefined : options.take + 1,
       where,
       order
     });
 
-    const hasMore = options.take === undefined ? false : events.length === options.take + 1;
+    const hasMore = options.take === undefined ? false : posts.length === options.take + 1;
 
     return {
-      events: hasMore ? events.slice(0, -1) : events,
+      posts: hasMore ? posts.slice(0, -1) : posts,
       hasMore
     };
   }

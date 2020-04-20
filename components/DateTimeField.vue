@@ -76,8 +76,6 @@
             return;
           }
 
-          this.setFieldValue();
-          this.companion.runAllValidations();
           this.$emit("input", value);
         },
         get() {
@@ -90,6 +88,7 @@
         immediate: true,
         handler() {
           this.setFieldValue();
+          this.companion.runAllValidations();
         }
       }
     },
