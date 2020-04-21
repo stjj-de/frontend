@@ -1,6 +1,7 @@
 import path from "path";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { FindManyOptions, Repository } from "typeorm";
+import * as fileType from "file-type";
 import { SortOptions } from "../utils/SortOptions";
 import { UploadedFile } from "../data/models/UploadedFile";
 import { UploadedFileSortField } from "../data/enums/UploadedFileSortField";
@@ -66,6 +67,7 @@ export class FileUploadsController {
     uploadedFile.id = id;
     uploadedFile.title = options.title;
     uploadedFile.alias = options.alias;
+    uploadedFile.mimeType = (await fileType.fromFile(filePath))?.mime ?? null;
 
     await this.uploadedFileRepository.save(uploadedFile);
     return uploadedFile;

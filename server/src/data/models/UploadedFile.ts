@@ -12,9 +12,9 @@ export class UploadedFile {
   @Column({ type: "varchar" })
   title: string;
 
-  @Field()
-  @Column({ type: "varchar" })
-  mimeType: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: "varchar", nullable: true })
+  mimeType: string | null;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "varchar", unique: true, nullable: true })
