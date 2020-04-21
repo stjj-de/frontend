@@ -1,0 +1,12 @@
+query ($skip: Int!, $take: Int!, $order: SortOrder) {
+  uploadedFiles(order: $order, skip: $skip, take: $take) {
+    items {
+      id
+      title
+      alias
+      mimeType
+      uploadDate
+    }
+    hasMore
+  }
+}

@@ -228,6 +228,7 @@
   import PencilIcon from "@/assets/icons/pencil.svg";
   import ChurchIcon from "@/assets/icons/church.svg";
   import VideoIcon from "@/assets/icons/video.svg";
+  import FilesIcon from "@/assets/icons/files.svg";
   import { getProfileImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
@@ -252,6 +253,11 @@
       label: "Videos",
       to: "/admin/videos",
       icon: VideoIcon
+    },
+    {
+      label: "Dateien",
+      to: "/admin/files",
+      icon: FilesIcon
     }
   ];
 
