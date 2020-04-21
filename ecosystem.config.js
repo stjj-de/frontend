@@ -15,10 +15,10 @@ module.exports = {
       "repo": "git@github.com:moritzruth/stjj.de.git",
       "path": "/var/www/stjj.de",
       "post-deploy": [
-        "echo $PATH",
-        "nvm install --no-progress",
-        "nvm use",
-        "yarn",
+        "nvm install --no-progress", // install the correct Node.js version
+        "nvm use", // use this Node.js version
+        "npm i -g yarn", // install yarn
+        "yarn", // install dependencies
         "yarn build",
         "pm2 startOrRestart ecosystem.config.js --env production"
       ].join(" && ")
