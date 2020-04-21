@@ -1,6 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Role } from "./Role";
 
 @Entity()
 @ObjectType()
@@ -10,7 +9,7 @@ export class User {
   id: string;
 
   @Field(() => String)
-  @Column({ unique: true })
+  @Column({ type: "varchar", unique: true })
   username: string;
 
   @Field(() => String)

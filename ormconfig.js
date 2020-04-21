@@ -13,6 +13,6 @@ module.exports = {
   password: process.env.TYPEORM_PASSWORD,
   username: process.env.TYPEORM_USERNAME,
   port: process.env.TYPEORM_PORT,
-  synchronize: process.env.NODE_ENV === "development",
+  synchronize: true,
   timezone: "+00:00"
 };
