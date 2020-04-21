@@ -2,7 +2,7 @@
   <div class="error-page">
     <main class="formatted">
       <h1 v-if="error.statusCode === 404">
-        {{ error.message || pageNotFound }}
+        {{ error.message === "This page could not be found" ? pageNotFound : error.message }}
       </h1>
       <h1 v-else>
         {{ otherError }}

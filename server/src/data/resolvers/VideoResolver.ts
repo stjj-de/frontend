@@ -37,7 +37,7 @@ export class VideoResolver {
   async videos(@Args() args: GetVideoArgs): Promise<PaginatedVideoResponse> {
     const { hasMore, videos } = await this.videoController.getVideos({
       skip: args.skip,
-      take: args.take ?? undefined,
+      take: args.take,
       onlyPublished: args.onlyPublished,
       order: args.order
     });

@@ -9,7 +9,7 @@
     <img
       class="user-image-with-popup__image"
       :alt="user.name"
-      :src="getImageURL(user.image)"
+      :src="getProfileImageURL(user.image)"
     >
     <div
       class="user-image-with-popup__popup"
@@ -18,7 +18,7 @@
       <img
         class="user-image-with-popup__popup-image"
         :alt="user.displayName"
-        :src="getImageURL(user.image)"
+        :src="getProfileImageURL(user.image)"
       >
       <div class="user-image-with-popup__popup-text">
         <span class="user-image-with-popup__name">
@@ -41,7 +41,6 @@
     cursor: auto;
     position: relative;
     width: $size;
-    margin: 5px;
 
     &:focus {
       outline: none;
@@ -104,7 +103,7 @@
 </style>
 
 <script>
-  import { getImageURL } from "@/assets/js/getUploadURL";
+  import { getProfileImageURL } from "@/assets/js/getFileURL";
 
   export default {
     name: "UserImageWithPopup",
@@ -119,7 +118,7 @@
       ignoreFocus: false
     }),
     methods: {
-      getImageURL,
+      getProfileImageURL,
       onClick(event) {
         event.preventDefault();
         this.ignoreFocus = true;

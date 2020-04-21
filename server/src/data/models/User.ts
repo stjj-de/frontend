@@ -1,6 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Role } from "./Role";
 
 @Entity()
 @ObjectType()
@@ -29,7 +28,7 @@ export class User {
   password: string;
 
   @Field(() => String, { nullable: true })
-  @Column({ type: "char", length: 32, nullable: true, default: null })
+  @Column({ type: "char", length: 10, nullable: true, default: null })
   image: string | null;
 
   @Column({ type: "varchar", length: 50, unique: true, nullable: true })

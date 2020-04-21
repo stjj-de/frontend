@@ -8,3 +8,4 @@ TYPEORM_SYNCHRONIZE = false
 PUBLIC_HOST = stjj.de
 USES_SSL = false
 TZ = Europe/Berlin
+DATA_DIR = /srv/stjj.de/

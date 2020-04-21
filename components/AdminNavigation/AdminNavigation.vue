@@ -15,7 +15,7 @@
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
-          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getImageURL(me.image)">
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getProfileImageURL(me.image)">
           <div class="admin-navigation__logged-in-as">
             Angemeldet als
             <span class="admin-navigation__name">{{ me.name }}</span>
@@ -228,8 +228,7 @@
   import PencilIcon from "@/assets/icons/pencil.svg";
   import ChurchIcon from "@/assets/icons/church.svg";
   import VideoIcon from "@/assets/icons/video.svg";
-  // import UsersIcon from "@/assets/icons/users.svg";
-  import { getImageURL } from "@/assets/js/getUploadURL";
+  import { getProfileImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
 
@@ -239,11 +238,6 @@
       to: "/admin/posts",
       icon: PencilIcon
     },
-    // {
-    //   label: "Benutzer",
-    //   to: "/admin/users",
-    //   icon: UsersIcon
-    // },
     {
       label: "Kalender",
       to: "/admin/calendar",
@@ -271,7 +265,7 @@
       me: MeQuery
     },
     methods: {
-      getImageURL
+      getProfileImageURL
     },
     items: ITEMS
   };

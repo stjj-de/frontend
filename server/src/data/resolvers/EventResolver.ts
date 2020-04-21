@@ -75,7 +75,7 @@ export class EventResolver implements ResolverInterface<Event> {
     const { hasMore, events } = await this.eventController.getEvents({
       filter: args.filter ?? undefined,
       skip: args.skip,
-      take: args.take ?? undefined,
+      take: args.take,
       ...argsToSortOptions(args)
     });
 

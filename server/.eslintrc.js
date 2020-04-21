@@ -16,6 +16,7 @@ module.exports = {
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-extra-parens": "off", // doesn't work with no-mixed-operators
     "max-len": ["warn", { code: 180 }],
+    "callback-return": "off",
     "unicorn/prevent-abbreviations": ["warn", {
       whitelist: {
         args: true,

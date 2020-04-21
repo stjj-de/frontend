@@ -10,6 +10,7 @@ import { Builder, Nuxt } from "nuxt";
 import { ApolloServer } from "apollo-server-koa";
 import { initApollo } from "./data";
 import { createSampleData } from "./data/createSampleData";
+import { FilesRouter } from "./FilesRouter";
 
 process.env.IS_SERVER_RUN = "true";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -47,6 +48,18 @@ async function initORM() {
 
 async function initKoa(options: { nuxt: any; apollo: ApolloServer; }) {
   const koa = new Koa();
+
+  koa.use(async (context, next) => {
+    try {
+      await next();
+    } catch (error) {
+      context.body = "";
+      context.status = error.status ?? 500;
+      context.app.emit("error", error, context);
+    }
+  });
+
+  koa.use(FilesRouter.routes()).use(FilesRouter.allowedMethods());
 
   options.apollo.applyMiddleware({ app: koa, path: "/graphql" });
 

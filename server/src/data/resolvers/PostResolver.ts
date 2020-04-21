@@ -68,7 +68,7 @@ export class PostResolver implements ResolverInterface<Post> {
 
     const { hasMore, posts } = await this.postController.getPosts({
       skip: args.skip,
-      take: args.take ?? undefined,
+      take: args.take,
       onlyPublished: args.onlyPublished,
       onlyRelevant: args.onlyRelevant,
       ...argsToSortOptions(args)
