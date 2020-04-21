@@ -16,7 +16,7 @@ module.exports = {
       "path": "/var/www/stjj.de",
       "post-deploy": [
         "echo $PATH",
-        "nvm install",
+        "nvm install --no-progress",
         "nvm use",
         "yarn",
         "yarn build",
