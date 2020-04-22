@@ -6,11 +6,10 @@
 > Sorted by priority
 - Add admin overview page
 - Add user management
-- Use [query complexity](https://typegraphql.com/docs/complexity.html)
-- Add presentation of the groups + dynamic text editing
+- Add presentation of the groups and kindergartens + dynamic text editing
+- Add link to image dropbox
 - Allow using images in posts
 - Add role and permission management
-- Add presentation of the kindergartens
 - Use [Blurhash](https://blurha.sh) for all images
 
 ### At some point in the future
