@@ -10,7 +10,7 @@ export class Post {
   id: string;
 
   @Field(() => String)
-  @Column({ unique: true })
+  @Column({ unique: true, length: 50 })
   slug: string;
 
   @Field(() => String)
