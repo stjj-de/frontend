@@ -9,7 +9,7 @@ export class User {
   id: string;
 
   @Field(() => String)
-  @Column({ type: "varchar", unique: true })
+  @Column({ type: "varchar", unique: true, length: 20 })
   username: string;
 
   @Field(() => String)
