@@ -1,6 +1,6 @@
 <template>
   <div class="gemeinde-page">
-    <NavigationBar title="Gottesdienste"/>
+    <NavigationBar title="Gemeinde"/>
     <main class="content">
       <h1 class="heading--1">
         Gemeinde
@@ -18,7 +18,7 @@
           />
         </div>
       </section>
-      <section>
+      <section class="gemeinde-page__downloads-section">
         <h2 class="heading--3">
           Downloads
         </h2>
@@ -51,6 +51,10 @@
 
     /* Can be replaced with this, once min() is better supported */
     /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
+  }
+
+  .gemeinde-page__downloads-section {
+    margin-top: 40px;
   }
 
   .gemeinde-page__downloads {
