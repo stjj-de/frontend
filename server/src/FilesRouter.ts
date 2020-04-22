@@ -34,8 +34,9 @@ FilesRouter.get(["/files/uploads/:id", "/files/uploads/:id/(.*)"], async context
     return;
   }
 
+  const suffix = uploadedFile.mimeType === null ? "" : (`.${mimeTypes.extension(uploadedFile.mimeType)}`);
   const pathParts = context.path.split("/");
-  const filename = `${encodeURI(uploadedFile.title)}.${mimeTypes.extension(uploadedFile.mimeType)}`;
+  const filename = encodeURI(uploadedFile.title) + suffix;
 
   const givenFilename = pathParts[pathParts.length - 1];
   if (pathParts.length === 5 && filename === givenFilename) {
@@ -43,7 +44,7 @@ FilesRouter.get(["/files/uploads/:id", "/files/uploads/:id/(.*)"], async context
       maxAge: MAX_AGE,
       root: uploadsDirectory,
       setHeaders: response => {
-        response.setHeader("Content-Type", uploadedFile.mimeType);
+        response.setHeader("Content-Type", uploadedFile.mimeType ?? "application/octet-stream");
       }
     });
   } else {

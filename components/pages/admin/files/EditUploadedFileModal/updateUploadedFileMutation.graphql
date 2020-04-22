@@ -1,0 +1,7 @@
+mutation ($id: ID!, $uploadedFile: UpdateUploadedFileInput!) {
+  updateUploadedFile(id: $id, uploadedFile: $uploadedFile) {
+    id
+    title
+    uploadDate
+  }
+}

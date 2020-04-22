@@ -1,5 +1,5 @@
-query ($skip: Int!, $take: Int!, $order: SortOrder) {
-  uploadedFiles(order: $order, skip: $skip, take: $take) {
+query ($skip: Int!, $take: Int!, $order: SortOrder, $sortBy: UploadedFileSortField) {
+  uploadedFiles(order: $order, skip: $skip, take: $take, sortBy: $sortBy) {
     items {
       id
       title

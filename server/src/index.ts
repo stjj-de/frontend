@@ -9,8 +9,8 @@ import consola from "consola";
 import { Builder, Nuxt } from "nuxt";
 import { ApolloServer } from "apollo-server-koa";
 import { initApollo } from "./data";
-import { createSampleData } from "./data/createSampleData";
 import { FilesRouter } from "./FilesRouter";
+import { graphqlUploadKoa } from "graphql-upload";
 
 process.env.IS_SERVER_RUN = "true";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -38,12 +38,7 @@ async function initNuxt() {
 async function initORM() {
   useContainerForTypeORM(Container);
 
-  // console.log(await getConnectionOptions());
   await createConnection();
-
-  if (process.env.NODE_ENV === "development") {
-    // await createSampleData();
-  }
 }
 
 async function initKoa(options: { nuxt: any; apollo: ApolloServer; }) {
@@ -61,6 +56,7 @@ async function initKoa(options: { nuxt: any; apollo: ApolloServer; }) {
 
   koa.use(FilesRouter.routes()).use(FilesRouter.allowedMethods());
 
+  koa.use(graphqlUploadKoa({ maxFiles: 1, maxFileSize: 52428800 })); // 52428800 Bytes = 50 MB
   options.apollo.applyMiddleware({ app: koa, path: "/graphql" });
 
   koa.use(context => {

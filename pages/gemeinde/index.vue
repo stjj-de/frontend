@@ -1,15 +1,15 @@
 <template>
-  <div class="gottesdienste-page">
+  <div class="gemeinde-page">
     <NavigationBar title="Gottesdienste"/>
     <main class="content">
       <h1 class="heading--1">
         Gottesdienste
       </h1>
-      <div class="gottesdienste-page__gottesdienste">
+      <div class="gemeinde-page__gottesdienste">
         <GottesdienstCard
           v-for="gottesdienst in gottesdienste"
           :key="gottesdienst.id"
-          class="gottesdienste-page__gottesdienst"
+          class="gemeinde-page__gottesdienst"
           :gottesdienst="gottesdienst"
         />
       </div>
@@ -18,7 +18,7 @@
 </template>
 
 <style lang="scss">
-  .gottesdienste-page__gottesdienste {
+  .gemeinde-page__gottesdienste {
     display: flex;
     flex-direction: column;
   }
@@ -29,7 +29,7 @@
     #a5c0c6
   );
 
-  .gottesdienste-page__gottesdienst {
+  .gemeinde-page__gottesdienst {
     @each $color in $colors {
       &:nth-child(#{length($colors)}n+#{index($colors, $color)}) {
         background: $color;
@@ -48,7 +48,7 @@
   import GottesdienstCard from "@/components/GottesdienstCard";
 
   export default {
-    name: "GottesdienstePage",
+    name: "GemeindePage",
     components: { GottesdienstCard, NavigationBar },
     head: () => ({
       title: "Gottesdienste"

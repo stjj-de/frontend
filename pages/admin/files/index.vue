@@ -1,5 +1,5 @@
 <template>
-  <main class="uploaded-files-page">
+  <main class="files-admin-page">
     <h1 class="heading--1">
       Dateien
     </h1>
@@ -12,22 +12,34 @@
         <AdminDataTableEmptyState items-name="Dateien"/>
       </template>
       <template v-slot:buttons>
-        <MyButton
-          variant="primary"
-          @click="createUploadedFileModalActive = true"
-        >
+        <MyButton variant="primary" @click="openSelectFileDialog()">
           Hochladen
         </MyButton>
       </template>
     </DataTable>
+    <input
+      ref="fileInput"
+      class="files-admin-page__input"
+      type="file"
+      @input="onFileSelect"
+    >
+    <FileUploadModal :active="uploadFileModalActive" :file="uploadFileModalFile" @close="onUploadFileModalClose"/>
+    <EditUploadedFileModal
+      :active="editUploadedFileModalActive"
+      :uploaded-file-id="editUploadedFileModalID"
+      @close="onEditUploadedFileModalClose"
+    />
   </main>
 </template>
 
 <style scoped lang="scss">
-
+  .files-admin-page__input {
+    display: none;
+  }
 </style>
 
 <script>
+  import snakeCase from "lodash.snakecase";
   import UploadedFilesQuery from "./uploadedFilesQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
@@ -35,18 +47,15 @@
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
   import FilesTableTypeCell from "@/components/pages/admin/files/FilesTableTypeCell";
-
-  // <EditUploadedFileModal
-  //   :active="editUploadedFileModalActive"
-  // :uploaded-file-id="editUploadedFileModalID"
-  // @close="onEditUploadedFileModalClose"
-  //   />
+  import FileUploadModal from "@/components/pages/admin/files/FileUploadModal/FileUploadModal";
+  import EditUploadedFileModal from "@/components/pages/admin/files/EditUploadedFileModal/EditUploadedFileModal";
+  import FilesTableAliasCell from "@/components/pages/admin/files/FilesTableAliasCell";
 
   const ITEMS_PER_PAGE = 10;
 
   export default {
     name: "FilesAdminPage",
-    components: { AdminDataTableEmptyState, MyButton, DataTable },
+    components: { EditUploadedFileModal, FileUploadModal, AdminDataTableEmptyState, MyButton, DataTable },
     head: () => ({
       title: "Dateien / Administration"
     }),
@@ -54,6 +63,9 @@
       return {
         editUploadedFileModalActive: false,
         editUploadedFileModalID: null,
+        uploadFileModalActive: false,
+        uploadFileModalFile: null,
+        isEditingUploaded: false,
         table: new DataTableCompanion({
           columns: {
             mimeType: {
@@ -70,6 +82,7 @@
             alias: {
               name: "Alias",
               sortable: true,
+              component: FilesTableAliasCell,
               width: 200
             },
             uploadDate: {
@@ -82,13 +95,14 @@
           sortBy: "uploadDate",
           sortOrder: "DESCENDING",
           itemsPerPage: ITEMS_PER_PAGE,
-          fetch: async (pageIndex, sortBy, sortOrder) => {
+          fetch: async (pageIndex, sortBy, order) => {
             const result = await this.$apollo.query({
               query: UploadedFilesQuery,
               variables: {
                 skip: pageIndex * ITEMS_PER_PAGE,
                 take: ITEMS_PER_PAGE,
-                order: sortOrder
+                sortBy: snakeCase(sortBy).toUpperCase(),
+                order
               },
               fetchPolicy: "network-only"
             });
@@ -109,10 +123,45 @@
       onEditUploadedFileModalClose(canceled) {
         this.editUploadedFileModalActive = false;
 
-        if (!canceled) {
+        if (!canceled || this.isEditingUploaded) {
           this.table.invalidateLastFetch();
           this.table.fetch();
         }
+      },
+      openSelectFileDialog() {
+        this.$refs.fileInput.click();
+      },
+      onFileSelect() {
+        this.uploadFile(this.$refs.fileInput.files[0]);
+      },
+      uploadFile(file) {
+        if (!file) return;
+
+        this.uploadFileModalFile = file;
+        this.uploadFileModalActive = true;
+      },
+      async onUploadFileModalClose(uploadedID) {
+        this.uploadFileModalActive = false;
+
+        if (uploadedID !== null) {
+          (await import("izitoast")).show({
+            message: "Die Datei wurde erfolgreich hochgeladen.",
+            color: "green",
+            timeout: 6000,
+            position: "topRight",
+            buttons: [
+              ["<button>Bearbeiten</button>", (instance, toast) => {
+                this.editUploadedFile(uploadedID);
+                instance.hide({
+                  transitionOut: "fadeOutUp"
+                }, toast);
+              }, true]
+            ]
+          });
+        }
+
+        this.table.invalidateLastFetch();
+        this.table.fetch();
       }
     }
   };

@@ -21,6 +21,8 @@
     align-items: center;
     flex-direction: column-reverse;
 
+    overflow: hidden;
+
     pointer-events: none;
     opacity: 0;
     transition: 400ms ease opacity;
@@ -49,8 +51,13 @@
   }
 
   .loading-overlay__text {
+    white-space: nowrap;
     margin-top: 20px;
     position: relative;
+    max-width: 100%;
+    padding: 0 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
 

@@ -113,6 +113,7 @@
 </style>
 
 <script>
+  import snakeCase from "lodash.snakecase";
   import EventsQuery from "./eventsQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
@@ -189,7 +190,7 @@
                 skip: pageIndex * ITEMS_PER_PAGE,
                 take: ITEMS_PER_PAGE,
                 order: sortOrder,
-                sortBy: sortBy.toUpperCase(),
+                sortBy: snakeCase(sortBy).toUpperCase(),
                 filter: this.filterString
               },
               fetchPolicy: "network-only"

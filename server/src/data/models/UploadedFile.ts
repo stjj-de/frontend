@@ -17,7 +17,7 @@ export class UploadedFile {
   mimeType: string | null;
 
   @Field(() => String, { nullable: true })
-  @Column({ type: "varchar", unique: true, nullable: true })
+  @Column({ type: "varchar", unique: true, nullable: true, length: 50 })
   alias: string | null;
 
   @Field()

@@ -42,7 +42,7 @@
         return this.data;
       },
       type() {
-        if (this.mimeType.startsWith("images/")) {
+        if (this.mimeType.startsWith("image/")) {
           return {
             icon: PictureIcon,
             title: "Bild"

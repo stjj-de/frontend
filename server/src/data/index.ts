@@ -25,6 +25,7 @@ export async function initApollo() {
 
   return new ApolloServer({
     schema,
+    uploads: false,
     subscriptions: {
       path: "/graphql"
     },

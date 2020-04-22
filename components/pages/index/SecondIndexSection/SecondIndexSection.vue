@@ -6,7 +6,7 @@
       </h1>
       <span class="second-index-section__gottesdienste-info">
         Aus Gründen der Übersichtlichkeit sind
-        <nuxt-link class="link" to="/gottesdienste">Gottesdienste</nuxt-link>
+        <nuxt-link class="link" to="/gemeinde">Gottesdienste</nuxt-link>
         nicht im Kalender eingetragen.
       </span>
       <EventCalendar/>
