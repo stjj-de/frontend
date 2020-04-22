@@ -13,7 +13,6 @@
     "build": "yarn build:server && yarn build:nuxt",
     "build:server": "tsc --project tsconfig.json",
     "build:nuxt": "nuxt build",
-    "start": "cross-env NODE_ENV=production node --unhandled-rejections=strict .",
     "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore ."
   },
   "dependencies": {

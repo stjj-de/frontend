@@ -28,7 +28,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["webpack.resolve.js", "nuxt.config.js", "ormconfig.js"],
+      files: ["webpack.resolve.js", "nuxt.config.js", "ormconfig.js", "ecosystem.config.js"],
       env: {
         node: true,
         es6: true,
