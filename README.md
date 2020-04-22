@@ -4,10 +4,7 @@
 
 ## Roadmap
 > Sorted by priority
-### First release
-- Allow uploading photos and files
-
-### After that
+- Add admin overview page
 - Add user management
 - Use [query complexity](https://typegraphql.com/docs/complexity.html)
 - Add presentation of the groups + dynamic text editing
