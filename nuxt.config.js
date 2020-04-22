@@ -4,8 +4,9 @@ if (!isServerRun) {
   require("dotenv").config();
 }
 
-const useTLS = process.env.NODE_ENV === "production";
-const publicHost = process.env.PUBLIC_HOST;
+const graphqlURIWithoutProtocol = process.env.NODE_ENV === "production"
+  ? `s://${process.env.PUBLIC_HOST}/graphql`
+  : `://${process.env.PUBLIC_HOST}:${process.env.PORT}/graphql`;
 
 module.exports = {
   mode: "universal",
@@ -61,6 +62,7 @@ module.exports = {
   ],
 
   apollo: {
+    errorHandler: "@/assets/js/apollo-global-error-handler.js",
     cookieAttributes: {
       /**
        * Define when the cookie will be removed. Value can be a Number
@@ -74,13 +76,13 @@ module.exports = {
         // Only for SSR
         httpEndpoint: `http://127.0.0.1:${process.env.PORT}/graphql`,
         // Only for browser
-        browserHttpEndpoint: `http${useTLS ? "s" : ""}://${publicHost}/graphql`,
+        browserHttpEndpoint: "http" + graphqlURIWithoutProtocol,
         // See https://www.apollographql.com/docs/link/links/http.html#options
         httpLinkOptions: {
           credentials: "same-origin"
         },
         // Use `null` to disable subscriptions
-        wsEndpoint: `ws${useTLS ? "s" : ""}://${publicHost}/graphql`,
+        wsEndpoint: "ws" + graphqlURIWithoutProtocol,
         // LocalStorage token
         tokenName: "apollo-token", // optional
         // Enable Automatic Query persisting with Apollo Engine

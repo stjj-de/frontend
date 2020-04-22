@@ -10,6 +10,7 @@ import { VideoResolver } from "./resolvers/VideoResolver";
 import { Context } from "./Context";
 import { User } from "./models/User";
 import { FileUploadsResolver } from "./resolvers/FileUploadsResolver";
+import { assertAuthentication } from "./utils/assertAuthentication";
 
 export async function initApollo() {
   const schema = await buildSchema({
@@ -19,7 +20,9 @@ export async function initApollo() {
     authChecker: resolverData => {
       // eslint-disable-next-line prefer-destructuring
       const context: Context = resolverData.context;
-      return context.user !== null;
+
+      assertAuthentication(context);
+      return true;
     }
   });
 
@@ -42,7 +45,7 @@ export async function initApollo() {
       const user = await getRepository(User).findOne({ token });
 
       if (user === undefined) {
-        throw new ApolloError("Invalid authentication token.");
+        throw new ApolloError("Invalid authentication token.", "INVALID_AUTHENTICATION_TOKEN");
       }
 
       return {

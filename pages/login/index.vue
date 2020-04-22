@@ -131,13 +131,6 @@
     head: () => ({
       title: "Anmelden"
     }),
-    created() {
-      if (isLoggedIn(this)) {
-        this.$router.replace(this.nextURL);
-      } else {
-        this.showBox = true;
-      }
-    },
     data() {
       return {
         showBox: false,
@@ -179,6 +172,17 @@
     computed: {
       nextURL() {
         return this.$route.query.to || "/admin";
+      }
+    },
+    async created() {
+      if (this.$route.query.logout === "1") {
+        await this.$apolloHelpers.onLogout();
+      }
+
+      if (isLoggedIn(this)) {
+        this.$router.replace(this.nextURL);
+      } else {
+        this.showBox = true;
       }
     },
     methods: {
