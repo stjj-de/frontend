@@ -4,8 +4,8 @@ if (!isServerRun) {
   require("dotenv").config();
 }
 
-const usesSSL = process.env.USES_SSL === "true";
-const publicHostAndPort = process.env.PUBLIC_HOST + ":" + process.env.PUBLIC_PORT;
+const useTLS = process.env.NODE_ENV === "production";
+const publicHost = process.env.PUBLIC_HOST;
 
 module.exports = {
   mode: "universal",
@@ -74,13 +74,13 @@ module.exports = {
         // Only for SSR
         httpEndpoint: `http://127.0.0.1:${process.env.PORT}/graphql`,
         // Only for browser
-        browserHttpEndpoint: `http${usesSSL ? "s" : ""}://${publicHostAndPort}/graphql`,
+        browserHttpEndpoint: `http${useTLS ? "s" : ""}://${publicHost}/graphql`,
         // See https://www.apollographql.com/docs/link/links/http.html#options
         httpLinkOptions: {
           credentials: "same-origin"
         },
         // Use `null` to disable subscriptions
-        wsEndpoint: `ws${usesSSL ? "s" : ""}://${publicHostAndPort}/graphql`,
+        wsEndpoint: `ws${useTLS ? "s" : ""}://${publicHost}/graphql`,
         // LocalStorage token
         tokenName: "apollo-token", // optional
         // Enable Automatic Query persisting with Apollo Engine
