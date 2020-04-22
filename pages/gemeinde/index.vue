@@ -3,42 +3,58 @@
     <NavigationBar title="Gottesdienste"/>
     <main class="content">
       <h1 class="heading--1">
-        Gottesdienste
+        Gemeinde
       </h1>
-      <div class="gemeinde-page__gottesdienste">
-        <GottesdienstCard
-          v-for="gottesdienst in gottesdienste"
-          :key="gottesdienst.id"
-          class="gemeinde-page__gottesdienst"
-          :gottesdienst="gottesdienst"
-        />
-      </div>
+      <section>
+        <h2 class="heading--3">
+          Gottesdienste
+        </h2>
+        <div class="gemeinde-page__gottesdienste">
+          <GottesdienstCard
+            v-for="gottesdienst in gottesdienste"
+            :key="gottesdienst.id"
+            class="gemeinde-page__gottesdienst"
+            :gottesdienst="gottesdienst"
+          />
+        </div>
+      </section>
+      <section>
+        <h2 class="heading--3">
+          Downloads
+        </h2>
+        <ul class="formatted gemeinde-page__downloads">
+          <li>
+            <a target="_blank" href="/f/pfarrbrief">
+              Pfarrbrief
+            </a>
+          </li>
+          <li>
+            <a target="_blank" href="/f/messdienerplan">
+              Messdienerplan
+            </a>
+          </li>
+        </ul>
+      </section>
     </main>
   </div>
 </template>
 
 <style lang="scss">
   .gemeinde-page__gottesdienste {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-gap: 30px;
+
+    @media (max-width: 450px) {
+      grid-template-columns: 1fr;
+    }
+
+    /* Can be replaced with this, once min() is better supported */
+    /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
   }
 
-  $colors: (
-    #c7e8ef,
-    #b9d7de,
-    #a5c0c6
-  );
-
-  .gemeinde-page__gottesdienst {
-    @each $color in $colors {
-      &:nth-child(#{length($colors)}n+#{index($colors, $color)}) {
-        background: $color;
-      }
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 40px;
-    }
+  .gemeinde-page__downloads {
+    font-size: 1.3rem;
   }
 </style>
 

@@ -267,8 +267,8 @@
       to: "/aktuelles"
     },
     {
-      label: "Gottesdienste",
-      to: "/gottesdienste"
+      label: "Gemeinde",
+      to: "/gemeinde"
     },
     // {
     //   label: "Gruppierungen",
