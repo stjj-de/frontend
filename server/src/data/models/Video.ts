@@ -17,6 +17,6 @@ export class Video {
   publicationDate: Date | null;
 
   @Field()
-  @Column({ type: "varchar", unique: true })
+  @Column({ type: "varchar", unique: true, length: 20 })
   videoID: string;
 }
