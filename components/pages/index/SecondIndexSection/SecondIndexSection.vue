@@ -84,10 +84,6 @@
     & > *:not(:last-child) {
       margin-bottom: 20px;
     }
-
-    @include screenSize.mobile {
-      margin: 0 -10px;
-    }
   }
 
   .second-index-section__no-news {

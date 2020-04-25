@@ -42,7 +42,11 @@
 
     &::v-deep {
       .vc-day-content:focus {
-        background-color: rgba(0, 161, 210, 0.2);
+        background-color: rgb(117, 211, 239);
+      }
+
+      .is-today .vc-day-content {
+        background-color: rgb(203, 239, 250);
       }
     }
   }
@@ -105,18 +109,11 @@
         if (!this.eventsInMonth) return [];
 
         const eventAttributes = this.eventsInMonth.map(event => ({
-          bar: event.color.toLowerCase(),
+          dot: event.color.toLowerCase(),
           dates: new Date(event.date)
         }));
 
-        return [
-          ...eventAttributes,
-          {
-            key: "today",
-            highlight: true,
-            dates: new Date()
-          }
-        ];
+        return eventAttributes;
       },
       dayDetailsTransitionName() {
         if (this.previousSelectedDay === null || this.selectedDay === null) {

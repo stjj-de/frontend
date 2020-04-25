@@ -279,7 +279,9 @@
 </template>
 
 <style scoped lang="scss">
-
+  .privacy-policy-page {
+    overflow-y: auto;
+  }
 </style>
 
 <script>

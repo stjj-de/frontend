@@ -24,11 +24,11 @@
   @use "~@/assets/styles/card";
 
   .post-card {
-    @include card.all;
+    @include card.all();
 
     cursor: pointer;
 
-    padding-bottom: 30px;
+    padding: 30px;
     width: 100%;
   }
 
