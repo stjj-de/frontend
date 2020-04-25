@@ -5,7 +5,7 @@
         Katholische Kirchengemeinde
       </span>
       <span class="first-index-section__title-line2">
-        St.Josef - St. Johannes
+        St. Josef - St. Johannes
       </span>
       <img class="first-index-section__image" src="/Furpach_St_Josef.jpeg" alt="Die Kirche St. Josef"/>
     </div>
