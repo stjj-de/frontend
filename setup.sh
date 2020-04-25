@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 nvm install --no-progress
 nvm use
