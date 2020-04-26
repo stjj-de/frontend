@@ -4,12 +4,12 @@
     <div class="navigation-bar__container-1">
       <div class="navigation-bar__container-2">
         <div class="navigation-bar__title-container">
-        <span
-          class="navigation-bar__title"
-          :class="{ 'navigation-bar__title--show': showTitle }"
-        >
-          {{ title }}
-        </span>
+          <span
+            class="navigation-bar__title"
+            :class="{ 'navigation-bar__title--show': showTitle }"
+          >
+            {{ title }}
+          </span>
         </div>
         <nav class="navigation-bar__content">
           <template v-for="item in $options.items">

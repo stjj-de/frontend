@@ -28,7 +28,6 @@
 
     cursor: pointer;
 
-    padding: 30px;
     width: 100%;
   }
 

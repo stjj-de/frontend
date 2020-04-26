@@ -57,7 +57,7 @@ module.exports = {
       ],
       rules: {
         "vue/no-unused-components": "warn",
-        "no-extra-parens": "off", // This does'nt work with some other rules
+        "no-extra-parens": "off", // This does not work with some other rules
         "consistent-return": "off"
       },
       parserOptions: {

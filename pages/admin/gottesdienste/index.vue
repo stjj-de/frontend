@@ -2,6 +2,9 @@
   <main class="gottesdienste-admin-page">
     <h1 class="heading--1">
       Gottesdienste
+      <MyButton class="gottesdienste-admin-page__create-button" variant="primary" @click="editGottesdienst('')">
+        Erstellen
+      </MyButton>
     </h1>
     <div class="gottesdienste-admin-page__gottesdienste">
       <LoadingOverlay opacity="1" :active="$apollo.queries.gottesdienste.loading">
@@ -15,9 +18,6 @@
         @edit="editGottesdienst(gottesdienst.id)"
         @delete="confirmDeleteModalID = gottesdienst.id"
       />
-      <MyButton variant="primary" @click="editGottesdienst('')">
-        Erstellen
-      </MyButton>
     </div>
     <EditGottesdienstModal
       :active="editModalActive"
@@ -58,6 +58,11 @@
     &:not(:last-child) {
       margin-bottom: 40px;
     }
+  }
+
+  .gottesdienste-admin-page__create-button {
+    position: relative;
+    top: -10px
   }
 </style>
 

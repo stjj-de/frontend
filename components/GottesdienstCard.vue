@@ -1,6 +1,6 @@
 <template>
   <div class="gottesdienst-card">
-    <span class="gottesdienst-card__time heading--4">
+    <span class="gottesdienst-card__time">
       {{ gottesdienst.time }}
     </span>
     <span class="gottesdienst-card__location">
@@ -31,6 +31,11 @@
   }
 
   .gottesdienst-card__time {
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 5px;
+    color: colors.$background-c;
     margin-top: 0;
   }
 
