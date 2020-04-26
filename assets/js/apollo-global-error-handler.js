@@ -8,7 +8,7 @@ const AUTHENTICATION_ERRORS = ["INVALID_AUTHENTICATION_TOKEN", "NOT_AUTHENTICATE
 // eslint-disable-next-line import/no-default-export
 export default function apolloGlobalErrorHandler({ networkError, graphQLErrors }, context) {
   const errors = graphQLErrors;
-  if (networkError !== null) {
+  if (networkError !== null && networkError.result) {
     errors.push(...networkError.result.errors);
   }
 
