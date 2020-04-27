@@ -2,9 +2,6 @@
   <div class="impressum-page">
     <NavigationBar title="Impressum"/>
     <main class="content">
-      <h1 class="heading--1">
-        Impressum
-      </h1>
       <h2 class="heading--5">
         Pfarrbüro St. Josef - St. Johannes
       </h2>

@@ -4,12 +4,9 @@
     <div class="navigation-bar__container-1">
       <div class="navigation-bar__container-2">
         <div class="navigation-bar__title-container">
-          <span
-            class="navigation-bar__title"
-            :class="{ 'navigation-bar__title--show': showTitle }"
-          >
+          <h1 class="navigation-bar__title">
             {{ title }}
-          </span>
+          </h1>
         </div>
         <nav class="navigation-bar__content">
           <template v-for="item in $options.items">
@@ -74,7 +71,7 @@
   .navigation-bar__container-2 {
     width: 100%;
     height: 100%;
-    padding: 0 30px;
+    padding: 0 30px 0 20px;
 
     display: flex;
     align-items: center;
@@ -115,23 +112,13 @@
   }
 
   .navigation-bar__title {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: bold;
     display: block;
 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    opacity: 0;
-    transform: translateY(10px);
-    transition: 200ms ease;
-    transition-property: opacity, transform;
-
-    &.navigation-bar__title--show {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .navigation-bar__content {
@@ -216,7 +203,7 @@
 
     .navigation-bar__container-2 {
       @include content.content;
-      padding: 0 10px;
+      padding: 0 10px 0 0;
     }
 
     .navigation-bar__title {
@@ -297,7 +284,6 @@
       scrollPosition: 0
     }),
     computed: {
-      showTitle: vm => vm.scrollPosition > 60,
       showBackground: vm => vm.backgroundAfterScroll ? vm.scrollPosition > 0 : true,
       classes() {
         const { open, showBackground } = this;

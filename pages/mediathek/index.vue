@@ -2,9 +2,6 @@
   <div class="mediathek-page">
     <NavigationBar title="Mediathek"/>
     <main class="content">
-      <h1 class="heading--1">
-        Mediathek
-      </h1>
       <div class="mediathek-page__videos" v-if="videos">
         <nuxt-link
           v-for="(video, index) in videos.items"

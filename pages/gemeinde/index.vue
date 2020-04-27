@@ -2,9 +2,6 @@
   <div class="gemeinde-page">
     <NavigationBar title="Gemeinde"/>
     <main class="content">
-      <h1 class="heading--1">
-        Gemeinde
-      </h1>
       <section>
         <h2 class="heading--3">
           Gottesdienste

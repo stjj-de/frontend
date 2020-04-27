@@ -2,9 +2,6 @@
   <div class="privacy-policy-page">
     <NavigationBar title="Datenschutzerklärung"/>
     <main class="content formatted">
-      <h1>
-        Datenschutzerklärung
-      </h1>
       <p>
         Verantwortlicher im Sinne der Datenschutzgesetze, insbesondere der EU-Datenschutzgrundverordnung (DSGVO), ist:
       </p>
