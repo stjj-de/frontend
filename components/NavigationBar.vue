@@ -257,10 +257,10 @@
       label: "Gemeinde",
       to: "/gemeinde"
     },
-    // {
-    //   label: "Gruppierungen",
-    //   to: "/gruppierungen"
-    // },
+    {
+      label: "Gruppierungen",
+      to: "/gruppierungen"
+    },
     {
       label: "Mediathek",
       to: "/mediathek"
