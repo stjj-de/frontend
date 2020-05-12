@@ -12,7 +12,7 @@
       <LoadingOverlay :active="$apollo.queries.eventsInMonth.loading"/>
     </div>
     <transition mode="out-in" :name="dayDetailsTransitionName">
-      <span v-if="selectedDay === null" :key="null" class="heading--6 event-calendar__no-selection">
+      <span v-if="selectedDay === null" :key="null" class="heading--5 event-calendar__no-selection">
         Kein Tag ausgewählt.
       </span>
       <div v-else :key="selectedDay" ref="dayDetails">
@@ -32,13 +32,21 @@
 
 <style scoped lang="scss">
   @use "~@/assets/styles/transitions";
+  @use "~@/assets/styles/screenSize";
 
   @include transitions.fade($duration: 200ms);
   @include transitions.slide($name: "slide-left", $direction: "left", $duration: 200ms, $easing: ease);
   @include transitions.slide($name: "slide-right", $direction: "right", $duration: 200ms, $easing: ease);
 
+  .event-calendar {
+    display: flex;
+  }
+
   .event-calendar__calendar {
     position: relative;
+
+    max-width: 300px;
+    margin-right: 30px;
 
     &::v-deep {
       .vc-day-content:focus {
@@ -57,7 +65,18 @@
 
   .event-calendar__day-details {
     position: relative;
-    min-height: 150px;
+    min-height: 50px;
+  }
+
+  @include screenSize.mobile {
+    .event-calendar {
+      flex-direction: column;
+    }
+
+    .event-calendar__calendar {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
   }
 </style>
 

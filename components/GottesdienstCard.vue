@@ -28,11 +28,12 @@
     @include card.all;
 
     font-size: 1.2rem;
+    padding: 30px
   }
 
   .gottesdienst-card__time {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     display: block;
     margin-bottom: 5px;
     color: colors.$background-c;

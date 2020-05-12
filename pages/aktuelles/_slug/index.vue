@@ -1,6 +1,6 @@
 <template>
   <div class="post-page">
-    <NavigationBar :title="post.title"/>
+    <NavigationBar title="Aktuelles"/>
     <main class="content">
       <div class="post-page__meta">
         <span class="post-page__title">{{ post.title }}</span>
