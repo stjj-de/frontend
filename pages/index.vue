@@ -9,7 +9,10 @@
 </template>
 
 <style scoped lang="scss">
-
+  .index-page {
+    overflow: hidden;
+    padding-bottom: 80px;
+  }
 </style>
 
 <script>
