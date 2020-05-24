@@ -167,7 +167,8 @@
         this.selectedDay = day.id;
 
         setTimeout(() => {
-          this.$refs.dayDetails.scrollIntoView({
+          window.scroll({
+            top: window.pageYOffset + this.$refs.dayDetails.getBoundingClientRect().top - 100,
             behavior: "smooth"
           });
         }, 400);
