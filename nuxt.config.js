@@ -17,6 +17,9 @@ module.exports = {
     titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - Johannes",
     title: "Start",
     html: { lang: "de" },
+    script: [
+      { src: "/hey.js", defer: true, async: true }
+    ],
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
