@@ -27,8 +27,14 @@
     @include card.all();
 
     cursor: pointer;
-
     width: 100%;
+    padding-bottom: 16px;
+
+    transition: 400ms ease box-shadow, 200ms linear border-bottom-color;
+    border-bottom: 4px solid white;
+    &:hover {
+      border-bottom: 4px solid #95ccff;
+    }
   }
 
   .post-card__title {

@@ -7,12 +7,14 @@
         :post="post"
       />
     </div>
-    <nuxt-link
-      v-if="posts && posts.length !== 0"
-      class="link posts-section__show-all-posts" to="/aktuelles"
-    >
-      Alle Artikel anzeigen
-    </nuxt-link>
+    <div class="posts-section__show-all-posts">
+      <nuxt-link
+        v-if="posts && posts.length !== 0"
+        class="link" to="/aktuelles"
+      >
+        Alle Artikel anzeigen
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -37,7 +39,7 @@
   }
 
   .posts-section__show-all-posts {
-    margin-top: 40px;
+    margin-top: 20px;
 
     font-size: 1.2rem;
     display: block;
