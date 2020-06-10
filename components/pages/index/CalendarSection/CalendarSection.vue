@@ -5,7 +5,7 @@
     </h1>
     <span class="calendar-section__gottesdienste-notice">
       Aus Gründen der Übersichtlichkeit sind
-      <nuxt-link class="link" to="/gemeinde">Gottesdienste</nuxt-link>
+      <nuxt-link class="link" to="/gottesdienste">Gottesdienste</nuxt-link>
       <b>nicht</b> im Kalender eingetragen.
     </span>
     <EventCalendar/>

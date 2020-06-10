@@ -1,38 +1,72 @@
 <template>
   <div class="error-page">
-    <main class="formatted">
-      <h1 v-if="error.statusCode === 404">
+    <main class="error-page__content content formatted">
+      <Illustration class="error-page__illustration"/>
+      <span class="error-page__message" v-if="error.statusCode === 404">
         {{ error.message === "This page could not be found" ? pageNotFound : error.message }}
-      </h1>
-      <h1 v-else>
+      </span>
+      <span class="error-page__message" v-else>
         {{ otherError }}
-      </h1>
-      <nuxt-link to="/" class="_back-link">
-        Zurück zur Startseite
-      </nuxt-link>
+      </span>
+      <div class="error-page__back">
+        <nuxt-link to="/">
+          Zurück zur Startseite
+        </nuxt-link>
+      </div>
     </main>
+    <MyFooter class="error-page__footer"/>
   </div>
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/screenSize";
+
   .error-page {
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
+  }
+
+  .error-page__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-
-    min-height: 100vh;
   }
 
-  ._back-link {
-    margin-top: 40px;
+  .error-page__message {
+    font-size: 2.4rem;
+
+    @include screenSize.mobile {
+      font-size: 1.6rem;
+    }
+  }
+
+  .error-page__illustration {
+    max-height: 40vh;
+    margin-bottom: 30px;
+  }
+
+  .error-page__back {
+    margin-top: 30px;
     display: block;
     font-size: 1.2rem;
+  }
+
+  .error-page__footer {
+    justify-self: flex-end;
   }
 </style>
 
 <script>
+  import Illustration from "@/assets/illustrations/error-404.svg";
+  import MyFooter from "@/components/MyFooter";
+
   export default {
+    components: { MyFooter, Illustration },
+    layout: "none",
     props: {
       error: {
         type: Object,

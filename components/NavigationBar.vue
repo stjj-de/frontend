@@ -258,8 +258,8 @@
       to: "/gemeinde"
     },
     {
-      label: "Gruppierungen",
-      to: "/gruppierungen"
+      label: "Gottesdienste",
+      to: "/gottesdienste"
     },
     {
       label: "Mediathek",

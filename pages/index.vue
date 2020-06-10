@@ -20,7 +20,7 @@
   import PostsSection from "@/components/pages/index/PostsSection/PostsSection";
   import CalendarSection from "@/components/pages/index/CalendarSection/CalendarSection";
   import ContentQuery from "@/assets/ContentQuery.graphql";
-  import { HOMEPAGE_INTRODUCTION } from "@/server-shared/content-ids";
+  import { HOMEPAGE_INTRODUCTION } from "@/assets/js/content-ids";
 
   export default {
     name: "IndexPage",

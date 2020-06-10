@@ -1,77 +1,49 @@
 <template>
   <div class="gemeinde-page">
     <NavigationBar title="Gemeinde"/>
-    <main class="content">
-      <section>
-        <h2 class="heading--3">
-          Gottesdienste
-        </h2>
-        <div class="gemeinde-page__gottesdienste">
-          <GottesdienstCard
-            v-for="gottesdienst in gottesdienste"
-            :key="gottesdienst.id"
-            class="gemeinde-page__gottesdienst"
-            :gottesdienst="gottesdienst"
-          />
-        </div>
-      </section>
-      <section class="gemeinde-page__downloads-section">
-        <h2 class="heading--3">
-          Downloads
-        </h2>
-        <ul class="formatted gemeinde-page__downloads">
-          <li>
-            <a target="_blank" href="/f/pfarrbrief">
-              Pfarrbrief
-            </a>
-          </li>
-          <li>
-            <a target="_blank" href="/f/messdienerplan">
-              Messdienerplan
-            </a>
-          </li>
+    <main class="content formatted">
+      <Accordion text="Pfarrgemeinderat">
+        <h3>Vorstand</h3>
+        <ul>
+          <li>Fr. Anja Angresius, Vorsitzende</li>
+          <li>Fr. Karoline Diehl, stellvertretende Vorsitzende</li>
+          <li>Hr. Robert Rauer, Schriftführer</li>
+          <li>Fr. Silke Kramer</li>
+          <li>Fr. Julia Schley</li>
+          <li>Fr. Gabi Schneider</li>
+          <li>Pfr.i.R. Jochen Gabriel (Pfarrverwalter)</li>
         </ul>
-      </section>
+
+        <h3>Mitglieder</h3>
+        <ul>
+          <li>Hr. Michael Gerwald</li>
+          <li>Fr. Birgit Hemmer</li>
+          <li>Hr. Alexander Dumser</li>
+          <li>Hr. Manfred Örtel</li>
+          <li>Hr. Philipp Örtel</li>
+          <li>Fr. Sibylle Rhein</li>
+          <li>Fr. Dagmar Ruf</li>
+          <li>Hr. Horst Schäfer</li>
+          <li>Hr. Jan Schaubitzer-Ruf</li>
+          <li>Fr. Selina Schmitt</li>
+          <li>Hr. Dr. Philipp Schwarz</li>
+          <li>Fr. Kornelia Wack</li>
+        </ul>
+      </Accordion>
     </main>
   </div>
 </template>
 
 <style lang="scss">
-  .gemeinde-page__gottesdienste {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    grid-gap: 30px;
 
-    @media (max-width: 450px) {
-      grid-template-columns: 1fr;
-    }
-
-    /* Can be replaced with this, once min() is better supported */
-    /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
-  }
-
-  .gemeinde-page__downloads-section {
-    margin-top: 40px;
-  }
-
-  .gemeinde-page__downloads {
-    font-size: 1.3rem;
-  }
 </style>
 
 <script>
-  import GottesdiensteQuery from "./gottesdiensteQuery.graphql";
   import NavigationBar from "@/components/NavigationBar";
-  import GottesdienstCard from "@/components/GottesdienstCard";
+  import Accordion from "@/components/Accordion";
 
   export default {
     name: "GemeindePage",
-    components: { GottesdienstCard, NavigationBar },
-    head: () => ({
-      title: "Gottesdienste"
-    }),
-    apollo: {
-      gottesdienste: GottesdiensteQuery
-    }
+    components: { Accordion, NavigationBar }
   };
 </script>
