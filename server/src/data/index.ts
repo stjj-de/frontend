@@ -11,10 +11,19 @@ import { Context } from "./Context";
 import { User } from "./models/User";
 import { FileUploadsResolver } from "./resolvers/FileUploadsResolver";
 import { assertAuthentication } from "./utils/assertAuthentication";
+import { ContentResolver } from "./resolvers/ContentResolver";
 
 export async function initApollo() {
   const schema = await buildSchema({
-    resolvers: [PostResolver, UserResolver, EventResolver, GottesdienstResolver, VideoResolver, FileUploadsResolver],
+    resolvers: [
+      PostResolver,
+      UserResolver,
+      EventResolver,
+      GottesdienstResolver,
+      VideoResolver,
+      FileUploadsResolver,
+      ContentResolver
+    ],
     container: Container,
     validate: false,
     authChecker: resolverData => {

@@ -14,8 +14,7 @@
     <div class="title-section__description">
       <div class="title-section__description-text-container">
         <div class="title-section__description-text">
-          Die neue Pfarrei St. Josef - St. Johannes in Neunkirchen umfasst die Gemeinden Furpach, Wellesweiler,
-          Ludwigsthal und Kohlhof.
+          {{ introduction }}
         </div>
       </div>
       <RedBlob class="title-section__red-blob"/>
@@ -32,7 +31,7 @@
 
   .title-section__title {
     position: relative;
-    height: 400px;
+    height: 100px;
   }
 
   .title-section__title-text {
@@ -64,7 +63,7 @@
 
   @include screenSize.mobile {
     .title-section__title {
-      height: 400px;
+      height: 140px;
     }
 
     .title-section__title-text {
@@ -113,7 +112,7 @@
 
     position: absolute;
     top: -100px;
-    left: -190px;
+    left: -210px;
   }
 
   @include screenSize.mobile {
@@ -130,6 +129,12 @@
 
   export default {
     name: "TitleSection",
-    components: { BlueBlob, RedBlob }
+    components: { BlueBlob, RedBlob },
+    props: {
+      introduction: {
+        type: String,
+        required: true
+      }
+    }
   };
 </script>
