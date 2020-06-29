@@ -74,6 +74,8 @@
     font-size: 1.2rem;
     top: 10px;
     left: 10px;
+
+    border-bottom: none;
   }
 
   .login-page__back-arrow {
@@ -118,7 +120,7 @@
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import { isLoggedIn } from "@/assets/js/isLoggedIn";
+  import { getLoggedInUser } from "@/assets/js/getLoggedInUser";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import MyButton from "@/components/MyButton";
 
@@ -141,8 +143,10 @@
               return "Benutzernamen enthalten keine Leerzeichen.";
             }
           },
-          validateOrSaveAsync: value => {
-            const user = null; // TODO
+          validateOrSaveAsync: async value => {
+            const { data: user } = await this.$axios.$get(`/api/users/${value}`, {
+              validateStatus: status => [200, 404].includes(status)
+            });
 
             if (user === null) {
               return "Dieser Benutzername ist ungültig.";
@@ -157,7 +161,7 @@
           required: "Bitte gib dein Passwort ein.",
           transform: value => value.trim()
         }),
-        userID: 2,
+        userID: null,
         submitLoading: false,
         loggedIn: false
       };
@@ -169,13 +173,11 @@
     },
     async created() {
       if (this.$route.query.logout === "1") {
-        await this.$apolloHelpers.onLogout();
-      }
-
-      if (isLoggedIn(this)) {
-        this.$router.replace(this.nextURL);
-      } else {
+        await this.$axios.setToken(false);
+      } else if (await getLoggedInUser(this.$axios) === null) {
         this.showBox = true;
+      } else {
+        await this.$router.replace(this.nextURL);
       }
     },
     methods: {
@@ -186,35 +188,27 @@
 
         this.username.disabled = true;
         this.password.disabled = true;
-
         this.submitLoading = true;
-        const result = {}; // TODO
 
-        if (result.errors) {
-          const { code } = result.errors[0].extensions;
+        const result = await this.$axios.post("/api/auth", {
+          id: this.userID,
+          password: this.password.transformedValue
+        }, {
+          validateStatus: status => [204, 401].includes(status)
+        });
 
+        if (result.status === 204) {
+          this.loggedIn = true;
+
+          setTimeout(() => {
+            this.$router.push(this.nextURL);
+          }, 2000);
+        } else {
+          this.password.setError("Dein Passwort ist nicht richtig.", true);
           this.username.disabled = false;
           this.password.disabled = false;
           this.submitLoading = false;
-
-          if (code === "INVALID_PASSWORD") {
-            this.password.setError("Dein Passwort ist nicht richtig.", true);
-          } else if (code === "INVALID_ID") {
-            this.username.setError("Dieser Benutzername ist ungültig.", true);
-          } else {
-            throw new Error("Unexpected Apollo error: " + result.errors[0].message);
-          }
-
-          return;
         }
-
-        const { token } = result.data.getOrCreateAuthenticationToken;
-
-        this.loggedIn = true;
-
-        setTimeout(() => {
-          this.$router.push(this.nextURL);
-        }, 2000);
       }
     }
   };

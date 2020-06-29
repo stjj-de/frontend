@@ -1,12 +1,14 @@
 <template>
   <div class="error-page">
     <main class="error-page__content content formatted">
-      <Illustration class="error-page__illustration"/>
-      <span class="error-page__message" v-if="error.statusCode === 404">
-        {{ error.message === "This page could not be found" ? pageNotFound : error.message }}
+      <template v-if="isPageNotFound">
+        <Illustration class="error-page__illustration"/>
+        <span class="error-page__message">
+        Diese Seite existiert nicht.
       </span>
+      </template>
       <span class="error-page__message" v-else>
-        {{ otherError }}
+        Ein Fehler ist aufgetreten.
       </span>
       <div class="error-page__back">
         <nuxt-link to="/">
@@ -73,15 +75,14 @@
         default: null
       }
     },
-    data() {
-      return {
-        pageNotFound: "Diese Seite existiert nicht :/",
-        otherError: "Ein Fehler ist aufgetreten :("
-      };
+    computed: {
+      isPageNotFound() {
+        return this.error.message === "This page could not be found";
+      }
     },
     head() {
       return {
-        title: this.error.statusCode === 404 ? this.pageNotFound : this.otherError
+        title: this.isPageNotFound ? "Diese Seite existiert nicht." : "Ein Fehler ist aufgetreten."
       };
     }
   };

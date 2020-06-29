@@ -13,6 +13,8 @@
     "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/proxy": "^2.0.0",
     "date-fns": "^2.11.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
@@ -35,6 +37,7 @@
     "vue-focus-lock": "^1.4.0",
     "vue-global-events": "^1.1.2",
     "vue-ripple-directive": "^2.0.1",
+    "vue-router": "^3.3.4",
     "vue-select": "^3.10.0",
     "vue-switches": "^2.0.1",
     "vue2-editor": "^2.10.2",
