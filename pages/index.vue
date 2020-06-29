@@ -17,9 +17,8 @@
 <script>
   import NavigationBar from "@/components/NavigationBar";
   import TitleSection from "@/components/pages/index/TitleSection";
-  import PostsSection from "@/components/pages/index/PostsSection/PostsSection";
-  import CalendarSection from "@/components/pages/index/CalendarSection/CalendarSection";
-  import ContentQuery from "@/assets/ContentQuery.graphql";
+  import PostsSection from "@/components/pages/index/PostsSection";
+  import CalendarSection from "@/components/pages/index/CalendarSection";
   import { HOMEPAGE_INTRODUCTION } from "@/assets/js/content-ids";
 
   export default {
@@ -32,14 +31,7 @@
       introduction: ""
     }),
     async asyncData({ app }) {
-      const $apollo = app.apolloProvider.defaultClient;
-
-      return {
-        introduction: (await $apollo.query({
-          query: ContentQuery,
-          variables: { id: HOMEPAGE_INTRODUCTION }
-        })).data.content.content
-      };
+      // TODO: Get text
     }
   };
 </script>

@@ -1,20 +1,10 @@
-const isServerRun = Boolean(process.env.IS_SERVER_RUN);
-
-if (!isServerRun) {
-  require("dotenv").config();
-}
-
-const graphqlURIWithoutProtocol = process.env.NODE_ENV === "production"
-  ? `s://${process.env.PUBLIC_HOST}/graphql`
-  : `://${process.env.PUBLIC_HOST}:${process.env.PORT}/graphql`;
-
 module.exports = {
   mode: "universal",
   /*
   ** Headers of the page
   */
   head: {
-    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - Johannes",
+    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes",
     title: "Start",
     html: { lang: "de" },
     script: [
@@ -60,48 +50,13 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    "svg-to-vue-component/nuxt",
-    "@nuxtjs/apollo"
+    "svg-to-vue-component/nuxt"
   ],
-
-  apollo: {
-    errorHandler: "@/assets/js/apollo-global-error-handler.js",
-    cookieAttributes: {
-      /**
-       * Define when the cookie will be removed. Value can be a Number
-       * which will be interpreted as days from time of creation or a
-       * Date instance. If omitted, the cookie becomes a session cookie.
-       */
-      expires: 30 // optional, default: 7 (days)
-    },
-    clientConfigs: {
-      default: {
-        // Only for SSR
-        httpEndpoint: `http://127.0.0.1:${process.env.PORT}/graphql`,
-        // Only for browser
-        browserHttpEndpoint: "http" + graphqlURIWithoutProtocol,
-        // See https://www.apollographql.com/docs/link/links/http.html#options
-        httpLinkOptions: {
-          credentials: "same-origin"
-        },
-        // Use `null` to disable subscriptions
-        wsEndpoint: "ws" + graphqlURIWithoutProtocol,
-        // LocalStorage token
-        tokenName: "apollo-token", // optional
-        // Enable Automatic Query persisting with Apollo Engine
-        persisting: false, // Optional
-        // Use websockets for everything (no HTTP)
-        // You need to pass a `wsEndpoint` for this to work
-        websocketsOnly: false // Optional
-      }
-    }
-  },
-
   /*
   ** Build configuration
   */
   build: {
-    parallel: false,
+    parallel: true,
     transpile: ["vue-ripple-directive"],
     /*
     ** You can extend webpack config here

@@ -1,5 +1,0 @@
-mutation ($id: ID!) {
-  deleteVideo(id: $id) {
-    _
-  }
-}

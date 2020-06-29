@@ -1,0 +1,113 @@
+<template>
+  <main class="gottesdienste-admin-page">
+    <h1 class="heading--1">
+      Gottesdienste
+      <MyButton class="gottesdienste-admin-page__create-button" variant="primary" @click="editGottesdienst('')">
+        Erstellen
+      </MyButton>
+    </h1>
+    <div class="gottesdienste-admin-page__gottesdienste">
+      <LoadingOverlay opacity="1" :active="$apollo.queries.gottesdienste.loading">
+        Gottesdienste werden geladen
+      </LoadingOverlay>
+      <GottesdienstCard
+        v-for="gottesdienst in gottesdienste"
+        :key="gottesdienst.id"
+        class="gottesdienste-admin-page__gottesdienst"
+        :gottesdienst="gottesdienst"
+        @edit="editGottesdienst(gottesdienst.id)"
+        @delete="confirmDeleteModalID = gottesdienst.id"
+      />
+    </div>
+    <EditGottesdienstModal
+      :active="editModalActive"
+      @close="onModalClose"
+      :gottesdienst-id="editModalGottesdienstID"
+    />
+    <MyModal
+      title="Gottesdienst löschen?"
+      closable
+      loading-text="Gottesdienst wird gelöscht"
+      width="400px"
+      :loading="deleteLoading"
+      :active="confirmDeleteModalID !== null"
+      @close="onModalClose"
+    >
+      <template v-slot:default>
+        Diese Aktion kann nicht rückganging gemacht werden.
+      </template>
+      <template v-slot:buttons>
+        <MyButton variant="primary" @click="onModalClose(true)">
+          Abbrechen
+        </MyButton>
+        <MyButton variant="danger" @click="delete_()">
+          Löschen
+        </MyButton>
+      </template>
+    </MyModal>
+  </main>
+</template>
+
+<style scoped lang="scss">
+  .gottesdienste-admin-page__gottesdienste {
+    position: relative;
+    min-height: 400px;
+  }
+
+  .gottesdienste-admin-page__gottesdienst {
+    &:not(:last-child) {
+      margin-bottom: 40px;
+    }
+  }
+
+  .gottesdienste-admin-page__create-button {
+    position: relative;
+    top: -10px
+  }
+</style>
+
+<script>
+  import GottesdienstCard from "@/components/GottesdienstCard";
+  import EditGottesdienstModal
+    from "@/components/pages/admin/gottesdienste/EditGottesdienstModal";
+  import MyModal from "@/components/MyModal";
+  import MyButton from "@/components/MyButton";
+  import LoadingOverlay from "@/components/LoadingOverlay";
+
+  export default {
+    name: "GottesdiensteAdminPage",
+    components: { LoadingOverlay, MyButton, MyModal, EditGottesdienstModal, GottesdienstCard },
+    head: () => ({
+      title: "Gottesdienste / Administration"
+    }),
+    data: () => ({
+      editModalActive: false,
+      editModalGottesdienstID: null,
+      confirmDeleteModalID: null,
+      deleteLoading: false
+    }),
+    methods: {
+      onModalClose(canceled) {
+        if (!canceled) this.refetch();
+        this.confirmDeleteModalID = null;
+        this.editModalActive = false;
+      },
+      editGottesdienst(id) {
+        this.editModalGottesdienstID = id;
+        this.editModalActive = true;
+      },
+      async delete_() {
+        this.deleteLoading = true;
+
+        // TODO
+
+        this.confirmDeleteModalID = null;
+        this.deleteLoading = false;
+        this.refetch();
+      },
+      refetch() {
+        return []; // TODO
+      }
+    }
+  };
+</script>

@@ -1,9 +1,0 @@
-query EventCalendarEventsInMonth ($filter: String!) {
-  events(filter: $filter) {
-    items {
-      id
-      color
-      date
-    }
-  }
-}

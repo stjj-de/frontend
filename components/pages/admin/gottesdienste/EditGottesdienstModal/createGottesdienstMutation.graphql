@@ -1,5 +1,0 @@
-mutation ($gottesdienst: CreateGottesdienstInput!) {
-  createGottesdienst(gottesdienst: $gottesdienst) {
-    id
-  }
-}

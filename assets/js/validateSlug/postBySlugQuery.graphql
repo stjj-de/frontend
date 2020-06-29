@@ -1,5 +1,0 @@
-query ($slug: String!) {
-  postBySlug(slug: $slug) {
-    id
-  }
-}

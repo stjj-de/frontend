@@ -82,9 +82,7 @@
 
 <script>
   import { format } from "date-fns";
-  import EventsInMonthQuery from "./eventsInMonthQuery.graphql";
-  import EventsOnDayQuery from "./eventsOnDayQuery.graphql";
-  import EventCalendarDayDetails from "./DayDetails/EventCalendarDayDetails";
+  import EventCalendarDayDetails from "./EventCalendarDayDetails";
   import { dateFnsLocale } from "@/assets/js/dateUtils";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
@@ -102,27 +100,6 @@
       selectedDay: toFilterStringDate(new Date(), true),
       previousSelectedDay: null
     }),
-    apollo: {
-      eventsInMonth: {
-        query: EventsInMonthQuery,
-        variables: {
-          filter: toFilterStringDate(new Date(), false)
-        },
-        update: data => data.events.items
-      },
-      eventsOnDay: {
-        query: EventsOnDayQuery,
-        variables() {
-          return {
-            filter: this.selectedDay
-          };
-        },
-        skip() {
-          return this.selectedDay === null;
-        },
-        update: data => data.events.items
-      }
-    },
     computed: {
       attributes() {
         if (!this.eventsInMonth) return [];
@@ -159,9 +136,7 @@
         }
 
         this.selectedDay = null;
-        this.$apollo.queries.eventsInMonth.refetch({
-          filter: String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0")
-        });
+        // TODO
       },
       onDayClick(day) {
         this.selectedDay = day.id;

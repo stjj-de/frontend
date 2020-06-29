@@ -133,7 +133,6 @@
 
 <script>
   import uniqBy from "lodash.uniqby";
-  import VideosQuery from "./videosQuery.graphql";
   import NavigationBar from "@/components/NavigationBar";
   import YoutubeThumbnail from "@/components/YoutubeThumbnail";
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
@@ -145,35 +144,12 @@
     head: () => ({
       title: "Mediathek"
     }),
-    apollo: {
-      videos: {
-        query: VideosQuery,
-        variables: {
-          skip: 0,
-          take: 10
-        }
-      }
-    },
     methods: {
       formatVideoDate(date) {
         return formatDateWithOptionalTime(date);
       },
       fetchMore() {
-        this.$apollo.queries.videos.fetchMore({
-          variables: {
-            skip: this.videos.items.length
-          },
-          updateQuery: (previousResult, { fetchMoreResult }) => ({
-            videos: {
-              __typename: previousResult.videos.__typename,
-              items: uniqBy([
-                ...previousResult.videos.items,
-                ...fetchMoreResult.videos.items
-              ], video => video.id),
-              hasMore: fetchMoreResult.videos.hasMore
-            }
-          })
-        });
+        // TODO
       }
     }
   };

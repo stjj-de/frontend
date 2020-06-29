@@ -30,12 +30,11 @@
 
 <script>
   import snakeCase from "lodash.snakecase";
-  import PostsQuery from "./postsQuery.graphql";
   import DataTable from "@/components/DataTable/DataTable";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
   import MyButton from "@/components/MyButton";
-  import CreatePostModal from "@/components/pages/admin/posts/CreatePostModal/CreatePostModal";
+  import CreatePostModal from "@/components/pages/admin/posts/CreatePostModal";
   import "izitoast/dist/css/iziToast.min.css";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
 
@@ -85,18 +84,7 @@
           sortOrder: "DESCENDING",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            const result = await this.$apollo.query({
-              query: PostsQuery,
-              variables: {
-                skip: pageIndex * ITEMS_PER_PAGE,
-                take: ITEMS_PER_PAGE,
-                order: sortOrder,
-                sortBy: snakeCase(sortBy).toUpperCase()
-              },
-              fetchPolicy: "network-only"
-            });
-
-            return result.data.posts;
+            return []; // TODO
           }
         })
       };

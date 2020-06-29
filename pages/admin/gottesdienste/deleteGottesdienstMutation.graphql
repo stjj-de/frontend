@@ -1,5 +1,0 @@
-mutation ($id: ID!) {
-  deleteGottesdienst(id: $id) {
-    _
-  }
-}

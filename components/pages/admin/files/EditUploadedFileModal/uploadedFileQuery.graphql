@@ -1,7 +1,0 @@
-query ($id: ID!) {
-  uploadedFile(id: $id) {
-    id
-    title
-    alias
-  }
-}

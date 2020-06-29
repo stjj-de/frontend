@@ -1,5 +1,0 @@
-query ($alias: String!) {
-  uploadedFileByAlias(alias: $alias) {
-    id
-  }
-}

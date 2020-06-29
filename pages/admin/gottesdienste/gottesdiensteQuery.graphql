@@ -1,8 +1,0 @@
-query {
-  gottesdienste {
-    id
-    time
-    location
-    description
-  }
-}

@@ -1,5 +1,0 @@
-mutation ($title: String!, $file: Upload!) {
-  uploadFile(title: $title, file: $file) {
-    id
-  }
-}

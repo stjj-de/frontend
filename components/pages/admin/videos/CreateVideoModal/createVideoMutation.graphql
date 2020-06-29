@@ -1,5 +1,0 @@
-mutation ($videoIDOrURL: String!) {
-  createVideo(videoIDOrURL: $videoIDOrURL) {
-    id
-  }
-}
