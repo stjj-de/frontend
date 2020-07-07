@@ -74,7 +74,7 @@
   @keyframes mediathek-page__fade-in {
     from {
       opacity: 0;
-      transform: scale(0.5);
+      transform: scale(0.8);
     }
 
     to {
@@ -141,7 +141,7 @@
   import MyButton from "@/components/MyButton";
 
   async function fetchVideos(offset, axios) {
-    return await axios.$get(`/api/videos?offset=${offset}&limit=20&fields=id,title,publishedAt,youtubeVideoID`);
+    return await axios.$get(`/api/videos?offset=${offset}&limit=20&fields=id,title,publishedAt,youtubeVideoID&sortBy=publishedAt&asc=false`);
   }
 
   export default {

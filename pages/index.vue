@@ -36,7 +36,7 @@
 
       return {
         introduction: await $axios.$get(`/api/contents/${HOMEPAGE_INTRODUCTION}`),
-        posts: await Promise.all((await $axios.$get(`/api/posts?limit=2&fields=${postFields}&onlyRelevant=true`))
+        posts: await Promise.all((await $axios.$get(`/api/posts?limit=2&fields=${postFields}&onlyRelevant=true&sortBy=publishedAt&asc=false`))
           .items.map(async item => ({
             ...item,
             authors: await Promise.all(item.authors

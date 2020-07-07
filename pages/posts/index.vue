@@ -64,7 +64,7 @@
 
   async function fetchPosts(offset, axios) {
     const fields = "title,authors,publishedAt,excerpt,slug";
-    const result = await axios.$get(`/api/posts?offset=${offset}&limit=10&fields=${fields}`);
+    const result = await axios.$get(`/api/posts?offset=${offset}&limit=10&fields=${fields}&sortBy=publishedAt&asc=false`);
     return {
       ...result,
       items: await Promise.all(result.items.map(async item => ({

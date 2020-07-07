@@ -4,8 +4,10 @@
     tag="article"
     :to="`/posts/${post.slug}`"
   >
-    <nuxt-link class="post-card__title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
-    <span class="post-card__excerpt">{{ post.excerpt }}</span>
+    <div class="post-card__content">
+      <nuxt-link class="post-card__title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
+      <span class="post-card__excerpt">{{ post.excerpt }}</span>
+    </div>
     <div class="post-card__footer">
       <div class="post-card__authors">
         <UserImageWithPopup
@@ -25,6 +27,10 @@
 
   .post-card {
     @include card.all();
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     cursor: pointer;
     width: 100%;
