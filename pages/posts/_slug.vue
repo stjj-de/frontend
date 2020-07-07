@@ -83,10 +83,10 @@
     }),
     async asyncData({ error, app: { $axios }, params }) {
       const fields = "title,publishedAt,content,authors";
-      let post = (await $axios.$get(`/api/posts/_${params.slug}?fields=${fields}`, { validateStatus: status => [200, 400].includes(status) })).data
+      let post = (await $axios.$get(`/api/posts/_${params.slug}?fields=${fields}`, { validateStatus: status => [200, 404].includes(status) })).data
 
       if (post === null) {
-        error({ statusCode: 404, message: "Dieser Artikel existiert nicht." });
+        error({ statusCode: 404, m: "Dieser Artikel existiert nicht." });
       } else {
         post = {
           ...post,
