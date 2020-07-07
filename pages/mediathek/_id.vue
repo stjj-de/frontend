@@ -17,10 +17,10 @@
           class="video-page__iframe"
           allow="autoplay; encrypted-media; picture-in-picture"
           allowfullscreen
-          :src="`https://www.youtube-nocookie.com/embed/${video.videoID}?autoplay=1&rel=0`"
-          @load="videoLoading = false"
+          :src="`https://www.youtube-nocookie.com/embed/${video.youtubeVideoID}?autoplay=1&rel=0`"
+          @load="loading = false"
         ></iframe>
-        <LoadingOverlay :active="videoLoading" opacity="1">
+        <LoadingOverlay :active="loading" opacity="1">
           Video wird geladen
         </LoadingOverlay>
       </div>
@@ -34,6 +34,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    border-bottom: none;
   }
 
   .video-page__back-icon {
@@ -69,22 +70,20 @@
     components: { LoadingOverlay, NavigationBar, ArrowLeftIcon },
     head() {
       return {
-        title: `Video: ${this.video.title} / Mediathek`
+        title: `${this.video.title} / Mediathek`
       };
     },
     data: () => ({
       video: null,
-      videoLoading: true
+      loading: true
     }),
-    async asyncData({ error, app, params }) {
-      const video = null; // TODO
+    async asyncData({ error, app: { $axios }, params }) {
+      const video = (await $axios.$get(`/api/videos/${params.id}`, { validateStatus: status => [200, 404].includes(status) })).data;
 
       if (video === null) {
-        error({ statusCode: 404, message: "Dieses Video existiert nicht." });
+        error({ statusCode: 404, m: "Dieses Video existiert nicht." });
       } else {
-        return {
-          video
-        };
+        return { video };
       }
     }
   };

@@ -8,7 +8,7 @@
       </span>
       </template>
       <span class="error-page__message" v-else>
-        Ein Fehler ist aufgetreten.
+        {{ error.m || "Ein Fehler ist aufgetreten." }}
       </span>
       <div class="error-page__back">
         <nuxt-link to="/">
@@ -76,13 +76,14 @@
       }
     },
     computed: {
+      isCustomError: vm => vm.error.m !== undefined,
       isPageNotFound() {
-        return this.error.message === "This page could not be found";
+        return !this.isCustomError && this.error.message === "This page could not be found";
       }
     },
     head() {
       return {
-        title: this.isPageNotFound ? "Diese Seite existiert nicht." : "Ein Fehler ist aufgetreten."
+        title: this.isPageNotFound ? "Diese Seite existiert nicht." : (this.error.m || "Ein Fehler ist aufgetreten.")
       };
     }
   };
