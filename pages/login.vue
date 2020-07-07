@@ -143,8 +143,9 @@
               return "Benutzernamen enthalten keine Leerzeichen.";
             }
           },
+          debounceWait: 500,
           validateOrSaveAsync: async value => {
-            const { data: user } = await this.$axios.$get(`/api/users/${value}`, {
+            const { data: user } = await this.$axios.$get(`/api/users/${value}?fields=id`, {
               validateStatus: status => [200, 404].includes(status)
             });
 

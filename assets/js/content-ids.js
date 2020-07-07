@@ -1,1 +1,1 @@
-export const HOMEPAGE_INTRODUCTION = "homepage-introduction";
+export const HOMEPAGE_INTRODUCTION = "HOMEPAGE_INTRODUCTION";

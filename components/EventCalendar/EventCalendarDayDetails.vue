@@ -63,7 +63,8 @@
   }
 
   .event-calendar-day-details__event-creator {
-    margin-top: 15px;
+    margin-left: 4px;
+    margin-top: 5px;
     margin-bottom: -10px;
 
     display: flex;
@@ -75,12 +76,13 @@
 
   .event-calendar-day-details__event-description {
     font-size: 1.1rem;
+    margin: 0;
   }
 
   .event-calendar-day-details__event-more {
     font-size: 1.1rem;
-    display: block;
-    margin-top: 10px;
+    display: inline-block;
+    margin: 10px 0;
   }
 
   .event-calendar-day-details__no-events {

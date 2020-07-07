@@ -9,21 +9,22 @@
           @dayclick="onDayClick"
         />
       </client-only>
-      <LoadingOverlay :active="$apollo.queries.eventsInMonth.loading"/>
+      <LoadingOverlay :active="eventsInMonth === null"/>
     </div>
     <transition mode="out-in" :name="dayDetailsTransitionName">
       <span v-if="selectedDay === null" :key="null" class="heading--5 event-calendar__no-selection">
         Kein Tag ausgewählt.
       </span>
-      <div v-else :key="selectedDay" ref="dayDetails">
+      <div v-else :key="selectedDay" ref="dayDetails" class="event-calendar__day-details-container">
         <h2 class="heading--4 _day-date">
           {{ selectedDayString }}
         </h2>
         <div class="event-calendar__day-details">
-          <EventCalendarDayDetails v-if="!$apollo.queries.eventsOnDay.loading" :events="eventsOnDay"/>
-          <LoadingOverlay :active="$apollo.queries.eventsOnDay.loading">
+          <EventCalendarDayDetails v-if="eventsOnDay !== null" :events="eventsOnDay"/>
+          <LoadingOverlay :active="eventsOnDay === null && eventsInMonth !== null">
             Termine werden geladen
           </LoadingOverlay>
+          <span v-if="eventsOnDay === null && eventsInMonth === null">Termine werden geladen</span>
         </div>
       </div>
     </transition>
@@ -40,6 +41,7 @@
 
   .event-calendar {
     display: flex;
+    justify-content: stretch;
   }
 
   .event-calendar__calendar {
@@ -63,9 +65,15 @@
     margin-bottom: 5px;
   }
 
+  .event-calendar__day-details-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+
   .event-calendar__day-details {
     position: relative;
-    min-height: 50px;
+    flex-grow: 1;
   }
 
   @include screenSize.mobile {
@@ -81,12 +89,13 @@
 </style>
 
 <script>
+  /* eslint-disable function-paren-newline */
+
   import { format } from "date-fns";
   import EventCalendarDayDetails from "./EventCalendarDayDetails";
-  import { dateFnsLocale } from "@/assets/js/dateUtils";
+  import { dateFnsLocale, toFilterStringDate } from "@/assets/js/dateUtils";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
-  import { toFilterStringDate } from "@/assets/js/dateUtils";
 
   export default {
     name: "EventCalendar",
@@ -98,18 +107,18 @@
     data: () => ({
       isFirstPageChange: true,
       selectedDay: toFilterStringDate(new Date(), true),
-      previousSelectedDay: null
+      previousSelectedDay: null,
+      eventsInMonth: null,
+      eventsOnDay: null
     }),
     computed: {
       attributes() {
-        if (!this.eventsInMonth) return [];
+        if (this.eventsInMonth === null) return [];
 
-        const eventAttributes = this.eventsInMonth.map(event => ({
+        return this.eventsInMonth.map(event => ({
           dot: event.color.toLowerCase(),
           dates: new Date(event.date)
         }));
-
-        return eventAttributes;
       },
       dayDetailsTransitionName() {
         if (this.previousSelectedDay === null || this.selectedDay === null) {
@@ -129,17 +138,28 @@
       }
     },
     methods: {
-      onPageChange(page) {
-        if (this.isFirstPageChange) {
-          this.isFirstPageChange = false;
-          return;
-        }
-
+      async onPageChange(page) {
         this.selectedDay = null;
-        // TODO
+        this.eventsInMonth = null;
+        const filter = String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0");
+        this.eventsInMonth = (await this.$axios.$get(`/api/events?filter=${filter}&limit=50&fields=color,date`)).items;
       },
-      onDayClick(day) {
+      async onDayClick(day) {
         this.selectedDay = day.id;
+
+        const fields = "id,date,endDate,title,description,color,creator,relatedPost";
+        this.eventsOnDay = null;
+        this.eventsOnDay = await Promise.all(
+          (await this.$axios.$get(`/api/events?filter=${this.selectedDay}&limit=50&fields=${fields}`))
+            .items
+            .map(async item => ({
+              ...item,
+              creator: item.creator === null ? null
+                : (await this.$axios.$get(`/api/users/${item.creator}?fields=id,displayName,position,imageID`)).data,
+              relatedPost: item.relatedPost === null ? null
+                : (await this.$axios.$get(`/api/posts/${item.relatedPost}?fields=slug`)).data
+            }))
+        );
 
         setTimeout(() => {
           window.scroll({

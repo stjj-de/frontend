@@ -2,7 +2,7 @@
   <div class="index-page">
     <NavigationBar/>
     <TitleSection :introduction="introduction"/>
-    <PostsSection/>
+    <PostsSection :posts="posts"/>
     <CalendarSection/>
   </div>
 </template>
@@ -28,10 +28,21 @@
       title: "Start"
     }),
     data: () => ({
-      introduction: ""
+      introduction: "",
+      posts: []
     }),
-    async asyncData({ app }) {
-      // TODO: Get text
+    async asyncData({ app: { $axios } }) {
+      const postFields = "id,slug,title,excerpt,publishedAt,authors";
+
+      return {
+        introduction: await $axios.$get(`/api/contents/${HOMEPAGE_INTRODUCTION}`),
+        posts: await Promise.all((await $axios.$get(`/api/posts?limit=2&fields=${postFields}&onlyRelevant=true`))
+          .items.map(async item => ({
+            ...item,
+            authors: await Promise.all(item.authors
+              .map(async id => (await $axios.$get(`/api/users/${id}?fields=id,imageID,displayName,position`)).data))
+          })))
+      };
     }
   };
 </script>

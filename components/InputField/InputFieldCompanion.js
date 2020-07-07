@@ -140,6 +140,8 @@ export class InputFieldCompanion {
   }
 
   _runValidateOrSaveAsync() {
+    if (this._error !== null) return;
+
     this._cancelValidateOrSaveHandlers.forEach(handler => handler());
     this._cancelValidateOrSaveHandlers = [];
 

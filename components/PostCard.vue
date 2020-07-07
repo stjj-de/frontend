@@ -93,7 +93,7 @@
     },
     computed: {
       publicationDateString() {
-        return format(new Date(this.post.publicationDate), "d.L.y", { locale: dateFnsLocale });
+        return format(new Date(this.post.publishedAt), "d.L.y", { locale: dateFnsLocale });
       }
     }
   };

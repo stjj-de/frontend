@@ -1,6 +1,6 @@
 <template>
   <div class="posts-section content">
-    <div v-if="!$apollo.queries.posts.loading" class="posts-section__posts">
+    <div class="posts-section__posts">
       <PostCard
         v-for="post in posts"
         :key="post.id"
@@ -64,10 +64,11 @@
   export default {
     name: "PostsSection",
     components: { PostCard },
-    async asyncData() {
-      return {
-        posts: [] // TODO
-      };
+    props: {
+      posts: {
+        type: Array,
+        required: true
+      }
     }
   };
 </script>

@@ -9,7 +9,7 @@
     <img
       class="user-image-with-popup__image"
       :alt="user.name"
-      :src="getProfileImageURL(user.image)"
+      :src="getProfileImageURL(user.imageID)"
     >
     <div
       class="user-image-with-popup__popup"
@@ -18,7 +18,7 @@
       <img
         class="user-image-with-popup__popup-image"
         :alt="user.displayName"
-        :src="getProfileImageURL(user.image)"
+        :src="getProfileImageURL(user.imageID)"
       >
       <div class="user-image-with-popup__popup-text">
         <span class="user-image-with-popup__name">

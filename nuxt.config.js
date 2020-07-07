@@ -1,8 +1,11 @@
 const BACKEND_PORT = 8000;
-const isDev = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === "development";
 
 const config = {
-  mode: "universal",
+  server: {
+    host: "0.0.0.0"
+  },
+  mode: isDevelopment ? "spa" : "universal",
   /*
   ** Headers of the page
   */
@@ -29,7 +32,10 @@ const config = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: "#000000" },
+  loading: {
+    color: "#000000",
+    height: "5px"
+  },
   /*
   ** Global CSS
   */
@@ -57,7 +63,7 @@ const config = {
     "@nuxtjs/axios"
   ],
   axios: {
-    baseURL: `${isDev ? "http" : "https"}://127.0.0.1:${BACKEND_PORT}`,
+    baseURL: `${isDevelopment ? "http" : "https"}://127.0.0.1:${BACKEND_PORT}`,
     browserBaseURL: "/",
     progress: false
   },
@@ -77,7 +83,7 @@ const config = {
 };
 
 // This should be done by Nginx in production
-if (isDev) {
+if (isDevelopment) {
   config.modules.push("@nuxtjs/proxy");
   config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"];
 }
