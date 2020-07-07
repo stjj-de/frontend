@@ -120,7 +120,6 @@
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import { getLoggedInUser } from "@/assets/js/getLoggedInUser";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import MyButton from "@/components/MyButton";
 
@@ -174,8 +173,8 @@
     },
     async created() {
       if (this.$route.query.logout === "1") {
-        await this.$axios.setToken(false);
-      } else if (await getLoggedInUser(this.$axios) === null) {
+        // TODO: Logout
+      } else if ((await this.$axios.get("/api/auth/me", { validateStatus: status => [200, 403].includes(status) })).status === 403) {
         this.showBox = true;
       } else {
         await this.$router.replace(this.nextURL);

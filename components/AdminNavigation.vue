@@ -7,7 +7,7 @@
     </div>
     <nav class="admin-navigation__container">
       <div class="admin-navigation__top">
-        <LoadingPlaceholder v-if="$apollo.queries.me.loading" height="80px"/>
+        <LoadingPlaceholder v-if="meLoading" height="80px"/>
         <nuxt-link
           v-else
           class="admin-navigation__profile admin-navigation__item"
@@ -15,10 +15,10 @@
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
-          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getProfileImageURL(me.image)">
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getProfileImageURL(me.imageID)">
           <div class="admin-navigation__logged-in-as">
             Angemeldet als
-            <span class="admin-navigation__name">{{ me.name }}</span>
+            <span class="admin-navigation__name">{{ me.realName }}</span>
           </div>
         </nuxt-link>
         <nuxt-link
@@ -33,7 +33,7 @@
           {{ item.label }}
         </nuxt-link>
       </div>
-      <nuxt-link class="link admin-navigation__back admin-navigation__item" to="/">
+      <nuxt-link class="admin-navigation__back admin-navigation__item" to="/">
         <ArrowLeftIcon class="admin-navigation__icon"/>
         Zurück zur Seite
       </nuxt-link>
@@ -265,10 +265,15 @@
     components: { LoadingPlaceholder, LoadingOverlay, ArrowLeftIcon },
     data: () => ({
       open: false,
-      me: {} // TODO
+      me: {},
+      meLoading: true
     }),
     methods: {
       getProfileImageURL
+    },
+    async created() {
+      this.me = (await this.$axios.$get(`/api/users/${this.$store.state.userID}?fields=id,realName,imageID`)).data;
+      this.meLoading = false;
     },
     items: ITEMS
   };
