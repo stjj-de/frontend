@@ -64,7 +64,8 @@
     height: var(--navigation-bar-height);
 
     .navigation-bar--show-background & {
-      background: colors.$background;
+      background: transparentize(colors.$background, 0.8);
+      backdrop-filter: blur(30px);
     }
   }
 
@@ -207,7 +208,7 @@
     }
 
     .navigation-bar__title {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
 
     .navigation-bar__toggle {
@@ -251,7 +252,7 @@
     },
     {
       label: "Aktuelles",
-      to: "/aktuelles"
+      to: "/posts"
     },
     {
       label: "Gemeinde",

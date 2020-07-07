@@ -1,5 +1,4 @@
-const path = require("path");
-
+// eslint-disable-next-line no-undef
 module.exports = {
   root: true,
   env: {
@@ -11,64 +10,5 @@ module.exports = {
     sourceType: "module",
     ecmaVersion: 2018
   },
-  extends: "@moritzruth",
-  settings: {
-    "import/resolver": {
-      webpack: {
-        config: path.resolve(__dirname, "./webpack.resolve.js")
-      }
-    }
-  },
-  rules: {
-    "unicorn/filename-case": "off",
-    "nuxt/no-cjs-in-config": "off"
-  },
-  globals: {
-    process: true
-  },
-  overrides: [
-    {
-      files: ["webpack.resolve.js", "nuxt.config.js", "ormconfig.js", "ecosystem.config.js"],
-      env: {
-        node: true,
-        es6: true,
-        browser: false
-      },
-      extends: "@moritzruth",
-      settings: {
-        "import/resolver": {
-          node: {}
-        }
-      },
-      rules: {
-        "unicorn/prevent-abbreviations": ["warn", {
-          whitelist: {
-            ctx: true
-          }
-        }]
-      }
-    },
-    {
-      files: "*.vue",
-      extends: [
-        "plugin:nuxt/recommended",
-        "@moritzruth",
-        "@moritzruth/eslint-config/vue"
-      ],
-      rules: {
-        "vue/no-unused-components": "warn",
-        "no-extra-parens": "off", // This does not work with some other rules
-        "consistent-return": "off"
-      },
-      parserOptions: {
-        parser: "babel-eslint"
-      }
-    },
-    {
-      files: ["middleware/*", "components/**/*"],
-      rules: {
-        "import/no-default-export": "off"
-      }
-    }
-  ]
+  rules: {}
 };

@@ -10,7 +10,7 @@
     <div class="posts-section__show-all-posts">
       <nuxt-link
         v-if="posts && posts.length !== 0"
-        class="link" to="/aktuelles"
+        class="link" to="/posts"
       >
         Alle Artikel anzeigen
       </nuxt-link>

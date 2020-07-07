@@ -2,9 +2,9 @@
   <nuxt-link
     class="post-card"
     tag="article"
-    :to="`/aktuelles/${post.slug}`"
+    :to="`/posts/${post.slug}`"
   >
-    <nuxt-link class="post-card__title" :to="`/aktuelles/${post.slug}`">{{ post.title }}</nuxt-link>
+    <nuxt-link class="post-card__title" :to="`/posts/${post.slug}`">{{ post.title }}</nuxt-link>
     <span class="post-card__excerpt">{{ post.excerpt }}</span>
     <div class="post-card__footer">
       <div class="post-card__authors">
