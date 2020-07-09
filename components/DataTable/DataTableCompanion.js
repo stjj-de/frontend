@@ -10,7 +10,7 @@ export class DataTableCompanion {
     },
     itemsPerPage = 10,
     sortBy,
-    sortOrder = "DESCENDING",
+    sortOrder = "asc",
     fetch,
     fetchDebounceTimeout = 500,
     userDefinedVariables = []

@@ -46,6 +46,9 @@
   export default {
     name: "AdminPage",
     middleware: ["auth"],
-    components: { AdminNavigation }
+    components: { AdminNavigation },
+    head: () => ({
+      title: "Verwaltung"
+    })
   };
 </script>

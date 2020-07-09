@@ -135,7 +135,7 @@
       }
     }
 
-    &[data-order="ASCENDING"] {
+    &[data-order="asc"] {
       .data-table__sort-arrow {
         transform: rotate(-180deg);
       }
@@ -215,9 +215,9 @@
 
         if (column.sortable) {
           if (this.companion.sortBy === key) {
-            this.companion.sortOrder = this.companion.sortOrder === "DESCENDING" ? "ASCENDING" : "DESCENDING";
+            this.companion.sortOrder = this.companion.sortOrder === "desc" ? "asc" : "desc";
           } else {
-            this.companion.sortOrder = "DESCENDING";
+            this.companion.sortOrder = "desc";
             this.companion.sortBy = key;
           }
 

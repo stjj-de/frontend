@@ -118,6 +118,7 @@
   import EventsTableColorColumn from "@/components/pages/admin/calendar/EventsTableColorColumn";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
   import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
+  import querystring from "query-string";
   import EditEventModal from "@/components/pages/admin/calendar/EditEventModal";
   import MyButton from "@/components/MyButton";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
@@ -179,10 +180,18 @@
             }
           },
           sortBy: "date",
-          sortOrder: "DESCENDING",
+          sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            return []; // TODO
+            const query = querystring.stringify({
+              offset: pageIndex * ITEMS_PER_PAGE,
+              limit: ITEMS_PER_PAGE,
+              fields: "id,color,title,date,endDate",
+              sortBy,
+              asc: sortOrder === "asc",
+              filter: this.filterString
+            })
+            return await this.$axios.$get(`/api/events?${query}`);
           }
         })
       };

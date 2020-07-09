@@ -46,7 +46,8 @@ const config = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    "@/plugins/vue-ripple-directive"
+    "@/plugins/vue-ripple-directive",
+    "@/plugins/axios-error-handler"
   ],
   /*
   ** Nuxt.js dev-modules
