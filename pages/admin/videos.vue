@@ -69,18 +69,25 @@
             title: {
               name: "Titel"
             },
-            publicationDate: {
+            publishedAt: {
               name: "Veröffentlichung am",
               transform: transformDate,
               sortable: true,
               width: 200
             }
           },
-          sortBy: "publicationDate",
-          sortOrder: "DESCENDING",
+          sortBy: "publishedAt",
+          sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            return []; // TODO
+            return await this.$api.videos.list({
+              fields: ["id", "title", "publishedAt"],
+              sortBy,
+              ascending: sortOrder === "asc",
+              limit: ITEMS_PER_PAGE,
+              offset: pageIndex * ITEMS_PER_PAGE,
+              onlyPublished: false
+            });
           }
         })
       };

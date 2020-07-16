@@ -10,13 +10,13 @@
       @close="$emit('close', null)"
     >
       <template v-slot:default>
-        <InputField label="YouTube-Video-ID oder -URL" placeholder="z. B.: dQw4w9WgXcQ" :companion="videoIDOrURL"/>
+        <InputField label="YouTube Video-ID" placeholder="z. B.: dQw4w9WgXcQ" :companion="videoID"/>
       </template>
       <template v-slot:buttons="{ close }">
         <MyButton @click="close">
           Abbrechen
         </MyButton>
-        <MyButton variant="primary" :disabled="!videoIDOrURL.valid" @click="submit()">
+        <MyButton variant="primary" :disabled="!videoID.valid" @click="submit()">
           Erstellen
         </MyButton>
       </template>
@@ -45,7 +45,7 @@
     },
     data: () => ({
       loading: false,
-      videoIDOrURL: new InputFieldCompanion({
+      videoID: new InputFieldCompanion({
         required: true,
         transform: value => value.trim()
       })
@@ -53,26 +53,25 @@
     watch: {
       active() {
         if (this.active) {
-          this.videoIDOrURL.focus();
+          this.videoID.focus();
         } else {
-          this.videoIDOrURL.setValueAndReset("");
+          this.videoID.setValueAndReset("");
           this.loading = false;
         }
       }
     },
     methods: {
       async submit() {
-        if (this.loading || !this.videoIDOrURL.valid) return;
-
+        if (this.loading || !this.videoID.valid) return;
         this.loading = true;
 
-        const video = null // TODO
+        const { data } = await this.$api.videos.create({ youtubeVideoID: this.videoID.transformedValue }, [201, 404]);
 
-        if (video === null) {
+        if (!data) {
           this.loading = false;
-          this.videoIDOrURL.setError("Dieses Video konnte nicht gefunden werden.", true);
+          this.videoID.setError("Dieses Video konnte nicht gefunden werden.", true);
         } else {
-          this.$emit("close", video.id);
+          this.$emit("close", data.id);
         }
       }
     }

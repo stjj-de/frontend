@@ -298,7 +298,7 @@
         this.loading = true;
         this.loadingText = "Termin wird gelöscht";
 
-        // TODO
+        await this.$api.events.delete(this.eventId);
 
         this.loading = false;
         this.close();

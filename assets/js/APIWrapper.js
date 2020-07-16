@@ -5,7 +5,7 @@ export class APIWrapper {
     this.posts = new PostsAPIModelEndpointWrapper(axios);
     this.events = new EventsAPIModelEndpointWrapper(axios);
     this.users = new APIModelEndpointWrapper(axios, "users");
-    this.videos = new APIModelEndpointWrapper(axios, "videos");
+    this.videos = new VideosAPIModelEndpointWrapper(axios);
     this.churches = new APIModelEndpointWrapper(axios, "churches");
     this.churchServiceDates = new APIModelEndpointWrapper(axios, "church-service-dates");
     this.uploadedFields = new APIModelEndpointWrapper(axios, "uploaded-files");
@@ -24,12 +24,16 @@ class APIModelEndpointWrapper {
     this.name = name;
   }
 
-  create(data) {
-    return this.axios.$post(`/api/${this.name}`, data);
+  create(data, allowedStatuses = [201]) {
+    return this.axios.$post(`/api/${this.name}`, data, { validateStatus: status => allowedStatuses.includes(status) });
   }
 
   update(id, data) {
     return this.axios.$put(`/api/${this.name}/${id}`, data);
+  }
+
+  delete(id) {
+    return this.axios.$delete(`/api/${this.name}/${id}`);
   }
 
   async get(id, fields = undefined) {
@@ -87,6 +91,32 @@ class PostsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
       asc: sortBy === undefined ? undefined : ascending,
       onlyPublished,
       onlyRelevant
+    });
+
+    return this.axios.$get(`/api/${this.name}?${query}`);
+  }
+}
+
+class VideosAPIModelEndpointWrapper extends APIModelEndpointWrapper {
+  constructor(axios) {
+    super(axios, "videos");
+  }
+
+  list({
+    fields = undefined,
+    limit = 10,
+    offset = 0,
+    onlyPublished = true,
+    sortBy = undefined,
+    ascending = true
+  }) {
+    const query = querystring.stringify({
+      fields: fields === undefined ? undefined : fields.join(","),
+      limit,
+      offset,
+      sortBy,
+      asc: sortBy === undefined ? undefined : ascending,
+      onlyPublished
     });
 
     return this.axios.$get(`/api/${this.name}?${query}`);

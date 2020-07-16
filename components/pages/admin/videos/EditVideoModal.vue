@@ -15,15 +15,15 @@
           <YoutubeThumbnail
             class="edit-video-modal__thumbnail"
             size="highest"
-            :video-id="savedVideo.videoID"
+            :video-id="savedVideo.youtubeVideoID"
           />
         </template>
         <InputField label="Titel" :companion="fields.title"/>
         <DateTimeField
           label="Veröffentlichungsdatum"
           placeholder="Nicht festgelegt"
-          :companion="fields.publicationDate"
-          v-model="publicationDate"
+          :companion="fields.publishedAt"
+          v-model="publishedAt"
         />
       </template>
       <template v-slot:secondary-buttons>
@@ -60,6 +60,7 @@
 <style lang="scss">
   .edit-video-modal__thumbnail {
     width: 100%;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
   }
 </style>
 
@@ -96,14 +97,14 @@
         loadingText: "",
         confirmCancelModalActive: false,
         confirmDeleteModalActive: false,
-        publicationDate: null,
+        publishedAt: null,
         savedVideo: null,
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Titel ein."
           }),
-          publicationDate: new InputFieldCompanion({
+          publishedAt: new InputFieldCompanion({
             readonly: true
           })
         }
@@ -147,16 +148,15 @@
         this.loading = true;
         this.loadingText = "Video wird geladen";
 
-        const video = null // TODO
-
+        const video = await this.$api.videos.get(videoId, ["title", "publishedAt", "youtubeVideoID"]);
         if (this.videoId !== videoId) return;
 
         this.savedVideo = video;
         this.fields.title.setValueAndReset(video.title);
-        this.publicationDate = video.publicationDate;
+        this.publishedAt = video.publishedAt;
 
         this.$nextTick(() => {
-          this.fields.publicationDate.reset();
+          this.fields.publishedAt.reset();
         });
 
         this.loading = false;
@@ -165,7 +165,10 @@
         this.loadingText = "Video wird gespeichert";
         this.loading = true;
 
-        // TODO
+        await this.$api.videos.update(this.videoId, {
+          title: this.fields.title.transformedValue,
+          publishedAt: this.publishedAt
+        });
 
         this.loading = false;
         this.close();
@@ -174,7 +177,7 @@
         this.loading = true;
         this.loadingText = "Video wird gelöscht";
 
-        // TODO
+        await this.$api.videos.delete(this.videoId);
 
         this.loading = false;
         this.close();
