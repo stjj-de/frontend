@@ -147,7 +147,6 @@
           relatedPost: new InputFieldCompanion({
             transform: value => value.trim(),
             validateOrSaveAsync: async value => {
-              console.log("ad");
               if (value === "") {
                 this.relatedPostID = null;
                 return null;
@@ -175,7 +174,7 @@
       },
       changed() {
         if (!this.isCreateNew && this.savedEvent !== null) {
-          if (this.color !== this.savedEvent.color.toLowerCase()) {
+          if (this.color !== this.savedEvent.color) {
             return true;
           }
         }
@@ -200,11 +199,12 @@
       onActivate() {
         this.fields.title.setValueAndReset("");
         this.fields.description.setValueAndReset("");
+        this.fields.relatedPost.setValueAndReset("");
 
         if (this.isCreateNew) {
           this.startDate = today.toISOString();
           this.endDate = null;
-          this.color = "gray";
+          this.color = "GRAY";
 
           this.$nextTick(() => {
             this.fields.startDate.reset();
@@ -242,7 +242,8 @@
         this.loading = true;
         this.loadingText = "Termin wird geladen";
 
-        const event = null; // TODO
+        const { data: event } = await this.$axios.$get(`/api/events/${eventId}?fields=title,description,color,date,endDate,relatedPost`);
+        const relatedPostSlug = event.relatedPost === null ? null : (await this.$axios.$get(`/api/posts/${event.relatedPost}?fields=slug`)).data.slug
 
         if (this.eventId !== eventId) return;
 
@@ -253,14 +254,14 @@
 
         this.startDate = event.date;
         this.endDate = event.endDate;
-        this.color = event.color.toLowerCase();
+        this.color = event.color;
 
         if (event.relatedPost === null) {
           this.fields.relatedPost.setValueAndReset("");
           this.relatedPostID = null;
         } else {
-          this.fields.relatedPost.setValueAndReset(event.relatedPost.slug);
-          this.relatedPostID = event.relatedPost.id;
+          this.fields.relatedPost.setValueAndReset(relatedPostSlug);
+          this.relatedPostID = event.relatedPost;
         }
 
         this.$nextTick(() => {
@@ -273,15 +274,21 @@
       async save() {
         this.loading = true;
 
+        const data = {
+          title: this.fields.title.transformedValue,
+          color: this.color,
+          description: this.fields.description.transformedValue,
+          date: this.startDate,
+          endDate: this.endDate,
+          relatedPost: this.relatedPostID
+        };
+
         if (this.isCreateNew) {
           this.loadingText = "Termin wird erstellt";
-          // TODO
+          await this.$axios.$post("/api/events", data);
         } else {
           this.loadingText = "Termin wird gespeichert";
-
-          const { title, description } = this.fields;
-
-          // TODO
+          await this.$axios.$put(`/api/events/${this.eventId}`, data);
         }
 
         this.loading = false;

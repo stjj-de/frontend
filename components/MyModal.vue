@@ -13,7 +13,7 @@
         <div
           class="my-modal__modal"
           role="dialog"
-          :style="`width: ${width}`"
+          :style="`width: ${width}; overflow-y: ${loading ? 'hidden' : 'auto'}`"
           :aria-label="title"
         >
           <header class="my-modal__header">
@@ -141,6 +141,7 @@
   .my-modal__footer {
     position: sticky;
     bottom: 0;
+    z-index: 101;
 
     background-color: colors.$background;
 

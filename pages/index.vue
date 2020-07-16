@@ -31,17 +31,16 @@
       introduction: "",
       posts: []
     }),
-    async asyncData({ app: { $axios } }) {
-      const postFields = "id,slug,title,excerpt,publishedAt,authors";
-
+    async asyncData({ $api }) {
       return {
-        introduction: await $axios.$get(`/api/contents/${HOMEPAGE_INTRODUCTION}`),
-        posts: await Promise.all((await $axios.$get(`/api/posts?limit=2&fields=${postFields}&onlyRelevant=true&sortBy=publishedAt&asc=false`))
-          .items.map(async item => ({
-            ...item,
-            authors: await Promise.all(item.authors
-              .map(async id => (await $axios.$get(`/api/users/${id}?fields=id,imageID,displayName,position`)).data))
-          })))
+        introduction: await $api.contents.get(HOMEPAGE_INTRODUCTION),
+        posts: await $api.users.populate(await $api.posts.list({
+          fields: PostsSection.POST_FIELDS,
+          onlyPublished: true,
+          onlyRelevant: true,
+          sortBy: "publishedAt",
+          ascending: false
+        }).then(data => data.items), "author", PostsSection.POST_AUTHOR_FIELDS),
       };
     }
   };

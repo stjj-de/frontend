@@ -25,9 +25,7 @@
       }
     },
     computed: {
-      name() {
-        return this.data.toLowerCase();
-      },
+      name: vm => vm.data,
       style() {
         return `--color: ${getCSSColorForEventColor(this.name)}`;
       },

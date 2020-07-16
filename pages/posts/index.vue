@@ -61,16 +61,22 @@
   import PostCard from "@/components/PostCard";
   import NavigationBar from "@/components/NavigationBar";
   import MyButton from "@/components/MyButton";
+  import { combineFieldSets } from "@/assets/js/APIWrapper";
 
-  async function fetchPosts(offset, axios) {
-    const fields = "title,authors,publishedAt,excerpt,slug";
-    const result = await axios.$get(`/api/posts?offset=${offset}&limit=10&fields=${fields}&sortBy=publishedAt&asc=false`);
+  async function fetchPosts(offset, api) {
+    const result = await api.posts.list({
+      fields: combineFieldSets(PostCard.POST_FIELDS, ["id"]),
+      limit: 10,
+      offset,
+      sortBy: "publishedAt",
+      ascending: false,
+      onlyRelevant: false,
+      onlyPublished: true
+    });
+
     return {
-      ...result,
-      items: await Promise.all(result.items.map(async item => ({
-        ...item,
-        authors: await Promise.all(item.authors.map(async id => (await axios.$get(`/api/users/${id}?fields=id,displayName,position,imageID`)).data))
-      })))
+      hasMore: result.hasMore,
+      items: await api.users.populate(result.items, "author", PostCard.POST_AUTHOR_FIELDS)
     };
   }
 
@@ -85,14 +91,14 @@
       hasMore: false,
       loading: false
     }),
-    async asyncData({ app: { $axios } }) {
-      const { hasMore, items: posts } = await fetchPosts(0, $axios);
+    async asyncData({ app: { $api } }) {
+      const { hasMore, items: posts } = await fetchPosts(0, $api);
       return { hasMore, posts };
     },
     methods: {
       async fetchMore() {
         this.loading = true;
-        const result = await fetchPosts(this.posts.length, this.$axios);
+        const result = await fetchPosts(this.posts.length, this.$api);
         this.hasMore = result.hasMore;
         this.posts.push(...result.items);
         this.loading = false;

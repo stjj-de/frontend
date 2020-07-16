@@ -60,6 +60,7 @@
 
 <script>
   import PostCard from "@/components/PostCard";
+  import { combineFieldSets } from "@/assets/js/APIWrapper";
 
   export default {
     name: "PostsSection",
@@ -69,6 +70,8 @@
         type: Array,
         required: true
       }
-    }
+    },
+    POST_FIELDS: combineFieldSets(PostCard.POST_FIELDS, ["id"]),
+    POST_AUTHOR_FIELDS: PostCard.POST_AUTHOR_FIELDS
   };
 </script>

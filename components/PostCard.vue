@@ -11,9 +11,7 @@
     <div class="post-card__footer">
       <div class="post-card__authors">
         <UserImageWithPopup
-          v-for="author in post.authors"
-          :key="author.id"
-          :user="author"
+          :user="post.author"
         />
       </div>
       <span class="post-card__publication-date">{{ publicationDateString }}</span>
@@ -101,6 +99,8 @@
       publicationDateString() {
         return format(new Date(this.post.publishedAt), "d.L.y", { locale: dateFnsLocale });
       }
-    }
+    },
+    POST_FIELDS: ["slug", "title", "excerpt", "publishedAt", "author"],
+    POST_AUTHOR_FIELDS: UserImageWithPopup.USER_FIELDS
   };
 </script>

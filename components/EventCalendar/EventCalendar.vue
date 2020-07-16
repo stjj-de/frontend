@@ -89,8 +89,6 @@
 </style>
 
 <script>
-  /* eslint-disable function-paren-newline */
-
   import { format } from "date-fns";
   import EventCalendarDayDetails from "./EventCalendarDayDetails";
   import { dateFnsLocale, toFilterStringDate } from "@/assets/js/dateUtils";
@@ -139,27 +137,22 @@
     },
     methods: {
       async onPageChange(page) {
-        this.selectedDay = null;
+        if (this.isFirstPageChange) {
+          this.isFirstPageChange = false;
+        } else {
+          this.selectedDay = null;
+        }
+
         this.eventsInMonth = null;
         const filter = String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0");
-        this.eventsInMonth = (await this.$axios.$get(`/api/events?filter=${filter}&limit=50&fields=color,date`)).items;
+        this.eventsInMonth = (await this.$api.events.list({
+          fields: ["color", "date"],
+          limit: 50,
+          filter
+        })).items;
       },
       async onDayClick(day) {
         this.selectedDay = day.id;
-
-        const fields = "id,date,endDate,title,description,color,creator,relatedPost";
-        this.eventsOnDay = null;
-        this.eventsOnDay = await Promise.all(
-          (await this.$axios.$get(`/api/events?filter=${this.selectedDay}&limit=50&fields=${fields}`))
-            .items
-            .map(async item => ({
-              ...item,
-              creator: item.creator === null ? null
-                : (await this.$axios.$get(`/api/users/${item.creator}?fields=id,displayName,position,imageID`)).data,
-              relatedPost: item.relatedPost === null ? null
-                : (await this.$axios.$get(`/api/posts/${item.relatedPost}?fields=slug`)).data
-            }))
-        );
 
         setTimeout(() => {
           window.scroll({
@@ -170,8 +163,28 @@
       }
     },
     watch: {
-      selectedDay(value, oldValue) {
-        this.previousSelectedDay = oldValue;
+      selectedDay: {
+        immediate: true,
+        async handler(value, oldValue) {
+          this.previousSelectedDay = oldValue;
+
+          if (value === null) return;
+
+          this.eventsOnDay = null;
+          this.eventsOnDay = await this.$api.users.populate(
+            await this.$api.posts.populate(
+              (await this.$api.events.list({
+                filter: value,
+                limit: 50,
+                fields: EventCalendarDayDetails.EVENT_FIELDS
+              })).items,
+              "relatedPost",
+              EventCalendarDayDetails.EVENT_RELATED_POST_FIELDS
+            ),
+            "creator",
+            EventCalendarDayDetails.EVENT_CREATOR_FIELDS
+          )
+        }
       }
     }
   };

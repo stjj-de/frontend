@@ -8,9 +8,7 @@
         <span class="post-page__date">{{ formattedPublicationDate }}</span>
         <div class="post-page__authors">
           <UserImageWithPopup
-            v-for="author in post.authors"
-            :key="author.id"
-            :user="author"
+            :user="post.author"
           />
         </div>
       </div>
@@ -81,19 +79,14 @@
     data: () => ({
       post: null
     }),
-    async asyncData({ error, app: { $axios }, params }) {
-      const fields = "title,publishedAt,content,authors";
-      let post = (await $axios.$get(`/api/posts/_${params.slug}?fields=${fields}`, { validateStatus: status => [200, 404].includes(status) })).data
+    async asyncData({ error, app: { $api }, params }) {
+      const post = await $api.posts.get(`_${params.slug}`, ["title", "publishedAt", "content", "author"]);
 
       if (post === null) {
         error({ statusCode: 404, m: "Dieser Artikel existiert nicht." });
       } else {
-        post = {
-          ...post,
-          authors: await Promise.all(post.authors.map(async id => (await $axios.$get(`/api/users/${id}?fields=displayName,position,imageID`)).data))
-        }
-
-        return { post };
+        const fullPost = await $api.users.populate(post, "author", UserImageWithPopup.USER_FIELDS);
+        return { post: fullPost };
       }
     },
     computed: {

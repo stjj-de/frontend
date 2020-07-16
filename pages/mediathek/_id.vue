@@ -10,7 +10,7 @@
         Zurück zur Übersicht
       </nuxt-link>
       <h1 class="heading--3">
-        Video: {{ video.title }}
+        {{ video.title }}
       </h1>
       <div class="video-page__iframe-container">
         <iframe
@@ -77,8 +77,8 @@
       video: null,
       loading: true
     }),
-    async asyncData({ error, app: { $axios }, params }) {
-      const video = (await $axios.$get(`/api/videos/${params.id}`, { validateStatus: status => [200, 404].includes(status) })).data;
+    async asyncData({ error, app: { $api }, params }) {
+      const video = await $api.videos.get(params.id, ["title", "youtubeVideoID"])
 
       if (video === null) {
         error({ statusCode: 404, m: "Dieses Video existiert nicht." });

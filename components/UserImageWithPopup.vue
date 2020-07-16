@@ -123,6 +123,7 @@
         event.preventDefault();
         this.ignoreFocus = true;
       }
-    }
+    },
+    USER_FIELDS: ["displayName", "position", "imageID"]
   };
 </script>

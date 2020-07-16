@@ -140,8 +140,14 @@
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
   import MyButton from "@/components/MyButton";
 
-  async function fetchVideos(offset, axios) {
-    return await axios.$get(`/api/videos?offset=${offset}&limit=20&fields=id,title,publishedAt,youtubeVideoID&sortBy=publishedAt&asc=false`);
+  async function fetchVideos(offset, api) {
+    return await api.videos.list({
+      offset,
+      limit: 20,
+      fields: ["id", "title", "publishedAt", "youtubeVideoID"],
+      sortBy: "publishedAt",
+      ascending: false
+    });
   }
 
   export default {
@@ -155,8 +161,8 @@
       hasMore: true,
       videos: []
     }),
-    async asyncData({ app: { $axios }}) {
-      const { hasMore, items: videos } = await fetchVideos(0, $axios);
+    async asyncData({ app: { $api }}) {
+      const { hasMore, items: videos } = await fetchVideos(0, $api);
 
       return { hasMore, videos };
     },
@@ -166,7 +172,7 @@
       },
       async fetchMore() {
         this.loading = true
-        const result = await fetchVideos(this.videos.length, this.$axios);
+        const result = await fetchVideos(this.videos.length, this.$api);
         this.hasMore = result.hasMore;
         this.videos.push(...result.items)
         this.loading = false;

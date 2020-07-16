@@ -47,7 +47,8 @@ const config = {
   */
   plugins: [
     "@/plugins/vue-ripple-directive",
-    "@/plugins/axios-error-handler"
+    "@/plugins/axios-error-handler",
+    "@/plugins/api"
   ],
   /*
   ** Nuxt.js dev-modules

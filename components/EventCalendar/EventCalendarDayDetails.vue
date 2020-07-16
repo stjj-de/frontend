@@ -64,7 +64,7 @@
 
   .event-calendar-day-details__event-creator {
     margin-left: 4px;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: -10px;
 
     display: flex;
@@ -167,8 +167,11 @@
     },
     methods: {
       getDotStyle(color) {
-        return `background-color: ${getCSSColorForEventColor(color.toLowerCase())}`;
+        return `background-color: ${getCSSColorForEventColor(color)}`;
       }
-    }
+    },
+    EVENT_FIELDS: ["id", "color", "title", "description", "creator", "date", "endDate",  "relatedPost"],
+    EVENT_RELATED_POST_FIELDS: ["slug"],
+    EVENT_CREATOR_FIELDS: UserImageWithPopup.USER_FIELDS
   };
 </script>
