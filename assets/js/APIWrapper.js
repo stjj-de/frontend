@@ -24,8 +24,8 @@ class APIModelEndpointWrapper {
     this.name = name;
   }
 
-  create(data, allowedStatuses = [201]) {
-    return this.axios.$post(`/api/${this.name}`, data, { validateStatus: status => allowedStatuses.includes(status) });
+  async create(data, allowedStatuses = [201]) {
+    return (await this.axios.$post(`/api/${this.name}`, data, { validateStatus: status => allowedStatuses.includes(status) })).data;
   }
 
   update(id, data) {

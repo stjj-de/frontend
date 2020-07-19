@@ -5,7 +5,7 @@
     </h1>
     <div class="edit-post-page__container">
       <LoadingOverlay
-        :active="$apollo.loading"
+        :active="saveLoading"
         :transition-delay="0"
       >
         Artikel wird geladen
@@ -21,10 +21,10 @@
         <DateTimeField
           label="Veröffentlichungsdatum"
           placeholder="Nicht geplant"
-          :companion="fields.publicationDate"
-          v-model="publicationDate"
+          :companion="fields.publishedAt"
+          v-model="publishedAt"
         />
-        <MyButton class="edit-post-page__reset-field-button" @click="publicationDate = null">
+        <MyButton class="edit-post-page__reset-field-button" @click="publishedAt = null">
           Datum entfernen
         </MyButton>
         <DateTimeField
@@ -43,8 +43,8 @@
           </MyButton>
           <MyButton
             variant="primary"
-            :disabled="!changed"
-            :loading="loading"
+            :disabled="!changed || !valid"
+            :loading="saveLoading"
             @click="save()"
           >
             {{ submitButtonText }}
@@ -154,12 +154,13 @@
     }),
     data() {
       return {
-        publicationDate: null,
+        publishedAt: null,
         relevantUntil: null,
         content: "",
-        loading: false,
+        saveLoading: false,
         confirmDeleteModalActive: false,
         deleteLoading: false,
+        savedPost: {},
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
@@ -173,34 +174,43 @@
                 return "Slugs dürfen nicht mit \"-\" anfangen oder enden.";
               }
             },
-            validateOrSaveAsync: value => validateSlug(this.$apollo, value)
+            validateOrSaveAsync: value => validateSlug(this.$api, value)
           }),
           excerpt: new InputFieldCompanion({
             transform: value => value.trim(),
             type: "textarea"
           }),
-          publicationDate: new InputFieldCompanion({
-            readonly: true
-          }),
-          relevantUntil: new InputFieldCompanion({
-            readonly: true
-          })
+          publishedAt: new InputFieldCompanion({ readonly: true }),
+          relevantUntil: new InputFieldCompanion({ readonly: true })
         }
       };
     },
+    async asyncData({ $api, params, error }) {
+      const post = await $api.posts.get(params.id, ["id", "title", "slug", "excerpt", "publishedAt", "relevantUntil", "content"]);
+      if (post === null) {
+        error({ m: "Dieser Post existiert nicht." });
+      } else {
+        return {
+          savedPost: post
+        };
+      }
+    },
     watch: {
-      savedPost() {
-        this.fields.title.setValueAndReset(this.savedPost.title);
-        this.fields.slug.setValueAndReset(this.savedPost.slug);
-        this.fields.excerpt.setValueAndReset(this.savedPost.excerpt);
+      savedPost: {
+        immediate: true,
+        handler() {
+          this.fields.title.setValueAndReset(this.savedPost.title);
+          this.fields.slug.setValueAndReset(this.savedPost.slug);
+          this.fields.excerpt.setValueAndReset(this.savedPost.excerpt);
 
-        this.content = this.savedPost.content;
-        this.publicationDate = this.savedPost.publicationDate;
-        this.relevantUntil = this.savedPost.relevantUntil;
-        this.$nextTick(() => {
-          this.fields.publicationDate.reset();
-          this.fields.relevantUntil.reset();
-        });
+          this.content = this.savedPost.content;
+          this.publishedAt = this.savedPost.publishedAt;
+          this.relevantUntil = this.savedPost.relevantUntil;
+          this.$nextTick(() => {
+            this.fields.publishedAt.reset();
+            this.fields.relevantUntil.reset();
+          });
+        }
       },
       relevantUntilValid() {
         if (this.relevantUntilValid) {
@@ -232,56 +242,56 @@
       submitButtonText() {
         const now = new Date();
 
-        if (this.fields.publicationDate.changed) {
-          if (this.fields.publicationDate.value === "") {
+        if (this.fields.publishedAt.changed) {
+          if (this.fields.publishedAt.value === "") {
             return "Unveröffentlichen";
           }
 
-          if (new Date(this.publicationDate) > now) {
+          if (new Date(this.publishedAt) > now) {
             return "Planen";
           }
 
           return "Veröffentlichen";
         }
 
-        if (this.publicationDate === null) {
+        if (this.publishedAt === null) {
           return "Speichern";
         }
 
         return "Aktualisieren";
       },
       relevantUntilValid() {
-        if ([this.relevantUntil, this.publicationDate].includes(null)) return true;
+        if ([this.relevantUntil, this.publishedAt].includes(null)) return true;
 
-        return new Date(this.relevantUntil) > new Date(this.publicationDate);
+        return new Date(this.relevantUntil) > new Date(this.publishedAt);
       }
     },
     methods: {
-      getFieldValuesWithoutUnchanged() {
-        const fields = ["title", "slug", "excerpt"];
-        const object = {};
-
-        for (const field of fields) {
-          object[field] = this.fields[field].changed ? this.fields[field].value : undefined;
-        }
-
-        return object;
-      },
       async save() {
-        this.loading = true;
+        this.saveLoading = true;
 
-        const post = null; // TODO
+        const data = {
+          slug: this.fields.slug.transformedValue,
+          title: this.fields.title.transformedValue,
+          publishedAt: this.publishedAt,
+          relevantUntil: this.relevantUntil,
+          excerpt: this.fields.excerpt.transformedValue,
+          content: this.content
+        };
 
-        this.savedPost = post;
+        await this.$api.posts.update(this.savedPost.id, data);
 
-        this.loading = false;
+        this.savedPost = {
+          id: this.savedPost.id,
+          ...data
+        }
+        this.saveLoading = false;
       },
-      delete_() {
+      async delete_() {
         this.deleteLoading = true;
 
-        // TODO
-
-        this.$router.push("/admin/posts?delete_success=1");
+        await this.$api.posts.delete(this.savedPost.id)
+        await this.$router.push("/admin/posts?delete_success=1");
       }
     }
   };

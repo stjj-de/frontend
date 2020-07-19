@@ -29,7 +29,6 @@
 </style>
 
 <script>
-  import snakeCase from "lodash.snakecase";
   import DataTable from "@/components/DataTable/DataTable";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
@@ -67,7 +66,7 @@
               name: "Slug",
               sortable: true
             },
-            publicationDate: {
+            publishedAt: {
               name: "Veröffentlichung am",
               transform: transformDate,
               sortable: true,
@@ -80,11 +79,19 @@
               width: 200
             }
           },
-          sortBy: "publicationDate",
-          sortOrder: "DESCENDING",
+          sortBy: "publishedAt",
+          sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            return []; // TODO
+            return await this.$api.posts.list({
+              fields: ["id", "title", "slug", "publishedAt", "relevantUntil"],
+              onlyPublished: false,
+              onlyRelevant: false,
+              offset: pageIndex * ITEMS_PER_PAGE,
+              limit: ITEMS_PER_PAGE,
+              ascending: sortOrder === "asc",
+              sortBy
+            })
           }
         })
       };
@@ -93,13 +100,14 @@
       this.table.initialize();
 
       if (this.$route.query.delete_success === "1") {
-        this.$router.replace("/admin/posts");
         (await import("izitoast")).show({
           message: "Der Artikel wurde gelöscht.",
           color: "green",
           timeout: 6000,
           position: "topRight"
         });
+
+        await this.$router.replace("/admin/posts");
       }
     },
     methods: {

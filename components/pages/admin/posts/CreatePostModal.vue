@@ -71,7 +71,7 @@
           slug: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Slug ein.",
-            validateOrSaveAsync: value => validateSlug(this.$apollo, value)
+            validateOrSaveAsync: value => validateSlug(this.$api, value)
           })
         }
       };
@@ -109,9 +109,14 @@
       async submit() {
         this.loading = true;
 
-        const post = null; // TODO
+        const { id } = await this.$api.posts.create({
+          title: this.fields.title.transformedValue,
+          slug: this.fields.slug.transformedValue,
+          content: "",
+          excerpt: ""
+        });
 
-        this.$router.push(`/admin/posts/${post.id}`);
+        await this.$router.push(`/admin/posts/${id}`);
       }
     }
   };

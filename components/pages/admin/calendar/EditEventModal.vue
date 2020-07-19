@@ -242,8 +242,11 @@
         this.loading = true;
         this.loadingText = "Termin wird geladen";
 
-        const { data: event } = await this.$axios.$get(`/api/events/${eventId}?fields=title,description,color,date,endDate,relatedPost`);
-        const relatedPostSlug = event.relatedPost === null ? null : (await this.$axios.$get(`/api/posts/${event.relatedPost}?fields=slug`)).data.slug
+        const event = await this.$api.posts.populate(
+          await this.$api.events.get(eventId, ["title", "description", "color", "date", "endDate", "relatedPost"]),
+          "relatedPost",
+          ["id", "slug"]
+        );
 
         if (this.eventId !== eventId) return;
 
@@ -260,8 +263,8 @@
           this.fields.relatedPost.setValueAndReset("");
           this.relatedPostID = null;
         } else {
-          this.fields.relatedPost.setValueAndReset(relatedPostSlug);
-          this.relatedPostID = event.relatedPost;
+          this.fields.relatedPost.setValueAndReset(event.relatedPost.slug);
+          this.relatedPostID = event.relatedPost.id;
         }
 
         this.$nextTick(() => {
@@ -285,10 +288,10 @@
 
         if (this.isCreateNew) {
           this.loadingText = "Termin wird erstellt";
-          await this.$axios.$post("/api/events", data);
+          await this.$api.events.create(data);
         } else {
           this.loadingText = "Termin wird gespeichert";
-          await this.$axios.$put(`/api/events/${this.eventId}`, data);
+          await this.$api.events.update(this.eventId, data);
         }
 
         this.loading = false;
