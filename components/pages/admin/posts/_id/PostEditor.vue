@@ -1,8 +1,11 @@
 <template>
   <div class="post-editor">
     <vue-editor
+      class="quill-enduser"
+      use-custom-image-handler
       :value="value"
       :editor-toolbar="editorToolbar"
+      @image-added="handleImage"
       @input="value => $emit('input', value)"
     />
   </div>
@@ -15,7 +18,6 @@
   .post-editor {
     .ql-container {
       min-height: 75vh;
-
       font-family: inherit;
     }
   }
@@ -44,12 +46,26 @@
       editorToolbar: [
         [{ header: [false, 1, 2, 3, 4, 5, 6] }],
         ["bold", "italic", "underline", "strike", "blockquote"],
-        ["link"],
+        ["link", "image"],
         [{ list: "ordered" }, { list: "bullet" }],
         [{ script: "super" }, { script: "sub" }],
         [{ color: [] }, { background: [] }],
         [{ align: "" }, { align: "center" }, { align: "right" }]
       ]
-    })
+    }),
+    methods: {
+      async handleImage(file, Editor, cursorLocation, resetUploader) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await this.$axios.post("/files", formData, {
+          validateStatus: status => status === 201
+        });
+
+        const url = response.headers["location"];
+        Editor.insertEmbed(cursorLocation, "image", url);
+        resetUploader();
+      }
+    }
   };
 </script>

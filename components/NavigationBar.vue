@@ -51,7 +51,7 @@
   }
 
   .navigation-bar__placeholder {
-    height: var(--navigation-bar-height);
+    height: calc(var(--navigation-bar-height) + 20px);
   }
 
   .navigation-bar__container-1 {
@@ -64,8 +64,9 @@
     height: var(--navigation-bar-height);
 
     .navigation-bar--show-background & {
-      background: transparentize(colors.$background, 0.8);
-      backdrop-filter: blur(30px);
+      background: transparentize(colors.$background, 0.2);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 5px 10px 0 transparentize(colors.$background-c, 0.9);
     }
   }
 

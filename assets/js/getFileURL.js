@@ -1,11 +1,7 @@
 export function getUploadURL(id) {
-  return `/files/uploads/${id}`;
+  return `/files/${id}`;
 }
 
-export function getProfileImageURL(id) {
-  if (id === null) {
-    return "/default-profile-picture.png";
-  }
-
-  return `/files/profile-images/${id}`;
+export function getUserImageURL(id) {
+  return `/api/users/${id}/image`;
 }

@@ -9,7 +9,7 @@
     <img
       class="user-image-with-popup__image"
       :alt="user.name"
-      :src="getProfileImageURL(user.imageID)"
+      :src="imageURL"
     >
     <div
       class="user-image-with-popup__popup"
@@ -18,7 +18,7 @@
       <img
         class="user-image-with-popup__popup-image"
         :alt="user.displayName"
-        :src="getProfileImageURL(user.imageID)"
+        :src="imageURL"
       >
       <div class="user-image-with-popup__popup-text">
         <span class="user-image-with-popup__name">
@@ -103,7 +103,7 @@
 </style>
 
 <script>
-  import { getProfileImageURL } from "@/assets/js/getFileURL";
+  import { getUserImageURL } from "@/assets/js/getFileURL";
 
   export default {
     name: "UserImageWithPopup",
@@ -117,13 +117,15 @@
     data: () => ({
       ignoreFocus: false
     }),
+    computed: {
+      imageURL: vm => getUserImageURL(vm.user.id)
+    },
     methods: {
-      getProfileImageURL,
       onClick(event) {
         event.preventDefault();
         this.ignoreFocus = true;
       }
     },
-    USER_FIELDS: ["displayName", "position", "imageID"]
+    USER_FIELDS: ["id", "displayName", "position"]
   };
 </script>

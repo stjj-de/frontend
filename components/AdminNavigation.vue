@@ -15,7 +15,7 @@
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
-          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getProfileImageURL(me.imageID)">
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getUserImageURL(me.id)">
           <div class="admin-navigation__logged-in-as">
             Angemeldet als
             <span class="admin-navigation__name">{{ me.realName }}</span>
@@ -227,8 +227,7 @@
   import PencilIcon from "@/assets/icons/pencil.svg";
   import ChurchIcon from "@/assets/icons/church.svg";
   import VideoIcon from "@/assets/icons/video.svg";
-  import FilesIcon from "@/assets/icons/files.svg";
-  import { getProfileImageURL } from "@/assets/js/getFileURL";
+  import { getUserImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
 
@@ -252,11 +251,6 @@
       label: "Videos",
       to: "/admin/videos",
       icon: VideoIcon
-    },
-    {
-      label: "Dateien",
-      to: "/admin/files",
-      icon: FilesIcon
     }
   ];
 
@@ -269,10 +263,10 @@
       meLoading: true
     }),
     methods: {
-      getProfileImageURL
+      getUserImageURL
     },
     async created() {
-      this.me = (await this.$axios.$get(`/api/users/${this.$store.state.userID}?fields=id,realName,imageID`)).data;
+      this.me = await this.$api.users.get(this.$store.state.userID, ["id", "realName"]);
       this.meLoading = false;
     },
     items: ITEMS
