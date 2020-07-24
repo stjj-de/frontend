@@ -6,7 +6,7 @@
       :value="value"
       :editor-toolbar="editorToolbar"
       @image-added="handleImage"
-      @input="value => $emit('input', value)"
+      @input="val => $emit('input', val)"
     />
   </div>
 </template>
@@ -14,13 +14,6 @@
 <style lang="scss">
   @use "~@/assets/styles/colors";
   @use "~@/assets/styles/quill-enduser.scss";
-
-  .post-editor {
-    .ql-container {
-      min-height: 75vh;
-      font-family: inherit;
-    }
-  }
 </style>
 
 <script>

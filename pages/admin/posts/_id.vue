@@ -12,12 +12,13 @@
       </LoadingOverlay>
       <section class="edit-post-page__content-section">
         <client-only>
-          <PostEditor v-model="content"/>
+          <PostEditor v-model="content" class="edit-post-page__editor"/>
         </client-only>
       </section>
       <section class="edit-post-page__meta-section">
         <InputField label="Titel" :companion="fields.title"/>
         <InputField label="Slug" :companion="fields.slug"/>
+        <GroupSelectField v-model="group" :groups="availableGroups"/>
         <DateTimeField
           label="Veröffentlichungsdatum"
           placeholder="Nicht geplant"
@@ -113,6 +114,13 @@
     }
   }
 
+  .edit-post-page__editor {
+    .ql-container {
+      min-height: 75vh;
+      font-family: inherit;
+    }
+  }
+
   .edit-post-page__reset-field-button {
     margin-top: 5px;
     width: 100%;
@@ -145,10 +153,11 @@
   import MyModal from "@/components/MyModal";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import { validateSlug } from "@/assets/js/validateSlug.js";
+  import GroupSelectField from "@/components/GroupSelectField";
 
   export default {
     name: "EditPostPage",
-    components: { LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
+    components: { GroupSelectField, LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
     head: () => ({
       title: "Artikel bearbeiten / Administration"
     }),
@@ -161,6 +170,8 @@
         confirmDeleteModalActive: false,
         deleteLoading: false,
         savedPost: {},
+        group: null,
+        availableGroups: [],
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
@@ -185,13 +196,19 @@
         }
       };
     },
-    async asyncData({ $api, params, error }) {
-      const post = await $api.posts.get(params.id, ["id", "title", "slug", "excerpt", "publishedAt", "relevantUntil", "content"]);
+    async asyncData({ $api, params, error, store }) {
+      const post = await $api.posts.get(params.id, ["id", "title", "slug", "group", "excerpt", "publishedAt", "relevantUntil", "content"]);
+
       if (post === null) {
         error({ m: "Dieser Post existiert nicht." });
       } else {
+        await store.state.userPromise;
+
         return {
-          savedPost: post
+          savedPost: post,
+          availableGroups: !store.getters.userIsEditor
+            ? store.state.user.groups
+            : (await $api.groups.list({ limit: 50, fields: ["id", "title"] })).items
         };
       }
     },
@@ -206,6 +223,8 @@
           this.content = this.savedPost.content;
           this.publishedAt = this.savedPost.publishedAt;
           this.relevantUntil = this.savedPost.relevantUntil;
+          this.group = this.savedPost.group;
+
           this.$nextTick(() => {
             this.fields.publishedAt.reset();
             this.fields.relevantUntil.reset();
@@ -227,17 +246,18 @@
           this.relevantUntilValid;
       },
       changed() {
-        return this.contentChanged || Object.values(this.fields).some(field => field.changed);
+        return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed);
       },
       contentIsEmpty() {
         return stripTags(this.content).trim() === "";
       },
-      contentChanged() {
-        if (this.savedPost === undefined) {
-          return false;
+      contentChanged: vm => vm.content !== vm.savedPost.content && !vm.contentIsEmpty,
+      groupChanged() {
+        if (this.group === null) {
+          return this.savedPost.group !== null;
+        } else {
+          return this.group !== this.savedPost.group;
         }
-
-        return this.content !== this.savedPost.content && !this.contentIsEmpty;
       },
       submitButtonText() {
         const now = new Date();
@@ -276,6 +296,7 @@
           publishedAt: this.publishedAt,
           relevantUntil: this.relevantUntil,
           excerpt: this.fields.excerpt.transformedValue,
+          group: this.group === null ? null : this.group,
           content: this.content
         };
 

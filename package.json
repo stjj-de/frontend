@@ -39,7 +39,7 @@
     "vue-global-events": "^1.1.2",
     "vue-ripple-directive": "^2.0.1",
     "vue-router": "^3.3.4",
-    "vue-select": "^3.10.0",
+    "vue-select": "^3.10.7",
     "vue-switches": "^2.0.1",
     "vue2-editor": "^2.10.2",
     "weekstart": "^1.0.1"

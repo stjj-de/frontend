@@ -20,7 +20,7 @@
         </MyButton>
       </template>
     </DataTable>
-    <CreatePostModal :active.sync="createPostModalActive"/>
+    <CreatePostModal :groups="availableGroups" :active.sync="createPostModalActive"/>
   </main>
 </template>
 
@@ -56,6 +56,7 @@
     data() {
       return {
         createPostModalActive: false,
+        availableGroups: [],
         table: new DataTableCompanion({
           columns: {
             title: {
@@ -65,6 +66,12 @@
             slug: {
               name: "Slug",
               sortable: true
+            },
+            group: {
+              name: "Gruppe",
+              sortable: true,
+              transform: data => data === null ? "" : data.title,
+              width: 200
             },
             publishedAt: {
               name: "Veröffentlichung am",
@@ -83,15 +90,20 @@
           sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            return await this.$api.posts.list({
-              fields: ["id", "title", "slug", "publishedAt", "relevantUntil"],
-              onlyPublished: false,
-              onlyRelevant: false,
-              offset: pageIndex * ITEMS_PER_PAGE,
-              limit: ITEMS_PER_PAGE,
-              ascending: sortOrder === "asc",
-              sortBy
-            })
+            return await this.$api.groups.populate(
+              await this.$api.posts.list({
+                fields: ["id", "title", "slug", "publishedAt", "relevantUntil", "group"],
+                onlyPublished: false,
+                onlyRelevant: false,
+                onlyOwnGroup: !this.$store.getters.userIsEditor,
+                offset: pageIndex * ITEMS_PER_PAGE,
+                limit: ITEMS_PER_PAGE,
+                ascending: sortOrder === "asc",
+                sortBy
+              }),
+              "group",
+              ["title"]
+            );
           }
         })
       };
@@ -108,6 +120,15 @@
         });
 
         await this.$router.replace("/admin/posts");
+      }
+    },
+    async asyncData({ store, $api }) {
+      await store.state.userPromise;
+
+      return {
+        availableGroups: !store.getters.userIsEditor
+          ? store.state.user.groups
+          : (await $api.groups.list({ limit: 50, fields: ["id", "title"] })).items
       }
     },
     methods: {

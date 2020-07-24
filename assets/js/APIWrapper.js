@@ -9,6 +9,7 @@ export class APIWrapper {
     this.churches = new APIModelEndpointWrapper(axios, "churches");
     this.churchServiceDates = new APIModelEndpointWrapper(axios, "church-service-dates");
     this.uploadedFields = new APIModelEndpointWrapper(axios, "uploaded-files");
+    this.groups = new GroupsAPIModelEndpointWrapper(axios, "groups");
 
     this.contents = {
       get(id) {
@@ -60,12 +61,31 @@ class APIModelEndpointWrapper {
   }
 
   async populate(obj, fieldName, fields = undefined) {
-    const mapper = async item => ({
-      ...item,
-      [fieldName]: item[fieldName] === null ? null : await this.get(item[fieldName], fields)
-    });
+    const mapper = async item => {
+      const value = item[fieldName]
+      let result;
+      if (value === null) {
+        result = null;
+      } else if (Array.isArray(value)) {
+        result = await Promise.all(value.map(id => this.get(id, fields)));
+      } else {
+        result = await this.get(value, fields);
+      }
 
-    return Array.isArray(obj) ? await Promise.all(obj.map(mapper)) : await mapper(obj);
+      return {
+        ...item,
+        [fieldName]: result
+      }
+    };
+
+    if(obj.items !== undefined) {
+      return {
+        ...obj,
+        items: await Promise.all(obj.items.map(mapper))
+      };
+    } else {
+      return Array.isArray(obj) ? await Promise.all(obj.map(mapper)) : await mapper(obj);
+    }
   }
 }
 
@@ -80,6 +100,7 @@ class PostsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
     offset = 0,
     onlyRelevant = true,
     onlyPublished = true,
+    onlyOwnGroup = false,
     sortBy = undefined,
     ascending = true
   }) {
@@ -90,7 +111,8 @@ class PostsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
       sortBy,
       asc: sortBy === undefined ? undefined : ascending,
       onlyPublished,
-      onlyRelevant
+      onlyRelevant,
+      onlyOwnGroup
     });
 
     return this.axios.$get(`/api/${this.name}?${query}`);
@@ -118,6 +140,32 @@ class VideosAPIModelEndpointWrapper extends APIModelEndpointWrapper {
       asc: sortBy === undefined ? undefined : ascending,
       onlyPublished
     });
+
+    return this.axios.$get(`/api/${this.name}?${query}`);
+  }
+}
+
+class GroupsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
+  constructor(axios) {
+    super(axios, "groups");
+  }
+
+  list({
+         fields = undefined,
+         limit = 10,
+         offset = 0,
+         sortBy = undefined,
+         ascending = true,
+         onlyOwn = false
+       }) {
+    const query = querystring.stringify({
+      fields: fields === undefined ? undefined : fields.join(","),
+      limit,
+      offset,
+      sortBy,
+      asc: sortBy === undefined ? undefined : ascending,
+      onlyOwn
+    })
 
     return this.axios.$get(`/api/${this.name}?${query}`);
   }

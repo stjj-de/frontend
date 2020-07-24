@@ -7,22 +7,20 @@
     </div>
     <nav class="admin-navigation__container">
       <div class="admin-navigation__top">
-        <LoadingPlaceholder v-if="meLoading" height="80px"/>
         <nuxt-link
-          v-else
           class="admin-navigation__profile admin-navigation__item"
-          :to="`/admin/users/${me.id}`"
+          :to="`/admin/users/${$store.state.user.id}`"
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
-          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getUserImageURL(me.id)">
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getUserImageURL($store.state.user.id)">
           <div class="admin-navigation__logged-in-as">
             Angemeldet als
-            <span class="admin-navigation__name">{{ me.realName }}</span>
+            <span class="admin-navigation__name">{{ $store.state.user.realName }}</span>
           </div>
         </nuxt-link>
         <nuxt-link
-          v-for="(item, index) in $options.items"
+          v-for="(item, index) in items"
           :key="index"
           class="admin-navigation__item"
           :to="item.to"
@@ -235,40 +233,46 @@
     {
       label: "Artikel",
       to: "/admin/posts",
-      icon: PencilIcon
+      icon: PencilIcon,
+      visible: user => user.role !== "NONE" || user.groups.length !== 0
     },
     {
       label: "Kalender",
       to: "/admin/calendar",
-      icon: CalendarIcon
+      icon: CalendarIcon,
+      visible: user => user.role !== "NONE"
     },
     {
       label: "Gottesdienste",
       to: "/admin/gottesdienste",
-      icon: ChurchIcon
+      icon: ChurchIcon,
+      visible: user => user.role !== "NONE"
     },
     {
       label: "Videos",
       to: "/admin/videos",
-      icon: VideoIcon
+      icon: VideoIcon,
+      visible: user => user.role !== "NONE"
+    },
+    {
+      label: "Gruppen",
+      to: "/admin/groups",
+      icon: VideoIcon,
+      visible: user => user.role !== "NONE" || user.groups.length !== 0
     }
   ];
 
   export default {
     name: "AdminNavigation",
     components: { LoadingPlaceholder, LoadingOverlay, ArrowLeftIcon },
-    data: () => ({
-      open: false,
-      me: {},
-      meLoading: true
-    }),
+    data() {
+      return {
+        open: false,
+        items: ITEMS.filter(item => item.visible(this.$store.state.user))
+      };
+    },
     methods: {
       getUserImageURL
-    },
-    async created() {
-      this.me = await this.$api.users.get(this.$store.state.userID, ["id", "realName"]);
-      this.meLoading = false;
-    },
-    items: ITEMS
+    }
   };
 </script>

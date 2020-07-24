@@ -95,21 +95,6 @@
   .calendar-page__filter {
     margin-bottom: 20px;
   }
-
-  .calendar-page__no-results {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-    font-size: 1.3rem;
-  }
-
-  .calendar-page__no-results-emoji {
-    font-size: 4rem;
-    margin-bottom: 20px;
-  }
 </style>
 
 <script>

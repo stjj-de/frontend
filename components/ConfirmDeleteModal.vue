@@ -8,7 +8,9 @@
     @close="onCancel"
   >
     <template v-slot:default>
-      Diese Aktion kann nicht rückganging gemacht werden.
+      <slot>
+        Diese Aktion kann nicht rückgängig gemacht werden.
+      </slot>
     </template>
     <template v-slot:buttons="{ close: cancel }">
       <MyButton variant="primary" @click="cancel()">

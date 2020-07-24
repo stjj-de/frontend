@@ -20,6 +20,7 @@
           :force-show-error="fields.title.changed"
           :companion="fields.slug"
         />
+        <GroupSelectField v-model="group" :groups="groups"/>
       </template>
       <template v-slot:buttons>
         <MyButton
@@ -50,19 +51,25 @@
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
   import MyButton from "@/components/MyButton";
   import { validateSlug } from "@/assets/js/validateSlug.js";
+  import GroupSelectField from "@/components/GroupSelectField";
 
   export default {
     name: "CreatePostModal",
-    components: { MyButton, InputField, MyModal },
+    components: { GroupSelectField, MyButton, InputField, MyModal },
     props: {
       active: {
         type: Boolean,
+        required: true
+      },
+      groups: {
+        type: Array,
         required: true
       }
     },
     data() {
       return {
         loading: false,
+        group: this.groups.length === 0 ? null : this.groups[0].id,
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
@@ -78,7 +85,7 @@
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return (this.$store.state.user.group !== "NONE" || this.group !== null) && Object.values(this.fields).every(field => field.valid);
       }
     },
     watch: {
@@ -112,6 +119,7 @@
         const { id } = await this.$api.posts.create({
           title: this.fields.title.transformedValue,
           slug: this.fields.slug.transformedValue,
+          group: this.group,
           content: "",
           excerpt: ""
         });

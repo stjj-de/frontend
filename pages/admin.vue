@@ -49,6 +49,17 @@
     components: { AdminNavigation },
     head: () => ({
       title: "Verwaltung"
-    })
+    }),
+    async asyncData({ $api, store }) {
+      store.commit("setUserPromise", (async () => {
+        store.commit("setUser", await $api.groups.populate(
+          await $api.users.get(store.state.userID, ["id", "realName", "groups", "role"]),
+          "groups",
+          ["id", "title"]
+        ));
+      })());
+
+      await store.state.userPromise;
+    }
   };
 </script>

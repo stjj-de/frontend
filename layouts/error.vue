@@ -4,12 +4,15 @@
       <template v-if="isPageNotFound">
         <Illustration class="error-page__illustration"/>
         <span class="error-page__message">
-        Diese Seite existiert nicht.
-      </span>
+          Diese Seite existiert nicht.
+        </span>
       </template>
       <span class="error-page__message" v-else>
         {{ error.m || "Ein Fehler ist aufgetreten." }}
       </span>
+      <p>
+        Lade am besten die Seite neu.
+      </p>
       <div class="error-page__back">
         <nuxt-link to="/">
           Zurück zur Startseite
