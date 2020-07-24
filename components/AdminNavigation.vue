@@ -225,6 +225,7 @@
   import PencilIcon from "@/assets/icons/pencil.svg";
   import ChurchIcon from "@/assets/icons/church.svg";
   import VideoIcon from "@/assets/icons/video.svg";
+  import CircleIcon from "@/assets/icons/circle.svg";
   import { getUserImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
@@ -257,7 +258,7 @@
     {
       label: "Gruppen",
       to: "/admin/groups",
-      icon: VideoIcon,
+      icon: CircleIcon,
       visible: user => user.role !== "NONE" || user.groups.length !== 0
     }
   ];
