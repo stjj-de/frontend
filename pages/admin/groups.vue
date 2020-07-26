@@ -48,7 +48,7 @@
 
   export default {
     name: "GroupsPage",
-    components: { EditGroupModal, AdminDataTableEmptyState, MyButton, EditEventModal, DataTable, VDatePicker },
+    components: { EditGroupModal, AdminDataTableEmptyState, MyButton, DataTable },
     head: () => ({
       title: "Gruppen / Administration"
     }),

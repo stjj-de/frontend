@@ -46,10 +46,6 @@
     transition: 500ms ease;
     transition-property: background-color, box-shadow;
 
-    &:focus {
-      outline: none;
-    }
-
     &:disabled {
       box-shadow: 0 4px 10px 0 transparentize(colors.$background-c, 0.8);
     }

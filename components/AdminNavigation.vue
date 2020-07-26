@@ -226,41 +226,48 @@
   import ChurchIcon from "@/assets/icons/church.svg";
   import VideoIcon from "@/assets/icons/video.svg";
   import CircleIcon from "@/assets/icons/circle.svg";
+  import TextIcon from "@/assets/icons/text.svg";
   import { getUserImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
 
   const ITEMS = [
-    {
+    vm => ({
       label: "Artikel",
       to: "/admin/posts",
       icon: PencilIcon,
-      visible: user => user.role !== "NONE" || user.groups.length !== 0
-    },
-    {
+      visible: vm.$store.getters.userIsEditor || vm.$store.state.user.groups.length !== 0
+    }),
+    vm => ({
       label: "Kalender",
       to: "/admin/calendar",
       icon: CalendarIcon,
-      visible: user => user.role !== "NONE"
-    },
-    {
+      visible: vm.$store.getters.userIsEditor
+    }),
+    vm => ({
       label: "Gottesdienste",
       to: "/admin/gottesdienste",
       icon: ChurchIcon,
-      visible: user => user.role !== "NONE"
-    },
-    {
+      visible: vm.$store.getters.userIsEditor
+    }),
+    vm => ({
       label: "Videos",
       to: "/admin/videos",
       icon: VideoIcon,
-      visible: user => user.role !== "NONE"
-    },
-    {
-      label: "Gruppen",
+      visible: vm.$store.getters.userIsEditor
+    }),
+    vm => ({
+      label: "Gruppe" + ((vm.$store.getters.userIsEditor || vm.$store.state.user.groups.length > 1) ? "n" : ""),
       to: "/admin/groups",
       icon: CircleIcon,
-      visible: user => user.role !== "NONE" || user.groups.length !== 0
-    }
+      visible: vm.$store.getters.userIsEditor || vm.$store.state.user.groups.length !== 0
+    }),
+    vm => ({
+      label: "Inhalte",
+      to: "/admin/contents",
+      icon: TextIcon,
+      visible: vm.$store.getters.userIsEditor
+    })
   ];
 
   export default {
@@ -269,7 +276,7 @@
     data() {
       return {
         open: false,
-        items: ITEMS.filter(item => item.visible(this.$store.state.user))
+        items: ITEMS.map(item => typeof item === "function" ? item(this) : item).filter(item => item.visible)
       };
     },
     methods: {

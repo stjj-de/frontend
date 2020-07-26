@@ -12,10 +12,8 @@
       <BlueBlob class="title-section__blue-blob"/>
     </div>
     <div class="title-section__description">
-      <div class="title-section__description-text-container">
-        <div class="title-section__description-text">
-          {{ introduction }}
-        </div>
+      <div class="title-section__introduction-container">
+        <div class="quill-enduser formatted title-section__introduction" v-html="introduction"></div>
       </div>
       <RedBlob class="title-section__red-blob"/>
     </div>
@@ -24,9 +22,10 @@
 
 <style lang="scss">
   @use "~@/assets/styles/screenSize";
+  @use "~@/assets/styles/quill-enduser.scss";
 
   .title-section {
-
+    margin-top: 20px;
   }
 
   .title-section__title {
@@ -37,7 +36,7 @@
   .title-section__title-text {
     position: absolute;
     top: 70px;
-    left: 60px;
+    right: 40px;
     z-index: 1;
 
     text-align: right;
@@ -63,11 +62,11 @@
 
   @include screenSize.mobile {
     .title-section__title {
-      height: 140px;
+      height: 200px;
     }
 
     .title-section__title-text {
-      top: 120px;
+      top: 80px;
       left: unset;
       right: 10px;
       width: 100%;
@@ -94,7 +93,7 @@
     height: 400px;
   }
 
-  .title-section__description-text-container {
+  .title-section__introduction-container {
     position: relative;
     z-index: 1;
     display: flex;
@@ -102,8 +101,8 @@
     min-height: 400px;
   }
 
-  .title-section__description-text {
-    font-size: 1.5rem;
+  .title-section__introduction {
+    font-size: 1.5rem!important;
     line-height: 2.8rem;
   }
 
@@ -111,12 +110,12 @@
     height: 600px;
 
     position: absolute;
-    top: -100px;
+    top: -50px;
     left: -210px;
   }
 
   @include screenSize.mobile {
-    .title-section__description-text {
+    .title-section__introduction {
       font-size: 1.4rem;
       line-height: 2rem;
     }

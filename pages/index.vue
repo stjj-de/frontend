@@ -19,7 +19,7 @@
   import TitleSection from "@/components/pages/index/TitleSection";
   import PostsSection from "@/components/pages/index/PostsSection";
   import CalendarSection from "@/components/pages/index/CalendarSection";
-  import { HOMEPAGE_INTRODUCTION } from "@/assets/js/content-ids";
+  import { HOMEPAGE_INTRODUCTION } from "@/assets/js/contents";
 
   export default {
     name: "IndexPage",

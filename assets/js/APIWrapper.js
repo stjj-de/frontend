@@ -12,9 +12,8 @@ export class APIWrapper {
     this.groups = new GroupsAPIModelEndpointWrapper(axios, "groups");
 
     this.contents = {
-      get(id) {
-        return axios.$get(`/api/contents/${id}`);
-      }
+      get: id => axios.$get(`/api/contents/${id}`),
+      update: (id, content) => axios.$put(`/api/contents/${id}`, content)
     }
   }
 }
