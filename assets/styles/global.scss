@@ -45,3 +45,7 @@ html, body, #__nuxt, #__layout {
 .content {
   @include content.content();
 }
+
+::selection {
+  background-color: transparentize(colors.$blue, 0.7);
+}

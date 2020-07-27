@@ -1,7 +1,16 @@
 <template>
   <div class="gemeinde-page">
     <NavigationBar title="Gemeinde"/>
-    <main class="quill-enduser formatted content" v-html="content">
+    <main class="content formatted">
+      <Accordion label="Gruppierungen">
+        <Accordion v-for="group in groups" :key="group.id" :label="group.title">
+          <div class="quill-enduser" v-html="group.description"></div>
+          <
+        </Accordion>
+      </Accordion>
+      <Accordion label="Für sie da">
+        <div class="quill-enduser" v-html="content"></div>
+      </Accordion>
     </main>
   </div>
 </template>
@@ -20,6 +29,7 @@
     components: { Accordion, NavigationBar },
     async asyncData({ $api }) {
       return {
+        groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,
         content: await $api.contents.get(GEMEINDE)
       };
     }

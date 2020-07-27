@@ -2,9 +2,9 @@
   <div class="accordion" role="group" :class="classes">
     <button class="accordion__toggle" @click="open = !open">
       <ArrowRight class="accordion__arrow"/>
-      {{ text }}
+      {{ label }}
     </button>
-    <div class="accordion__content">
+    <div class="accordion__content" @focusin="open = true">
       <slot/>
     </div>
   </div>
@@ -14,11 +14,11 @@
   @use "~@/assets/styles/colors";
 
   .accordion {
-    margin-top: 20px;
+    margin: 20px 0;
     border-radius: 10px;
 
     padding: 20px;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.1);
   }
 
   .accordion__arrow {
@@ -26,7 +26,7 @@
     margin-right: 10px;
 
     transition: 100ms linear;
-    .accordion--open & {
+    .accordion--open> * > & {
       transform: rotate(90deg);
     }
   }
@@ -40,10 +40,6 @@
     color: colors.$blue;
     background: none;
     border: none;
-
-    &:focus {
-      outline: none;
-    }
   }
 
   .accordion__content {
@@ -51,16 +47,20 @@
     height: 0;
 
     margin-left: 15px;
-    padding-left: 20px;
-    border-left: 2px solid #e2e2e2;
+    padding-left: 30px;
+    border-left: 2px solid transparentize(colors.$blue, 0.7);
 
     & > :first-child {
       margin-top: 0;
     }
 
-    .accordion--open & {
+    & > :last-child {
+      margin-bottom: 0;
+    }
+
+    .accordion--open > & {
       margin-top: 20px;
-      overflow: auto;
+      overflow: visible;
       height: auto;
     }
   }
@@ -74,7 +74,7 @@
     name: "Accordion",
     components: { ArrowRight },
     props: {
-      text: {
+      label: {
         type: String,
         required: true
       }
