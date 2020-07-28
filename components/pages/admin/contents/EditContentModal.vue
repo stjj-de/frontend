@@ -9,8 +9,8 @@
       @close="cancel()"
     >
       <template v-slot:default>
-        <h2 class="heading--5">{{ title }}</h2>
-        <PostEditor class="edit-content-modal__editor" v-model="content"/>
+        <h2 class="heading--5">{{ meta.title }}</h2>
+        <PostEditor :key="contentId" class="edit-content-modal__editor" v-model="content" :highest-heading="meta.maxHeading"/>
       </template>
       <template v-slot:buttons>
         <MyButton
@@ -63,7 +63,7 @@
       confirmCancelModalActive: false
     }),
     computed: {
-      title: vm => vm.contentId === null ? "" : CONTENTS[vm.contentId].title,
+      meta: vm => vm.contentId === null ? { title: "", maxHeading: 1 } : CONTENTS[vm.contentId],
       changed: vm => vm.content !== vm.savedContent,
       valid: vm => stripTags(vm.content).trim() !== ""
     },

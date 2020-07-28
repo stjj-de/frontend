@@ -33,19 +33,28 @@
       value: {
         type: String,
         required: true
+      },
+      highestHeading: {
+        type: Number,
+        default: 1,
+        validate: value => value >= 1 && value <= 6
       }
     },
-    data: () => ({
-      editorToolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
-        ["link", "image"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        [{ script: "super" }, { script: "sub" }],
-        [{ color: [] }, { background: [] }],
-        [{ align: "" }, { align: "center" }, { align: "right" }]
-      ]
-    }),
+    data() {
+      const headings = [1, 2, 3, 4, 5, 6].filter(level => level >= this.highestHeading);
+
+      return {
+        editorToolbar: [
+          [{ header: [false, ...headings] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          ["link", "image"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "super" }, { script: "sub" }],
+          [{ color: [] }, { background: [] }],
+          [{ align: "" }, { align: "center" }, { align: "right" }]
+        ]
+      };
+    },
     methods: {
       async handleImage(file, Editor, cursorLocation, resetUploader) {
         const formData = new FormData();

@@ -114,7 +114,7 @@
   }
 
   .navigation-bar__title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: bold;
     display: block;
 
@@ -209,7 +209,7 @@
     }
 
     .navigation-bar__title {
-      font-size: 2rem;
+      font-size: 1.5rem;
     }
 
     .navigation-bar__toggle {

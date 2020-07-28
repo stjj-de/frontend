@@ -10,7 +10,7 @@
       <span class="error-page__message" v-else>
         {{ error.m || "Ein Fehler ist aufgetreten." }}
       </span>
-      <p>
+      <p class="error-page__tip" v-if="error.m === undefined">
         Lade am besten die Seite neu.
       </p>
       <div class="error-page__back">
@@ -47,6 +47,10 @@
     @include screenSize.mobile {
       font-size: 1.6rem;
     }
+  }
+
+  .error-page__tip {
+    font-size: 1.4rem;
   }
 
   .error-page__illustration {

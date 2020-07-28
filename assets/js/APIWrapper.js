@@ -99,7 +99,7 @@ class PostsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
     offset = 0,
     onlyRelevant = true,
     onlyPublished = true,
-    onlyOwnGroup = false,
+    group = undefined,
     sortBy = undefined,
     ascending = true
   }) {
@@ -111,7 +111,7 @@ class PostsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
       asc: sortBy === undefined ? undefined : ascending,
       onlyPublished,
       onlyRelevant,
-      onlyOwnGroup
+      group
     });
 
     return this.axios.$get(`/api/${this.name}?${query}`);

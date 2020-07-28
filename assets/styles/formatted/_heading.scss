@@ -1,32 +1,62 @@
 @use "../screenSize";
+@use "../colors";
 
 %heading--1, %heading--2, %heading--3, %heading--4, %heading--5, %heading--6 {
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.4rem;
   font-weight: bold;
   display: block;
 }
 
 %heading--1 {
   font-size: 3rem;
+
+  @include screenSize.mobile {
+    font-size: 2rem;
+  }
 }
 
 %heading--2 {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
+  border-bottom: 2px transparentize(colors.$background-c, 0.8) solid;
+  padding-bottom: 6px;
+
+  @include screenSize.mobile {
+    font-size: 1.8rem;
+    border-bottom-width: 1px;
+  }
 }
 
 %heading--3 {
   font-size: 2rem;
+
+  @include screenSize.mobile {
+    font-size: 1.6rem;
+  }
 }
 
 %heading--4 {
   font-size: 1.6rem;
+  border-bottom: 1px transparentize(colors.$background-c, 0.9) solid;
+  padding-bottom: 6px;
+
+  @include screenSize.mobile {
+    font-size: 1.4rem;
+  }
 }
 
 %heading--5 {
   font-size: 1.2rem;
+
+  @include screenSize.mobile {
+    font-size: 1.2rem;
+  }
 }
 
 %heading--6 {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+
+  @include screenSize.mobile {
+    font-size: 1rem;
+  }
 }

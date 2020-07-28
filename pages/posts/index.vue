@@ -1,6 +1,6 @@
 <template>
   <div class="posts-page content">
-    <NavigationBar title="Artikel"/>
+    <NavigationBar :title="title"/>
     <main v-if="posts">
       <div class="posts-page__posts">
         <PostCard
@@ -21,7 +21,7 @@
             Mehr laden
           </MyButton>
           <span class="posts-page__the-end" v-else>
-            Du hast das Ende erreicht.
+            {{ endReachedMessage }}
           </span>
         </transition>
       </div>
@@ -63,7 +63,7 @@
   import MyButton from "@/components/MyButton";
   import { combineFieldSets } from "@/assets/js/APIWrapper";
 
-  async function fetchPosts(offset, api) {
+  async function fetchPosts(offset, api, group) {
     const result = await api.posts.list({
       fields: combineFieldSets(PostCard.POST_FIELDS, ["id"]),
       limit: 10,
@@ -71,7 +71,8 @@
       sortBy: "publishedAt",
       ascending: false,
       onlyRelevant: false,
-      onlyPublished: true
+      onlyPublished: true,
+      group
     });
 
     return {
@@ -83,22 +84,53 @@
   export default {
     name: "PostsPage",
     components: { MyButton, NavigationBar, PostCard },
-    head: () => ({
-      title: "Artikel"
-    }),
+    head() {
+      return {
+        title: this.title
+      };
+    },
     data: () => ({
       posts: [],
       hasMore: false,
       loading: false
     }),
-    async asyncData({ app: { $api } }) {
-      const { hasMore, items: posts } = await fetchPosts(0, $api);
-      return { hasMore, posts };
+    async asyncData({ app: { $api }, route, error }) {
+      const groupID = route.query.group;
+      let group = null;
+      if (groupID !== undefined) {
+        const groupData = await $api.groups.get(groupID, ["id", "title"])
+        if (groupData === null) {
+          error({ m: "Diese Gruppe existiert nicht oder nicht mehr.", statusCode: 404 });
+          return {};
+        }
+
+        group = groupData;
+      }
+
+      const { hasMore, items: posts } = await fetchPosts(0, $api, route.query.group || "general");
+
+      return { hasMore, posts, group };
+    },
+    computed: {
+      title() {
+        return this.group === null ? "Artikel" : `Artikel von ${this.group.title}`;
+      },
+      endReachedMessage() {
+        if (this.group === null) {
+          return this.posts.length === 0
+            ? "Es gibt noch keine Artikel."
+            : "Das sind alle Artikel."
+        } else {
+          return this.posts.length === 0
+            ? `${this.group.title} hat noch keine Artikel veröffentlicht.`
+            : `Das sind alle Artikel von ${this.group.title}.`
+        }
+      }
     },
     methods: {
       async fetchMore() {
         this.loading = true;
-        const result = await fetchPosts(this.posts.length, this.$api);
+        const result = await fetchPosts(this.posts.length, this.$api, this.$route.query.group || "general");
         this.hasMore = result.hasMore;
         this.posts.push(...result.items);
         this.loading = false;
