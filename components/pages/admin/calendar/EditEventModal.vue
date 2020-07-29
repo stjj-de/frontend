@@ -152,7 +152,7 @@
                 return null;
               }
 
-              const post = null; // TODO
+              const post = await this.$api.posts.get("_" + value, ["id"]);
 
               if (post === null) {
                 return "Es existiert kein Artikel mit diesem Slug.";

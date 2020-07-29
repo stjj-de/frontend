@@ -31,10 +31,16 @@
           {{ item.label }}
         </nuxt-link>
       </div>
-      <nuxt-link class="admin-navigation__back admin-navigation__item" to="/">
-        <ArrowLeftIcon class="admin-navigation__icon"/>
-        Zurück zur Seite
-      </nuxt-link>
+      <div class="admin-navigation__end">
+        <nuxt-link class="admin-navigation__back admin-navigation__item" to="/logout">
+          <LogoutIcon class="admin-navigation__icon"/>
+          Abmelden
+        </nuxt-link>
+        <nuxt-link class="admin-navigation__back admin-navigation__item" to="/">
+          <ArrowLeftIcon class="admin-navigation__icon"/>
+          Zurück zur Seite
+        </nuxt-link>
+      </div>
     </nav>
   </div>
 </template>
@@ -227,6 +233,7 @@
   import VideoIcon from "@/assets/icons/video.svg";
   import CircleIcon from "@/assets/icons/circle.svg";
   import TextIcon from "@/assets/icons/text.svg";
+  import LogoutIcon from "@/assets/icons/logout.svg";
   import { getUserImageURL } from "@/assets/js/getFileURL";
   import LoadingOverlay from "@/components/LoadingOverlay";
   import LoadingPlaceholder from "@/components/LoadingPlaceholder";
@@ -278,7 +285,7 @@
 
   export default {
     name: "AdminNavigation",
-    components: { LoadingPlaceholder, LoadingOverlay, ArrowLeftIcon },
+    components: { LoadingPlaceholder, LoadingOverlay, ArrowLeftIcon, LogoutIcon },
     data() {
       return {
         open: false,

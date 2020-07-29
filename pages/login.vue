@@ -172,9 +172,7 @@
       }
     },
     async created() {
-      if (this.$route.query.logout === "1") {
-        // TODO: Logout
-      } else if ((await this.$axios.get("/api/auth/me", { validateStatus: status => [200, 403, 401].includes(status) })).status !== 200) {
+      if ((await this.$axios.get("/api/auth/me", { validateStatus: status => [200, 403, 401].includes(status) })).status !== 200) {
         this.showBox = true;
       } else {
         await this.$router.replace(this.nextURL);
