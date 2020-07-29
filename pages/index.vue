@@ -36,8 +36,10 @@
         introduction: await $api.contents.get(HOMEPAGE_INTRODUCTION),
         posts: await $api.users.populate(await $api.posts.list({
           fields: PostsSection.POST_FIELDS,
+          limit: 2,
           onlyPublished: true,
           onlyRelevant: true,
+          group: "general",
           sortBy: "publishedAt",
           ascending: false
         }).then(data => data.items), "author", PostsSection.POST_AUTHOR_FIELDS),

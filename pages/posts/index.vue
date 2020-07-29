@@ -89,6 +89,8 @@
         title: this.title
       };
     },
+    watchQuery: ["group"],
+    key: route => route.fullPath,
     data: () => ({
       posts: [],
       hasMore: false,
