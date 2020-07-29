@@ -1,15 +1,15 @@
 <template>
-  <main class="church-service-dates-page">
+  <main class="groups-page">
     <h1 class="heading--1">
-      Gottesdienste
+      Kirchen
     </h1>
     <DataTable
       :companion="table"
-      loading-text="Gottesdienste werden geladen"
+      loading-text="Kirchen werden geladen"
       @row-click="onRowClick"
     >
       <template v-slot:empty-state>
-        <AdminDataTableEmptyState items-name="Gottesdienste"/>
+        <AdminDataTableEmptyState items-name="Kirchen"/>
       </template>
       <template v-slot:buttons>
         <MyButton
@@ -21,8 +21,8 @@
         </MyButton>
       </template>
     </DataTable>
-    <EditGottesdienstModal
-      :gottesdienst-id="editModalChurchServiceDateID"
+    <EditChurchModal
+      :church-id="editModalChurchID"
       :active="editModalActive"
       @close="onEditModalClose"
     />
@@ -30,7 +30,6 @@
 </template>
 
 <style scoped lang="scss">
-
 </style>
 
 <script>
@@ -38,49 +37,38 @@
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
   import MyButton from "@/components/MyButton";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
-  import EditGottesdienstModal from "@/components/pages/admin/gottesdienste/EditGottesdienstModal";
-  import { formatDateWithTime } from "@/assets/js/dateUtils";
+  import EditChurchModal from "@/components/pages/admin/churches/EditChurchModal";
 
   const ITEMS_PER_PAGE = 10;
 
   export default {
-    name: "ChurchServiceDatesPage",
-    components: { AdminDataTableEmptyState, MyButton, DataTable, EditGottesdienstModal },
+    name: "ChurchesPage",
+    components: { EditChurchModal, AdminDataTableEmptyState, MyButton, DataTable },
     head: () => ({
-      title: "Gottesdienste / Administration"
+      title: "Kirchen / Administration"
     }),
     data() {
       return {
-        editModalChurchServiceDateID: null,
+        editModalChurchID: null,
         editModalActive: false,
         table: new DataTableCompanion({
           columns: {
-            date: {
-              name: "Datum",
-              sortable: true,
-              transform: formatDateWithTime
-            },
-            church: {
-              name: "Kirche",
-              width: 400,
-              transform: church => church.title
+            title: {
+              name: "Titel",
+              sortable: true
             }
           },
-          sortBy: "date",
-          sortOrder: "asc",
+          sortBy: "title",
+          sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            return await this.$api.churches.populate(
-              await this.$api.churchServiceDates.list({
-                sortBy,
-                ascending: sortOrder === "asc",
-                limit: ITEMS_PER_PAGE,
-                offset: ITEMS_PER_PAGE * pageIndex,
-                fields: ["id", "date", "church"]
-              }),
-              "church",
-              ["title"]
-            );
+            return await this.$api.churches.list({
+              sortBy,
+              ascending: sortOrder === "asc",
+              limit: ITEMS_PER_PAGE,
+              offset: ITEMS_PER_PAGE * pageIndex,
+              fields: ["id", "title"]
+            })
           }
         })
       };
@@ -108,7 +96,7 @@
         }
       },
       openEditModal(id) {
-        this.editModalChurchServiceDateID = id;
+        this.editModalChurchID = id;
         this.editModalActive = true;
       }
     }

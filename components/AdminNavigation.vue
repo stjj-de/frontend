@@ -245,12 +245,6 @@
       visible: vm.$store.getters.userIsEditor
     }),
     vm => ({
-      label: "Gottesdienste",
-      to: "/admin/gottesdienste",
-      icon: ChurchIcon,
-      visible: vm.$store.getters.userIsEditor
-    }),
-    vm => ({
       label: "Videos",
       to: "/admin/videos",
       icon: VideoIcon,
@@ -266,6 +260,18 @@
       label: "Inhalte",
       to: "/admin/contents",
       icon: TextIcon,
+      visible: vm.$store.getters.userIsEditor
+    }),
+    vm => ({
+      label: "Kirchen",
+      to: "/admin/churches",
+      icon: ChurchIcon,
+      visible: vm.$store.getters.userIsEditor
+    }),
+    vm => ({
+      label: "Gottesdienste",
+      to: "/admin/gottesdienste",
+      icon: ChurchIcon,
       visible: vm.$store.getters.userIsEditor
     })
   ];

@@ -1,9 +1,9 @@
 <template>
-  <div class="edit-group-modal">
+  <div class="edit-church-modal">
     <MyModal
-      title="Gruppe bearbeiten"
+      title="Kirche bearbeiten"
       closable
-      width="800px"
+      width="520px"
       :loading="loading"
       :loading-text="loadingText"
       :active="active"
@@ -11,12 +11,12 @@
     >
       <template v-slot:default>
         <InputField label="Titel" :companion="fields.title"/>
-        <PostEditor v-model="description"/>
+        <InputField label="Plus-Code (zu finden auf Google Maps)" placeholder="z. B. 86G7+9H" :companion="fields.plusCode"/>
       </template>
       <template v-if="$store.getters.userIsEditor" v-slot:secondary-buttons>
         <MyButton
           v-if="!isCreateNew"
-          class="edit-group-modal__delete-button"
+          class="edit-church-modal__delete-button"
           variant="danger"
           @click="confirmDeleteModalActive = true"
         >
@@ -39,10 +39,7 @@
       </template>
     </MyModal>
     <ConfirmCancelModal :active.sync="confirmCancelModalActive" @confirm="close(true)"/>
-    <ConfirmDeleteModal item-type="Gruppe" :active.sync="confirmDeleteModalActive" @confirm="delete_()">
-      <p>Alle zu dieser Gruppe gehörenden Artikel werden ebenfalls gelöscht.</p>
-      <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
-    </ConfirmDeleteModal>
+    <ConfirmDeleteModal item-type="Kirche" :active.sync="confirmDeleteModalActive" @confirm="delete_()"/>
   </div>
 </template>
 
@@ -57,12 +54,13 @@
   import ConfirmCancelModal from "@/components/ConfirmCancelModal";
   import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
   import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
+  import { OpenLocationCode } from "open-location-code";
 
   export default {
-    name: "EditGroupModal",
+    name: "EditChurchModal",
     components: { PostEditor, ConfirmDeleteModal, ConfirmCancelModal, MyButton, InputField, MyModal },
     props: {
-      groupId: {
+      churchId: {
         type: null,
         validate: value => typeof value === "string" || value === null,
         required: true
@@ -78,13 +76,21 @@
         loadingText: "",
         confirmCancelModalActive: false,
         confirmDeleteModalActive: false,
-        savedGroup: null,
+        savedChurch: null,
         description: "",
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Titel ein."
           }),
+          plusCode: new InputFieldCompanion({
+            transform: value => value.trim(),
+            validate: value => {
+              if (!new OpenLocationCode().isValid(value)) {
+                return "Dieser Plus Code ist ungültig."
+              }
+            }
+          })
         }
       };
     },
@@ -93,19 +99,15 @@
         return Object.values(this.fields).every(field => field.valid);
       },
       isCreateNew() {
-        return this.groupId === "";
+        return this.churchId === "";
       },
       changed() {
-        return this.savedGroup !== null &&
-          (
-            this.description !== this.savedGroup.description ||
-            Object.values(this.fields).some(field => field.changed)
-          );
+        return Object.values(this.fields).some(field => field.changed)
       }
     },
     watch: {
       active() {
-        if (this.active && this.groupId !== null) {
+        if (this.active && this.churchId !== null) {
           this.onActivate();
         }
       }
@@ -131,18 +133,18 @@
         this.$emit("close", canceled);
       },
       async fetchGroup() {
-        const { groupId } = this;
+        const { churchId } = this;
 
         this.loading = true;
-        this.loadingText = "Gruppe wird geladen";
+        this.loadingText = "Kirche wird geladen";
 
-        const group = await this.$api.groups.get(groupId, ["title", "description"])
+        const church = await this.$api.churches.get(churchId, ["title", "plusCode"])
 
-        if (this.groupId !== groupId) return;
-        this.savedGroup = group;
+        if (this.churchId !== churchId) return;
+        this.savedChurch = church;
 
-        this.fields.title.setValueAndReset(group.title);
-        this.description = this.savedGroup.description;
+        this.fields.title.setValueAndReset(church.title);
+        this.fields.plusCode.setValueAndReset(church.plusCode);
         this.loading = false;
       },
       async save() {
@@ -150,15 +152,15 @@
 
         const data = {
           title: this.fields.title.transformedValue,
-          description: this.description
+          plusCode: this.fields.plusCode.transformedValue,
         };
 
         if (this.isCreateNew) {
-          this.loadingText = "Gruppe wird erstellt";
-          await this.$api.groups.create(data);
+          this.loadingText = "Kirche wird erstellt";
+          await this.$api.churches.create(data);
         } else {
-          this.loadingText = "Gruppe wird gespeichert";
-          await this.$api.groups.update(this.groupId, data);
+          this.loadingText = "Kirche wird gespeichert";
+          await this.$api.churches.update(this.churchId, data);
         }
 
         this.loading = false;
@@ -166,9 +168,9 @@
       },
       async delete_() {
         this.loading = true;
-        this.loadingText = "Gruppe wird gelöscht";
+        this.loadingText = "Kirche wird gelöscht";
 
-        await this.$api.groups.delete(this.groupId);
+        await this.$api.churches.delete(this.churchId);
 
         this.loading = false;
         this.close();

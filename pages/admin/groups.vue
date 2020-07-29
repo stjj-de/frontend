@@ -37,9 +37,7 @@
 
 <script>
   import DataTable from "@/components/DataTable/DataTable";
-  import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
   import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import EditEventModal from "@/components/pages/admin/calendar/EditEventModal";
   import MyButton from "@/components/MyButton";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
   import EditGroupModal from "@/components/pages/admin/groups/EditGroupModal";

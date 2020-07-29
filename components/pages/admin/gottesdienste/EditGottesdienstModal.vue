@@ -1,7 +1,7 @@
 <template>
   <div class="edit-gottesdienst-modal">
     <MyModal
-      title="Termin bearbeiten"
+      title="Gottesdienst bearbeiten"
       closable
       width="520px"
       :loading="loading"
@@ -10,9 +10,19 @@
       @close="onCancel"
     >
       <template v-slot:default>
-        <InputField label="Zeit" placeholder="z. B.: Jeden Samstag um 11 Uhr" :companion="fields.time"/>
-        <InputField label="Ort" placeholder="z. B.: St. Josef in Furpach" :companion="fields.location"/>
-        <InputField label="Beschreibung" placeholder="z. B.: Heilige Messe" :companion="fields.description"/>
+        <DateTimeField
+          label="Datum"
+          :companion="fields.date"
+          v-model="date"
+        />
+        <div class="input-field">
+          <span class="input-field__label">Kirche</span>
+          <v-select v-model="church" label="title" :options="churches" :clearable="false"/>
+        </div>
+        <div class="input-field">
+          <span class="input-field__label">Beschreibung</span>
+          <PostEditor v-model="description"/>
+        </div>
       </template>
       <template v-slot:buttons>
         <MyButton
@@ -52,14 +62,6 @@
 </template>
 
 <style lang="scss">
-  .edit-gottesdienst-modal__remove-end-button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .edit-gottesdienst-modal__color-label {
-    margin-top: 15px;
-  }
 </style>
 
 <script>
@@ -67,10 +69,13 @@
   import InputField from "@/components/InputField/InputField";
   import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
   import MyButton from "@/components/MyButton";
+  import DateTimeField from "@/components/DateTimeField";
+  import VSelect from "vue-select";
+  import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
 
   export default {
     name: "EditGottesdienstModal",
-    components: { MyButton, InputField, MyModal },
+    components: { PostEditor, DateTimeField, MyButton, InputField, MyModal, VSelect },
     props: {
       gottesdienstId: {
         type: null,
@@ -90,30 +95,30 @@
         confirmDeleteModalActive: false,
         savedGottesdienst: null,
         fields: {
-          time: new InputFieldCompanion({
-            transform: value => value.trim(),
-            required: true
-          }),
-          location: new InputFieldCompanion({
-            transform: value => value.trim(),
-            required: true
-          }),
-          description: new InputFieldCompanion({
-            transform: value => value.trim(),
-            required: true
+          date: new InputFieldCompanion({
+            required: true,
+            readonly: true
           })
-        }
+        },
+        churches: [],
+        date: new Date().toISOString(),
+        church: null,
+        description: ""
       };
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return Object.values(this.fields).every(field => field.valid) && this.church !== null;
       },
       isCreateNew() {
         return this.gottesdienstId === "";
       },
       changed() {
-        return Object.values(this.fields).some(field => field.changed);
+        if (this.savedGottesdienst === null) return this.isCreateNew;
+
+        return this.date !== this.savedGottesdienst.date ||
+          this.church.id !== this.savedGottesdienst.church ||
+          this.description !== this.savedGottesdienst.description;
       }
     },
     watch: {
@@ -124,16 +129,21 @@
       }
     },
     methods: {
-      onActivate() {
-        this.fields.time.setValueAndReset("");
-        this.fields.location.setValueAndReset("");
-        this.fields.description.setValueAndReset("");
+      async onActivate() {
+        this.loading = true;
+        this.loadingText = "Kirchen werden geladen";
+        this.churches = (await this.$api.churches.list({ fields: ["id", "title"] })).items;
 
-        if (!this.isCreateNew) {
-          this.fetchGottesdienst();
+        if (this.isCreateNew) {
+          this.church = this.churches[0] || null;
+          this.date = new Date().toISOString();
+          this.description = "";
+          this.loading = false;
+        } else {
+          await this.fetchGottesdienst();
         }
 
-        this.fields.time.focus();
+        this.fields.date.focus();
       },
       onCancel() {
         if (this.changed) {
@@ -152,27 +162,32 @@
         this.loading = true;
         this.loadingText = "Gottesdienst wird geladen";
 
-        const gottesdienst = null; // TODO
+        const gottesdienst = await this.$api.churchServiceDates.get(gottesdienstId, ["id", "date", "church", "description"]);
 
         if (this.gottesdienstId !== gottesdienstId) return;
         this.savedGottesdienst = gottesdienst;
 
-        this.fields.time.setValueAndReset(gottesdienst.time);
-        this.fields.location.setValueAndReset(gottesdienst.location);
-        this.fields.description.setValueAndReset(gottesdienst.description);
+        this.date = gottesdienst.date;
+        this.church = this.churches.find(church => church.id === gottesdienst.church);
+        this.description = gottesdienst.description;
 
         this.loading = false;
       },
       async save() {
         this.loading = true;
 
+        const data = {
+          date: this.date,
+          church: this.church.id,
+          description: this.description
+        };
+
         if (this.isCreateNew) {
           this.loadingText = "Gottesdienst wird erstellt";
+          await this.$api.churchServiceDates.create(data);
         } else {
           this.loadingText = "Gottesdienst wird gespeichert";
-
-          const { time, location, description } = this.fields;
-          // TODO
+          await this.$api.churchServiceDates.update(this.savedGottesdienst.id, data);
         }
 
         this.loading = false;
