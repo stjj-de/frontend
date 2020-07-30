@@ -3,6 +3,7 @@
 @use "paragraph";
 @use "blockquote";
 @use "list";
+@use "section";
 
 $_elements: (
   "list": ("ul", "ol"),
@@ -14,7 +15,8 @@ $_elements: (
   "heading--4": "h4",
   "heading--5": "h5",
   "heading--6": "h6",
-  "blockquote": "blockquote"
+  "blockquote": "blockquote",
+  "section": "section"
 );
 
 @each $class, $tags in $_elements {
