@@ -12,8 +12,14 @@
         </Accordion>
       </section>
       <section>
-        <h1>Für sie da</h1>
-        <div class="quill-enduser" v-html="content"></div>
+        <div class="quill-enduser" v-html="contents.gemeinde"></div>
+      </section>
+      <section>
+        <h1>Downloads</h1>
+        <ul>
+          <li class="gemeinde-page__download"><a class="link" :href="`/files/${contents.pfarrbrief}`" target="_blank">Pfarrbrief</a></li>
+          <li class="gemeinde-page__download"><a class="link" :href="`/files/${contents.messdienerplan}`" target="_blank">Messdienerplan</a></li>
+        </ul>
       </section>
     </main>
   </div>
@@ -21,6 +27,11 @@
 
 <style lang="scss">
   @use "~@/assets/styles/quill-enduser";
+
+  .gemeinde-page__download {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+  }
 
   .gemeinde-page__group-posts {
     margin-top: 20px;
@@ -32,7 +43,7 @@
 <script>
   import NavigationBar from "@/components/NavigationBar";
   import Accordion from "@/components/Accordion";
-  import { GEMEINDE } from "@/assets/js/contents";
+  import { GEMEINDE, MESSDIENERPLAN, PFARRBRIEF } from "@/assets/js/contents";
   import MyButton from "@/components/MyButton";
 
   export default {
@@ -41,7 +52,11 @@
     async asyncData({ $api }) {
       return {
         groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,
-        content: await $api.contents.get(GEMEINDE)
+        contents: {
+          gemeinde: await $api.contents.get(GEMEINDE),
+          pfarrbrief: await $api.contents.get(PFARRBRIEF),
+          messdienerplan: await $api.contents.get(MESSDIENERPLAN)
+        }
       };
     }
   };
