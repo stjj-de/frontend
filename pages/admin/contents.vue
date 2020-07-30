@@ -3,10 +3,17 @@
     <h1 class="heading--1">
       Inhalte
     </h1>
-    <template v-for="[id, content] in Object.entries($options.contents)">
-      <h2>{{ content.title }}</h2>
-      <p>{{ content.description }}</p>
-      <MyButton @click="openEditModal(id)">Bearbeiten</MyButton>
+    <template v-for="[id, meta] in Object.entries(contents)">
+      <h2>{{ meta.title }}</h2>
+      <p v-if="meta.description">{{ meta.description }}</p>
+      <template v-if="meta.file !== undefined && meta.file !== false">
+        <p>
+          <span v-if="meta.file === ''">Keine Datei hochgeladen.</span>
+          <a v-else class="link" target="_blank" :href="`/files/${meta.file}`">Datei anzeigen</a>
+        </p>
+        <FileUploadButton :after-upload-action="getAfterUploadAction(id)"/>
+      </template>
+      <MyButton v-else @click="openEditModal(id)">Bearbeiten</MyButton>
     </template>
     <EditContentModal :active.sync="editModalActive" :content-id="editModalContentID"/>
   </main>
@@ -22,17 +29,36 @@
   import MyModal from "@/components/MyModal";
   import EditContentModal from "@/components/pages/admin/contents/EditContentModal";
   import { CONTENTS } from "@/assets/js/contents";
+  import FileUploadButton from "@/components/pages/admin/contents/FileUploadButton";
 
   export default {
     name: "ContentsPage",
-    components: { EditContentModal, MyModal, AdminDataTableEmptyState, MyButton, DataTable },
+    components: { FileUploadButton, EditContentModal, MyModal, AdminDataTableEmptyState, MyButton, DataTable },
     head: () => ({
       title: "Inhalte / Administration"
     }),
-    data() {
+    data: () => ({
+      contents: {},
+      editModalContentID: null,
+      editModalActive: false
+    }),
+    async asyncData({ $api }) {
+      const contents = { ...CONTENTS };
+
+      for (const key in contents) {
+        const meta = contents[key];
+
+        if (meta.file) {
+          contents[key] = {
+            ...meta,
+            file: await $api.contents.get(key)
+          };
+          console.log(contents[key]);
+        }
+      }
+
       return {
-        editModalContentID: null,
-        editModalActive: false
+        contents
       };
     },
     methods: {
@@ -42,8 +68,13 @@
       openEditModal(id) {
         this.editModalContentID = id;
         this.editModalActive = true;
+      },
+      getAfterUploadAction(id) {
+        return async (fileID) => {
+          await this.$api.contents.update(id, fileID);
+          this.contents[id].file = fileID;
+        };
       }
-    },
-    contents: CONTENTS
+    }
   };
 </script>
