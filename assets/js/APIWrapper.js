@@ -196,6 +196,8 @@ class EventsAPIModelEndpointWrapper extends APIModelEndpointWrapper {
   }
 }
 
+[].flat() // To include polyfill
+
 export function combineFieldSets(...fieldSets) {
   const fields = fieldSets.flat()
   const uniqueFields = [];

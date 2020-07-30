@@ -53,7 +53,6 @@
             ...meta,
             file: await $api.contents.get(key)
           };
-          console.log(contents[key]);
         }
       }
 
