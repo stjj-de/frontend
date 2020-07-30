@@ -21,7 +21,7 @@
         </div>
         <div class="input-field">
           <span class="input-field__label">Beschreibung</span>
-          <PostEditor v-model="description"/>
+          <PostEditor v-model="description" :highest-heading="3"/>
         </div>
       </template>
       <template v-slot:buttons>

@@ -11,7 +11,12 @@
     >
       <template v-slot:default>
         <InputField label="Titel" :companion="fields.title"/>
-        <InputField label="Plus-Code (zu finden auf Google Maps)" placeholder="z. B. 86G7+9H" :companion="fields.plusCode"/>
+        <InputField label="Google Maps ID" placeholder="z. B. geVDFBDgRSMoJ4SL9" :companion="fields.googleMapsID"/>
+        <span>
+          Du findest diese ID, wenn du auf Google Maps den Link zum Teilen eines Ortes
+          (https://goo.gl/maps/xxxx) kopierst.
+          Diesen kannst du einfach hier einfügen, er wird dann automatisch gekürzt.
+        </span>
       </template>
       <template v-if="$store.getters.userIsEditor" v-slot:secondary-buttons>
         <MyButton
@@ -54,7 +59,6 @@
   import ConfirmCancelModal from "@/components/ConfirmCancelModal";
   import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
   import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
-  import { OpenLocationCode } from "open-location-code";
 
   export default {
     name: "EditChurchModal",
@@ -83,13 +87,9 @@
             transform: value => value.trim(),
             required: "Bitte gib einen Titel ein."
           }),
-          plusCode: new InputFieldCompanion({
+          googleMapsID: new InputFieldCompanion({
             transform: value => value.trim(),
-            validate: value => {
-              if (!new OpenLocationCode().isValid(value)) {
-                return "Dieser Plus Code ist ungültig."
-              }
-            }
+            required: true
           })
         }
       };
@@ -109,6 +109,11 @@
       active() {
         if (this.active && this.churchId !== null) {
           this.onActivate();
+        }
+      },
+      "fields.googleMapsID.transformedValue"(value) {
+        if (value.startsWith("https://goo.gl/maps/")) {
+          this.fields.googleMapsID.value = value.slice(20);
         }
       }
     },
@@ -138,13 +143,13 @@
         this.loading = true;
         this.loadingText = "Kirche wird geladen";
 
-        const church = await this.$api.churches.get(churchId, ["title", "plusCode"])
+        const church = await this.$api.churches.get(churchId, ["title", "googleMapsID"])
 
         if (this.churchId !== churchId) return;
         this.savedChurch = church;
 
         this.fields.title.setValueAndReset(church.title);
-        this.fields.plusCode.setValueAndReset(church.plusCode);
+        this.fields.googleMapsID.setValueAndReset(church.googleMapsID);
         this.loading = false;
       },
       async save() {
@@ -152,7 +157,7 @@
 
         const data = {
           title: this.fields.title.transformedValue,
-          plusCode: this.fields.plusCode.transformedValue,
+          googleMapsID: this.fields.googleMapsID.transformedValue,
         };
 
         if (this.isCreateNew) {

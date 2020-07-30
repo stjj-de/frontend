@@ -43,7 +43,7 @@ class APIModelEndpointWrapper {
 
   list({
     fields = undefined,
-    limit = 10,
+    limit = 50,
     offset = 0,
     sortBy = undefined,
     ascending = true

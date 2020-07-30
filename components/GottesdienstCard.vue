@@ -1,22 +1,10 @@
 <template>
   <div class="gottesdienst-card">
-    <span class="gottesdienst-card__time">
-      {{ gottesdienst.time }}
+    <span class="gottesdienst-card__date heading--3">{{ formattedDate }}</span>
+    <span class="gottesdienst-card__church">
+      Ort: <a :href="`https://goo.gl/maps/${gottesdienst.church.googleMapsID}`" target="_blank">{{ gottesdienst.church.title }}</a>
     </span>
-    <span class="gottesdienst-card__location">
-      {{ gottesdienst.location }}
-    </span>
-    <span class="gottesdienst-card__description">
-      {{ gottesdienst.description }}
-    </span>
-    <div class="gottesdienst-card__buttons" v-if="showButtons">
-      <MyButton v-if="$listeners.delete" variant="danger" @click="$emit('delete')">
-        Löschen
-      </MyButton>
-      <MyButton v-if="$listeners.edit" variant="primary" @click="$emit('edit')">
-        Bearbeiten
-      </MyButton>
-    </div>
+    <div class="gottesdienst-card__description quill-enduser formatted" v-html="gottesdienst.description"></div>
   </div>
 </template>
 
@@ -31,12 +19,7 @@
     padding: 30px
   }
 
-  .gottesdienst-card__time {
-    font-weight: bold;
-    font-size: 1.4rem;
-    display: block;
-    margin-bottom: 5px;
-    color: colors.$background-c;
+  .gottesdienst-card__date {
     margin-top: 0;
   }
 
@@ -45,20 +28,11 @@
     color: transparentize(colors.$background-c, 0.5);
     margin: 0 5px;
   }
-
-  .gottesdienst-card__buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-
-    & > :not(:last-child) {
-      margin-right: 10px;
-    }
-  }
 </style>
 
 <script>
   import MyButton from "@/components/MyButton";
+  import { formatDateWithTime } from "@/assets/js/dateUtils";
 
   export default {
     name: "GottesdienstCard",
@@ -70,9 +44,9 @@
       }
     },
     computed: {
-      showButtons() {
-        return this.$listeners.edit || this.$listeners.delete;
-      }
-    }
+      formattedDate: vm => formatDateWithTime(vm.gottesdienst.date)
+    },
+    CHURCH_SERVICE_DATE_FIELDS: ["date", "church", "description"],
+    CHURCH_SERVICE_DATE_CHURCH_FIELDS: ["title", "googleMapsID"]
   };
 </script>

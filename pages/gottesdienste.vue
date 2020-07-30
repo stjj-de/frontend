@@ -1,11 +1,11 @@
 <template>
   <div class="gottesdienste-page">
-    <NavigationBar title="Gemeinde"/>
+    <NavigationBar title="Gottesdienste"/>
     <main class="content">
-      <section>
-        <h2 class="heading--3">
+      <section class="formatted">
+        <h1>
           Gottesdienste
-        </h2>
+        </h1>
         <div class="gottesdienste-page__gottesdienste">
           <GottesdienstCard
             v-for="gottesdienst in gottesdienste"
@@ -15,47 +15,33 @@
           />
         </div>
       </section>
-      <section class="gottesdienste-page__downloads-section">
-        <h2 class="heading--3">
-          Downloads
-        </h2>
-        <ul class="formatted gottesdienste-page__downloads">
-          <li>
-            <a target="_blank" href="/f/pfarrbrief">
-              Pfarrbrief
-            </a>
-          </li>
-          <li>
-            <a target="_blank" href="/f/messdienerplan">
-              Messdienerplan
-            </a>
-          </li>
-        </ul>
-      </section>
     </main>
   </div>
 </template>
 
 <style lang="scss">
-  .gottesdienste-page__gottesdienste {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    grid-gap: 30px;
+  @use "~@/assets/styles/screenSize";
 
-    @media (max-width: 450px) {
-      grid-template-columns: 1fr;
+  .gottesdienste-page__gottesdienste {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+
+    & > .gottesdienste-page__gottesdienst {
+      width: 100%;
+      margin-bottom: 20px;
+
+      @include screenSize.notMobile {
+        width: auto;
+        flex-grow: 0.5;
+        &:nth-child(odd) {
+          margin-right: 20px;
+        }
+      }
     }
 
     /* Can be replaced with this, once min() is better supported */
     /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
-  }
-
-  .gottesdienste-page__downloads-section {
-    margin-top: 40px;
-  }
-
-  .gottesdienste-page__downloads {
-    font-size: 1.3rem;
   }
 </style>
 
@@ -69,9 +55,13 @@
     head: () => ({
       title: "Gottesdienste"
     }),
-    async asyncData() {
+    async asyncData({ $api }) {
       return {
-        gottesdienste: [] // TODO
+        gottesdienste: (await $api.churches.populate(
+          await $api.churchServiceDates.list({ sortBy: "date", fields: GottesdienstCard.CHURCH_SERVICE_DATE_FIELDS }),
+          "church",
+          GottesdienstCard.CHURCH_SERVICE_DATE_CHURCH_FIELDS
+        )).items
       };
     }
   };
