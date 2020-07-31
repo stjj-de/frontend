@@ -1,20 +1,15 @@
 <template>
   <div class="gottesdienste-page">
     <NavigationBar title="Gottesdienste"/>
-    <main class="content">
-      <section class="formatted">
-        <h1>
-          Gottesdienste
-        </h1>
-        <div class="gottesdienste-page__gottesdienste">
-          <GottesdienstCard
-            v-for="gottesdienst in gottesdienste"
-            :key="gottesdienst.id"
-            class="gottesdienste-page__gottesdienst"
-            :gottesdienst="gottesdienst"
-          />
-        </div>
-      </section>
+    <main class="content formatted">
+      <div class="gottesdienste-page__gottesdienste">
+        <GottesdienstCard
+          v-for="gottesdienst in gottesdienste"
+          :key="gottesdienst.id"
+          class="gottesdienste-page__gottesdienst"
+          :gottesdienst="gottesdienst"
+        />
+      </div>
     </main>
   </div>
 </template>

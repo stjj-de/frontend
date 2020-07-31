@@ -54,7 +54,7 @@
       },
       {
         label: "Datenschutzerklärung",
-        to: "/datenschutzerklaerung"
+        to: "/datenschutz"
       },
       {
         label: "Anmelden",

@@ -1,6 +1,6 @@
 <template>
-  <div class="impressum-page">
-    <NavigationBar title="Impressum"/>
+  <div class="privacy-policy-page">
+    <NavigationBar title="Datenschutzerklärung"/>
     <main class="content formatted quill-enduser" v-html="content"></main>
   </div>
 </template>
@@ -11,17 +11,18 @@
 
 <script>
   import NavigationBar from "@/components/NavigationBar";
-  import { IMPRESSUM } from "@/assets/js/contents";
+  import ExternalLink from "@/components/ExternalLink";
+  import { PRIVACY_POLICY } from "@/assets/js/contents";
 
   export default {
-    name: "ImpressumPage",
-    components: { NavigationBar },
+    name: "PrivacyPolicyPage",
+    components: { ExternalLink, NavigationBar },
     head: () => ({
-      title: "Impressum"
+      title: "Datenschutzerklärung"
     }),
     async asyncData({ $api }) {
       return {
-        content: await $api.contents.get(IMPRESSUM)
+        content: await $api.contents.get(PRIVACY_POLICY)
       };
     }
   };

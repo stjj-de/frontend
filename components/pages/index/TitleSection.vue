@@ -54,9 +54,8 @@
     position: absolute;
     top: -50px;
     right: -20%;
-
+    pointer-events: none;
     margin-right: 40px;
-
     height: 500px;
   }
 
@@ -108,10 +107,10 @@
 
   .title-section__red-blob {
     height: 600px;
-
     position: absolute;
     top: -50px;
     left: -210px;
+    pointer-events: none;
   }
 
   @include screenSize.mobile {
