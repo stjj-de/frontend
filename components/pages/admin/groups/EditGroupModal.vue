@@ -57,6 +57,7 @@
   import ConfirmCancelModal from "@/components/ConfirmCancelModal";
   import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
   import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
+  import stripTags from "striptags";
 
   export default {
     name: "EditGroupModal",
@@ -78,7 +79,7 @@
         loadingText: "",
         confirmCancelModalActive: false,
         confirmDeleteModalActive: false,
-        savedGroup: null,
+        savedGroup: { title: "", description: "" },
         description: "",
         fields: {
           title: new InputFieldCompanion({
@@ -90,17 +91,14 @@
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return Object.values(this.fields).every(field => field.valid) && stripTags(this.description) !== "";
       },
       isCreateNew() {
         return this.groupId === "";
       },
       changed() {
-        return this.savedGroup !== null &&
-          (
-            this.description !== this.savedGroup.description ||
-            Object.values(this.fields).some(field => field.changed)
-          );
+        return this.description !== this.savedGroup.description ||
+          Object.values(this.fields).some(field => field.changed)
       }
     },
     watch: {
@@ -114,7 +112,9 @@
       onActivate() {
         this.fields.title.setValueAndReset("");
 
-        if (!this.isCreateNew) {
+        if (this.isCreateNew) {
+          this.setGroup({ title: "", description: "" });
+        } else {
           this.fetchGroup();
         }
 
@@ -139,11 +139,14 @@
         const group = await this.$api.groups.get(groupId, ["title", "description"])
 
         if (this.groupId !== groupId) return;
+        this.setGroup(group);
+        this.loading = false;
+      },
+      setGroup(group) {
         this.savedGroup = group;
 
         this.fields.title.setValueAndReset(group.title);
         this.description = this.savedGroup.description;
-        this.loading = false;
       },
       async save() {
         this.loading = true;
