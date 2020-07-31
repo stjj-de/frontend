@@ -1,5 +1,6 @@
 const isDevelopment = process.env.NODE_ENV === "development";
-const isDevEnv = isDevelopment || process.env.IS_DEV_ENV === "true";
+if (isDevelopment) process.env.IS_DEV_ENV = "true";
+const isDevEnv = process.env.IS_DEV_ENV === "true";
 
 const config = {
   server: {
@@ -12,14 +13,18 @@ const config = {
   head: {
     titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes",
     title: "Start",
-    html: { lang: "de" },
+    htmlAttrs: { lang: "de" },
     script: [
       { src: "/hey.js", defer: true, async: true }
     ],
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" }
+      { hid: "description", name: "description", content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes." },
+      { hid: "og:description", name: "og:description", content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes." },
+      { hid: "og:image", name: "og:image", content: "/og-image.png" },
+      { hid: "og:site_name", name: "og:site_name", content: "Katholische Kirchengemeinde St. Josef - St. Johannes" },
+      { hid: "og:locale", name: "og:locale", content: "de_DE" }
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },

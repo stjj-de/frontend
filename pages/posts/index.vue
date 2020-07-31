@@ -62,6 +62,8 @@
   import NavigationBar from "@/components/NavigationBar";
   import MyButton from "@/components/MyButton";
   import { combineFieldSets } from "@/assets/js/APIWrapper";
+  import { HOMEPAGE_URL } from "@/assets/js/homepageURL";
+  import { createMeta } from "@/assets/js/meta";
 
   async function fetchPosts(offset, api, group) {
     const result = await api.posts.list({
@@ -86,7 +88,14 @@
     components: { MyButton, NavigationBar, PostCard },
     head() {
       return {
-        title: this.title
+        title: this.title,
+        meta: [
+          ...createMeta({
+            title: this.title,
+            description: `Die neuesten Artikel ${this.group === null ? "unserer Webseite" : `von ${this.group.title}`}.`,
+            path: "/posts"
+          })
+        ]
       };
     },
     watchQuery: ["group"],
@@ -110,7 +119,6 @@
       }
 
       const { hasMore, items: posts } = await fetchPosts(0, $api, route.query.group || "general");
-
       return { hasMore, posts, group };
     },
     computed: {

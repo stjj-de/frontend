@@ -67,20 +67,28 @@
   import "@/assets/styles/quill-enduser.scss";
   import TransformInternalLinks from "@/components/TransformInternalLinks";
   import UserImageWithPopup from "@/components/UserImageWithPopup";
+  import { createMeta } from "@/assets/js/meta";
 
   export default {
     name: "PostPage",
     components: { UserImageWithPopup, TransformInternalLinks, NavigationBar },
     head() {
       return {
-        title: this.post.title
+        title: this.post.title,
+        meta: [
+          ...createMeta({
+            title: this.post.title,
+            description: this.post.excerpt,
+            path: `/posts/${this.post.slug}`
+          })
+        ]
       };
     },
     data: () => ({
       post: null
     }),
     async asyncData({ error, app: { $api }, params }) {
-      const post = await $api.posts.get(`_${params.slug}`, ["title", "publishedAt", "content", "author"]);
+      const post = await $api.posts.get(`_${params.slug}`, ["title", "excerpt", "slug", "publishedAt", "content", "author"]);
 
       if (post === null) {
         error({ statusCode: 404, m: "Dieser Artikel existiert nicht." });
