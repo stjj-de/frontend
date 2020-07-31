@@ -64,7 +64,7 @@ const config = {
     "@nuxtjs/axios"
   ],
   axios: {
-    baseURL: isDevEnv ? `http://127.0.0.1:8000` : `https://${process.env.SSR_BACKEND_HOST}`,
+    baseURL: isDevEnv ? `http://127.0.0.1:8000` : `http://${process.env.SSR_BACKEND_HOST}`,
     browserBaseURL: "/",
     progress: false
   },
