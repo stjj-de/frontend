@@ -205,7 +205,7 @@
         });
       },
       rippleColor() {
-        return (this.loading || this.disabled) ? "transparent" : "rgba(0, 0, 0, 0.15)";
+        return "rgba(0, 0, 0, 0.15)";
       }
     },
     methods: {

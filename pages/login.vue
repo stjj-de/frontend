@@ -1,69 +1,85 @@
 <template>
-  <div class="login-page" :data-logged-in="loggedIn">
-    <div class="content login-page__box-container">
-      <main class="login-page__box" :data-show="showBox">
-        <LoadingOverlay :active="loggedIn" :transition-delay="150">
-          Du wirst angemeldet
-        </LoadingOverlay>
-        <div class="_box-content">
-          <nuxt-link class="login-page__back link" to="/">
-            <ArrowLeftIcon class="login-page__back-arrow"/>
-            Zurück zur Startseite
-          </nuxt-link>
-          <h1 class="heading--3 login-page__heading">
+  <div class="login-page" :data-show="show">
+    <div class="login-page__box-container">
+      <main class="login-page__box">
+        <nuxt-link class="login-page__back link" to="/">
+          <ArrowLeftIcon class="login-page__back-arrow"/>
+          Zurück zur Startseite
+        </nuxt-link>
+        <h1 class="heading--3 login-page__heading">
+          Anmelden
+        </h1>
+        <form class="login-page__form" action="javascript:" @submit="submit()">
+          <InputField
+            label="Benutzername"
+            autocomplete="username"
+            disable-spellcheck
+            keep-showing-state
+            :companion="username"
+          />
+          <InputField
+            label="Passwort"
+            autocomplete="current-password"
+            :companion="password"
+          />
+          <MyButton
+            class="login-page__button"
+            is-submit
+            variant="primary"
+            :loading="loading"
+            :disabled="!(password.valid && username.valid)"
+          >
             Anmelden
-          </h1>
-          <form class="login-page__form" action="javascript:" @submit="submit()">
-            <InputField
-              label="Benutzername"
-              autocomplete="username"
-              disable-spellcheck
-              keep-showing-state
-              :companion="username"
-            />
-            <InputField
-              label="Passwort"
-              autocomplete="current-password"
-              :companion="password"
-            />
-            <MyButton
-              class="login-page__button"
-              is-submit
-              variant="primary"
-              :loading="submitLoading"
-              :disabled="!(password.valid && username.valid)"
-            >
-              Anmelden
-            </MyButton>
-          </form>
-        </div>
+          </MyButton>
+        </form>
       </main>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+  @use "~@/assets/styles/colors";
+
   .login-page {
     height: 100vh;
 
-    background: #025ded;
-    background: linear-gradient(203deg, #3895ed 0%, #7700c6 100%);
-    background-size: 100% 200%;
+    $bg-color: colors.$background;
+    $dot-color: transparentize(colors.$background-c, 0.85);
 
-    background-position: 0 100%;
-    transition: 2s ease background-position;
+    $dot-size: 3px;
+    $dot-space: 60px;
 
-    &[data-logged-in] {
-      background-position: 0 0;
+    background:
+      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
+      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+      $dot-color;
+    background-size: $dot-space $dot-space;
 
-      .login-page__box-content {
-        opacity: 0;
-      }
+    opacity: 0;
+    transition: 200ms ease opacity;
+    &[data-show] {
+      opacity: 1;
     }
   }
 
-  .login-page__box-content {
-    transition: 300ms ease opacity;
+  .login-page__box-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-page__box {
+    background: colors.$background;
+    border-radius: 10px;
+    box-shadow: 0 10px 100px 2px transparentize(colors.$background-c, 0.8);
+
+    width: 400px;
+    padding: 40px;
+    overflow: hidden;
+
+    position: relative;
   }
 
   .login-page__heading {
@@ -82,31 +98,6 @@
     width: 20px;
     position: relative;
     top: 3px;
-  }
-
-  .login-page__box-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .login-page__box {
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 100px 20px rgba(0, 0, 0, 0.4);
-
-    width: 400px;
-    padding: 40px;
-    overflow: hidden;
-
-    position: relative;
-
-    opacity: 0;
-    transition: 200ms ease opacity;
-    &[data-show] {
-      opacity: 1;
-    }
   }
 
   .login-page__button {
@@ -132,7 +123,7 @@
     }),
     data() {
       return {
-        showBox: false,
+        show: false,
         username: new InputFieldCompanion({
           defaultValue: "",
           transform: value => value.trim(),
@@ -162,8 +153,7 @@
           transform: value => value.trim()
         }),
         userID: null,
-        submitLoading: false,
-        loggedIn: false
+        loading: false
       };
     },
     computed: {
@@ -173,7 +163,7 @@
     },
     async created() {
       if ((await this.$axios.get("/api/auth/me", { validateStatus: status => [200, 403, 401].includes(status) })).status !== 200) {
-        this.showBox = true;
+        this.show = true;
       } else {
         await this.$router.replace(this.nextURL);
       }
@@ -184,9 +174,7 @@
         this.password.touch();
         if (!(this.username.valid && this.password.valid)) return;
 
-        this.username.disabled = true;
-        this.password.disabled = true;
-        this.submitLoading = true;
+        this.loading = true;
 
         const result = await this.$axios.post("/api/auth", {
           id: this.userID,
@@ -196,16 +184,12 @@
         });
 
         if (result.status === 204) {
-          this.loggedIn = true;
-
-          setTimeout(() => {
-            this.$router.push(this.nextURL);
-          }, 2000);
+          await this.$router.replace(this.nextURL);
         } else {
           this.password.setError("Dein Passwort ist nicht richtig.", true);
           this.username.disabled = false;
           this.password.disabled = false;
-          this.submitLoading = false;
+          this.loading = false;
         }
       }
     }

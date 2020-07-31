@@ -114,7 +114,7 @@
 
     .input-field__input:disabled ~ & {
       pointer-events: auto;
-      opacity: 0.1;
+      opacity: 0.04;
     }
   }
 
