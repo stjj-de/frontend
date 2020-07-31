@@ -13,6 +13,7 @@
     >
     <div
       class="user-image-with-popup__popup"
+      :class="{ 'user-image-with-popup__popup--center': center }"
       ref="popup"
     >
       <img
@@ -50,6 +51,10 @@
   .user-image-with-popup__image:hover ~ .user-image-with-popup__popup,
   .user-image-with-popup:focus:not([data-ignore-focus]) > .user-image-with-popup__popup {
     opacity: 1;
+
+    &.user-image-with-popup__popup--center {
+      transform: translateX(-30%);
+    }
   }
 
   .user-image-with-popup__image, .user-image-with-popup__popup-image {
@@ -82,6 +87,11 @@
     display: flex;
 
     transition: 200ms ease opacity;
+
+    &.user-image-with-popup__popup--center {
+      transform: translateX(-20%);
+      transition: 400ms ease opacity, 500ms ease transform;
+    }
   }
 
   .user-image-with-popup__popup-text {
@@ -112,6 +122,10 @@
       user: {
         type: Object,
         required: true
+      },
+      center: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({

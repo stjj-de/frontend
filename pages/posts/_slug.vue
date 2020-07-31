@@ -7,9 +7,7 @@
         <span class="post-page__separator"></span>
         <span class="post-page__date">{{ formattedPublicationDate }}</span>
         <div class="post-page__authors">
-          <UserImageWithPopup
-            :user="post.author"
-          />
+          <UserImageWithPopup center :user="post.author"/>
         </div>
       </div>
       <TransformInternalLinks
