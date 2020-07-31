@@ -1,6 +1,5 @@
-const BACKEND_PORT = 8000;
 const isDevelopment = process.env.NODE_ENV === "development";
-const useProxyAndNoTLS = isDevelopment  || process.env.USE_PROXY_AND_NO_TLS === "true";
+const isDevEnv = isDevelopment || process.env.IS_DEV_ENV === "true";
 
 const config = {
   server: {
@@ -65,7 +64,7 @@ const config = {
     "@nuxtjs/axios"
   ],
   axios: {
-    baseURL: `${useProxyAndNoTLS ? "http" : "https"}://127.0.0.1:${BACKEND_PORT}`,
+    baseURL: isDevEnv ? `http://127.0.0.1:8000` : `https://${process.env.SSR_BACKEND_HOST}`,
     browserBaseURL: "/",
     progress: false
   },
@@ -85,7 +84,7 @@ const config = {
 };
 
 // This should be done by Nginx in production
-if (useProxyAndNoTLS) {
+if (isDevEnv) {
   config.modules.push("@nuxtjs/proxy");
   config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"];
 }
