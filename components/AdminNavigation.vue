@@ -7,10 +7,9 @@
     </div>
     <nav class="admin-navigation__container">
       <div class="admin-navigation__top">
-<!-- TODO: Replace with nuxt-link to the edit profile page -->
-        <div
+        <nuxt-link
           class="admin-navigation__profile admin-navigation__item"
-          :to="`/admin/users/${$store.state.user.id}`"
+          :to="`/admin/account`"
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
@@ -19,7 +18,7 @@
             Angemeldet als
             <span class="admin-navigation__name">{{ $store.state.user.realName }}</span>
           </div>
-        </div>
+        </nuxt-link>
         <nuxt-link
           v-for="(item, index) in items"
           :key="index"
