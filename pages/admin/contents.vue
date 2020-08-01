@@ -6,12 +6,15 @@
     <template v-for="[id, meta] in Object.entries(contents)">
       <h2>{{ meta.title }}</h2>
       <p v-if="meta.description">{{ meta.description }}</p>
-      <template v-if="meta.file !== undefined && meta.file !== false">
+      <template v-if="meta.file !== undefined">
         <p>
-          <span v-if="meta.file === ''">Keine Datei hochgeladen.</span>
-          <a v-else class="link" target="_blank" :href="`/files/${meta.file}`">Datei anzeigen</a>
+          <span v-if="meta.file.id === ''">Keine Datei hochgeladen.</span>
+          <a v-else class="link" target="_blank" :href="`/files/${meta.file.id}`">Datei anzeigen</a>
         </p>
-        <FileUploadButton :after-upload-action="getAfterUploadAction(id)"/>
+        <FileUploadButton
+          :after-upload-action="getAfterUploadAction(id)"
+          :mime-type="meta.file.mimeType || null"
+        />
       </template>
       <MyButton v-else @click="openEditModal(id)">Bearbeiten</MyButton>
     </template>
@@ -51,14 +54,15 @@
         if (meta.file) {
           contents[key] = {
             ...meta,
-            file: await $api.contents.get(key)
+            file: {
+              ...meta.file,
+              id: await $api.contents.get(key)
+            }
           };
         }
       }
 
-      return {
-        contents
-      };
+      return { contents };
     },
     methods: {
       onEditModalClose() {
@@ -71,7 +75,7 @@
       getAfterUploadAction(id) {
         return async (fileID) => {
           await this.$api.contents.update(id, fileID);
-          this.contents[id].file = fileID;
+          this.contents[id].file.id = fileID;
         };
       }
     }

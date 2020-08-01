@@ -22,14 +22,14 @@ export const CONTENTS = {
     maxHeading: 1
   },
   [MESSDIENERPLAN]: {
-    title: "Messdienerplan (Datei)",
+    title: "Messdienerplan (PDF-Datei)",
     description: "Zu finden auf der Gemeinde-Seite.",
-    file: true
+    file: { mimeType: "application/pdf" }
   },
   [PFARRBRIEF]: {
-    title: "Pfarrbrief (Datei)",
+    title: "Pfarrbrief (PDF-Datei)",
     description: "Zu finden auf der Gemeinde-Seite.",
-    file: true
+    file: { mimeType: "application/pdf" }
   },
   [IMPRESSUM]: {
     title: "Impressum",

@@ -24,7 +24,7 @@
   .admin-page__content {
     width: calc(100vw - 350px);
     margin-left: 350px;
-    padding: 20px 60px 20px;
+    padding: 20px 60px 60px;
   }
 
   @media(max-width: 1000px) {

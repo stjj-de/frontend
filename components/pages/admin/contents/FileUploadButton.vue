@@ -30,6 +30,11 @@
       afterUploadAction: {
         type: Function,
         default: () => Promise.resolve()
+      },
+      mimeType: {
+        type: null,
+        validate: value => value === null || typeof value === "string",
+        default: null
       }
     },
     data: () => ({
@@ -40,6 +45,7 @@
       openSelectFileWindow() {
         const input = document.createElement("input");
         input.type = "file";
+        if (this.mimeType !== null) input.accept = this.mimeType;
         input.click();
 
         input.addEventListener("change", async () => {
@@ -50,14 +56,21 @@
           const formData = new FormData();
           formData.append("file", file);
 
-          const id = await this.$axios.$post("/files", formData, {
-            validateStatus: oneOf(200, 201)
+          let path = "/files";
+          if (this.mimeType !== null) path += "?requiredMimeType=" + encodeURI(this.mimeType);
+
+          const response = await this.$axios.post(path, formData, {
+            validateStatus: oneOf(200, 201, 415)
           });
 
-          await this.afterUploadAction(id);
+          if (response.status === 415) {
+            this.status = "Fehler: Falscher Datei-Typ.";
+          } else {
+            await this.afterUploadAction(response.data);
+            this.status = "Datei wurde hochgeladen.";
+          }
 
           this.loading = false;
-          this.status = "Datei wurde hochgeladen.";
         }, { passive: true });
       }
     }
