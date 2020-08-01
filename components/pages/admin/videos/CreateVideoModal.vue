@@ -67,11 +67,11 @@
 
         const { data } = await this.$api.videos.create({ youtubeVideoID: this.videoID.transformedValue }, [201, 404]);
 
-        if (!data) {
+        if (data) {
+          this.$emit("close", data.id);
+        } else {
           this.loading = false;
           this.videoID.setError("Dieses Video konnte nicht gefunden werden.", true);
-        } else {
-          this.$emit("close", data.id);
         }
       }
     }

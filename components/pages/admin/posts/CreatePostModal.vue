@@ -116,7 +116,7 @@
       async submit() {
         this.loading = true;
 
-        const { id } = await this.$api.posts.create({
+        const { data: { id } } = await this.$api.posts.create({
           title: this.fields.title.transformedValue,
           slug: this.fields.slug.transformedValue,
           group: this.group,
