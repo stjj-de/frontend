@@ -2,6 +2,6 @@ export function getUploadURL(id) {
   return `/files/${id}`;
 }
 
-export function getUserImageURL(id) {
-  return `/api/users/${id}/image`;
+export function getUserImageURL(imageID) {
+  return !imageID ? "/default-profile-picture.png" : getUploadURL(imageID);
 }

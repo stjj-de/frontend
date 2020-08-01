@@ -53,7 +53,7 @@
     async asyncData({ $api, store }) {
       store.commit("setUserPromise", (async () => {
         store.commit("setUser", await $api.groups.populate(
-          await $api.users.get(store.state.userID, ["id", "realName", "groups", "role"]),
+          await $api.users.get(store.state.userID, ["id", "realName", "groups", "role", "image"]),
           "groups",
           ["id", "title"]
         ));

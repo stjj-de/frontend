@@ -132,7 +132,7 @@
       ignoreFocus: false
     }),
     computed: {
-      imageURL: vm => getUserImageURL(vm.user.id)
+      imageURL: vm => getUserImageURL(vm.user.image)
     },
     methods: {
       onClick(event) {
@@ -140,6 +140,6 @@
         this.ignoreFocus = true;
       }
     },
-    USER_FIELDS: ["id", "displayName", "position"]
+    USER_FIELDS: ["id", "image", "displayName", "position"]
   };
 </script>

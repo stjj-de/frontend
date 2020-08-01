@@ -21,6 +21,7 @@
 
 <script>
   import MyButton from "@/components/MyButton";
+  import { oneOf } from "@/assets/js/statusValidationHelper";
 
   export default {
     name: "FileUploadButton",
@@ -50,7 +51,7 @@
           formData.append("file", file);
 
           const id = await this.$axios.$post("/files", formData, {
-            validateStatus: status => status === 201
+            validateStatus: oneOf(200, 201)
           });
 
           await this.afterUploadAction(id);

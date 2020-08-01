@@ -14,7 +14,7 @@
           v-ripple.400="'rgba(0,0,0,0.1)'"
           @click="open = false"
         >
-          <img class="admin-navigation__image" alt="Dein Profilbild" :src="getUserImageURL($store.state.user.id)">
+          <img class="admin-navigation__image" alt="Dein Profilbild" :src="userImageURL">
           <div class="admin-navigation__logged-in-as">
             Angemeldet als
             <span class="admin-navigation__name">{{ $store.state.user.realName }}</span>
@@ -293,8 +293,10 @@
         items: ITEMS.map(item => typeof item === "function" ? item(this) : item).filter(item => item.visible)
       };
     },
-    methods: {
-      getUserImageURL
+    computed: {
+      userImageURL() {
+        return getUserImageURL(this.$store.state.user.image);
+      }
     }
   };
 </script>
