@@ -10,7 +10,11 @@
       @close="$emit('close', null)"
     >
       <template v-slot:default>
-        <InputField label="YouTube Video-ID" placeholder="z. B.: dQw4w9WgXcQ" :companion="videoID"/>
+        <InputField label="YouTube Video ID" placeholder="z. B.: dQw4w9WgXcQ" :companion="videoID"/>
+        <span>
+          Du kannst auch eine YouTube-URL der Form "https://youtu.be/xxx" oder "https://www.youtube.com/watch?v=xxx"
+          einfügen, sie wird dann automatisch gekürzt.
+        </span>
       </template>
       <template v-slot:buttons="{ close }">
         <MyButton @click="close">
@@ -57,6 +61,13 @@
         } else {
           this.videoID.setValueAndReset("");
           this.loading = false;
+        }
+      },
+      "videoID.transformedValue"() {
+        if (this.videoID.transformedValue.startsWith("https://youtu.be/")) {
+          this.videoID.value = this.videoID.value.slice(17)
+        } else if (this.videoID.transformedValue.startsWith("https://www.youtube.com/watch?v=")) {
+          this.videoID.value = this.videoID.value.slice(32)
         }
       }
     },
