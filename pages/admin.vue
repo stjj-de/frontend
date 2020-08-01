@@ -33,7 +33,7 @@
     }
 
     .admin-page__content {
-      padding: 80px 20px 20px;
+      padding: 100px 20px 20px;
       width: 100vw;
       margin-left: 0;
     }

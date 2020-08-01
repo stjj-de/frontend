@@ -11,7 +11,7 @@
           class="admin-navigation__profile admin-navigation__item"
           :to="`/admin/account`"
           v-ripple.400="'rgba(0,0,0,0.1)'"
-          @click="open = false"
+          @click.native="open = false"
         >
           <img class="admin-navigation__image" alt="Dein Profilbild" :src="userImageURL">
           <div class="admin-navigation__logged-in-as">
