@@ -10,7 +10,14 @@
     >
       <template v-slot:default>
         <h2 class="heading--5">{{ meta.title }}</h2>
-        <PostEditor :key="contentId" class="edit-content-modal__editor" v-model="content" :highest-heading="meta.maxHeading"/>
+        <client-only>
+          <PostEditor
+              v-model="content"
+              :key="contentId"
+              class="edit-content-modal__editor"
+              :highest-heading="meta.maxHeading"
+          />
+        </client-only>
       </template>
       <template v-slot:buttons>
         <MyButton
