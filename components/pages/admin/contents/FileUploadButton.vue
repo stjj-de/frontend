@@ -1,8 +1,14 @@
 <template>
-  <div class="file-upload-button">
-    <MyButton :loading="loading" @click="openSelectFileWindow()">Datei hochladen</MyButton>
+  <div class="file-upload-button" :class="classes">
+    <MyButton :loading="loading" @click="openSelectFileWindow()"><slot>Datei hochladen</slot></MyButton>
     <transition name="file-upload-button__fade" mode="out-in">
-      <span :key="status" v-if="status !== null" class="file-upload-button__status">{{ status }}</span>
+      <span
+        :key="status"
+        v-if="status !== null"
+        class="file-upload-button__status"
+      >
+        {{ status }}
+      </span>
     </transition>
   </div>
 </template>
@@ -11,6 +17,22 @@
   @use "~@/assets/styles/transitions";
 
   @include transitions.fade("file-upload-button__fade", 200ms);
+
+  .file-upload-button {
+    display: flex;
+    align-items: center;
+  }
+
+  .file-upload-button--vertical {
+    flex-direction: column;
+    justify-content: center;
+
+    .file-upload-button__status {
+      display: block;
+      margin-left: 0;
+      margin-top: 10px;
+    }
+  }
 
   .file-upload-button__status {
     display: inline-block;
@@ -22,6 +44,7 @@
 <script>
   import MyButton from "@/components/MyButton";
   import { oneOf } from "@/assets/js/statusValidationHelper";
+  import { toModifierClasses } from "@/assets/js/toModifierClasses";
 
   export default {
     name: "FileUploadButton",
@@ -35,12 +58,23 @@
         type: null,
         validate: value => value === null || typeof value === "string",
         default: null
+      },
+      vertical: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({
       status: null,
       loading: false
     }),
+    computed: {
+      classes() {
+        return toModifierClasses("file-upload-button", {
+          vertical: this.vertical
+        });
+      }
+    },
     methods: {
       openSelectFileWindow() {
         const input = document.createElement("input");

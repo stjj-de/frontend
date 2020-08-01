@@ -3,7 +3,7 @@
     <NavigationBar title="Mediathek"/>
     <main class="content">
       <nuxt-link
-        class="link video-page__back"
+        class="video-page__back"
         to="/mediathek"
       >
         <ArrowLeftIcon class="video-page__back-icon"/>
@@ -29,12 +29,17 @@
 </template>
 
 <style lang="scss">
+  @use "~@/assets/styles/colors";
+
   .video-page__back {
     font-size: 1.5rem;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
     border-bottom: none;
+
+    color: colors.$blue;
+    text-decoration: none;
   }
 
   .video-page__back-icon {

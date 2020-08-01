@@ -62,6 +62,8 @@
 
     border-radius: 50%;
     height: $size;
+    width: $size;
+    object-fit: cover;
 
     box-shadow: 0 3px 10px 0 transparentize(colors.$background-c, 0.7);
   }

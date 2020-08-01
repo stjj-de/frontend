@@ -147,6 +147,8 @@
     border-radius: 50%;
     margin-right: 20px;
     height: 50px;
+    width: 50px;
+    object-fit: cover;
   }
 
   .admin-navigation__toggle {
