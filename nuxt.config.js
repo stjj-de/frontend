@@ -59,7 +59,7 @@ const config = {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
+
   ],
   /*
   ** Nuxt.js modules

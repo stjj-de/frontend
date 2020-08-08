@@ -2,6 +2,7 @@
   <div class="navigation-bar" :class="classes">
     <div class="navigation-bar__placeholder"></div>
     <div class="navigation-bar__container-1">
+      <img class="navigation-bar__logo" src="/icon.png" alt="Logo">
       <div class="navigation-bar__container-2">
         <div class="navigation-bar__title-container">
           <h1 class="navigation-bar__title">
@@ -68,6 +69,15 @@
       backdrop-filter: blur(20px);
       box-shadow: 0 5px 10px 0 transparentize(colors.$background-c, 0.9);
     }
+  }
+
+  .navigation-bar__logo {
+    position: absolute;
+    top: 10%;
+    left: 3%;
+    height: 80%;
+
+    display: none;
   }
 
   .navigation-bar__container-2 {
@@ -214,6 +224,10 @@
 
     .navigation-bar__toggle {
       display: none;
+    }
+
+    .navigation-bar__logo {
+      display: block;
     }
 
     .navigation-bar__content {
