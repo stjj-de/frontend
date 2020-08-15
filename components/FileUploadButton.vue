@@ -14,7 +14,7 @@
 </template>
 
 <style lang="scss">
-  @use "~@/assets/styles/transitions";
+  @use "~@/assets/styles/_transitions.scss";
 
   @include transitions.fade("file-upload-button__fade", 200ms);
 
@@ -91,7 +91,7 @@
           formData.append("file", file);
 
           let path = "/files";
-          if (this.mimeType !== null) path += "?requiredMimeType=" + encodeURI(this.mimeType);
+          if (this.mimeType !== null) path += "?allowedMimeTypes=" + encodeURI(this.mimeType);
 
           const response = await this.$axios.post(path, formData, {
             validateStatus: oneOf(200, 201, 415)

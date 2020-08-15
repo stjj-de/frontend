@@ -94,7 +94,7 @@
   import { WEBMASTER } from "@/assets/js/webmasterDetails";
   import MyButton from "@/components/MyButton";
   import { getUserImageURL } from "@/assets/js/getFileURL";
-  import FileUploadButton from "@/components/pages/admin/contents/FileUploadButton";
+  import FileUploadButton from "@/components/FileUploadButton";
 
   const DISPLAYED_FIELDS = [
     {
@@ -128,9 +128,9 @@
         fields: DISPLAYED_FIELDS,
         newPasswordLoading: false,
         webmaster: WEBMASTER,
-        afterProfileImageUpload: async fileID => {
-          await this.$api.users.update(this.user.id, { image: fileID });
-          this.$store.commit("setUser", { ...this.user, image: fileID })
+        afterProfileImageUpload: async ({ id }) => {
+          await this.$api.users.update(this.user.id, { image: id });
+          this.$store.commit("setUser", { ...this.user, image: id })
         },
         newPasswordField: new InputFieldCompanion({
           type: "password",

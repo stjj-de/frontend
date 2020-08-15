@@ -32,7 +32,7 @@
   import MyModal from "@/components/MyModal";
   import EditContentModal from "@/components/pages/admin/contents/EditContentModal";
   import { CONTENTS } from "@/assets/js/contents";
-  import FileUploadButton from "@/components/pages/admin/contents/FileUploadButton";
+  import FileUploadButton from "@/components/FileUploadButton";
 
   export default {
     name: "ContentsPage",
@@ -73,9 +73,9 @@
         this.editModalActive = true;
       },
       getAfterUploadAction(id) {
-        return async (fileID) => {
-          await this.$api.contents.update(id, fileID);
-          this.contents[id].file.id = fileID;
+        return async (data) => {
+          await this.$api.contents.update(id, data.id);
+          this.contents[id].file.id = data.id;
         };
       }
     }

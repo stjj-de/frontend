@@ -7,9 +7,8 @@
       <LoadingOverlay
         :active="saveLoading"
         :transition-delay="0"
-      >
-        Artikel wird geladen
-      </LoadingOverlay>
+        opacity="0.9"
+      />
       <section class="edit-post-page__content-section">
         <client-only>
           <PostEditor v-model="content" class="edit-post-page__editor"/>
@@ -249,7 +248,7 @@
         return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed);
       },
       contentIsEmpty() {
-        return stripTags(this.content).trim() === "";
+        return stripTags(this.content, ["img"]).trim() === "";
       },
       contentChanged: vm => vm.content !== vm.savedPost.content && !vm.contentIsEmpty,
       groupChanged() {

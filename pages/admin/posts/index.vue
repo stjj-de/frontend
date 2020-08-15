@@ -34,7 +34,6 @@
   import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
   import MyButton from "@/components/MyButton";
   import CreatePostModal from "@/components/pages/admin/posts/CreatePostModal";
-  import "izitoast/dist/css/iziToast.min.css";
   import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
 
   const ITEMS_PER_PAGE = 10;
@@ -112,12 +111,7 @@
       this.table.initialize();
 
       if (this.$route.query.delete_success === "1") {
-        (await import("izitoast")).show({
-          message: "Der Artikel wurde gelöscht.",
-          color: "green",
-          timeout: 6000,
-          position: "topRight"
-        });
+        this.$flash("Artikel wurde gelöscht.", "success", { timeout: 10000 })
 
         await this.$router.replace("/admin/posts");
       }
