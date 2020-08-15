@@ -7,6 +7,9 @@
     <p v-else-if="$store.state.user.role === 'EDITOR'">
       Du bist <b>Editor</b>, das heißt, du kannst alles bearbeiten.
     </p>
+    <p v-else-if="$store.state.user.role === 'NONE'">
+      Du hast nur Zugriff auf folgende Gruppierungen: {{ $store.state.user.groups.map(group => group.title).join(", ") }}
+    </p>
     <p>
       Erstelle zum Beispiel <nuxt-link to="/admin/posts">einen Artikel</nuxt-link>,
       trage einen Termin <nuxt-link to="/admin/calendar">in den Kalender ein</nuxt-link>

@@ -24,10 +24,5 @@ $_elements: (
     #{$tag}.formatted, .formatted #{$tag}, .#{$class} {
       @extend %#{$class};
     }
-
-    // Increases specificity
-    .#{$class}.#{$class} {
-      @extend %#{$class};
-    }
   }
 }

@@ -50,6 +50,9 @@
     head: () => ({
       title: "Gottesdienste"
     }),
+    data: () => ({
+      gottesdienste: []
+    }),
     async asyncData({ $api }) {
       return {
         gottesdienste: (await $api.churches.populate(

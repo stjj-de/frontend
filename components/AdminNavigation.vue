@@ -260,7 +260,7 @@
       visible: vm.$store.getters.userIsEditor
     }),
     vm => ({
-      label: "Gruppe" + ((vm.$store.getters.userIsEditor || vm.$store.state.user.groups.length > 1) ? "n" : ""),
+      label: "Gruppen",
       to: "/admin/groups",
       icon: CircleIcon,
       visible: vm.$store.getters.userIsEditor || vm.$store.state.user.groups.length !== 0

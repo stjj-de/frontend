@@ -52,7 +52,7 @@
   }
 
   .navigation-bar__placeholder {
-    height: calc(var(--navigation-bar-height) + 20px);
+    height: calc(var(--navigation-bar-height) + 30px);
   }
 
   .navigation-bar__container-1 {

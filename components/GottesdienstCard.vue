@@ -32,7 +32,7 @@
 
 <script>
   import MyButton from "@/components/MyButton";
-  import { formatDateWithTime } from "@/assets/js/dateUtils";
+  import { formatDateWithTimeAndName } from "@/assets/js/dateUtils"
 
   export default {
     name: "GottesdienstCard",
@@ -44,7 +44,7 @@
       }
     },
     computed: {
-      formattedDate: vm => formatDateWithTime(vm.gottesdienst.date)
+      formattedDate: vm => formatDateWithTimeAndName(vm.gottesdienst.date)
     },
     CHURCH_SERVICE_DATE_FIELDS: ["date", "church", "description"],
     CHURCH_SERVICE_DATE_CHURCH_FIELDS: ["title", "googleMapsID"]

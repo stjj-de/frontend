@@ -21,8 +21,12 @@ export function ensureDateObject(date) {
   return new Date(date);
 }
 
+export function formatDateWithTimeAndName(date) {
+  return format(ensureDateObject(date), "EEEEEE, d.L.yyyy HH:mm", { locale: dateFnsLocale });
+}
+
 export function formatDateWithTime(date) {
-  return format(ensureDateObject(date), "d.L.yyyy, HH:mm", { locale: dateFnsLocale });
+  return format(ensureDateObject(date), "d.L.yyyy HH:mm", { locale: dateFnsLocale });
 }
 
 export function formatDate(date) {

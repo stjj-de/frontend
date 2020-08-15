@@ -17,7 +17,7 @@
           :aria-label="title"
         >
           <header class="my-modal__header">
-            <h1 class="heading--4 my-modal__title">
+            <h1 class="heading--3 my-modal__title">
               {{ title }}
             </h1>
           </header>
@@ -123,8 +123,6 @@
 
   .my-modal__title {
     margin: 0;
-
-    font-size: 2rem;
     font-weight: bold;
 
     @include screenSize.mobile {

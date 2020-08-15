@@ -90,8 +90,6 @@
           sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
           fetch: async (pageIndex, sortBy, sortOrder) => {
-            console.log(this.$store.getters.userIsEditor)
-
             return await this.$api.groups.populate(
               await this.$api.posts.list({
                 fields: ["id", "title", "slug", "publishedAt", "relevantUntil", "group"],
