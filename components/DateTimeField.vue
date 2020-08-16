@@ -1,8 +1,8 @@
 <template>
   <div class="date-time-field">
     <vue-datetime
-      v-model="pickerValue"
       ref="picker"
+      v-model="pickerValue"
       input-style="display: none"
       type="datetime"
       :min-datetime="minDatetime"
@@ -16,8 +16,8 @@
       :hide-label="hideLabel"
       :keep-showing-state="keepShowingState"
       :disable-spellcheck="true"
-      @keypress.native="openPicker()"
-      @click.native="openPicker()"
+      @keypress.native="openPicker"
+      @click.native="openPicker"
     />
   </div>
 </template>
@@ -27,17 +27,19 @@
 </style>
 
 <script>
-  import { Datetime as VueDatetime } from "vue-datetime";
-  import { format } from "date-fns";
-  import InputField from "@/components/InputField/InputField";
-  import { dateFnsLocale } from "@/assets/js/dateUtils";
+  /* eslint-disable unicorn/no-useless-undefined */
 
-  const formatPickerInputDate = date => format(date, "EEEE, d.M.Y HH:mm", { locale: dateFnsLocale });
+  import { Datetime as VueDatetime } from "vue-datetime"
+  import { format } from "date-fns"
+  import InputField from "@/components/InputField/InputField"
+  import { dateFnsLocale } from "@/assets/js/date-utils"
+
+  const formatPickerInputDate = date => format(date, "EEEE, d.M.Y HH:mm", { locale: dateFnsLocale })
 
   export default {
     name: "DateTimeField",
-    inheritAttrs: false,
     components: { InputField, VueDatetime },
+    inheritAttrs: false,
     props: {
       value: {
         type: null,
@@ -52,30 +54,46 @@
         type: String,
         required: true
       },
-      hideLabel: {
-        type: Boolean,
-        default: false
-      },
-      keepShowingState: {
-        type: Boolean,
-        default: false
-      },
-      forceShowError: {
-        type: Boolean,
-        default: false
-      },
+      hideLabel: { type: Boolean },
+      keepShowingState: { type: Boolean },
+      forceShowError: { type: Boolean },
+      requireFuture: { type: Boolean },
       placeholder: {
         type: String,
         default: ""
-      },
-      requireFuture: {
-        type: Boolean,
-        default: false
       }
     },
     data: () => ({
       now: new Date()
     }),
+    computed: {
+      pickerValue: {
+        set(value) {
+          if (value === "") {
+            // vue-datetime sets this to "" upon initialization.
+            return
+          }
+
+          this.$emit("input", value)
+        },
+        get() {
+          return this.value
+        }
+      },
+      minDatetime() {
+        if (this.requireFuture) return this.now.toISOString()
+        return undefined
+      }
+    },
+    watch: {
+      value: {
+        immediate: true,
+        handler() {
+          this.setFieldValue()
+          this.companion.runAllValidations()
+        }
+      }
+    },
     created() {
       const id = setInterval(() => {
         this.now = new Date()
@@ -85,46 +103,16 @@
         clearInterval(id)
       })
     },
-    computed: {
-      pickerValue: {
-        set(value) {
-          if (value === "") {
-            // vue-datetime sets this to "" upon initialization.
-            return;
-          }
-
-          this.$emit("input", value);
-        },
-        get() {
-          return this.value;
-        }
-      },
-      minDatetime() {
-        if (this.requireFuture) {
-          return this.now.toISOString()
-        } else return undefined
-      }
-    },
-    watch: {
-      value: {
-        immediate: true,
-        handler() {
-          this.setFieldValue();
-          this.companion.runAllValidations();
-        }
-      }
-    },
     methods: {
       openPicker() {
-        this.$refs.picker.$el.querySelector("input").click();
+        this.$refs.picker.$el.querySelector("input").click()
       },
       setFieldValue() {
-        if (this.value === null) {
-          this.companion.value = "";
-        } else {
-          this.companion.value = formatPickerInputDate(new Date(this.value));
-        }
+        if (this.value === null)
+          this.companion.value = ""
+        else
+          this.companion.value = formatPickerInputDate(new Date(this.value))
       }
     }
-  };
+  }
 </script>

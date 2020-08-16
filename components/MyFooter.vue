@@ -2,8 +2,8 @@
   <footer class="my-footer">
     <nuxt-link
       v-for="item in $options.items"
-      class="my-footer__link link"
       :key="item.label"
+      class="my-footer__link link"
       :to="item.to"
       @click.native.passive="open = false"
     >
@@ -61,5 +61,5 @@
         to: "/login"
       }
     ]
-  };
+  }
 </script>

@@ -16,11 +16,11 @@
             v-if="hasMore"
             class="posts-page__load-more"
             :loading="loading"
-            @click="fetchMore()"
+            @click="fetchMore"
           >
             Mehr laden
           </MyButton>
-          <span class="posts-page__the-end" v-else>
+          <span v-else class="posts-page__the-end">
             {{ endReachedMessage }}
           </span>
         </transition>
@@ -58,12 +58,11 @@
 </style>
 
 <script>
-  import PostCard from "@/components/PostCard";
-  import NavigationBar from "@/components/NavigationBar";
-  import MyButton from "@/components/MyButton";
-  import { combineFieldSets } from "@/assets/js/APIWrapper";
-  import { HOMEPAGE_URL } from "@/assets/js/homepageURL";
-  import { createMeta } from "@/assets/js/meta";
+  import PostCard from "@/components/PostCard"
+  import NavigationBar from "@/components/NavigationBar"
+  import MyButton from "@/components/MyButton"
+  import { combineFieldSets } from "@/assets/js/api-wrapper"
+  import { createMeta } from "@/assets/js/meta"
 
   async function fetchPosts(offset, api, group) {
     const result = await api.posts.list({
@@ -75,76 +74,77 @@
       onlyRelevant: false,
       onlyPublished: true,
       group
-    });
+    })
 
     return {
       hasMore: result.hasMore,
       items: await api.users.populate(result.items, "author", PostCard.POST_AUTHOR_FIELDS)
-    };
+    }
   }
 
   export default {
     name: "PostsPage",
     components: { MyButton, NavigationBar, PostCard },
-    head() {
-      return {
-        title: this.title,
-        meta: [
-          ...createMeta({
-            title: this.title,
-            description: `Die neuesten Artikel ${this.group === null ? "unserer Webseite" : `von ${this.group.title}`}.`,
-            path: "/posts"
-          })
-        ]
-      };
+    async asyncData({ app: { $api }, route, error }) {
+      const groupID = route.query.group
+      let group = null
+      if (groupID !== undefined) {
+        const groupData = await $api.groups.get(groupID, ["id", "title"])
+        if (groupData === null) {
+          error({ m: "Diese Gruppe existiert nicht oder nicht mehr.", statusCode: 404 })
+          return {}
+        }
+
+        group = groupData
+      }
+
+      const { hasMore, items: posts } = await fetchPosts(0, $api, route.query.group || "general")
+      return { hasMore, posts, group }
     },
-    watchQuery: ["group"],
-    key: route => route.fullPath,
     data: () => ({
       posts: [],
       hasMore: false,
       loading: false
     }),
-    async asyncData({ app: { $api }, route, error }) {
-      const groupID = route.query.group;
-      let group = null;
-      if (groupID !== undefined) {
-        const groupData = await $api.groups.get(groupID, ["id", "title"])
-        if (groupData === null) {
-          error({ m: "Diese Gruppe existiert nicht oder nicht mehr.", statusCode: 404 });
-          return {};
-        }
-
-        group = groupData;
-      }
-
-      const { hasMore, items: posts } = await fetchPosts(0, $api, route.query.group || "general");
-      return { hasMore, posts, group };
-    },
     computed: {
       title() {
-        return this.group === null ? "Artikel" : `Artikel von ${this.group.title}`;
+        return this.group === null ? "Artikel" : `Artikel von ${this.group.title}`
       },
       endReachedMessage() {
         if (this.group === null) {
           return this.posts.length === 0
             ? "Es gibt noch keine Artikel."
             : "Das sind alle Artikel."
-        } else {
-          return this.posts.length === 0
-            ? `${this.group.title} hat noch keine Artikel veröffentlicht.`
-            : `Das sind alle Artikel von ${this.group.title}.`
         }
+        return this.posts.length === 0
+          ? `${this.group.title} hat noch keine Artikel veröffentlicht.`
+          : `Das sind alle Artikel von ${this.group.title}.`
       }
     },
     methods: {
       async fetchMore() {
-        this.loading = true;
-        const result = await fetchPosts(this.posts.length, this.$api, this.$route.query.group || "general");
-        this.hasMore = result.hasMore;
-        this.posts.push(...result.items);
-        this.loading = false;
+        this.loading = true
+        const result = await fetchPosts(this.posts.length, this.$api, this.$route.query.group || "general")
+        this.hasMore = result.hasMore
+        this.posts.push(...result.items)
+        this.loading = false
       }
-    }
-  };
+    },
+    head() {
+      return {
+        title: this.title,
+        meta: [
+          ...createMeta({
+            title: this.title,
+            description: `Die neuesten Artikel ${
+              this.group === null ? "unserer Webseite" : `von ${this.group.title}`
+            }.`,
+            path: "/posts"
+          })
+        ]
+      }
+    },
+    watchQuery: ["group"],
+    key: route => route.fullPath
+  }
 </script>

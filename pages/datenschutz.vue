@@ -10,20 +10,19 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import ExternalLink from "@/components/ExternalLink";
-  import { PRIVACY_POLICY } from "@/assets/js/contents";
+  import NavigationBar from "@/components/NavigationBar"
+  import { PRIVACY_POLICY } from "@/assets/js/contents"
 
   export default {
     name: "PrivacyPolicyPage",
-    components: { ExternalLink, NavigationBar },
-    head: () => ({
-      title: "Datenschutzerklärung"
-    }),
+    components: { NavigationBar },
     async asyncData({ $api }) {
       return {
         content: await $api.contents.get(PRIVACY_POLICY)
-      };
-    }
-  };
+      }
+    },
+    head: () => ({
+      title: "Datenschutzerklärung"
+    })
+  }
 </script>

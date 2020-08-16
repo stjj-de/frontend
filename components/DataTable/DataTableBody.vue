@@ -8,16 +8,16 @@
       <div
         v-for="row in companion.items"
         :key="row[companion.specialKeys.id]"
+        v-ripple.400="'rgba(0,0,0,0.1)'"
         class="data-table__row"
         tabindex="0"
         role="row"
-        v-ripple.400="'rgba(0,0,0,0.1)'"
         @click="onRowClick(row)"
       >
         <DataTableColumn
           v-for="(column, key) in companion.columns"
           :key="key"
-          :columnKey="key"
+          :column-key="key"
           :column="column"
           :row="row"
         />
@@ -68,8 +68,8 @@
 </style>
 
 <script>
-  import GlobalEvents from "vue-global-events";
-  import DataTableColumn from "@/components/DataTable/DataTableColumn";
+  import GlobalEvents from "vue-global-events"
+  import DataTableColumn from "@/components/DataTable/DataTableColumn"
 
   export default {
     name: "DataTableBody",
@@ -86,32 +86,32 @@
     },
     computed: {
       style() {
-        const style = {};
-        style.height = (this.companion.itemsPerPage * 50) + "px";
-        return style;
+        const style = {}
+        style.height = (this.companion.itemsPerPage * 50) + "px"
+        return style
       }
-    },
-    mounted() {
-      this.companion.tableBodyInstance = this;
-      this.companion.updateBodyWidth();
     },
     watch: {
       "companion.items"() {
         this.$nextTick(() => {
-          this.companion.updateBodyWidth();
-        });
+          this.companion.updateBodyWidth()
+        })
       }
+    },
+    mounted() {
+      this.companion.tableBodyInstance = this
+      this.companion.updateBodyWidth()
     },
     methods: {
       getWidth() {
-        return this.$el.getBoundingClientRect().width;
+        return this.$el.getBoundingClientRect().width
       },
       onWindowResize() {
-        this.companion.updateBodyWidth();
+        this.companion.updateBodyWidth()
       },
       onRowClick(row) {
-        this.$emit("row-click", row[this.companion.specialKeys.id], row);
+        this.$emit("row-click", row[this.companion.specialKeys.id], row)
       }
     }
-  };
+  }
 </script>

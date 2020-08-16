@@ -1,9 +1,9 @@
-export const HOMEPAGE_INTRODUCTION = "HOMEPAGE_INTRODUCTION";
-export const GEMEINDE = "GEMEINDE";
-export const MESSDIENERPLAN = "MESSDIENERPLAN";
-export const PFARRBRIEF = "PFARRBRIEF";
-export const IMPRESSUM = "IMPRESSUM";
-export const PRIVACY_POLICY = "PRIVACY_POLICY";
+export const HOMEPAGE_INTRODUCTION = "HOMEPAGE_INTRODUCTION"
+export const GEMEINDE = "GEMEINDE"
+export const MESSDIENERPLAN = "MESSDIENERPLAN"
+export const PFARRBRIEF = "PFARRBRIEF"
+export const IMPRESSUM = "IMPRESSUM"
+export const PRIVACY_POLICY = "PRIVACY_POLICY"
 
 export const CONTENTS = {
   [HOMEPAGE_INTRODUCTION]: {
@@ -39,4 +39,4 @@ export const CONTENTS = {
     title: "Datenschutzerklärung",
     maxHeading: 1
   }
-};
+}

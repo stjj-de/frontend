@@ -1,8 +1,15 @@
 <template>
   <div class="input-field group-select-field">
     <span class="input-field__label">Gruppe</span>
-    <v-select v-model="v" label="title" :options="groups" :clearable="userIsEditor"/>
-    <p v-if="!userIsEditor">Du kannst nur Gruppen auswählen, für die du die Berechtigung hast.</p>
+    <v-select
+      v-model="v"
+      label="title"
+      :options="groups"
+      :clearable="userIsEditor"
+    />
+    <p v-if="!userIsEditor">
+      Du kannst nur Gruppen auswählen, für die du die Berechtigung hast.
+    </p>
   </div>
 </template>
 
@@ -10,8 +17,8 @@
 </style>
 
 <script>
-  import "vue-select/dist/vue-select.css";
-  import VSelect from "vue-select";
+  import "vue-select/dist/vue-select.css"
+  import VSelect from "vue-select"
 
   export default {
     name: "GroupSelectField",
@@ -34,9 +41,9 @@
           return this.value === null ? null : this.groups.find(group => group.id === this.value)
         },
         set(newValue) {
-          this.$emit("input", newValue === null ? null : newValue.id);
+          this.$emit("input", newValue === null ? null : newValue.id)
         }
       }
-    },
-  };
+    }
+  }
 </script>

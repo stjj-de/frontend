@@ -12,9 +12,9 @@
       :src="imageURL"
     >
     <div
+      ref="popup"
       class="user-image-with-popup__popup"
       :class="{ 'user-image-with-popup__popup--center': center }"
-      ref="popup"
     >
       <img
         class="user-image-with-popup__popup-image"
@@ -23,11 +23,11 @@
       >
       <div class="user-image-with-popup__popup-text">
         <span class="user-image-with-popup__name">
-        {{ user.displayName }}
-      </span>
-        <span class="user-image-with-popup__position" v-if="user.position !== null">
-        {{ user.position }}
-      </span>
+          {{ user.displayName }}
+        </span>
+        <span v-if="user.position !== null" class="user-image-with-popup__position">
+          {{ user.position }}
+        </span>
       </div>
     </div>
   </div>
@@ -115,7 +115,7 @@
 </style>
 
 <script>
-  import { getUserImageURL } from "@/assets/js/getFileURL";
+  import { getUserImageURL } from "@/assets/js/get-file-url"
 
   export default {
     name: "UserImageWithPopup",
@@ -125,10 +125,7 @@
         type: Object,
         required: true
       },
-      center: {
-        type: Boolean,
-        default: false
-      }
+      center: { type: Boolean }
     },
     data: () => ({
       ignoreFocus: false
@@ -138,10 +135,10 @@
     },
     methods: {
       onClick(event) {
-        event.preventDefault();
-        this.ignoreFocus = true;
+        event.preventDefault()
+        this.ignoreFocus = true
       }
     },
     USER_FIELDS: ["id", "image", "displayName", "position"]
-  };
+  }
 </script>

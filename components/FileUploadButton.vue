@@ -1,10 +1,12 @@
 <template>
   <div class="file-upload-button" :class="classes">
-    <MyButton :loading="loading" @click="openSelectFileWindow()"><slot>Datei hochladen</slot></MyButton>
+    <MyButton :loading="loading" @click="openSelectFileWindow">
+      <slot>Datei hochladen</slot>
+    </MyButton>
     <transition name="file-upload-button__fade" mode="out-in">
       <span
-        :key="status"
         v-if="status !== null"
+        :key="status"
         class="file-upload-button__status"
       >
         {{ status }}
@@ -42,9 +44,9 @@
 </style>
 
 <script>
-  import MyButton from "@/components/MyButton";
-  import { oneOf } from "@/assets/js/statusValidationHelper";
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
+  import MyButton from "@/components/MyButton"
+  import { oneOf } from "@/assets/js/status-validation-helper"
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
 
   export default {
     name: "FileUploadButton",
@@ -59,10 +61,7 @@
         validate: value => value === null || typeof value === "string",
         default: null
       },
-      vertical: {
-        type: Boolean,
-        default: false
-      }
+      vertical: { type: Boolean }
     },
     data: () => ({
       status: null,
@@ -72,40 +71,40 @@
       classes() {
         return toModifierClasses("file-upload-button", {
           vertical: this.vertical
-        });
+        })
       }
     },
     methods: {
       openSelectFileWindow() {
-        const input = document.createElement("input");
-        input.type = "file";
-        if (this.mimeType !== null) input.accept = this.mimeType;
-        input.click();
+        const input = document.createElement("input")
+        input.type = "file"
+        if (this.mimeType !== null) input.accept = this.mimeType
+        input.click()
 
         input.addEventListener("change", async () => {
-          this.loading = true;
-          this.status = "Datei wird hochgeladen.";
-          const file = input.files[0];
+          this.loading = true
+          this.status = "Datei wird hochgeladen."
+          const [file] = input.files
 
-          const formData = new FormData();
-          formData.append("file", file);
+          const formData = new FormData()
+          formData.append("file", file)
 
-          let path = "/files";
-          if (this.mimeType !== null) path += "?allowedMimeTypes=" + encodeURI(this.mimeType);
+          let path = "/files"
+          if (this.mimeType !== null) path += "?allowedMimeTypes=" + encodeURI(this.mimeType)
 
           const response = await this.$axios.post(path, formData, {
             validateStatus: oneOf(200, 201, 415)
-          });
+          })
 
-          if (response.status === 415) {
-            this.status = "Fehler: Falscher Datei-Typ.";
-          } else {
-            await this.afterUploadAction(response.data);
-            this.status = "Datei wurde hochgeladen.";
+          if (response.status === 415)
+            this.status = "Fehler: Falscher Datei-Typ."
+          else {
+            await this.afterUploadAction(response.data)
+            this.status = "Datei wurde hochgeladen."
           }
 
-          this.loading = false;
-        }, { passive: true });
+          this.loading = false
+        }, { passive: true })
       }
     }
   }

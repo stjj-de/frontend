@@ -7,7 +7,7 @@
 </style>
 
 <script>
-  import { transformQuillLinks } from "@/assets/js/transformQuillLinks";
+  import { transformQuillLinks } from "@/assets/js/transform-quill-links"
 
   export default {
     name: "TransformInternalLinks",
@@ -23,28 +23,28 @@
     },
     computed: {
       transformedHTML() {
-        return process.server ? this.html : transformQuillLinks(this.html);
+        return process.server ? this.html : transformQuillLinks(this.html)
       }
-    },
-    mounted() {
-      this.addListeners();
     },
     watch: {
       html() {
         this.$nextTick(() => {
-          this.addListeners();
-        });
+          this.addListeners()
+        })
       }
+    },
+    mounted() {
+      this.addListeners()
     },
     methods: {
       addListeners() {
         this.$el.querySelectorAll("[data-router-link]").forEach(element => {
           element.addEventListener("click", event => {
-            event.preventDefault();
-            this.$router.push(element.getAttribute("href"));
-          });
-        });
+            event.preventDefault()
+            this.$router.push(element.getAttribute("href"))
+          })
+        })
       }
     }
-  };
+  }
 </script>

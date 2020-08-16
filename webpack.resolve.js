@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 
 // Used by ESLint and WebStorm
 
@@ -10,4 +10,4 @@ module.exports = {
     },
     extensions: [".js", ".vue"]
   }
-};
+}

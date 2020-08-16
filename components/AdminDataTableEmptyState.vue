@@ -33,5 +33,5 @@
         required: true
       }
     }
-  };
+  }
 </script>

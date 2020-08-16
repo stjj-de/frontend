@@ -15,7 +15,12 @@
       <span v-if="selectedDay === null" :key="null" class="heading--5 event-calendar__no-selection">
         Kein Tag ausgewählt.
       </span>
-      <div v-else :key="selectedDay" ref="dayDetails" class="event-calendar__day-details-container">
+      <div
+        v-else
+        :key="selectedDay"
+        ref="dayDetails"
+        class="event-calendar__day-details-container"
+      >
         <h2 class="heading--4 _day-date">
           {{ selectedDayString }}
         </h2>
@@ -89,11 +94,11 @@
 </style>
 
 <script>
-  import { format } from "date-fns";
-  import EventCalendarDayDetails from "./EventCalendarDayDetails";
-  import { dateFnsLocale, toFilterStringDate } from "@/assets/js/dateUtils";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar";
+  import { format } from "date-fns"
+  import { dateFnsLocale, toFilterStringDate } from "@/assets/js/date-utils"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import AsyncVCalendar from "@/components/VCalendar/AsyncVCalendar"
+  import EventCalendarDayDetails from "./EventCalendarDayDetails"
 
   export default {
     name: "EventCalendar",
@@ -111,66 +116,37 @@
     }),
     computed: {
       attributes() {
-        if (this.eventsInMonth === null) return [];
+        if (this.eventsInMonth === null) return []
 
         return this.eventsInMonth.map(event => ({
           dot: event.color.toLowerCase(),
           dates: new Date(event.date)
-        }));
+        }))
       },
       dayDetailsTransitionName() {
-        if (this.previousSelectedDay === null || this.selectedDay === null) {
-          return "fade";
-        }
+        if (this.previousSelectedDay === null || this.selectedDay === null)
+          return "fade"
 
-        if (this.previousSelectedDay > this.selectedDay) {
-          return "slide-right";
-        }
+        if (this.previousSelectedDay > this.selectedDay)
+          return "slide-right"
 
-        return "slide-left";
+        return "slide-left"
       },
       selectedDayString() {
-        if (this.selectedDay === null) return null;
+        if (this.selectedDay === null) return null
 
-        return format(new Date(this.selectedDay), "eeeeee, d.L.y", { locale: dateFnsLocale });
-      }
-    },
-    methods: {
-      async onPageChange(page) {
-        if (this.isFirstPageChange) {
-          this.isFirstPageChange = false;
-        } else {
-          this.selectedDay = null;
-        }
-
-        this.eventsInMonth = null;
-        const filter = String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0");
-        this.eventsInMonth = (await this.$api.events.list({
-          fields: ["color", "date"],
-          limit: 50,
-          filter
-        })).items;
-      },
-      async onDayClick(day) {
-        this.selectedDay = day.id;
-
-        setTimeout(() => {
-          window.scroll({
-            top: window.pageYOffset + this.$refs.dayDetails.getBoundingClientRect().top - 100,
-            behavior: "smooth"
-          });
-        }, 400);
+        return format(new Date(this.selectedDay), "eeeeee, d.L.y", { locale: dateFnsLocale })
       }
     },
     watch: {
       selectedDay: {
         immediate: true,
         async handler(value, oldValue) {
-          this.previousSelectedDay = oldValue;
+          this.previousSelectedDay = oldValue
 
-          if (value === null) return;
+          if (value === null) return
 
-          this.eventsOnDay = null;
+          this.eventsOnDay = null
           this.eventsOnDay = await this.$api.users.populate(
             await this.$api.posts.populate(
               (await this.$api.events.list({
@@ -186,6 +162,32 @@
           )
         }
       }
+    },
+    methods: {
+      async onPageChange(page) {
+        if (this.isFirstPageChange)
+          this.isFirstPageChange = false
+        else
+          this.selectedDay = null
+
+        this.eventsInMonth = null
+        const filter = String(page.year).padStart(4, "0") + "-" + String(page.month).padStart(2, "0")
+        this.eventsInMonth = (await this.$api.events.list({
+          fields: ["color", "date"],
+          limit: 50,
+          filter
+        })).items
+      },
+      onDayClick(day) {
+        this.selectedDay = day.id
+
+        setTimeout(() => {
+          window.scroll({
+            top: window.pageYOffset + this.$refs.dayDetails.getBoundingClientRect().top - 100,
+            behavior: "smooth"
+          })
+        }, 400)
+      }
     }
-  };
+  }
 </script>

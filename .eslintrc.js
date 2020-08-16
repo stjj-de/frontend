@@ -1,14 +1,14 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es6: true
-  },
-  parser: "babel-eslint",
+  extends: "awzzm-vue/nuxt",
+  parser: "vue-eslint-parser",
   parserOptions: {
+    parser: "babel-eslint",
     sourceType: "module",
     ecmaVersion: 2018
   },
-  rules: {}
-};
+  rules: {
+    "unicorn/no-keyword-prefix": "off",
+    "vue/v-on-function-call": ["warn", "never"]
+  }
+}

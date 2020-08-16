@@ -9,5 +9,5 @@
 <script>
   export default {
     name: "NoneLayout"
-  };
+  }
 </script>

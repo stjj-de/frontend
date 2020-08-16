@@ -10,19 +10,19 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import { IMPRESSUM } from "@/assets/js/contents";
+  import NavigationBar from "@/components/NavigationBar"
+  import { IMPRESSUM } from "@/assets/js/contents"
 
   export default {
     name: "ImpressumPage",
     components: { NavigationBar },
-    head: () => ({
-      title: "Impressum"
-    }),
     async asyncData({ $api }) {
       return {
         content: await $api.contents.get(IMPRESSUM)
-      };
-    }
-  };
+      }
+    },
+    head: () => ({
+      title: "Impressum"
+    })
+  }
 </script>

@@ -9,10 +9,10 @@
 </style>
 
 <script>
-  import LoadingPlaceholder from "@/components/LoadingPlaceholder";
+  import LoadingPlaceholder from "@/components/LoadingPlaceholder"
 
   export default {
     name: "VCalendarLoadingPlaceholder",
     components: { LoadingPlaceholder }
-  };
+  }
 </script>

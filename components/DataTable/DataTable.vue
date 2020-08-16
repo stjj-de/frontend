@@ -5,14 +5,14 @@
         <div
           v-for="(column, key) in companion.columns"
           :key="key"
+          v-ripple.400="isColumnSortable(column) ? 'rgba(0,0,0,0.1)' : 'transparent'"
           class="data-table__head-column"
           role="columnheader"
-          @click="onHeadColumnClick(key)"
-          @keydown.enter="onHeadColumnClick(key)"
           :style="getHeadColumnStyle(key)"
           :tabindex="isColumnSortable(column) ? '0' : false"
           :data-sortable="isColumnSortable(column)"
-          v-ripple.400="isColumnSortable(column) ? 'rgba(0,0,0,0.1)' : 'transparent'"
+          @click="onHeadColumnClick(key)"
+          @keydown.enter="onHeadColumnClick(key)"
         >
           {{ column.name }}
           <div
@@ -54,16 +54,16 @@
       <div class="data-table__page-buttons">
         <MyButton
           class="data-table__page-button"
-          @click="companion.pageIndex -= 1"
           :disabled="companion.pageIndex === 0"
+          @click="companion.pageIndex -= 1"
         >
           <ArrowLeftIcon class="data-table__arrow-icon"/>
         </MyButton>
         <span class="data-table__page">Seite {{ companion.pageIndex + 1 }}</span>
         <MyButton
           class="data-table__page-button"
-          @click="companion.pageIndex += 1"
           :disabled="!companion.hasNextPage"
+          @click="companion.pageIndex += 1"
         >
           <ArrowRightIcon class="data-table__arrow-icon"/>
         </MyButton>
@@ -184,12 +184,12 @@
 </style>
 
 <script>
-  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
-  import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-  import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import DataTableBody from "@/components/DataTable/DataTableBody";
-  import MyButton from "@/components/MyButton";
+  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
+  import ArrowRightIcon from "@/assets/icons/arrow-right.svg"
+  import ArrowDownIcon from "@/assets/icons/arrow-down.svg"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import DataTableBody from "@/components/DataTable/DataTableBody"
+  import MyButton from "@/components/MyButton"
 
   export default {
     name: "DataTable",
@@ -209,42 +209,41 @@
     },
     methods: {
       onHeadColumnClick(key) {
-        if (this.isEmpty) return;
+        if (this.isEmpty) return
 
-        const column = this.companion.columns[key];
+        const column = this.companion.columns[key]
 
         if (column.sortable) {
-          if (this.companion.sortBy === key) {
-            this.companion.sortOrder = this.companion.sortOrder === "desc" ? "asc" : "desc";
-          } else {
-            this.companion.sortOrder = "desc";
-            this.companion.sortBy = key;
+          if (this.companion.sortBy === key)
+            this.companion.sortOrder = this.companion.sortOrder === "desc" ? "asc" : "desc"
+          else {
+            this.companion.sortOrder = "desc"
+            this.companion.sortBy = key
           }
 
-          this.companion.pageIndex = 0;
+          this.companion.pageIndex = 0
         }
       },
       getHeadColumnStyle(key) {
-        const column = this.companion.columns[key];
-        const style = {};
+        const column = this.companion.columns[key]
+        const style = {}
 
         if (column.width === undefined) {
-          style.flexGrow = "1";
-          style.flexBasis = "0";
-        } else {
-          style.width = column.width + "px";
-        }
+          style.flexGrow = "1"
+          style.flexBasis = "0"
+        } else
+          style.width = column.width + "px"
 
-        style.textAlign = column.headTextAlign || "inherit";
+        style.textAlign = column.headTextAlign || "inherit"
 
-        return style;
+        return style
       },
       isColumnSortable(column) {
-        return !this.isEmpty && column.sortable;
+        return !this.isEmpty && column.sortable
       },
       onRowClick(id, row) {
-        this.$emit("row-click", id, row);
+        this.$emit("row-click", id, row)
       }
     }
-  };
+  }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="loading-overlay" :data-active="active" :style="style">
-    <span class="loading-overlay__text" v-if="$slots.default" :aria-hidden="String(active)"><slot/></span>
+    <span v-if="$slots.default" class="loading-overlay__text" :aria-hidden="String(active)"><slot/></span>
   </div>
 </template>
 
@@ -65,10 +65,7 @@
   export default {
     name: "LoadingOverlay",
     props: {
-      active: {
-        type: Boolean,
-        default: false
-      },
+      active: { type: Boolean },
       transitionDelay: {
         type: Number,
         default: 0
@@ -84,11 +81,11 @@
           return {
             "transitionDelay": this.transitionDelay + "ms",
             "--opacity": this.opacity
-          };
+          }
         }
 
-        return {};
+        return {}
       }
     }
-  };
+  }
 </script>

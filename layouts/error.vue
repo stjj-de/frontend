@@ -7,10 +7,10 @@
           Diese Seite existiert nicht.
         </span>
       </template>
-      <span class="error-page__message" v-else>
+      <span v-else class="error-page__message">
         {{ error.m || "Ein Fehler ist aufgetreten." }}
       </span>
-      <p class="error-page__tip" v-if="error.m === undefined">
+      <p v-if="error.m === undefined" class="error-page__tip">
         Lade am besten die Seite neu.
       </p>
       <div class="error-page__back">
@@ -70,10 +70,11 @@
 </style>
 
 <script>
-  import Illustration from "@/assets/illustrations/error-404.svg";
-  import MyFooter from "@/components/MyFooter";
+  import Illustration from "@/assets/illustrations/error-404.svg"
+  import MyFooter from "@/components/MyFooter"
 
   export default {
+    name: "ErrorPage",
     components: { MyFooter, Illustration },
     layout: "none",
     props: {
@@ -85,13 +86,13 @@
     computed: {
       isCustomError: vm => vm.error.m !== undefined,
       isPageNotFound() {
-        return !this.isCustomError && this.error.message === "This page could not be found";
+        return !this.isCustomError && this.error.message === "This page could not be found"
       }
     },
     head() {
       return {
-        title: this.isPageNotFound ? "Diese Seite existiert nicht." : (this.error.m || "Ein Fehler ist aufgetreten.")
-      };
+        title: this.isPageNotFound ? "Diese Seite existiert nicht." : this.error.m || "Ein Fehler ist aufgetreten."
+      }
     }
-  };
+  }
 </script>

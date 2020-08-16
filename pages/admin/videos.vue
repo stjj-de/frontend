@@ -20,11 +20,11 @@
         </MyButton>
       </template>
     </DataTable>
-    <CreateVideoModal :active="createVideoModalActive" @close="onCreatePostModalClose"/>
+    <CreateVideoModal :active="createVideoModalActive" @close="canceled => onCreatePostModalClose(canceled)"/>
     <EditVideoModal
       :active="editVideoModalActive"
       :video-id="editVideoModalID"
-      @close="onEditVideoModalClose"
+      @close="canceled => onEditVideoModalClose(canceled)"
     />
   </main>
 </template>
@@ -34,30 +34,26 @@
 </style>
 
 <script>
-  import DataTable from "@/components/DataTable/DataTable";
-  import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import MyButton from "@/components/MyButton";
-  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
-  import CreateVideoModal from "@/components/pages/admin/videos/CreateVideoModal";
-  import EditVideoModal from "@/components/pages/admin/videos/EditVideoModal";
-  import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
+  import DataTable from "@/components/DataTable/DataTable"
+  import { DataTableCompanion } from "@/components/DataTable/data-table-companion"
+  import MyButton from "@/components/MyButton"
+  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState"
+  import CreateVideoModal from "@/components/pages/admin/videos/CreateVideoModal"
+  import EditVideoModal from "@/components/pages/admin/videos/EditVideoModal"
+  import { formatDateWithOptionalTime } from "@/assets/js/date-utils"
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 10
 
   const transformDate = date => {
-    if (date === null) {
-      return "Nicht festgelegt";
-    }
+    if (date === null)
+      return "Nicht festgelegt"
 
-    return formatDateWithOptionalTime(date);
-  };
+    return formatDateWithOptionalTime(date)
+  }
 
   export default {
     name: "VideosAdminPage",
     components: { EditVideoModal, CreateVideoModal, AdminDataTableEmptyState, MyButton, DataTable },
-    head: () => ({
-      title: "Videos / Administration"
-    }),
     data() {
       return {
         createVideoModalActive: false,
@@ -79,45 +75,46 @@
           sortBy: "publishedAt",
           sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
-          fetch: async (pageIndex, sortBy, sortOrder) => {
-            return await this.$api.videos.list({
-              fields: ["id", "title", "publishedAt"],
-              sortBy,
-              ascending: sortOrder === "asc",
-              limit: ITEMS_PER_PAGE,
-              offset: pageIndex * ITEMS_PER_PAGE,
-              onlyPublished: false
-            });
-          }
+          fetch: (pageIndex, sortBy, sortOrder) => this.$api.videos.list({
+            fields: ["id", "title", "publishedAt"],
+            sortBy,
+            ascending: sortOrder === "asc",
+            limit: ITEMS_PER_PAGE,
+            offset: pageIndex * ITEMS_PER_PAGE,
+            onlyPublished: false
+          })
         })
-      };
+      }
     },
     beforeMount() {
-      this.table.initialize();
+      this.table.initialize()
     },
     methods: {
       editVideo(id) {
-        this.editVideoModalID = id;
-        this.editVideoModalActive = true;
+        this.editVideoModalID = id
+        this.editVideoModalActive = true
       },
       onCreatePostModalClose(createdID) {
-        this.createVideoModalActive = false;
+        this.createVideoModalActive = false
 
         if (createdID !== null) {
-          this.isEditingCreatedVideo = true;
-          this.editVideo(createdID);
+          this.isEditingCreatedVideo = true
+          this.editVideo(createdID)
         }
       },
       onEditVideoModalClose(canceled) {
-        this.editVideoModalActive = false;
+        this.editVideoModalActive = false
 
         if (this.isEditingCreatedVideo || !canceled) {
-          this.table.invalidateLastFetch();
-          this.table.fetch();
+          this.table.invalidateLastFetch()
+          this.table.fetch()
         }
 
-        this.isEditingCreatedVideo = false;
+        this.isEditingCreatedVideo = false
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Videos / Administration"
+    })
+  }
 </script>

@@ -19,19 +19,19 @@
         <InputField label="Slug" :companion="fields.slug"/>
         <GroupSelectField v-model="group" :groups="availableGroups"/>
         <DateTimeField
+          v-model="publishedAt"
           label="Veröffentlichungsdatum"
           placeholder="Nicht geplant"
           :companion="fields.publishedAt"
-          v-model="publishedAt"
         />
         <MyButton class="edit-post-page__reset-field-button" @click="publishedAt = null">
           Datum entfernen
         </MyButton>
         <DateTimeField
+          v-model="relevantUntil"
           label="Relevant bis"
           placeholder="Für immer relevant"
           :companion="fields.relevantUntil"
-          v-model="relevantUntil"
         />
         <MyButton class="edit-post-page__reset-field-button" @click="relevantUntil = null">
           Auf "für immer" setzen
@@ -45,7 +45,7 @@
             variant="primary"
             :disabled="!changed || !valid"
             :loading="saveLoading"
-            @click="save()"
+            @click="save"
           >
             {{ submitButtonText }}
           </MyButton>
@@ -67,14 +67,14 @@
         <MyButton
           class="edit-event-modal__cancel"
           variant="primary"
-          @click="_close()"
+          @click="_close"
         >
           Abbrechen
         </MyButton>
         <MyButton
           class="edit-event-modal__back"
           variant="danger"
-          @click="delete_()"
+          @click="delete_"
         >
           Löschen
         </MyButton>
@@ -143,23 +143,40 @@
 </style>
 
 <script>
-  import stripTags from "striptags";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
-  import MyButton from "@/components/MyButton";
-  import DateTimeField from "@/components/DateTimeField";
-  import MyModal from "@/components/MyModal";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import { validateSlug } from "@/assets/js/validateSlug.js";
-  import GroupSelectField from "@/components/GroupSelectField";
+  import stripTags from "striptags"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import PostEditor from "@/components/pages/admin/posts/_id/PostEditor"
+  import MyButton from "@/components/MyButton"
+  import DateTimeField from "@/components/DateTimeField"
+  import MyModal from "@/components/MyModal"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import { validateSlug } from "@/assets/js/validate-slug.js"
+  import GroupSelectField from "@/components/GroupSelectField"
 
   export default {
     name: "EditPostPage",
     components: { GroupSelectField, LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
-    head: () => ({
-      title: "Artikel bearbeiten / Administration"
-    }),
+    async asyncData({ $api, params, error, store }) {
+      const post = await $api.posts.get(
+        params.id,
+        ["id", "title", "slug", "group", "excerpt", "publishedAt", "relevantUntil", "content"]
+      )
+
+      if (post === null) return error({ m: "Dieser Post existiert nicht." })
+
+      await store.state.userPromise
+
+      return {
+        savedPost: post,
+        availableGroups: store.getters.userIsEditor
+          ? (await $api.groups.list({
+            limit: 50,
+            fields: ["id", "title"]
+          })).items
+          : store.state.user.groups
+      }
+    },
     data() {
       return {
         publishedAt: null,
@@ -180,9 +197,10 @@
             transform: value => value.trim(),
             required: "Bitte gib einen Slug ein.",
             validate: value => {
-              if (value.startsWith("-") || value.endsWith("-")) {
-                return "Slugs dürfen nicht mit \"-\" anfangen oder enden.";
-              }
+              if (value.startsWith("-") || value.endsWith("-"))
+                return "Slugs dürfen nicht mit \"-\" anfangen oder enden."
+
+              return null
             },
             validateOrSaveAsync: value => validateSlug(this.$api, value)
           }),
@@ -193,101 +211,80 @@
           publishedAt: new InputFieldCompanion({ readonly: true }),
           relevantUntil: new InputFieldCompanion({ readonly: true })
         }
-      };
-    },
-    async asyncData({ $api, params, error, store }) {
-      const post = await $api.posts.get(params.id, ["id", "title", "slug", "group", "excerpt", "publishedAt", "relevantUntil", "content"]);
-
-      if (post === null) {
-        error({ m: "Dieser Post existiert nicht." });
-      } else {
-        await store.state.userPromise;
-
-        return {
-          savedPost: post,
-          availableGroups: !store.getters.userIsEditor
-            ? store.state.user.groups
-            : (await $api.groups.list({ limit: 50, fields: ["id", "title"] })).items
-        };
-      }
-    },
-    watch: {
-      savedPost: {
-        immediate: true,
-        handler() {
-          this.fields.title.setValueAndReset(this.savedPost.title);
-          this.fields.slug.setValueAndReset(this.savedPost.slug);
-          this.fields.excerpt.setValueAndReset(this.savedPost.excerpt);
-
-          this.content = this.savedPost.content;
-          this.publishedAt = this.savedPost.publishedAt;
-          this.relevantUntil = this.savedPost.relevantUntil;
-          this.group = this.savedPost.group;
-
-          this.$nextTick(() => {
-            this.fields.publishedAt.reset();
-            this.fields.relevantUntil.reset();
-          });
-        }
-      },
-      relevantUntilValid() {
-        if (this.relevantUntilValid) {
-          this.fields.relevantUntil.setError(null);
-        } else {
-          this.fields.relevantUntil.setError("\"Relevant bis\" muss nach dem Veröffentlichungsdatum liegen.");
-        }
       }
     },
     computed: {
       valid() {
         return !this.contentIsEmpty &&
           Object.values(this.fields).every(field => field.valid) &&
-          this.relevantUntilValid;
+          this.relevantUntilValid
       },
       changed() {
-        return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed);
+        return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed)
       },
       contentIsEmpty() {
-        return stripTags(this.content, ["img"]).trim() === "";
+        return stripTags(this.content, ["img"]).trim() === ""
       },
       contentChanged: vm => vm.content !== vm.savedPost.content && !vm.contentIsEmpty,
       groupChanged() {
-        if (this.group === null) {
-          return this.savedPost.group !== null;
-        } else {
-          return this.group !== this.savedPost.group;
-        }
+        if (this.group === null)
+          return this.savedPost.group !== null
+
+        return this.group !== this.savedPost.group
       },
       submitButtonText() {
-        const now = new Date();
+        const now = new Date()
 
         if (this.fields.publishedAt.changed) {
-          if (this.fields.publishedAt.value === "") {
-            return "Unveröffentlichen";
-          }
+          if (this.fields.publishedAt.value === "")
+            return "Unveröffentlichen"
 
-          if (new Date(this.publishedAt) > now) {
-            return "Planen";
-          }
+          if (new Date(this.publishedAt) > now)
+            return "Planen"
 
-          return "Veröffentlichen";
+          return "Veröffentlichen"
         }
 
-        if (this.publishedAt === null) {
-          return "Speichern";
-        }
+        if (this.publishedAt === null)
+          return "Speichern"
 
-        return "Aktualisieren";
+        return "Aktualisieren"
       },
       relevantUntilValid() {
-        if ([this.relevantUntil, this.publishedAt].includes(null)) return true;
+        if ([this.relevantUntil, this.publishedAt].includes(null)) return true
 
-        return new Date(this.relevantUntil) > new Date(this.publishedAt);
+        return new Date(this.relevantUntil) > new Date(this.publishedAt)
+      }
+    },
+    watch: {
+      savedPost: {
+        immediate: true,
+        handler() {
+          this.fields.title.setValueAndReset(this.savedPost.title)
+          this.fields.slug.setValueAndReset(this.savedPost.slug)
+          this.fields.excerpt.setValueAndReset(this.savedPost.excerpt)
+
+          this.content = this.savedPost.content
+          this.publishedAt = this.savedPost.publishedAt
+          this.relevantUntil = this.savedPost.relevantUntil
+          this.group = this.savedPost.group
+
+          this.$nextTick(() => {
+            this.fields.publishedAt.reset()
+            this.fields.relevantUntil.reset()
+          })
+        }
+      },
+      relevantUntilValid() {
+        if (this.relevantUntilValid)
+          this.fields.relevantUntil.setError(null)
+        else
+          this.fields.relevantUntil.setError("\"Relevant bis\" muss nach dem Veröffentlichungsdatum liegen.")
       }
     },
     methods: {
       async save() {
-        this.saveLoading = true;
+        this.saveLoading = true
 
         const data = {
           slug: this.fields.slug.transformedValue,
@@ -297,22 +294,25 @@
           excerpt: this.fields.excerpt.transformedValue,
           group: this.group === null ? null : this.group,
           content: this.content
-        };
+        }
 
-        await this.$api.posts.update(this.savedPost.id, data);
+        await this.$api.posts.update(this.savedPost.id, data)
 
         this.savedPost = {
           id: this.savedPost.id,
           ...data
         }
-        this.saveLoading = false;
+        this.saveLoading = false
       },
       async delete_() {
-        this.deleteLoading = true;
+        this.deleteLoading = true
 
         await this.$api.posts.delete(this.savedPost.id)
-        await this.$router.push("/admin/posts?delete_success=1");
+        await this.$router.push("/admin/posts?delete_success=1")
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Artikel bearbeiten / Administration"
+    })
+  }
 </script>

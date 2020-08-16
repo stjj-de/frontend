@@ -21,10 +21,10 @@
 </style>
 
 <script>
-  import EventCalendar from "@/components/EventCalendar/EventCalendar";
+  import EventCalendar from "@/components/EventCalendar/EventCalendar"
 
   export default {
     name: "CalendarSection",
     components: { EventCalendar }
-  };
+  }
 </script>

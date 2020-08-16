@@ -71,17 +71,40 @@
 </style>
 
 <script>
-  import { format } from "date-fns";
-  import { de as dateFnsLocale } from "date-fns/locale";
-  import NavigationBar from "@/components/NavigationBar";
-  import "@/assets/styles/quill-enduser.scss";
-  import TransformInternalLinks from "@/components/TransformInternalLinks";
-  import UserImageWithPopup from "@/components/UserImageWithPopup";
-  import { createMeta } from "@/assets/js/meta";
+  import { format } from "date-fns"
+  import { de as dateFnsLocale } from "date-fns/locale"
+  import NavigationBar from "@/components/NavigationBar"
+  import "@/assets/styles/quill-enduser.scss"
+  import TransformInternalLinks from "@/components/TransformInternalLinks"
+  import UserImageWithPopup from "@/components/UserImageWithPopup"
+  import { createMeta } from "@/assets/js/meta"
 
   export default {
     name: "PostPage",
     components: { UserImageWithPopup, TransformInternalLinks, NavigationBar },
+    async asyncData({ error, app: { $api }, params }) {
+      const post = await $api.posts.get(
+        `_${params.slug}`,
+        ["title", "excerpt", "slug", "relevantUntil", "publishedAt", "content", "author"]
+      )
+
+      if (post === null)
+        return error({ statusCode: 404, m: "Dieser Artikel existiert nicht." })
+
+      const fullPost = await $api.users.populate(post, "author", UserImageWithPopup.USER_FIELDS)
+      return { post: fullPost }
+    },
+    data: () => ({
+      post: {}
+    }),
+    computed: {
+      formattedPublicationDate() {
+        return format(new Date(this.post.publishedAt), "EEEE, d.L.yyyy", { locale: dateFnsLocale })
+      },
+      irrelevant() {
+        return this.post.relevantUntil !== null && Date.parse(this.post.relevantUntil) < Date.now()
+      }
+    },
     head() {
       return {
         title: this.post.title,
@@ -92,28 +115,7 @@
             path: `/posts/${this.post.slug}`
           })
         ]
-      };
-    },
-    data: () => ({
-      post: {}
-    }),
-    async asyncData({ error, app: { $api }, params }) {
-      const post = await $api.posts.get(`_${params.slug}`, ["title", "excerpt", "slug", "relevantUntil", "publishedAt", "content", "author"]);
-
-      if (post === null) {
-        error({ statusCode: 404, m: "Dieser Artikel existiert nicht." });
-      } else {
-        const fullPost = await $api.users.populate(post, "author", UserImageWithPopup.USER_FIELDS);
-        return { post: fullPost };
-      }
-    },
-    computed: {
-      formattedPublicationDate() {
-        return format(new Date(this.post.publishedAt), "EEEE, d.L.yyyy", { locale: dateFnsLocale });
-      },
-      irrelevant() {
-        return this.post.relevantUntil !== null && Date.parse(this.post.relevantUntil) < Date.now()
       }
     }
-  };
+  }
 </script>

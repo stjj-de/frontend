@@ -1,6 +1,6 @@
-const isDevelopment = process.env.NODE_ENV === "development";
-if (isDevelopment) process.env.IS_DEV_ENV = "true";
-const isDevEnv = process.env.IS_DEV_ENV === "true";
+const isDevelopment = process.env.NODE_ENV === "development"
+if (isDevelopment) process.env.IS_DEV_ENV = "true"
+const isDevelopmentEnvironment = process.env.IS_DEV_ENV === "true"
 
 const config = {
   server: {
@@ -20,8 +20,16 @@ const config = {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes." },
-      { hid: "og:description", name: "og:description", content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes." },
+      {
+        hid: "description",
+        name: "description",
+        content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes."
+      },
+      {
+        hid: "og:description",
+        name: "og:description",
+        content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes."
+      },
       { hid: "og:image", name: "og:image", content: "/og-image.png" },
       { hid: "og:site_name", name: "og:site_name", content: "Katholische Kirchengemeinde St. Josef - St. Johannes" },
       { hid: "og:locale", name: "og:locale", content: "de_DE" }
@@ -60,7 +68,7 @@ const config = {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-
+    "@nuxtjs/eslint-module"
   ],
   /*
   ** Nuxt.js modules
@@ -70,7 +78,7 @@ const config = {
     "@nuxtjs/axios"
   ],
   axios: {
-    baseURL: isDevEnv ? `http://127.0.0.1:8000` : `http://${process.env.SSR_BACKEND_HOST}`,
+    baseURL: isDevelopmentEnvironment ? "http://127.0.0.1:8000" : `http://${process.env.SSR_BACKEND_HOST}`,
     browserBaseURL: "/",
     progress: false
   },
@@ -83,16 +91,16 @@ const config = {
     /*
     ** You can extend webpack config here
     */
-    // eslint-disable-next-line no-unused-vars
-    extend(config, context) {
+    // eslint-disable-next-line no-unused-vars,no-empty-function
+    extend(cfg, context) {
     }
   }
-};
-
-// This should be done by Nginx in production
-if (isDevEnv) {
-  config.modules.push("@nuxtjs/proxy");
-  config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"];
 }
 
-module.exports = config;
+// This should be done by Nginx in production
+if (isDevelopmentEnvironment) {
+  config.modules.push("@nuxtjs/proxy")
+  config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"]
+}
+
+module.exports = config

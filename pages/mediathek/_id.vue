@@ -66,30 +66,28 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
-  import LoadingOverlay from "@/components/LoadingOverlay";
+  import NavigationBar from "@/components/NavigationBar"
+  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
+  import LoadingOverlay from "@/components/LoadingOverlay"
 
   export default {
     name: "VideoPage",
     components: { LoadingOverlay, NavigationBar, ArrowLeftIcon },
-    head() {
-      return {
-        title: `${this.video.title} / Mediathek`
-      };
+    async asyncData({ error, app: { $api }, params }) {
+      const video = await $api.videos.get(params.id, ["title", "youtubeVideoID"])
+
+      if (video === null) return error({ statusCode: 404, m: "Dieses Video existiert nicht." })
+
+      return { video }
     },
     data: () => ({
       video: null,
       loading: true
     }),
-    async asyncData({ error, app: { $api }, params }) {
-      const video = await $api.videos.get(params.id, ["title", "youtubeVideoID"])
-
-      if (video === null) {
-        error({ statusCode: 404, m: "Dieses Video existiert nicht." });
-      } else {
-        return { video };
+    head() {
+      return {
+        title: `${this.video.title} / Mediathek`
       }
     }
-  };
+  }
 </script>

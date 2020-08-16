@@ -3,6 +3,7 @@
     <div
       v-for="(color, name) in $options.eventColors"
       :key="name"
+      v-ripple.400.click="'rgba(255,255,255,0.2)'"
       class="event-color-picker__color"
       aria-label="Farbe"
       tabindex="0"
@@ -13,7 +14,6 @@
       @click="$emit('input', name)"
       @keydown.enter="$emit('input', name)"
       @keydown.space.prevent="$emit('input', name)"
-      v-ripple.400.click="'rgba(255,255,255,0.2)'"
     ></div>
   </div>
 </template>
@@ -83,7 +83,7 @@
 </style>
 
 <script>
-  import { eventColors } from "@/assets/js/eventColors";
+  import { eventColors } from "@/assets/js/event-colors"
 
   export default {
     name: "EventColorPicker",
@@ -95,5 +95,5 @@
       }
     },
     eventColors
-  };
+  }
 </script>

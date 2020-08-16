@@ -7,14 +7,14 @@
 </style>
 
 <script>
-  const BASE_URL = "https://img.youtube.com/vi";
+  const BASE_URL = "https://img.youtube.com/vi"
 
   const FILENAME_BY_SIZE = {
     small: "default.jpg",
     medium: "mqdefault.jpg",
     high: "hqdefault.jpg",
     highest: "maxresdefault.jpg"
-  };
+  }
 
   export default {
     name: "YoutubeThumbnail",
@@ -31,8 +31,8 @@
     },
     computed: {
       src() {
-        return `${BASE_URL}/${this.videoId}/${FILENAME_BY_SIZE[this.size]}`;
+        return `${BASE_URL}/${this.videoId}/${FILENAME_BY_SIZE[this.size]}`
       }
     }
-  };
+  }
 </script>

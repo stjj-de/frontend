@@ -15,22 +15,15 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import TitleSection from "@/components/pages/index/TitleSection";
-  import PostsSection from "@/components/pages/index/PostsSection";
-  import CalendarSection from "@/components/pages/index/CalendarSection";
-  import { HOMEPAGE_INTRODUCTION } from "@/assets/js/contents";
+  import NavigationBar from "@/components/NavigationBar"
+  import TitleSection from "@/components/pages/index/TitleSection"
+  import PostsSection from "@/components/pages/index/PostsSection"
+  import CalendarSection from "@/components/pages/index/CalendarSection"
+  import { HOMEPAGE_INTRODUCTION } from "@/assets/js/contents"
 
   export default {
     name: "IndexPage",
     components: { CalendarSection, PostsSection, TitleSection, NavigationBar },
-    head: () => ({
-      title: "Start"
-    }),
-    data: () => ({
-      introduction: "",
-      posts: []
-    }),
     async asyncData({ $api }) {
       return {
         introduction: await $api.contents.get(HOMEPAGE_INTRODUCTION),
@@ -42,8 +35,15 @@
           group: "general",
           sortBy: "publishedAt",
           ascending: false
-        }).then(data => data.items), "author", PostsSection.POST_AUTHOR_FIELDS),
-      };
-    }
-  };
+        }).then(data => data.items), "author", PostsSection.POST_AUTHOR_FIELDS)
+      }
+    },
+    data: () => ({
+      introduction: "",
+      posts: []
+    }),
+    head: () => ({
+      title: "Start"
+    })
+  }
 </script>

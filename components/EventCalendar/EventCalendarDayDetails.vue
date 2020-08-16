@@ -91,12 +91,11 @@
 </style>
 
 <script>
-  import cloneDeep from "lodash.clonedeep";
-  import { format } from "date-fns";
-  import { dateFnsLocale } from "@/assets/js/dateUtils";
-  import UserImageWithPopup from "@/components/UserImageWithPopup";
-  import { getCSSColorForEventColor } from "@/assets/js/eventColors";
-  import { isFullDay } from "@/assets/js/dateUtils";
+  import cloneDeep from "lodash.clonedeep"
+  import { format } from "date-fns"
+  import { dateFnsLocale, isFullDay } from "@/assets/js/date-utils"
+  import UserImageWithPopup from "@/components/UserImageWithPopup"
+  import { getCSSColorForEventColor } from "@/assets/js/event-colors"
 
   export default {
     name: "EventCalendarDayDetails",
@@ -109,69 +108,65 @@
     },
     computed: {
       computedEvents() {
-        const events = cloneDeep(this.events);
+        const events = cloneDeep(this.events)
 
         events.forEach(event => {
           const dateObjects = {
             start: new Date(event.date),
             end: event.endDate === null ? null : new Date(event.endDate)
-          };
+          }
 
           if (dateObjects.end && isFullDay(dateObjects.start, dateObjects.end)) {
-            event.__displayedTime = "Ganztägig";
-            event.__fullDay = true;
+            event.__displayedTime = "Ganztägig"
+            event.__fullDay = true
           } else {
-            event.__displayedTime = format(dateObjects.start, "HH:mm", { locale: dateFnsLocale });
+            event.__displayedTime = format(dateObjects.start, "HH:mm", { locale: dateFnsLocale })
 
             if (event.endDate !== null) {
-              let template = "";
-              const { start, end } = dateObjects;
+              let template = ""
+              const { start, end } = dateObjects
 
-              const includeYear = end.getFullYear() !== start.getFullYear();
+              const includeYear = end.getFullYear() !== start.getFullYear()
               const includeDayAndMonth = includeYear ||
-                start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth();
+                start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth()
 
-              if (includeDayAndMonth) {
-                template += "d.L";
-              }
+              if (includeDayAndMonth)
+                template += "d.L"
 
-              if (includeYear) {
-                template += ".y";
-              }
+              if (includeYear)
+                template += ".y"
 
-              if (template !== "") {
-                template += " ";
-              }
+              if (template !== "")
+                template += " "
 
-              template += "HH:mm";
+              template += "HH:mm"
 
-              event.__displayedTime += " - " + format(end, template, { locale: dateFnsLocale });
+              event.__displayedTime += " - " + format(end, template, { locale: dateFnsLocale })
             }
 
-            event.__fullDay = false;
+            event.__fullDay = false
           }
-        });
+        })
 
         return events.sort((a, b) => {
-          if (a.__fullDay && b.__fullDay) {
-            return 0;
-          } else if (!a.__fullDay && b.__fullDay) {
-            return -1;
-          } else if (a.__fullDay && !b.__fullDay) {
-            return 1;
-          }
+          if (a.__fullDay && b.__fullDay)
+            return 0
+          else if (!a.__fullDay && b.__fullDay)
+            return -1
+          else if (a.__fullDay && !b.__fullDay)
+            return 1
 
-          return a.date.localeCompare(b.date);
-        });
+          return a.date.localeCompare(b.date)
+        })
       }
     },
     methods: {
       getDotStyle(color) {
-        return `background-color: ${getCSSColorForEventColor(color)}`;
+        return `background-color: ${getCSSColorForEventColor(color)}`
       }
     },
-    EVENT_FIELDS: ["id", "color", "title", "description", "creator", "date", "endDate",  "relatedPost"],
+    EVENT_FIELDS: ["id", "color", "title", "description", "creator", "date", "endDate", "relatedPost"],
     EVENT_RELATED_POST_FIELDS: ["slug"],
     EVENT_CREATOR_FIELDS: UserImageWithPopup.USER_FIELDS
-  };
+  }
 </script>

@@ -20,7 +20,7 @@
         <MyButton @click="close">
           Abbrechen
         </MyButton>
-        <MyButton variant="primary" :disabled="!videoID.valid" @click="submit()">
+        <MyButton variant="primary" :disabled="!videoID.valid" @click="submit">
           Erstellen
         </MyButton>
       </template>
@@ -33,10 +33,10 @@
 </style>
 
 <script>
-  import MyModal from "@/components/MyModal";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import MyButton from "@/components/MyButton";
+  import MyModal from "@/components/MyModal"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
 
   export default {
     name: "CreateVideoModal",
@@ -56,35 +56,34 @@
     }),
     watch: {
       active() {
-        if (this.active) {
-          this.videoID.focus();
-        } else {
-          this.videoID.setValueAndReset("");
-          this.loading = false;
+        if (this.active)
+          this.videoID.focus()
+        else {
+          this.videoID.setValueAndReset("")
+          this.loading = false
         }
       },
       "videoID.transformedValue"() {
-        if (this.videoID.transformedValue.startsWith("https://youtu.be/")) {
+        if (this.videoID.transformedValue.startsWith("https://youtu.be/"))
           this.videoID.value = this.videoID.value.slice(17)
-        } else if (this.videoID.transformedValue.startsWith("https://www.youtube.com/watch?v=")) {
+        else if (this.videoID.transformedValue.startsWith("https://www.youtube.com/watch?v="))
           this.videoID.value = this.videoID.value.slice(32)
-        }
       }
     },
     methods: {
       async submit() {
-        if (this.loading || !this.videoID.valid) return;
-        this.loading = true;
+        if (this.loading || !this.videoID.valid) return
+        this.loading = true
 
-        const { data } = await this.$api.videos.create({ youtubeVideoID: this.videoID.transformedValue }, [201, 404]);
+        const { data } = await this.$api.videos.create({ youtubeVideoID: this.videoID.transformedValue }, [201, 404])
 
-        if (data) {
-          this.$emit("close", data.id);
-        } else {
-          this.loading = false;
-          this.videoID.setError("Dieses Video konnte nicht gefunden werden.", true);
+        if (data)
+          this.$emit("close", data.id)
+        else {
+          this.loading = false
+          this.videoID.setError("Dieses Video konnte nicht gefunden werden.", true)
         }
       }
     }
-  };
+  }
 </script>

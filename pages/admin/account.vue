@@ -11,7 +11,9 @@
       </div>
       <div v-for="field in fields" :key="field.key" class="account-page__field">
         <span class="account-page__field-label">{{ field.label }}</span>
-        <span class="account-page__field-value">{{ field.transform === undefined ? user[field.key] : field.transform(user[field.key]) }}</span>
+        <span class="account-page__field-value">
+          {{ field.transform === undefined ? user[field.key] : field.transform(user[field.key]) }}
+        </span>
       </div>
     </section>
     <section>
@@ -23,7 +25,7 @@
     </section>
     <section>
       <h2 class="heading--4">Neues Passwort festlegen</h2>
-      <form class="account-page__password-form" action="javascript:" @submit="onPasswordSubmit()">
+      <form class="account-page__password-form" action="javascript:" @submit="onPasswordSubmit">
         <InputField
           label="Neues Passwort"
           autocomplete="new-password"
@@ -89,12 +91,12 @@
 </style>
 
 <script>
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import { WEBMASTER } from "@/assets/js/webmasterDetails";
-  import MyButton from "@/components/MyButton";
-  import { getUserImageURL } from "@/assets/js/getFileURL";
-  import FileUploadButton from "@/components/FileUploadButton";
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import { WEBMASTER } from "@/assets/js/webmaster-details"
+  import MyButton from "@/components/MyButton"
+  import { getUserImageURL } from "@/assets/js/get-file-url"
+  import FileUploadButton from "@/components/FileUploadButton"
 
   const DISPLAYED_FIELDS = [
     {
@@ -116,9 +118,9 @@
     {
       key: "groups",
       label: "Gruppen",
-      transform: groups => groups.length === 0 ? '—' : groups.map(group => group.title).join(", ")
+      transform: groups => groups.length === 0 ? "—" : groups.map(group => group.title).join(", ")
     }
-  ];
+  ]
 
   export default {
     name: "AccountPage",
@@ -129,24 +131,22 @@
         newPasswordLoading: false,
         webmaster: WEBMASTER,
         afterProfileImageUpload: async ({ id }) => {
-          await this.$api.users.update(this.user.id, { image: id });
+          await this.$api.users.update(this.user.id, { image: id })
           this.$store.commit("setUser", { ...this.user, image: id })
         },
         newPasswordField: new InputFieldCompanion({
           type: "password",
           validate: value => {
-            if (value.length < 10) {
-              return "Das Passwort muss mindestens 10 Zeichen lang sein.";
-            }
+            if (value.length < 10)
+              return "Das Passwort muss mindestens 10 Zeichen lang sein."
 
-            if (value.length > 100) {
-              return "Das Passwort darf höchstens 100 Zeichen lang sein.";
-            }
+            if (value.length > 100)
+              return "Das Passwort darf höchstens 100 Zeichen lang sein."
 
-            return null;
+            return null
           }
         })
-      };
+      }
     },
     computed: {
       user: vm => vm.$store.state.user,
@@ -154,14 +154,14 @@
     },
     methods: {
       async onPasswordSubmit() {
-        if (!this.newPasswordField.valid) return;
+        if (!this.newPasswordField.valid) return
 
-        this.newPasswordLoading = true;
-        await this.$api.users.update(this.user.id, { password: this.newPasswordField.value });
+        this.newPasswordLoading = true
+        await this.$api.users.update(this.user.id, { password: this.newPasswordField.value })
 
-        this.newPasswordField.setValueAndReset("");
-        this.newPasswordLoading = false;
+        this.newPasswordField.setValueAndReset("")
+        this.newPasswordLoading = false
       }
     }
-  };
+  }
 </script>

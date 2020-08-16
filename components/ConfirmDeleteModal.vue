@@ -13,10 +13,10 @@
       </slot>
     </template>
     <template v-slot:buttons="{ close: cancel }">
-      <MyButton variant="primary" @click="cancel()">
+      <MyButton variant="primary" @click="cancel">
         Abbrechen
       </MyButton>
-      <MyButton variant="danger" @click="confirm()">
+      <MyButton variant="danger" @click="confirm">
         Löschen
       </MyButton>
     </template>
@@ -28,8 +28,8 @@
 </style>
 
 <script>
-  import MyModal from "@/components/MyModal";
-  import MyButton from "@/components/MyButton";
+  import MyModal from "@/components/MyModal"
+  import MyButton from "@/components/MyButton"
 
   export default {
     name: "ConfirmDeleteModal",
@@ -46,13 +46,13 @@
     },
     methods: {
       onCancel() {
-        this.$emit("cancel");
-        this.$emit("update:active", false);
+        this.$emit("cancel")
+        this.$emit("update:active", false)
       },
       confirm() {
-        this.$emit("confirm");
-        this.$emit("update:active", false);
+        this.$emit("confirm")
+        this.$emit("update:active", false)
       }
     }
-  };
+  }
 </script>

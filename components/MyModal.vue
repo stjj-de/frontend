@@ -2,7 +2,7 @@
   <div
     class="my-modal"
     :class="classes"
-    @keydown.esc="close()"
+    @keydown.esc="close"
   >
     <div
       class="my-modal__backdrop"
@@ -33,7 +33,7 @@
             </div>
             <div class="my-modal__buttons">
               <slot name="buttons" :close="close">
-                <MyButton :disabled="!closable" @click="close()">
+                <MyButton :disabled="!closable" @click="close">
                   Schließen
                 </MyButton>
               </slot>
@@ -202,23 +202,17 @@
 </style>
 
 <script>
-  import FocusLock from "vue-focus-lock";
-  import MyButton from "@/components/MyButton";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
+  import FocusLock from "vue-focus-lock"
+  import MyButton from "@/components/MyButton"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
 
   export default {
     name: "MyModal",
     components: { LoadingOverlay, MyButton, FocusLock },
     props: {
-      active: {
-        type: Boolean,
-        default: false
-      },
-      closable: {
-        type: Boolean,
-        default: false
-      },
+      active: { type: Boolean },
+      closable: { type: Boolean },
       title: {
         type: String,
         required: true
@@ -227,10 +221,7 @@
         type: String,
         default: "auto"
       },
-      loading: {
-        type: Boolean,
-        default: false
-      },
+      loading: { type: Boolean },
       loadingText: {
         type: String,
         default: ""
@@ -238,24 +229,24 @@
     },
     computed: {
       classes() {
-        const { active, loading } = this;
+        const { active, loading } = this
 
         return toModifierClasses("my-modal", {
           active,
           loading
-        });
+        })
       }
     },
     methods: {
       onBackdropClick() {
-        this.close();
+        this.close()
       },
       close() {
         if (this.closable) {
-          this.$emit("close");
-          this.$emit("update:active", false);
+          this.$emit("close")
+          this.$emit("update:active", false)
         }
       }
     }
-  };
+  }
 </script>

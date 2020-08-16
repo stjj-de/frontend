@@ -2,7 +2,7 @@
   <div
     class="input-field"
     :class="{
-      [`input-field--${this.companion._state}`]: this.companion._state !== null,
+      [`input-field--${companion._state}`]: companion._state !== null,
       'input-field--keep-showing-state': keepShowingState,
       'input-field--invalid': companion._error !== null && showPossibleError
     }"
@@ -15,9 +15,8 @@
     <div class="input-field__input-container">
       <textarea
         v-if="companion.type === 'textarea'"
-        class="input-field__input"
         ref="input"
-        v-text="companion.value"
+        class="input-field__input"
         :placeholder="placeholder"
         :aria-label="label"
         :autocomplete="autocomplete"
@@ -28,11 +27,12 @@
         @input="onInput"
         @blur="onBlur"
         @focus="onFocus"
+        v-text="companion.value"
       ></textarea>
       <input
         v-else
-        class="input-field__input"
         ref="input"
+        class="input-field__input"
         :placeholder="placeholder"
         :aria-label="label"
         :value="companion.value"
@@ -57,10 +57,10 @@
       <div class="input-field__tick"></div>
     </div>
     <span class="input-field__error" :style="errorStyle">
-      {{ this.companion._lazyErrorText }}
+      {{ companion._lazyErrorText }}
     </span>
-    <span class="input-field__invisible-error" aria-hidden="true" ref="invisibleError">
-      {{ this.companion._error }}
+    <span ref="invisibleError" class="input-field__invisible-error" aria-hidden="true">
+      {{ companion._error }}
     </span>
   </div>
 </template>
@@ -264,7 +264,7 @@
 </style>
 
 <script>
-  import GlobalEvents from "vue-global-events";
+  import GlobalEvents from "vue-global-events"
 
   export default {
     name: "InputField",
@@ -274,10 +274,7 @@
         type: String,
         required: true
       },
-      hideLabel: {
-        type: Boolean,
-        default: false
-      },
+      hideLabel: { type: Boolean },
       companion: {
         type: Object,
         required: true
@@ -286,18 +283,9 @@
         type: String,
         default: "off"
       },
-      disableSpellcheck: {
-        type: Boolean,
-        default: false
-      },
-      keepShowingState: {
-        type: Boolean,
-        default: false
-      },
-      forceShowError: {
-        type: Boolean,
-        default: false
-      },
+      disableSpellcheck: { type: Boolean },
+      keepShowingState: { type: Boolean },
+      forceShowError: { type: Boolean },
       placeholder: {
         type: String,
         default: ""
@@ -308,51 +296,51 @@
     }),
     computed: {
       showPossibleError() {
-        return this.forceShowError || (!this.companion.disabled && this.companion.touched);
+        return this.forceShowError || (!this.companion.disabled && this.companion.touched)
       },
       errorStyle() {
-        return this.showPossibleError ? `height: ${this.errorTextHeight + 1}px` : "";
+        return this.showPossibleError ? `height: ${this.errorTextHeight + 1}px` : ""
       },
       error() {
-        return this.companion._error;
+        return this.companion._error
       }
-    },
-    mounted() {
-      this.recomputeErrorTextHeight();
     },
     watch: {
       error() {
-        this.recomputeErrorTextHeight();
+        this.recomputeErrorTextHeight()
       },
       companion: {
         immediate: true,
         handler() {
-          this.companion._instance = this;
+          this.companion._instance = this
         }
       }
     },
+    mounted() {
+      this.recomputeErrorTextHeight()
+    },
     methods: {
       onInput(event) {
-        this.companion.touched = true;
-        this.companion.value = event.target.value;
-        this.companion._onInput();
+        this.companion.touched = true
+        this.companion.value = event.target.value
+        this.companion._onInput()
       },
       onBlur() {
-        this.companion.touched = true;
+        this.companion.touched = true
       },
       onFocus() {
-        this.$emit("focus");
+        this.$emit("focus")
       },
       recomputeErrorTextHeight() {
         this.$nextTick(() => {
-          this.errorTextHeight = this.$refs.invisibleError.getBoundingClientRect().height;
-        });
+          this.errorTextHeight = this.$refs.invisibleError.getBoundingClientRect().height
+        })
       },
       focus() {
         this.$nextTick(() => { // required, if it was disabled
-          this.$refs.input.focus();
-        });
+          this.$refs.input.focus()
+        })
       }
     }
-  };
+  }
 </script>

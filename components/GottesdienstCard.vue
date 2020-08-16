@@ -2,7 +2,9 @@
   <div class="gottesdienst-card">
     <span class="gottesdienst-card__date heading--3">{{ formattedDate }}</span>
     <span class="gottesdienst-card__church">
-      Ort: <a :href="`https://goo.gl/maps/${gottesdienst.church.googleMapsID}`" target="_blank">{{ gottesdienst.church.title }}</a>
+      Ort: <a :href="`https://goo.gl/maps/${gottesdienst.church.googleMapsID}`" target="_blank">
+        {{ gottesdienst.church.title }}
+      </a>
     </span>
     <div class="gottesdienst-card__description quill-enduser formatted" v-html="gottesdienst.description"></div>
   </div>
@@ -31,12 +33,10 @@
 </style>
 
 <script>
-  import MyButton from "@/components/MyButton";
-  import { formatDateWithTimeAndName } from "@/assets/js/dateUtils"
+  import { formatDateWithTimeAndName } from "@/assets/js/date-utils"
 
   export default {
     name: "GottesdienstCard",
-    components: { MyButton },
     props: {
       gottesdienst: {
         type: Object,
@@ -48,5 +48,5 @@
     },
     CHURCH_SERVICE_DATE_FIELDS: ["date", "church", "description"],
     CHURCH_SERVICE_DATE_CHURCH_FIELDS: ["title", "googleMapsID"]
-  };
+  }
 </script>

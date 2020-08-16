@@ -67,8 +67,8 @@
 </style>
 
 <script>
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
-  import ArrowRight from "@/assets/icons/arrow-right.svg";
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
+  import ArrowRight from "@/assets/icons/arrow-right.svg"
 
   export default {
     name: "Accordion",
@@ -84,8 +84,8 @@
     }),
     computed: {
       classes() {
-        return toModifierClasses("accordion", { open: this.open });
+        return toModifierClasses("accordion", { open: this.open })
       }
     }
-  };
+  }
 </script>

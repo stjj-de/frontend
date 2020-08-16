@@ -1,13 +1,13 @@
 <template>
   <button
-    class="my-button"
     :key="rippleColor"
+    v-ripple.400.click="rippleColor"
+    class="my-button"
     :class="classes"
     :type="isSubmit ? 'submit' : 'button'"
-    :disabled="this.loading || this.disabled"
-    :tabindex="this.disabled || this.loading ? '-1' : '0'"
+    :disabled="loading || disabled"
+    :tabindex="disabled || loading ? '-1' : '0'"
     @click="onClick"
-    v-ripple.400.click="rippleColor"
   >
     <slot/>
   </button>
@@ -166,27 +166,15 @@
 </style>
 
 <script>
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
 
   export default {
     name: "MyButton",
     props: {
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      isSubmit: {
-        type: Boolean,
-        default: false
-      },
-      noCenter: {
-        type: Boolean,
-        default: false
-      },
+      loading: { type: Boolean },
+      disabled: { type: Boolean },
+      isSubmit: { type: Boolean },
+      noCenter: { type: Boolean },
       variant: {
         type: String,
         default: "secondary",
@@ -195,25 +183,24 @@
     },
     computed: {
       classes() {
-        const { disabled, loading, noCenter, variant } = this;
+        const { disabled, loading, noCenter, variant } = this
 
         return toModifierClasses("my-button", {
           disabled,
           loading,
           center: !noCenter,
           [variant]: true
-        });
+        })
       },
       rippleColor() {
-        return "rgba(0, 0, 0, 0.15)";
+        return "rgba(0, 0, 0, 0.15)"
       }
     },
     methods: {
       onClick(event) {
-        if (!this.disabled && !this.loading) {
-          this.$emit("click", event);
-        }
+        if (!this.disabled && !this.loading)
+          this.$emit("click", event)
       }
     }
-  };
+  }
 </script>

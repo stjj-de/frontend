@@ -122,8 +122,8 @@
 </style>
 
 <script>
-  import BlueBlob from "@/assets/blobs/blue.svg";
-  import RedBlob from "@/assets/blobs/red.svg";
+  import BlueBlob from "@/assets/blobs/blue.svg"
+  import RedBlob from "@/assets/blobs/red.svg"
 
   export default {
     name: "TitleSection",
@@ -134,5 +134,5 @@
         required: true
       }
     }
-  };
+  }
 </script>

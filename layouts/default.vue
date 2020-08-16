@@ -1,6 +1,6 @@
 <template>
   <div class="default-layout">
-    <flash-message class="default-layout__flash-messages" transitionName="default-layout__flash-slide"/>
+    <flash-message class="default-layout__flash-messages" transition-name="default-layout__flash-slide"/>
     <nuxt/>
     <MyFooter v-if="!isAdmin"/>
   </div>
@@ -27,15 +27,15 @@
 </style>
 
 <script>
-  import MyFooter from "@/components/MyFooter";
+  import MyFooter from "@/components/MyFooter"
 
   export default {
     name: "DefaultLayout",
     components: { MyFooter },
     computed: {
       isAdmin() {
-        return this.$route.path.startsWith("/admin");
+        return this.$route.path.startsWith("/admin")
       }
     }
-  };
+  }
 </script>

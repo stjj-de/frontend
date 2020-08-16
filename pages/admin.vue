@@ -41,25 +41,28 @@
 </style>
 
 <script>
-  import AdminNavigation from "@/components/AdminNavigation";
+  import AdminNavigation from "@/components/AdminNavigation"
 
   export default {
     name: "AdminPage",
     middleware: ["auth"],
     components: { AdminNavigation },
-    head: () => ({
-      title: "Verwaltung"
-    }),
     async asyncData({ $api, store }) {
       store.commit("setUserPromise", (async () => {
         store.commit("setUser", await $api.groups.populate(
-          await $api.users.get(store.state.userID, ["id", "username", "realName", "displayName", "position", "groups", "role", "image"]),
+          await $api.users.get(
+            store.state.userID,
+            ["id", "username", "realName", "displayName", "position", "groups", "role", "image"]
+          ),
           "groups",
           ["id", "title"]
-        ));
-      })());
+        ))
+      })())
 
-      await store.state.userPromise;
-    }
-  };
+      await store.state.userPromise
+    },
+    head: () => ({
+      title: "Verwaltung"
+    })
+  }
 </script>

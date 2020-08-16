@@ -41,18 +41,12 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import GottesdienstCard from "@/components/GottesdienstCard";
+  import NavigationBar from "@/components/NavigationBar"
+  import GottesdienstCard from "@/components/GottesdienstCard"
 
   export default {
     name: "GottesdienstePage",
     components: { GottesdienstCard, NavigationBar },
-    head: () => ({
-      title: "Gottesdienste"
-    }),
-    data: () => ({
-      gottesdienste: []
-    }),
     async asyncData({ $api }) {
       return {
         gottesdienste: (await $api.churches.populate(
@@ -60,7 +54,13 @@
           "church",
           GottesdienstCard.CHURCH_SERVICE_DATE_CHURCH_FIELDS
         )).items
-      };
-    }
-  };
+      }
+    },
+    data: () => ({
+      gottesdienste: []
+    }),
+    head: () => ({
+      title: "Gottesdienste"
+    })
+  }
 </script>

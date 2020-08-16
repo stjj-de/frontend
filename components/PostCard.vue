@@ -82,9 +82,9 @@
 </style>
 
 <script>
-  import { format } from "date-fns";
-  import { dateFnsLocale } from "@/assets/js/dateUtils";
-  import UserImageWithPopup from "@/components/UserImageWithPopup";
+  import { format } from "date-fns"
+  import { dateFnsLocale } from "@/assets/js/date-utils"
+  import UserImageWithPopup from "@/components/UserImageWithPopup"
 
   export default {
     name: "PostCard",
@@ -97,10 +97,10 @@
     },
     computed: {
       publicationDateString() {
-        return format(new Date(this.post.publishedAt), "d.L.y", { locale: dateFnsLocale });
+        return format(new Date(this.post.publishedAt), "d.L.y", { locale: dateFnsLocale })
       }
     },
     POST_FIELDS: ["slug", "title", "excerpt", "publishedAt", "author"],
     POST_AUTHOR_FIELDS: UserImageWithPopup.USER_FIELDS
-  };
+  }
 </script>

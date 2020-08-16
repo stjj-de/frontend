@@ -10,7 +10,8 @@
     <div class="posts-section__show-all-posts">
       <nuxt-link
         v-if="posts && posts.length !== 0"
-        class="link" to="/posts"
+        class="link"
+        to="/posts"
       >
         Alle Artikel anzeigen
       </nuxt-link>
@@ -59,8 +60,8 @@
 </style>
 
 <script>
-  import PostCard from "@/components/PostCard";
-  import { combineFieldSets } from "@/assets/js/APIWrapper";
+  import PostCard from "@/components/PostCard"
+  import { combineFieldSets } from "@/assets/js/api-wrapper"
 
   export default {
     name: "PostsSection",
@@ -73,5 +74,5 @@
     },
     POST_FIELDS: combineFieldSets(PostCard.POST_FIELDS, ["id"]),
     POST_AUTHOR_FIELDS: PostCard.POST_AUTHOR_FIELDS
-  };
+  }
 </script>

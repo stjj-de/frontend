@@ -10,7 +10,8 @@
     <template v-else-if="$store.state.user.role === 'NONE'">
       <template v-if="$store.state.user.groups.length > 0">
         <p>
-          Du hast nur Zugriff auf folgende Gruppierungen: {{ $store.state.user.groups.map(group => group.title).join(", ") }}
+          Du hast nur Zugriff auf folgende Gruppierungen:
+          {{ $store.state.user.groups.map(group => group.title).join(", ") }}
         </p>
       </template>
       <p v-else>
@@ -36,10 +37,10 @@
 </style>
 
 <script>
-  import { WEBMASTER } from "@/assets/js/webmasterDetails"
+  import { WEBMASTER } from "@/assets/js/webmaster-details"
 
   export default {
-    name: "index",
+    name: "Index",
     WEBMASTER
   }
 </script>

@@ -1,6 +1,8 @@
 <template>
   <div class="post-editor">
-    <LoadingOverlay :active="imageLoading">Bild wird hochgeladen</LoadingOverlay>
+    <LoadingOverlay :active="imageLoading">
+      Bild wird hochgeladen
+    </LoadingOverlay>
     <vue-editor
       class="quill-enduser"
       use-custom-image-handler
@@ -22,13 +24,13 @@
 </style>
 
 <script>
-  import "vue2-editor/dist/vue2-editor.css";
-  import "quill/dist/quill.core.css";
-  import "quill/dist/quill.snow.css";
-  import "@/assets/styles/quill.scss";
-  import LoadingOverlay from "@/components/LoadingOverlay"
+  import "vue2-editor/dist/vue2-editor.css"
+  import "quill/dist/quill.core.css"
+  import "quill/dist/quill.snow.css"
+  import "@/assets/styles/quill.scss"
   import querystring from "querystring"
-  import { oneOf } from "@/assets/js/statusValidationHelper"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import { oneOf } from "@/assets/js/status-validation-helper"
 
   export default {
     name: "PostEditor",
@@ -50,7 +52,7 @@
       }
     },
     data() {
-      const headings = [1, 2, 3, 4, 5, 6].filter(level => level >= this.highestHeading);
+      const headings = [1, 2, 3, 4, 5, 6].filter(level => level >= this.highestHeading)
 
       return {
         editorToolbar: [
@@ -63,32 +65,31 @@
           [{ align: "" }, { align: "center" }, { align: "right" }]
         ],
         imageLoading: false
-      };
+      }
     },
     methods: {
       async handleImage(file, Editor, cursorLocation, resetUploader) {
         this.imageLoading = true
 
-        const formData = new FormData();
-        formData.append("file", file);
+        const formData = new FormData()
+        formData.append("file", file)
 
         const response = await this.$axios.post(
           "/files?" + querystring.encode({
-            "allowedMimeTypes": "image/png;image/jpeg"
+            allowedMimeTypes: "image/png;image/jpeg"
           }),
           formData,
           { validateStatus: oneOf(200, 201, 415) }
-        );
+        )
 
-        if (response.status === 415) {
-          this.$flash("Bild konnte nicht hochgeladen werden: Falscher Datei-Typ.", "error", { timeout: 10000})
-        } else {
-          Editor.insertEmbed(cursorLocation, "image", `/files/${response.data.id}`);
-        }
+        if (response.status === 415)
+          this.$flash("Bild konnte nicht hochgeladen werden: Falscher Datei-Typ.", "error", { timeout: 10000 })
+        else
+          Editor.insertEmbed(cursorLocation, "image", `/files/${response.data.id}`)
 
-        resetUploader();
+        resetUploader()
         this.imageLoading = false
       }
     }
-  };
+  }
 </script>

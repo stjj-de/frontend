@@ -22,8 +22,8 @@
             </nuxt-link>
             <a
               v-else
-              class="navigation-bar__link"
               :key="item.label"
+              class="navigation-bar__link"
               rel="noopener"
               :href="item.href"
               @click.passive="open = false"
@@ -258,7 +258,7 @@
 </style>
 
 <script>
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
 
   const ITEMS = [
     {
@@ -281,15 +281,12 @@
       label: "Mediathek",
       to: "/mediathek"
     }
-  ];
+  ]
 
   export default {
     name: "NavigationBar",
     props: {
-      backgroundAfterScroll: {
-        type: Boolean,
-        default: false
-      },
+      backgroundAfterScroll: { type: Boolean },
       title: {
         type: String,
         default: ""
@@ -302,27 +299,27 @@
     computed: {
       showBackground: vm => vm.backgroundAfterScroll ? vm.scrollPosition > 0 : true,
       classes() {
-        const { open, showBackground } = this;
+        const { open, showBackground } = this
 
         return toModifierClasses("navigation-bar", {
           open,
           showBackground
-        });
+        })
       }
     },
     mounted() {
       const scrollListener = () => {
-        this.scrollPosition = window.scrollY;
-      };
+        this.scrollPosition = window.scrollY
+      }
 
-      window.addEventListener("scroll", scrollListener, { passive: true });
+      window.addEventListener("scroll", scrollListener, { passive: true })
 
       this.$on("hook:beforeDestroy", () => {
-        window.removeEventListener("scroll", scrollListener);
-      });
+        window.removeEventListener("scroll", scrollListener)
+      })
 
-      scrollListener();
+      scrollListener()
     },
     items: ITEMS
-  };
+  }
 </script>

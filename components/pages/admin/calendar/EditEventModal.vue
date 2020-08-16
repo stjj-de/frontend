@@ -14,15 +14,15 @@
         <span class="input-field__label edit-event-modal__color-label">Farbe</span>
         <EventColorPicker v-model="color"/>
         <DateTimeField
+          v-model="startDate"
           label="Start-Zeitpunkt"
           :companion="fields.startDate"
-          v-model="startDate"
         />
         <DateTimeField
+          v-model="endDate"
           label="End-Zeitpunkt"
           placeholder="Nicht festgelegt"
           :companion="fields.endDate"
-          v-model="endDate"
         />
         <div>Du musst keinen End-Zeitpunkt festlegen.</div>
         <div>
@@ -58,21 +58,21 @@
       </template>
       <template v-slot:buttons>
         <MyButton
-          @click="onCancel()"
+          @click="onCancel"
         >
           Abbrechen
         </MyButton>
         <MyButton
           :disabled="!changed || !valid"
           variant="primary"
-          @click="save()"
+          @click="save"
         >
           {{ isCreateNew ? "Erstellen" : "Speichern" }}
         </MyButton>
       </template>
     </MyModal>
     <ConfirmCancelModal :active.sync="confirmCancelModalActive" @confirm="close(true)"/>
-    <ConfirmDeleteModal item-type="Termin" :active.sync="confirmDeleteModalActive" @confirm="delete_()"/>
+    <ConfirmDeleteModal item-type="Termin" :active.sync="confirmDeleteModalActive" @confirm="delete_"/>
   </div>
 </template>
 
@@ -88,18 +88,18 @@
 </style>
 
 <script>
-  import "vue-datetime/dist/vue-datetime.css";
-  import { startOfDay } from "date-fns";
-  import MyModal from "@/components/MyModal";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import MyButton from "@/components/MyButton";
-  import EventColorPicker from "@/components/pages/admin/calendar/EventColorPicker";
-  import DateTimeField from "@/components/DateTimeField";
-  import ConfirmCancelModal from "@/components/ConfirmCancelModal";
-  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
+  import "vue-datetime/dist/vue-datetime.css"
+  import { startOfDay } from "date-fns"
+  import MyModal from "@/components/MyModal"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
+  import EventColorPicker from "@/components/pages/admin/calendar/EventColorPicker"
+  import DateTimeField from "@/components/DateTimeField"
+  import ConfirmCancelModal from "@/components/ConfirmCancelModal"
+  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal"
 
-  const today = startOfDay(new Date());
+  const today = startOfDay(new Date())
 
   export default {
     name: "EditEventModal",
@@ -112,10 +112,7 @@
         validate: value => typeof value === "string" || value === null,
         required: true
       },
-      active: {
-        type: Boolean,
-        default: false
-      }
+      active: { type: Boolean }
     },
     data() {
       return {
@@ -148,134 +145,129 @@
             transform: value => value.trim(),
             validateOrSaveAsync: async value => {
               if (value === "") {
-                this.relatedPostID = null;
-                return null;
+                this.relatedPostID = null
+                return null
               }
 
-              const post = await this.$api.posts.get("_" + value, ["id"]);
+              const post = await this.$api.posts.get("_" + value, ["id"])
 
-              if (post === null) {
-                return "Es existiert kein Artikel mit diesem Slug.";
-              }
+              if (post === null)
+                return "Es existiert kein Artikel mit diesem Slug."
 
-              this.relatedPostID = post.id;
-              return null;
+              this.relatedPostID = post.id
+              return null
             }
           })
         }
-      };
+      }
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return Object.values(this.fields).every(field => field.valid)
       },
       isCreateNew() {
-        return this.eventId === "";
+        return this.eventId === ""
       },
       changed() {
         if (!this.isCreateNew && this.savedEvent !== null) {
-          if (this.color !== this.savedEvent.color) {
-            return true;
-          }
+          if (this.color !== this.savedEvent.color)
+            return true
         }
 
-        return Object.values(this.fields).some(field => field.changed);
+        return Object.values(this.fields).some(field => field.changed)
       }
     },
     watch: {
       active() {
-        if (this.active && this.eventId !== null) {
-          this.onActivate();
-        }
+        if (this.active && this.eventId !== null)
+          this.onActivate()
       },
       startDate() {
-        this.validateStartAndEndDate();
+        this.validateStartAndEndDate()
       },
       endDate() {
-        this.validateStartAndEndDate();
+        this.validateStartAndEndDate()
       }
     },
     methods: {
       onActivate() {
-        this.fields.title.setValueAndReset("");
-        this.fields.description.setValueAndReset("");
-        this.fields.relatedPost.setValueAndReset("");
+        this.fields.title.setValueAndReset("")
+        this.fields.description.setValueAndReset("")
+        this.fields.relatedPost.setValueAndReset("")
 
         if (this.isCreateNew) {
-          this.startDate = today.toISOString();
-          this.endDate = null;
-          this.color = "GRAY";
+          this.startDate = today.toISOString()
+          this.endDate = null
+          this.color = "GRAY"
 
           this.$nextTick(() => {
-            this.fields.startDate.reset();
-            this.fields.endDate.reset();
-          });
-        } else {
-          this.fetchEvent();
-        }
+            this.fields.startDate.reset()
+            this.fields.endDate.reset()
+          })
+        } else
+          this.fetchEvent()
 
-        this.fields.title.focus();
+        this.fields.title.focus()
       },
       onCancel() {
-        if (this.changed) {
-          this.confirmCancelModalActive = true;
-        } else {
-          this.close(true);
-        }
+        if (this.changed)
+          this.confirmCancelModalActive = true
+        else
+          this.close(true)
       },
       validateStartAndEndDate() {
         if (this.endDate !== null) {
           if (this.endDate <= this.startDate) {
-            this.fields.endDate.setError("Der End-Zeitpunkt muss nach dem Start-Zeitpunkt liegen.");
-            return;
+            this.fields.endDate.setError("Der End-Zeitpunkt muss nach dem Start-Zeitpunkt liegen.")
+            return
           }
         }
 
-        this.fields.endDate.setError(null);
+        this.fields.endDate.setError(null)
       },
       close(canceled = false) {
-        this.$emit("close", canceled);
+        this.$emit("close", canceled)
       },
       async fetchEvent() {
-        const { eventId } = this;
+        const { eventId } = this
 
-        this.loading = true;
-        this.loadingText = "Termin wird geladen";
+        this.loading = true
+        this.loadingText = "Termin wird geladen"
 
         const event = await this.$api.posts.populate(
           await this.$api.events.get(eventId, ["title", "description", "color", "date", "endDate", "relatedPost"]),
           "relatedPost",
           ["id", "slug"]
-        );
+        )
 
-        if (this.eventId !== eventId) return;
+        if (this.eventId !== eventId) return
 
-        this.savedEvent = event;
+        this.savedEvent = event
 
-        this.fields.title.setValueAndReset(event.title);
-        this.fields.description.setValueAndReset(event.description);
+        this.fields.title.setValueAndReset(event.title)
+        this.fields.description.setValueAndReset(event.description)
 
-        this.startDate = event.date;
-        this.endDate = event.endDate;
-        this.color = event.color;
+        this.startDate = event.date
+        this.endDate = event.endDate
+        this.color = event.color
 
         if (event.relatedPost === null) {
-          this.fields.relatedPost.setValueAndReset("");
-          this.relatedPostID = null;
+          this.fields.relatedPost.setValueAndReset("")
+          this.relatedPostID = null
         } else {
-          this.fields.relatedPost.setValueAndReset(event.relatedPost.slug);
-          this.relatedPostID = event.relatedPost.id;
+          this.fields.relatedPost.setValueAndReset(event.relatedPost.slug)
+          this.relatedPostID = event.relatedPost.id
         }
 
         this.$nextTick(() => {
-          this.fields.startDate.reset();
-          this.fields.endDate.reset();
-        });
+          this.fields.startDate.reset()
+          this.fields.endDate.reset()
+        })
 
-        this.loading = false;
+        this.loading = false
       },
       async save() {
-        this.loading = true;
+        this.loading = true
 
         const data = {
           title: this.fields.title.transformedValue,
@@ -284,28 +276,28 @@
           date: this.startDate,
           endDate: this.endDate,
           relatedPost: this.relatedPostID
-        };
-
-        if (this.isCreateNew) {
-          this.loadingText = "Termin wird erstellt";
-          await this.$api.events.create(data);
-        } else {
-          this.loadingText = "Termin wird gespeichert";
-          await this.$api.events.update(this.eventId, data);
         }
 
-        this.loading = false;
-        this.close();
+        if (this.isCreateNew) {
+          this.loadingText = "Termin wird erstellt"
+          await this.$api.events.create(data)
+        } else {
+          this.loadingText = "Termin wird gespeichert"
+          await this.$api.events.update(this.eventId, data)
+        }
+
+        this.loading = false
+        this.close()
       },
       async delete_() {
-        this.loading = true;
-        this.loadingText = "Termin wird gelöscht";
+        this.loading = true
+        this.loadingText = "Termin wird gelöscht"
 
-        await this.$api.events.delete(this.eventId);
+        await this.$api.events.delete(this.eventId)
 
-        this.loading = false;
-        this.close();
+        this.loading = false
+        this.close()
       }
     }
-  };
+  }
 </script>

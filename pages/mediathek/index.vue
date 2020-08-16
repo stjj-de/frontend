@@ -2,7 +2,7 @@
   <div class="mediathek-page">
     <NavigationBar title="Mediathek"/>
     <main class="content">
-      <div class="mediathek-page__videos" v-if="videos">
+      <div v-if="videos" class="mediathek-page__videos">
         <nuxt-link
           v-for="(video, index) in videos"
           :key="video.id"
@@ -26,7 +26,7 @@
         v-if="loading || hasMore"
         class="mediathek-page__load-more"
         :loading="loading"
-        @click="fetchMore()"
+        @click="fetchMore"
       >
         Mehr laden
       </MyButton>
@@ -135,48 +135,48 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import YoutubeThumbnail from "@/components/YoutubeThumbnail";
-  import { formatDateWithOptionalTime } from "@/assets/js/dateUtils";
-  import MyButton from "@/components/MyButton";
+  import NavigationBar from "@/components/NavigationBar"
+  import YoutubeThumbnail from "@/components/YoutubeThumbnail"
+  import { formatDateWithOptionalTime } from "@/assets/js/date-utils"
+  import MyButton from "@/components/MyButton"
 
-  async function fetchVideos(offset, api) {
-    return await api.videos.list({
+  function fetchVideos(offset, api) {
+    return api.videos.list({
       offset,
       limit: 20,
       fields: ["id", "title", "publishedAt", "youtubeVideoID"],
       sortBy: "publishedAt",
       ascending: false
-    });
+    })
   }
 
   export default {
     name: "MediathekPage",
     components: { MyButton, YoutubeThumbnail, NavigationBar },
-    head: () => ({
-      title: "Mediathek"
-    }),
+    async asyncData({ app: { $api } }) {
+      const { hasMore, items: videos } = await fetchVideos(0, $api)
+
+      return { hasMore, videos }
+    },
     data: () => ({
       loading: false,
       hasMore: true,
       videos: []
     }),
-    async asyncData({ app: { $api }}) {
-      const { hasMore, items: videos } = await fetchVideos(0, $api);
-
-      return { hasMore, videos };
-    },
     methods: {
       formatVideoDate(date) {
-        return formatDateWithOptionalTime(date);
+        return formatDateWithOptionalTime(date)
       },
       async fetchMore() {
         this.loading = true
-        const result = await fetchVideos(this.videos.length, this.$api);
-        this.hasMore = result.hasMore;
+        const result = await fetchVideos(this.videos.length, this.$api)
+        this.hasMore = result.hasMore
         this.videos.push(...result.items)
-        this.loading = false;
+        this.loading = false
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Mediathek"
+    })
+  }
 </script>

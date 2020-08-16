@@ -1,4 +1,4 @@
-import { HOMEPAGE_URL } from "@/assets/js/homepageURL";
+import { HOMEPAGE_URL } from "@/assets/js/homepage-url"
 
 export function createMeta({ title, description, path }) {
   return [
@@ -22,5 +22,5 @@ export function createMeta({ title, description, path }) {
       property: "og:url",
       content: HOMEPAGE_URL + path
     }
-  ];
+  ]
 }

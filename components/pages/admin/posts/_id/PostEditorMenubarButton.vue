@@ -1,9 +1,9 @@
 <template>
   <button
+    v-ripple.100.click="'rgba(0,0,0,0.1)'"
     class="post-editor-menubar-button"
     :title="title"
     :class="classes"
-    v-ripple.100.click="'rgba(0,0,0,0.1)'"
     v-on="$listeners"
   >
     <slot/>
@@ -41,15 +41,12 @@
 </style>
 
 <script>
-  import { toModifierClasses } from "@/assets/js/toModifierClasses";
+  import { toModifierClasses } from "@/assets/js/to-modifier-classes"
 
   export default {
     name: "PostEditorMenubarButton",
     props: {
-      active: {
-        type: Boolean,
-        default: false
-      },
+      active: { type: Boolean },
       title: {
         type: String,
         required: true
@@ -57,12 +54,12 @@
     },
     computed: {
       classes() {
-        const { active } = this;
+        const { active } = this
 
         return toModifierClasses("post-editor-menubar-button", {
           active
-        });
+        })
       }
     }
-  };
+  }
 </script>

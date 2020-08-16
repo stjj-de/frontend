@@ -5,7 +5,7 @@
     </h1>
     <div class="calendar-page__filter">
       <span class="heading--5">Filter</span>
-      <select class="calendar-page__filter-select" aria-label="Filter" v-model="dateFilter">
+      <select v-model="dateFilter" class="calendar-page__filter-select" aria-label="Filter">
         <option :value="null">
           Keiner
         </option>
@@ -37,7 +37,7 @@
     <DataTable
       :companion="table"
       loading-text="Termine werden geladen"
-      @row-click="onRowClick"
+      @row-click="id => onRowClick(id)"
     >
       <template v-slot:empty-state>
         <AdminDataTableEmptyState items-name="Termine"/>
@@ -54,7 +54,7 @@
     <EditEventModal
       :event-id="editModalEventID"
       :active="editModalActive"
-      @close="onEditModalClose"
+      @close="canceled => onEditModalClose(canceled)"
     />
   </main>
 </template>
@@ -98,35 +98,31 @@
 </style>
 
 <script>
-  import DataTable from "@/components/DataTable/DataTable";
-  import VDatePicker from "@/components/VCalendar/AsyncVDatePicker";
-  import EventsTableColorColumn from "@/components/pages/admin/calendar/EventsTableColorColumn";
-  import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/dateUtils";
-  import querystring from "query-string";
-  import EditEventModal from "@/components/pages/admin/calendar/EditEventModal";
-  import MyButton from "@/components/MyButton";
-  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
+  import DataTable from "@/components/DataTable/DataTable"
+  import VDatePicker from "@/components/VCalendar/AsyncVDatePicker"
+  import EventsTableColorColumn from "@/components/pages/admin/calendar/EventsTableColorColumn"
+  import { DataTableCompanion } from "@/components/DataTable/data-table-companion"
+  import { formatDate, formatDateWithTime, isFullDay, toFilterStringDate } from "@/assets/js/date-utils"
+  import querystring from "query-string"
+  import EditEventModal from "@/components/pages/admin/calendar/EditEventModal"
+  import MyButton from "@/components/MyButton"
+  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState"
 
   const _isFullDay = (startDateString, endDateString) => {
-    if (endDateString === null) {
-      return false;
-    }
+    if (endDateString === null)
+      return false
 
-    const startDate = new Date(startDateString);
-    const endDate = new Date(endDateString);
+    const startDate = new Date(startDateString)
+    const endDate = new Date(endDateString)
 
-    return isFullDay(startDate, endDate);
-  };
+    return isFullDay(startDate, endDate)
+  }
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 10
 
   export default {
     name: "CalendarPage",
     components: { AdminDataTableEmptyState, MyButton, EditEventModal, DataTable, VDatePicker },
-    head: () => ({
-      title: "Kalender / Administration"
-    }),
     data() {
       return {
         dateFilter: null,
@@ -158,6 +154,7 @@
               name: "Enddatum",
               transform: (endDate, row) => endDate === null
                 ? "nicht festgelegt"
+                // eslint-disable-next-line no-extra-parens
                 : (_isFullDay(row.date, endDate)
                   ? "ganztägig"
                   : formatDateWithTime(endDate)),
@@ -167,7 +164,7 @@
           sortBy: "date",
           sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
-          fetch: async (pageIndex, sortBy, sortOrder) => {
+          fetch: (pageIndex, sortBy, sortOrder) => {
             const query = querystring.stringify({
               offset: pageIndex * ITEMS_PER_PAGE,
               limit: ITEMS_PER_PAGE,
@@ -176,84 +173,87 @@
               asc: sortOrder === "asc",
               filter: this.filterString
             })
-            return await this.$axios.$get(`/api/events?${query}`);
+
+            return this.$axios.$get(`/api/events?${query}`)
           }
         })
-      };
+      }
     },
     computed: {
       filterString() {
         switch (this.dateFilter) {
           case "day":
-            if (this.dateDayFilter !== null) {
-              return toFilterStringDate(this.dateDayFilter, true);
-            }
+            if (this.dateDayFilter !== null)
+              return toFilterStringDate(this.dateDayFilter, true)
 
-            break;
+            break
 
           case "span":
             if (this.dateSpanFilter && this.dateSpanFilter.start && this.dateSpanFilter.end) {
               return [
                 toFilterStringDate(this.dateSpanFilter.start, true),
                 toFilterStringDate(this.dateSpanFilter.end, true)
-              ].join(":");
+              ].join(":")
             }
 
-            break;
+            break
         }
 
-        return undefined;
+        // eslint-disable-next-line unicorn/no-useless-undefined
+        return undefined
       }
-    },
-    beforeMount() {
-      this.table.initialize();
     },
     watch: {
       dateFilter() {
         if (this.dateFilter === null) {
-          this.updateUserDefinedVariables();
-          this.table.pageIndex = 0;
-          this.table.fetch();
+          this.updateUserDefinedVariables()
+          this.table.pageIndex = 0
+          this.table.fetch()
         } else {
           if (this.dateFilter !== this.dateFilterNotNull) {
-            this.dateDayFilter = null;
-            this.dateSpanFilter = {};
+            this.dateDayFilter = null
+            this.dateSpanFilter = {}
           }
 
-          this.dateFilterNotNull = this.dateFilter;
-          this.updateUserDefinedVariables();
-          this.table.fetch();
+          this.dateFilterNotNull = this.dateFilter
+          this.updateUserDefinedVariables()
+          this.table.fetch()
         }
       }
     },
+    beforeMount() {
+      this.table.initialize()
+    },
     methods: {
       onPickerInput() {
-        this.updateUserDefinedVariables();
-        this.table.pageIndex = 0;
-        this.table.fetch();
+        this.updateUserDefinedVariables()
+        this.table.pageIndex = 0
+        this.table.fetch()
       },
       onEditModalClose(canceled) {
-        this.editModalActive = false;
+        this.editModalActive = false
 
         if (!canceled) {
-          this.table.invalidateLastFetch();
-          this.table.fetch();
+          this.table.invalidateLastFetch()
+          this.table.fetch()
         }
       },
       onRowClick(id) {
-        this.openEditEventModal(id);
+        this.openEditEventModal(id)
       },
       updateUserDefinedVariables() {
-        if (this.filterString === undefined) {
-          this.table.userDefinedVariables = [];
-        } else {
-          this.table.userDefinedVariables = [this.filterString];
-        }
+        if (this.filterString === undefined)
+          this.table.userDefinedVariables = []
+        else
+          this.table.userDefinedVariables = [this.filterString]
       },
       openEditEventModal(id) {
-        this.editModalEventID = id;
-        this.editModalActive = true;
+        this.editModalEventID = id
+        this.editModalActive = true
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Kalender / Administration"
+    })
+  }
 </script>

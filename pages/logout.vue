@@ -1,5 +1,5 @@
 <template>
-
+  <div></div>
 </template>
 
 <style lang="scss">
@@ -10,8 +10,8 @@
   export default {
     name: "LogoutPage",
     async created() {
-      await this.$axios.$delete("/api/auth", { validateStatus: status => [204, 403].includes(status) });
-      await this.$router.replace("/login");
+      await this.$axios.$delete("/api/auth", { validateStatus: status => [204, 403].includes(status) })
+      await this.$router.replace("/login")
     }
   }
 </script>

@@ -17,8 +17,12 @@
       <section>
         <h1>Downloads</h1>
         <ul>
-          <li class="gemeinde-page__download"><a class="link" :href="`/files/${contents.pfarrbrief}`" target="_blank">Pfarrbrief</a></li>
-          <li class="gemeinde-page__download"><a class="link" :href="`/files/${contents.messdienerplan}`" target="_blank">Messdienerplan</a></li>
+          <li class="gemeinde-page__download">
+            <a class="link" :href="`/files/${contents.pfarrbrief}`" target="_blank">Pfarrbrief</a>
+          </li>
+          <li class="gemeinde-page__download">
+            <a class="link" :href="`/files/${contents.messdienerplan}`" target="_blank">Messdienerplan</a>
+          </li>
         </ul>
       </section>
     </main>
@@ -41,14 +45,13 @@
 </style>
 
 <script>
-  import NavigationBar from "@/components/NavigationBar";
-  import Accordion from "@/components/Accordion";
-  import { GEMEINDE, MESSDIENERPLAN, PFARRBRIEF } from "@/assets/js/contents";
-  import MyButton from "@/components/MyButton";
+  import NavigationBar from "@/components/NavigationBar"
+  import Accordion from "@/components/Accordion"
+  import { GEMEINDE, MESSDIENERPLAN, PFARRBRIEF } from "@/assets/js/contents"
 
   export default {
     name: "GemeindePage",
-    components: { MyButton, Accordion, NavigationBar },
+    components: { Accordion, NavigationBar },
     async asyncData({ $api }) {
       return {
         groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,
@@ -57,7 +60,7 @@
           pfarrbrief: await $api.contents.get(PFARRBRIEF),
           messdienerplan: await $api.contents.get(MESSDIENERPLAN)
         }
-      };
+      }
     }
-  };
+  }
 </script>

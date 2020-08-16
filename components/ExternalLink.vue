@@ -5,7 +5,7 @@
     target="_blank"
     :href="href"
   >
-    <template v-if="this.$slots.default && this.$slots.default[0] && this.$slots.default[0].text">
+    <template v-if="$slots.default && $slots.default[0] && $slots.default[0].text">
       <slot/>
     </template>
     <template v-else>
@@ -31,7 +31,7 @@
 </style>
 
 <script>
-  import ExternalIcon from "@/assets/icons/external.svg";
+  import ExternalIcon from "@/assets/icons/external.svg"
 
   export default {
     name: "ExternalLink",
@@ -41,33 +41,26 @@
         type: String,
         required: true
       },
-      showProtocol: {
-        type: Boolean,
-        default: false
-      },
-      showQuery: {
-        type: Boolean,
-        default: false
-      }
+      showProtocol: { type: Boolean },
+      showQuery: { type: Boolean }
     },
     computed: {
       label() {
-        const url = new URL(this.href);
-        let label = "";
+        const url = new URL(this.href)
+        let label = ""
 
         if (this.showProtocol) {
-          label += url.protocol;
-          label += "//";
+          label += url.protocol
+          label += "//"
         }
 
-        label += url.host + url.pathname;
+        label += url.host + url.pathname
 
-        if (this.showQuery) {
-          label += url.search;
-        }
+        if (this.showQuery)
+          label += url.search
 
-        return label;
+        return label
       }
     }
-  };
+  }
 </script>

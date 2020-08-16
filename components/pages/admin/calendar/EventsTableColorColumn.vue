@@ -14,7 +14,7 @@
 </style>
 
 <script>
-  import { eventColors, getCSSColorForEventColor } from "@/assets/js/eventColors";
+  import { eventColors, getCSSColorForEventColor } from "@/assets/js/event-colors"
 
   export default {
     name: "EventsTableColorColumn",
@@ -27,11 +27,11 @@
     computed: {
       name: vm => vm.data,
       style() {
-        return `--color: ${getCSSColorForEventColor(this.name)}`;
+        return `--color: ${getCSSColorForEventColor(this.name)}`
       },
       title() {
-        return eventColors[this.name].title;
+        return eventColors[this.name].title
       }
     }
-  };
+  }
 </script>

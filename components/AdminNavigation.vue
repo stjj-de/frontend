@@ -8,9 +8,9 @@
     <nav class="admin-navigation__container">
       <div class="admin-navigation__top">
         <nuxt-link
+          v-ripple.400="'rgba(0,0,0,0.1)'"
           class="admin-navigation__profile admin-navigation__item"
           :to="`/admin/account`"
-          v-ripple.400="'rgba(0,0,0,0.1)'"
           @click.native="open = false"
         >
           <img class="admin-navigation__image" alt="Dein Profilbild" :src="userImageURL">
@@ -22,9 +22,9 @@
         <nuxt-link
           v-for="(item, index) in items"
           :key="index"
+          v-ripple.400="'rgba(0,0,0,0.1)'"
           class="admin-navigation__item"
           :to="item.to"
-          v-ripple.400="'rgba(0,0,0,0.1)'"
           @click.native="open = false"
         >
           <component :is="item.icon" class="admin-navigation__icon"/>
@@ -228,17 +228,17 @@
 </style>
 
 <script>
-  import CalendarIcon from "@/assets/icons/calendar.svg";
-  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
-  import PencilIcon from "@/assets/icons/pencil.svg";
-  import ChurchIcon from "@/assets/icons/church.svg";
-  import VideoIcon from "@/assets/icons/video.svg";
-  import CircleIcon from "@/assets/icons/circle.svg";
-  import TextIcon from "@/assets/icons/text.svg";
-  import LogoutIcon from "@/assets/icons/logout.svg";
-  import { getUserImageURL } from "@/assets/js/getFileURL";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import LoadingPlaceholder from "@/components/LoadingPlaceholder";
+  import CalendarIcon from "@/assets/icons/calendar.svg"
+  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
+  import PencilIcon from "@/assets/icons/pencil.svg"
+  import ChurchIcon from "@/assets/icons/church.svg"
+  import VideoIcon from "@/assets/icons/video.svg"
+  import CircleIcon from "@/assets/icons/circle.svg"
+  import TextIcon from "@/assets/icons/text.svg"
+  import LogoutIcon from "@/assets/icons/logout.svg"
+  import { getUserImageURL } from "@/assets/js/get-file-url"
+  import LoadingOverlay from "@/components/LoadingOverlay"
+  import LoadingPlaceholder from "@/components/LoadingPlaceholder"
 
   const ITEMS = [
     vm => ({
@@ -283,7 +283,7 @@
       icon: ChurchIcon,
       visible: vm.$store.getters.userIsEditor
     })
-  ];
+  ]
 
   export default {
     name: "AdminNavigation",
@@ -292,12 +292,12 @@
       return {
         open: false,
         items: ITEMS.map(item => typeof item === "function" ? item(this) : item).filter(item => item.visible)
-      };
+      }
     },
     computed: {
       userImageURL() {
-        return getUserImageURL(this.$store.state.user.image);
+        return getUserImageURL(this.$store.state.user.image)
       }
     }
-  };
+  }
 </script>

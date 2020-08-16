@@ -9,8 +9,8 @@ export const eventColors = {
   INDIGO: { hex: "#5a67d8", title: "Indigo" },
   PURPLE: { hex: "#805ad5", title: "Violett" },
   PINK: { hex: "#d53f8c", title: "Pink" }
-};
+}
 
 export function getCSSColorForEventColor(name) {
-  return eventColors[name.toUpperCase()].hex;
+  return eventColors[name.toUpperCase()].hex
 }

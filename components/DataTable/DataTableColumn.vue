@@ -5,8 +5,8 @@
     :style="style"
   >
     <component
-      v-if="column.component"
       :is="column.component"
+      v-if="column.component"
       :data="row[key]"
       :row="row"
     />
@@ -45,16 +45,15 @@
     computed: {
       key: vm => vm.columnKey,
       style() {
-        const style = {};
+        const style = {}
 
-        if (this.column.width === undefined) {
-          style.flexGrow = "1";
-        } else {
-          style.width = this.column.width + "px";
-        }
+        if (this.column.width === undefined)
+          style.flexGrow = "1"
+        else
+          style.width = this.column.width + "px"
 
-        return style;
+        return style
       }
     }
-  };
+  }
 </script>

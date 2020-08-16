@@ -7,7 +7,7 @@
       :closable="!loading"
       :active="active"
       :loading="loading"
-      @close="close()"
+      @close="close"
     >
       <template v-slot:default>
         <InputField
@@ -24,14 +24,14 @@
       </template>
       <template v-slot:buttons>
         <MyButton
-          @click="close()"
+          @click="close"
         >
           Schließen
         </MyButton>
         <MyButton
           variant="primary"
           :disabled="!valid"
-          @click="submit()"
+          @click="submit"
         >
           Erstellen
         </MyButton>
@@ -45,13 +45,13 @@
 </style>
 
 <script>
-  import slugify from "slugify";
-  import MyModal from "@/components/MyModal";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import MyButton from "@/components/MyButton";
-  import { validateSlug } from "@/assets/js/validateSlug.js";
-  import GroupSelectField from "@/components/GroupSelectField";
+  import slugify from "slugify"
+  import MyModal from "@/components/MyModal"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
+  import { validateSlug } from "@/assets/js/validate-slug.js"
+  import GroupSelectField from "@/components/GroupSelectField"
 
   export default {
     name: "CreatePostModal",
@@ -81,40 +81,42 @@
             validateOrSaveAsync: value => validateSlug(this.$api, value)
           })
         }
-      };
+      }
     },
     computed: {
       valid() {
-        return (this.$store.state.user.group !== "NONE" || this.group !== null) && Object.values(this.fields).every(field => field.valid);
+        return (
+          this.$store.state.user.group !== "NONE" ||
+          this.group !== null
+        ) && Object.values(this.fields).every(field => field.valid)
       }
     },
     watch: {
       active() {
         if (this.active === false) {
-          this.fields.title.setValueAndReset("");
-          this.fields.slug.setValueAndReset("");
-        } else {
-          this.fields.title.focus();
-        }
+          this.fields.title.setValueAndReset("")
+          this.fields.slug.setValueAndReset("")
+        } else
+          this.fields.title.focus()
       },
       "fields.title.value"() {
         if (!this.fields.slug.touched) {
           this.fields.slug.value = slugify(this.fields.title.transformedValue, {
             lower: true,
             strict: true
-          });
+          })
 
-          this.fields.slug.runAllValidations();
+          this.fields.slug.runAllValidations()
         }
       }
     },
     methods: {
       close() {
-        this.$emit("update:active", false);
-        this.$emit("close");
+        this.$emit("update:active", false)
+        this.$emit("close")
       },
       async submit() {
-        this.loading = true;
+        this.loading = true
 
         const { data: { id } } = await this.$api.posts.create({
           title: this.fields.title.transformedValue,
@@ -122,10 +124,10 @@
           group: this.group,
           content: "",
           excerpt: ""
-        });
+        })
 
-        await this.$router.push(`/admin/posts/${id}`);
+        await this.$router.push(`/admin/posts/${id}`)
       }
     }
-  };
+  }
 </script>

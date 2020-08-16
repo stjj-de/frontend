@@ -9,7 +9,7 @@
         <h1 class="heading--3 login-page__heading">
           Anmelden
         </h1>
-        <form class="login-page__form" action="javascript:" @submit="submit()">
+        <form class="login-page__form" action="javascript:" @submit="submit">
           <InputField
             label="Benutzername"
             autocomplete="username"
@@ -108,19 +108,15 @@
 </style>
 
 <script>
-  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import LoadingOverlay from "@/components/LoadingOverlay";
-  import MyButton from "@/components/MyButton";
+  import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
 
   export default {
     name: "LoginPage",
     layout: "none",
-    components: { MyButton, LoadingOverlay, InputField, ArrowLeftIcon },
-    head: () => ({
-      title: "Anmelden"
-    }),
+    components: { MyButton, InputField, ArrowLeftIcon },
     data() {
       return {
         show: false,
@@ -129,21 +125,20 @@
           transform: value => value.trim(),
           required: "Bitte gib deinen Benutzernamen ein.",
           validate: value => {
-            if (value.includes(" ")) {
-              return "Benutzernamen enthalten keine Leerzeichen.";
-            }
+            if (value.includes(" ")) return "Benutzernamen enthalten keine Leerzeichen."
+
+            return null
           },
           debounceWait: 500,
           validateOrSaveAsync: async value => {
             const { data: user } = await this.$axios.$get(`/api/users/${value}?fields=id`, {
               validateStatus: status => [200, 404].includes(status)
-            });
+            })
 
-            if (user === null) {
-              return "Dieser Benutzername ist ungültig.";
-            }
+            if (user === null) return "Dieser Benutzername ist ungültig."
 
-            this.userID = user.id;
+            this.userID = user.id
+            return null
           }
         }),
         password: new InputFieldCompanion({
@@ -154,44 +149,49 @@
         }),
         userID: null,
         loading: false
-      };
+      }
     },
     computed: {
       nextURL() {
-        return this.$route.query.to || "/admin";
+        return this.$route.query.to || "/admin"
       }
     },
     async created() {
-      if ((await this.$axios.get("/api/auth/me", { validateStatus: status => [200, 403, 401].includes(status) })).status !== 200) {
-        this.show = true;
-      } else {
-        await this.$router.replace(this.nextURL);
-      }
+      if (
+        (await this.$axios.get(
+          "/api/auth/me",
+          { validateStatus: status => [200, 403, 401].includes(status) }
+        )).status === 200
+      ) await this.$router.replace(this.nextURL)
+      else this.show = true
     },
     methods: {
       async submit() {
-        this.username.touch();
-        this.password.touch();
-        if (!(this.username.valid && this.password.valid)) return;
+        this.username.touch()
+        this.password.touch()
+        if (!(this.username.valid && this.password.valid)) return
 
-        this.loading = true;
+        this.loading = true
 
         const result = await this.$axios.post("/api/auth", {
           id: this.userID,
           password: this.password.transformedValue
         }, {
           validateStatus: status => [204, 401].includes(status)
-        });
+        })
 
-        if (result.status === 204) {
-          await this.$router.replace(this.nextURL);
-        } else {
-          this.password.setError("Dein Passwort ist nicht richtig.", true);
-          this.username.disabled = false;
-          this.password.disabled = false;
-          this.loading = false;
+        if (result.status === 204)
+          await this.$router.replace(this.nextURL)
+        else {
+          this.password.setError("Dein Passwort ist nicht richtig.", true)
+          this.username.disabled = false
+          this.password.disabled = false
+          this.loading = false
         }
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Anmelden"
+    })
+  }
 </script>

@@ -15,7 +15,7 @@
 </style>
 
 <script>
-  import LoadingOverlay from "@/components/LoadingOverlay";
+  import LoadingOverlay from "@/components/LoadingOverlay"
 
   export default {
     name: "LoadingPlaceholder",
@@ -35,8 +35,8 @@
         return {
           width: this.width,
           height: this.height
-        };
+        }
       }
     }
-  };
+  }
 </script>

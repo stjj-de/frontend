@@ -9,7 +9,7 @@
     <DataTable
       :companion="table"
       loading-text="Gruppen werden geladen"
-      @row-click="onRowClick"
+      @row-click="id => onRowClick(id)"
     >
       <template v-slot:empty-state>
         <AdminDataTableEmptyState items-name="Gruppen"/>
@@ -27,7 +27,7 @@
     <EditGroupModal
       :group-id="editModalGroupID"
       :active="editModalActive"
-      @close="onEditModalClose"
+      @close="canceled => onEditModalClose(canceled)"
     />
   </main>
 </template>
@@ -36,20 +36,17 @@
 </style>
 
 <script>
-  import DataTable from "@/components/DataTable/DataTable";
-  import { DataTableCompanion } from "@/components/DataTable/DataTableCompanion";
-  import MyButton from "@/components/MyButton";
-  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState";
-  import EditGroupModal from "@/components/pages/admin/groups/EditGroupModal";
+  import DataTable from "@/components/DataTable/DataTable"
+  import { DataTableCompanion } from "@/components/DataTable/data-table-companion"
+  import MyButton from "@/components/MyButton"
+  import AdminDataTableEmptyState from "@/components/AdminDataTableEmptyState"
+  import EditGroupModal from "@/components/pages/admin/groups/EditGroupModal"
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 10
 
   export default {
     name: "GroupsPage",
     components: { EditGroupModal, AdminDataTableEmptyState, MyButton, DataTable },
-    head: () => ({
-      title: "Gruppen / Administration"
-    }),
     data() {
       return {
         editModalGroupID: null,
@@ -69,49 +66,49 @@
           sortBy: "title",
           sortOrder: "desc",
           itemsPerPage: ITEMS_PER_PAGE,
-          fetch: async (pageIndex, sortBy, sortOrder) => {
-            return await this.$api.users.populate(
-              await this.$api.groups.list({
-                sortBy,
-                ascending: sortOrder === "asc",
-                limit: ITEMS_PER_PAGE,
-                offset: ITEMS_PER_PAGE * pageIndex,
-                fields: ["id", "title", "members"],
-                onlyOwn: !this.$store.getters.userIsEditor
-              }),
-              "members",
-              ["realName"]
-            );
-          }
+          fetch: async (pageIndex, sortBy, sortOrder) => this.$api.users.populate(
+            await this.$api.groups.list({
+              sortBy,
+              ascending: sortOrder === "asc",
+              limit: ITEMS_PER_PAGE,
+              offset: ITEMS_PER_PAGE * pageIndex,
+              fields: ["id", "title", "members"],
+              onlyOwn: !this.$store.getters.userIsEditor
+            }),
+            "members",
+            ["realName"]
+          )
         })
-      };
+      }
     },
     beforeMount() {
-      this.table.initialize();
+      this.table.initialize()
     },
     methods: {
       onEditModalClose(canceled) {
-        this.editModalActive = false;
+        this.editModalActive = false
 
         if (!canceled) {
-          this.table.invalidateLastFetch();
-          this.table.fetch();
+          this.table.invalidateLastFetch()
+          this.table.fetch()
         }
       },
       onRowClick(id) {
-        this.openEditModal(id);
+        this.openEditModal(id)
       },
       updateUserDefinedVariables() {
-        if (this.filterString === undefined) {
-          this.table.userDefinedVariables = [];
-        } else {
-          this.table.userDefinedVariables = [this.filterString];
-        }
+        if (this.filterString === undefined)
+          this.table.userDefinedVariables = []
+        else
+          this.table.userDefinedVariables = [this.filterString]
       },
       openEditModal(id) {
-        this.editModalGroupID = id;
-        this.editModalActive = true;
+        this.editModalGroupID = id
+        this.editModalActive = true
       }
-    }
-  };
+    },
+    head: () => ({
+      title: "Gruppen / Administration"
+    })
+  }
 </script>

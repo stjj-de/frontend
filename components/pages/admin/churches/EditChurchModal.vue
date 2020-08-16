@@ -30,21 +30,21 @@
       </template>
       <template v-slot:buttons>
         <MyButton
-          @click="onCancel()"
+          @click="onCancel"
         >
           Abbrechen
         </MyButton>
         <MyButton
           :disabled="!changed || !valid"
           variant="primary"
-          @click="save()"
+          @click="save"
         >
           {{ isCreateNew ? "Erstellen" : "Speichern" }}
         </MyButton>
       </template>
     </MyModal>
     <ConfirmCancelModal :active.sync="confirmCancelModalActive" @confirm="close(true)"/>
-    <ConfirmDeleteModal item-type="Kirche" :active.sync="confirmDeleteModalActive" @confirm="delete_()"/>
+    <ConfirmDeleteModal item-type="Kirche" :active.sync="confirmDeleteModalActive" @confirm="delete_"/>
   </div>
 </template>
 
@@ -52,27 +52,23 @@
 </style>
 
 <script>
-  import MyModal from "@/components/MyModal";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import MyButton from "@/components/MyButton";
-  import ConfirmCancelModal from "@/components/ConfirmCancelModal";
-  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
-  import PostEditor from "@/components/pages/admin/posts/_id/PostEditor";
+  import MyModal from "@/components/MyModal"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
+  import ConfirmCancelModal from "@/components/ConfirmCancelModal"
+  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal"
 
   export default {
     name: "EditChurchModal",
-    components: { PostEditor, ConfirmDeleteModal, ConfirmCancelModal, MyButton, InputField, MyModal },
+    components: { ConfirmDeleteModal, ConfirmCancelModal, MyButton, InputField, MyModal },
     props: {
       churchId: {
         type: null,
         validate: value => typeof value === "string" || value === null,
         required: true
       },
-      active: {
-        type: Boolean,
-        default: false
-      }
+      active: { type: Boolean }
     },
     data() {
       return {
@@ -92,14 +88,14 @@
             required: true
           })
         }
-      };
+      }
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return Object.values(this.fields).every(field => field.valid)
       },
       isCreateNew() {
-        return this.churchId === "";
+        return this.churchId === ""
       },
       changed() {
         return Object.values(this.fields).some(field => field.changed)
@@ -107,79 +103,75 @@
     },
     watch: {
       active() {
-        if (this.active && this.churchId !== null) {
-          this.onActivate();
-        }
+        if (this.active && this.churchId !== null)
+          this.onActivate()
       },
       "fields.googleMapsID.transformedValue"(value) {
-        if (value.startsWith("https://goo.gl/maps/")) {
-          this.fields.googleMapsID.value = value.slice(20);
-        }
+        if (value.startsWith("https://goo.gl/maps/"))
+          this.fields.googleMapsID.value = value.slice(20)
       }
     },
     methods: {
       onActivate() {
-        this.fields.title.setValueAndReset("");
+        this.fields.title.setValueAndReset("")
 
-        if (!this.isCreateNew) {
-          this.fetchGroup();
-        }
+        if (!this.isCreateNew)
+          this.fetchGroup()
 
-        this.fields.title.focus();
+        this.fields.title.focus()
       },
       onCancel() {
-        if (this.changed) {
-          this.confirmCancelModalActive = true;
-        } else {
-          this.close(true);
-        }
+        if (this.changed)
+          this.confirmCancelModalActive = true
+        else
+          this.close(true)
       },
       close(canceled = false) {
-        this.$emit("close", canceled);
+        this.$emit("close", canceled)
       },
       async fetchGroup() {
-        const { churchId } = this;
+        const { churchId } = this
 
-        this.loading = true;
-        this.loadingText = "Kirche wird geladen";
+        this.loading = true
+        this.loadingText = "Kirche wird geladen"
 
         const church = await this.$api.churches.get(churchId, ["title", "googleMapsID"])
 
-        if (this.churchId !== churchId) return;
-        this.savedChurch = church;
+        if (this.churchId !== churchId) return
+        this.savedChurch = church
 
-        this.fields.title.setValueAndReset(church.title);
-        this.fields.googleMapsID.setValueAndReset(church.googleMapsID);
-        this.loading = false;
+        this.fields.title.setValueAndReset(church.title)
+        this.fields.googleMapsID.setValueAndReset(church.googleMapsID)
+        this.loading = false
       },
       async save() {
-        this.loading = true;
+        this.loading = true
 
         const data = {
           title: this.fields.title.transformedValue,
-          googleMapsID: this.fields.googleMapsID.transformedValue,
-        };
-
-        if (this.isCreateNew) {
-          this.loadingText = "Kirche wird erstellt";
-          await this.$api.churches.create(data);
-        } else {
-          this.loadingText = "Kirche wird gespeichert";
-          await this.$api.churches.update(this.churchId, data);
+          googleMapsID: this.fields.googleMapsID.transformedValue
         }
 
-        this.loading = false;
-        this.close();
+        if (this.isCreateNew) {
+          this.loadingText = "Kirche wird erstellt"
+          await this.$api.churches.create(data)
+        } else {
+          this.loadingText = "Kirche wird gespeichert"
+          await this.$api.churches.update(this.churchId, data)
+        }
+
+        this.loading = false
+        this.close()
       },
       async delete_() {
-        this.loading = true;
-        this.loadingText = "Kirche wird gelöscht";
+        this.loading = true
+        this.loadingText = "Kirche wird gelöscht"
 
-        await this.$api.churches.delete(this.churchId);
+        await this.$api.churches.delete(this.churchId)
 
-        this.loading = false;
-        this.close();
+        this.loading = false
+        this.close()
       }
     }
-  };
+  }
 </script>

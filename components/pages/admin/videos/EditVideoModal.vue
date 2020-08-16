@@ -20,10 +20,10 @@
         </template>
         <InputField label="Titel" :companion="fields.title"/>
         <DateTimeField
+          v-model="publishedAt"
           label="Veröffentlichungsdatum"
           placeholder="Nicht festgelegt"
           :companion="fields.publishedAt"
-          v-model="publishedAt"
         />
       </template>
       <template v-slot:secondary-buttons>
@@ -38,7 +38,7 @@
       <template v-slot:buttons>
         <MyButton
           class="edit-video-modal__cancel"
-          @click="onCancel()"
+          @click="onCancel"
         >
           Abbrechen
         </MyButton>
@@ -46,14 +46,14 @@
           class="edit-video-modal__save"
           :disabled="!changed || !valid"
           variant="primary"
-          @click="save()"
+          @click="save"
         >
           Speichern
         </MyButton>
       </template>
     </MyModal>
     <ConfirmCancelModal :active.sync="confirmCancelModalActive" @confirm="close(true)"/>
-    <ConfirmDeleteModal item-type="Video" :active.sync="confirmDeleteModalActive" @confirm="delete_()"/>
+    <ConfirmDeleteModal item-type="Video" :active.sync="confirmDeleteModalActive" @confirm="delete_"/>
   </div>
 </template>
 
@@ -65,15 +65,15 @@
 </style>
 
 <script>
-  import "vue-datetime/dist/vue-datetime.css";
-  import MyModal from "@/components/MyModal";
-  import InputField from "@/components/InputField/InputField";
-  import { InputFieldCompanion } from "@/components/InputField/InputFieldCompanion";
-  import MyButton from "@/components/MyButton";
-  import DateTimeField from "@/components/DateTimeField";
-  import ConfirmCancelModal from "@/components/ConfirmCancelModal";
-  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
-  import YoutubeThumbnail from "@/components/YoutubeThumbnail";
+  import "vue-datetime/dist/vue-datetime.css"
+  import MyModal from "@/components/MyModal"
+  import InputField from "@/components/InputField/InputField"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
+  import MyButton from "@/components/MyButton"
+  import DateTimeField from "@/components/DateTimeField"
+  import ConfirmCancelModal from "@/components/ConfirmCancelModal"
+  import ConfirmDeleteModal from "@/components/ConfirmDeleteModal"
+  import YoutubeThumbnail from "@/components/YoutubeThumbnail"
 
   export default {
     name: "EditVideoModal",
@@ -86,10 +86,7 @@
         validate: value => typeof value === "string" || value === null,
         required: true
       },
-      active: {
-        type: Boolean,
-        default: false
-      }
+      active: { type: Boolean }
     },
     data() {
       return {
@@ -108,80 +105,78 @@
             readonly: true
           })
         }
-      };
+      }
     },
     computed: {
       valid() {
-        return Object.values(this.fields).every(field => field.valid);
+        return Object.values(this.fields).every(field => field.valid)
       },
       changed() {
-        return Object.values(this.fields).some(field => field.changed);
+        return Object.values(this.fields).some(field => field.changed)
       }
     },
     watch: {
       active() {
-        if (this.active && this.videoId !== null) {
-          this.onActivate();
-        }
+        if (this.active && this.videoId !== null)
+          this.onActivate()
       }
     },
     methods: {
       onActivate() {
-        this.fields.title.setValueAndReset("");
-        this.fetchVideo();
-        this.fields.title.focus();
+        this.fields.title.setValueAndReset("")
+        this.fetchVideo()
+        this.fields.title.focus()
       },
       onCancel() {
-        if (this.changed) {
-          this.confirmCancelModalActive = true;
-        } else {
-          this.close(true);
-        }
+        if (this.changed)
+          this.confirmCancelModalActive = true
+        else
+          this.close(true)
       },
       close(canceled = false) {
-        this.confirmCancelModalActive = false;
-        this.$emit("close", canceled);
+        this.confirmCancelModalActive = false
+        this.$emit("close", canceled)
       },
       async fetchVideo() {
-        const { videoId } = this;
+        const { videoId } = this
 
-        this.loading = true;
-        this.loadingText = "Video wird geladen";
+        this.loading = true
+        this.loadingText = "Video wird geladen"
 
-        const video = await this.$api.videos.get(videoId, ["title", "publishedAt", "youtubeVideoID"]);
-        if (this.videoId !== videoId) return;
+        const video = await this.$api.videos.get(videoId, ["title", "publishedAt", "youtubeVideoID"])
+        if (this.videoId !== videoId) return
 
-        this.savedVideo = video;
-        this.fields.title.setValueAndReset(video.title);
-        this.publishedAt = video.publishedAt;
+        this.savedVideo = video
+        this.fields.title.setValueAndReset(video.title)
+        this.publishedAt = video.publishedAt
 
         this.$nextTick(() => {
-          this.fields.publishedAt.reset();
-        });
+          this.fields.publishedAt.reset()
+        })
 
-        this.loading = false;
+        this.loading = false
       },
       async save() {
-        this.loadingText = "Video wird gespeichert";
-        this.loading = true;
+        this.loadingText = "Video wird gespeichert"
+        this.loading = true
 
         await this.$api.videos.update(this.videoId, {
           title: this.fields.title.transformedValue,
           publishedAt: this.publishedAt
-        });
+        })
 
-        this.loading = false;
-        this.close();
+        this.loading = false
+        this.close()
       },
       async delete_() {
-        this.loading = true;
-        this.loadingText = "Video wird gelöscht";
+        this.loading = true
+        this.loadingText = "Video wird gelöscht"
 
-        await this.$api.videos.delete(this.videoId);
+        await this.$api.videos.delete(this.videoId)
 
-        this.loading = false;
-        this.close();
+        this.loading = false
+        this.close()
       }
     }
-  };
+  }
 </script>
