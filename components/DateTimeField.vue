@@ -5,6 +5,7 @@
       ref="picker"
       input-style="display: none"
       type="datetime"
+      :min-datetime="minDatetime"
       :phrases="{ ok: 'Fertig', cancel: 'Abbrechen' }"
     />
     <InputField
@@ -66,7 +67,23 @@
       placeholder: {
         type: String,
         default: ""
+      },
+      requireFuture: {
+        type: Boolean,
+        default: false
       }
+    },
+    data: () => ({
+      now: new Date()
+    }),
+    created() {
+      const id = setInterval(() => {
+        this.now = new Date()
+      }, 1000)
+
+      this.$on("hook:beforeDestroy", () => {
+        clearInterval(id)
+      })
     },
     computed: {
       pickerValue: {
@@ -81,6 +98,11 @@
         get() {
           return this.value;
         }
+      },
+      minDatetime() {
+        if (this.requireFuture) {
+          return this.now.toISOString()
+        } else return undefined
       }
     },
     watch: {

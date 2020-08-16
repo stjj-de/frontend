@@ -11,9 +11,10 @@
     >
       <template v-slot:default>
         <DateTimeField
-          label="Datum"
-          :companion="fields.date"
           v-model="date"
+          label="Datum"
+          require-future
+          :companion="fields.date"
         />
         <div class="input-field">
           <span class="input-field__label">Kirche</span>
