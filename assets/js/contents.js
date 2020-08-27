@@ -4,6 +4,7 @@ export const MESSDIENERPLAN = "MESSDIENERPLAN"
 export const PFARRBRIEF = "PFARRBRIEF"
 export const IMPRESSUM = "IMPRESSUM"
 export const PRIVACY_POLICY = "PRIVACY_POLICY"
+export const ADMIN_NEWS = "ADMIN_NEWS"
 
 export const CONTENTS = {
   [HOMEPAGE_INTRODUCTION]: {
@@ -38,5 +39,11 @@ export const CONTENTS = {
   [PRIVACY_POLICY]: {
     title: "Datenschutzerklärung",
     maxHeading: 1
+  },
+  [ADMIN_NEWS]: {
+    title: "Admin-News",
+    description: "Wird im Administrationsbereich angezeigt.",
+    maxHeading: 2,
+    adminOnly: true
   }
 }

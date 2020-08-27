@@ -19,6 +19,10 @@ $_elements: (
   "section": "section"
 );
 
+.formatted {
+  font-size: 1.05rem;
+}
+
 @each $class, $tags in $_elements {
   @each $tag in $tags {
     #{$tag}.formatted, .formatted #{$tag}, .#{$class} {

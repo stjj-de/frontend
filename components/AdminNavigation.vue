@@ -24,6 +24,7 @@
           :key="index"
           v-ripple.400="'rgba(0,0,0,0.1)'"
           class="admin-navigation__item"
+          exact
           :to="item.to"
           @click.native="open = false"
         >
@@ -229,6 +230,7 @@
 
 <script>
   import CalendarIcon from "@/assets/icons/calendar.svg"
+  import AnnouncementIcon from "@/assets/icons/announcement.svg"
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
   import PencilIcon from "@/assets/icons/pencil.svg"
   import ChurchIcon from "@/assets/icons/church.svg"
@@ -241,6 +243,11 @@
   import LoadingPlaceholder from "@/components/LoadingPlaceholder"
 
   const ITEMS = [
+    {
+      label: "Neuigkeiten",
+      to: "/admin",
+      icon: AnnouncementIcon
+    },
     vm => ({
       label: "Artikel",
       to: "/admin/posts",
@@ -291,7 +298,9 @@
     data() {
       return {
         open: false,
-        items: ITEMS.map(item => typeof item === "function" ? item(this) : item).filter(item => item.visible)
+        items: ITEMS
+          .map(item => typeof item === "function" ? item(this) : item)
+          .filter(item => item.visible === undefined || item.visible)
       }
     },
     computed: {

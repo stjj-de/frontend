@@ -3,27 +3,29 @@
     <h1 class="heading--1">
       Inhalte
     </h1>
-    <section v-for="[id, meta] in Object.entries(contents)" :key="id">
-      <h2>{{ meta.title }}</h2>
-      <p v-if="meta.description">
-        {{ meta.description }}
+    <section v-for="content in contents" :key="content.id">
+      <h2>{{ content.title }}</h2>
+      <p v-if="content.description">
+        {{ content.description }}
       </p>
-      <template v-if="meta.file !== undefined">
+      <template v-if="content.file !== undefined">
         <p>
-          <span v-if="meta.file.id === ''">Keine Datei hochgeladen.</span>
+          <span v-if="content.file.id === ''">Keine Datei hochgeladen.</span>
           <a
             v-else
             class="link"
             target="_blank"
-            :href="`/files/${meta.file.id}`"
-          >Datei anzeigen</a>
+            :href="`/files/${content.file.id}`"
+          >
+            Datei anzeigen
+          </a>
         </p>
         <FileUploadButton
-          :after-upload-action="getAfterUploadAction(id)"
-          :mime-type="meta.file.mimeType || null"
+          :after-upload-action="getAfterUploadAction(content)"
+          :mime-type="content.file.mimeType || null"
         />
       </template>
-      <MyButton v-else @click="openEditModal(id)">
+      <MyButton v-else @click="openEditModal(content.id)">
         Bearbeiten
       </MyButton>
     </section>
@@ -37,33 +39,49 @@
 <script>
   import MyButton from "@/components/MyButton"
   import EditContentModal from "@/components/pages/admin/contents/EditContentModal"
-  import { CONTENTS } from "@/assets/js/contents"
+  import {
+    ADMIN_NEWS,
+    CONTENTS,
+    GEMEINDE,
+    HOMEPAGE_INTRODUCTION,
+    IMPRESSUM,
+    MESSDIENERPLAN,
+    PFARRBRIEF, PRIVACY_POLICY
+  } from "@/assets/js/contents"
   import FileUploadButton from "@/components/FileUploadButton"
+
+  const ORDER = [
+    MESSDIENERPLAN,
+    PFARRBRIEF,
+    GEMEINDE,
+    HOMEPAGE_INTRODUCTION,
+    IMPRESSUM,
+    PRIVACY_POLICY,
+    ADMIN_NEWS
+  ]
 
   export default {
     name: "ContentsPage",
     components: { FileUploadButton, EditContentModal, MyButton },
-    async asyncData({ $api }) {
-      const contents = { ...CONTENTS }
-
-      for (const key in contents) {
-        if (!Object.hasOwnProperty.apply(contents, [key])) continue
-
-        const meta = contents[key]
-
-        if (meta.file) {
-          contents[key] = {
-            ...meta,
-            file: {
-              ...meta.file,
-              // eslint-disable-next-line no-await-in-loop
-              id: await $api.contents.get(key)
-            }
+    async asyncData({ $api, store }) {
+      return {
+        contents: (await Promise.all(ORDER.map(async id => {
+          const meta = CONTENTS[id]
+          if (meta.adminOnly) {
+            await store.state.userPromise
+            if (store.state.user.role !== "ADMINISTRATOR") return null
           }
-        }
-      }
 
-      return { contents }
+          const data = {
+            id,
+            ...meta
+          }
+
+          if (meta.file) data.file.id = await $api.contents.get(id)
+
+          return data
+        }))).filter(content => content !== null)
+      }
     },
     data: () => ({
       contents: {},
@@ -78,10 +96,10 @@
         this.editModalContentID = id
         this.editModalActive = true
       },
-      getAfterUploadAction(id) {
+      getAfterUploadAction(content) {
         return async data => {
-          await this.$api.contents.update(id, data.id)
-          this.contents[id].file.id = data.id
+          await this.$api.contents.update(content.id, data.id)
+          content.file.id = data.id
         }
       }
     },

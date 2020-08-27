@@ -4,7 +4,7 @@
       Bild wird hochgeladen
     </LoadingOverlay>
     <vue-editor
-      class="quill-enduser"
+      class="quill-enduser post-editor__quill"
       use-custom-image-handler
       :value="value"
       :editor-toolbar="editorToolbar"
