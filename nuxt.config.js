@@ -62,7 +62,7 @@ const config = {
     "@/plugins/vue-ripple-directive",
     "@/plugins/axios-error-handler",
     "@/plugins/api",
-    "@plugins/vue-flash-message"
+    { src: "@/plugins/vue-flash-message", mode: "client" }
   ],
   /*
   ** Nuxt.js dev-modules
