@@ -101,6 +101,14 @@ const config = {
 if (isDevelopmentEnvironment) {
   config.modules.push("@nuxtjs/proxy")
   config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"]
+} else {
+  config.buildModules.push("nuxt-ackee")
+  config.ackee = {
+    // TODO: Change to data for stjj.de
+    server: "https://analytics.stjj.moritzruth.de",
+    domainId: "9c4b4250-5486-4fc9-be83-d7e3317c2f30",
+    detailed: false
+  }
 }
 
 module.exports = config
