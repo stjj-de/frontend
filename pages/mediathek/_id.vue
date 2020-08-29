@@ -33,13 +33,19 @@
 
   .video-page__back {
     font-size: 1.5rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 20px;
     border-bottom: none;
+    padding: 15px;
+    border-radius: 8px;
 
     color: colors.$blue;
     text-decoration: none;
+
+    transition: 200ms ease background-color;
+    &:hover, &:focus {
+      background: transparentize(colors.$blue, 0.8)
+    }
   }
 
   .video-page__back-icon {
