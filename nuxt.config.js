@@ -2,6 +2,8 @@ const isDevelopment = process.env.NODE_ENV === "development"
 if (isDevelopment) process.env.IS_DEV_ENV = "true"
 const isDevelopmentEnvironment = process.env.IS_DEV_ENV === "true"
 
+const META_DESCRIPTION = "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes."
+
 const config = {
   server: {
     host: "0.0.0.0"
@@ -11,7 +13,7 @@ const config = {
   ** Headers of the page
   */
   head: {
-    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes",
+    titleTemplate: "%s - Katholische Kirchengemeinde St. Josef - St. Johannes.",
     title: "Start",
     htmlAttrs: { lang: "de" },
     script: [
@@ -23,19 +25,18 @@ const config = {
       {
         hid: "description",
         name: "description",
-        content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes."
+        content: META_DESCRIPTION
       },
       {
         hid: "og:description",
         name: "og:description",
-        content: "Die Webseite der Katholischen Kirchengemeinde St. Josef - St. Johannes."
+        content: META_DESCRIPTION
       },
       { hid: "og:image", name: "og:image", content: "/og-image.png" },
       { hid: "og:site_name", name: "og:site_name", content: "Katholische Kirchengemeinde St. Josef - St. Johannes" },
       { hid: "og:locale", name: "og:locale", content: "de_DE" }
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Sen:wght@400;600&display=swap"
@@ -75,8 +76,14 @@ const config = {
   */
   modules: [
     "svg-to-vue-component/nuxt",
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa"
   ],
+  pwa: {
+    meta: false,
+    manifest: false,
+    workbox: false
+  },
   axios: {
     baseURL: isDevelopmentEnvironment ? "http://127.0.0.1:8000" : `http://${process.env.SSR_BACKEND_HOST}`,
     browserBaseURL: "/",
