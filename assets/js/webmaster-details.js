@@ -1,4 +1,4 @@
 export const WEBMASTER = {
-  name: "Moritz",
-  email: "moritz@stjj.de"
+  name: "Moritz Ruth",
+  email: "webmaster@moritzruth.de"
 }
