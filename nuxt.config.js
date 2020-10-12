@@ -76,14 +76,8 @@ const config = {
   */
   modules: [
     "svg-to-vue-component/nuxt",
-    "@nuxtjs/axios",
-    "@nuxtjs/pwa"
+    "@nuxtjs/axios"
   ],
-  pwa: {
-    meta: false,
-    manifest: false,
-    workbox: false
-  },
   axios: {
     baseURL: isDevelopmentEnvironment ? "http://127.0.0.1:8000" : `http://${process.env.SSR_BACKEND_HOST}`,
     browserBaseURL: "/",
@@ -111,10 +105,9 @@ if (isDevelopmentEnvironment) {
 } else {
   config.buildModules.push("nuxt-ackee")
   config.ackee = {
-    // TODO: Change to data for stjj.de
-    server: "https://analytics.stjj.moritzruth.de",
-    domainId: "9c4b4250-5486-4fc9-be83-d7e3317c2f30",
-    detailed: false
+    server: "https://analytics.stjj.de",
+    domainId: "200e03a4-d36b-4b24-9b81-0bab7431b46e",
+    detailed: true
   }
 }
 
