@@ -73,11 +73,14 @@
 
   .navigation-bar__logo {
     position: absolute;
-    top: 10%;
-    left: 3%;
-    height: 80%;
+    left: 1%;
+    height: 100%;
 
-    display: none;
+    display: block;
+
+    @media (max-width: 1300px) {
+      display: none
+    }
   }
 
   .navigation-bar__container-2 {
@@ -224,10 +227,6 @@
 
     .navigation-bar__toggle {
       display: none;
-    }
-
-    .navigation-bar__logo {
-      display: block;
     }
 
     .navigation-bar__content {
