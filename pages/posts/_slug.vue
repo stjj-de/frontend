@@ -26,13 +26,13 @@
 
   .post-page__irrelevant {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-align: center;
     margin-bottom: 20px;
     padding: 20px 10px;
     color: darken(colors.$red, 10);
     border: 2px solid transparentize(colors.$red, 0.2);
-    border-radius: 10px;
+    border-radius: 5px;
   }
 
   .post-page__meta {

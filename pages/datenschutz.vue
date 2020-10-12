@@ -1,7 +1,7 @@
 <template>
   <div class="privacy-policy-page">
     <NavigationBar title="Datenschutzerklärung"/>
-    <main class="content formatted quill-enduser" v-html="content"></main>
+    <ContentOutlet class="content" :html="content"/>
   </div>
 </template>
 
@@ -12,10 +12,11 @@
 <script>
   import NavigationBar from "@/components/NavigationBar"
   import { PRIVACY_POLICY } from "@/assets/js/contents"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "PrivacyPolicyPage",
-    components: { NavigationBar },
+    components: { ContentOutlet, NavigationBar },
     async asyncData({ $api }) {
       return {
         content: await $api.contents.get(PRIVACY_POLICY)

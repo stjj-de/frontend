@@ -40,6 +40,8 @@
       addListeners() {
         this.$el.querySelectorAll("[data-router-link]").forEach(element => {
           element.addEventListener("click", event => {
+            if (event.ctrlKey || event.shiftKey) return
+
             event.preventDefault()
             this.$router.push(element.getAttribute("href"))
           })

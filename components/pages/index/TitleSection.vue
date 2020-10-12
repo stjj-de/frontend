@@ -13,7 +13,7 @@
     </div>
     <div class="title-section__description">
       <div class="title-section__introduction-container">
-        <div class="quill-enduser formatted title-section__introduction" v-html="introduction"></div>
+        <ContentOutlet class="title-section__introduction" :html="introduction"/>
       </div>
       <RedBlob class="title-section__red-blob"/>
     </div>
@@ -22,7 +22,6 @@
 
 <style lang="scss">
   @use "~@/assets/styles/screenSize";
-  @use "~@/assets/styles/quill-enduser.scss";
 
   .title-section {
     margin-top: 20px;
@@ -124,10 +123,11 @@
 <script>
   import BlueBlob from "@/assets/blobs/blue.svg"
   import RedBlob from "@/assets/blobs/red.svg"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "TitleSection",
-    components: { BlueBlob, RedBlob },
+    components: { ContentOutlet, BlueBlob, RedBlob },
     props: {
       introduction: {
         type: String,

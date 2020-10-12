@@ -5,14 +5,14 @@
       <section>
         <h1>Gruppierungen</h1>
         <Accordion v-for="group in groups" :key="group.id" :label="group.title">
-          <div class="quill-enduser" v-html="group.description"></div>
+          <ContentOutlet :html="group.description"/>
           <div class="gemeinde-page__group-posts">
             <nuxt-link :to="`/posts?group=${group.id}`">Artikel anzeigen</nuxt-link>
           </div>
         </Accordion>
       </section>
       <section>
-        <div class="quill-enduser" v-html="contents.gemeinde"></div>
+        <ContentOutlet :html="contents.gemeinde"/>
       </section>
       <section>
         <h1>Downloads</h1>
@@ -30,8 +30,6 @@
 </template>
 
 <style lang="scss">
-  @use "~@/assets/styles/quill-enduser";
-
   .gemeinde-page__download {
     font-size: 1.4rem;
     margin-bottom: 5px;
@@ -48,10 +46,11 @@
   import NavigationBar from "@/components/NavigationBar"
   import Accordion from "@/components/Accordion"
   import { GEMEINDE, MESSDIENERPLAN, PFARRBRIEF } from "@/assets/js/contents"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "GemeindePage",
-    components: { Accordion, NavigationBar },
+    components: { ContentOutlet, Accordion, NavigationBar },
     async asyncData({ $api }) {
       return {
         groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,

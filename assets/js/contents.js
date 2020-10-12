@@ -1,4 +1,5 @@
 export const HOMEPAGE_INTRODUCTION = "HOMEPAGE_INTRODUCTION"
+export const HOMEPAGE_TOP = "HOMEPAGE_TOP"
 export const GEMEINDE = "GEMEINDE"
 export const MESSDIENERPLAN = "MESSDIENERPLAN"
 export const PFARRBRIEF = "PFARRBRIEF"
@@ -13,6 +14,11 @@ export const CONTENTS = {
       "Dieser Text steht auf der Startseite ganz oben und ist sofort sichtbar. " +
       "Er sollte für eine kurze Vorstellung der Pfarrei genutzt werden.",
     maxHeading: 7
+  },
+  [HOMEPAGE_TOP]: {
+    title: "Text oben auf der Startseite",
+    description: "Dieser Text steht auf der Startseite unter der Vorstellung.",
+    maxHeading: 2
   },
   [GEMEINDE]: {
     title: "Text auf der Gemeinde-Seite",

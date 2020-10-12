@@ -1,21 +1,22 @@
 <template>
   <div class="impressum-page">
     <NavigationBar title="Impressum"/>
-    <main class="content formatted quill-enduser" v-html="content"></main>
+    <ContentOutlet class="content" :html="content" tag="main"/>
   </div>
 </template>
 
 <style scoped lang="scss">
-  @use "~@/assets/styles/quill-enduser";
+
 </style>
 
 <script>
   import NavigationBar from "@/components/NavigationBar"
   import { IMPRESSUM } from "@/assets/js/contents"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "ImpressumPage",
-    components: { NavigationBar },
+    components: { ContentOutlet, NavigationBar },
     async asyncData({ $api }) {
       return {
         content: await $api.contents.get(IMPRESSUM)

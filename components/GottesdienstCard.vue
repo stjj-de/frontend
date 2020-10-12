@@ -6,7 +6,7 @@
         {{ gottesdienst.church.title }}
       </a>
     </span>
-    <div class="gottesdienst-card__description quill-enduser formatted" v-html="gottesdienst.description"></div>
+    <ContentOutlet class="gottesdienst-card__description" :html="gottesdienst.description"/>
   </div>
 </template>
 
@@ -34,9 +34,11 @@
 
 <script>
   import { formatDateWithTimeAndName } from "@/assets/js/date-utils"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "GottesdienstCard",
+    components: { ContentOutlet },
     props: {
       gottesdienst: {
         type: Object,
