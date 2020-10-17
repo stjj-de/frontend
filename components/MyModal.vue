@@ -122,7 +122,7 @@
   }
 
   .my-modal__title {
-    margin: 0;
+    margin: 0 !important;
     font-weight: bold;
 
     @include screenSize.mobile {

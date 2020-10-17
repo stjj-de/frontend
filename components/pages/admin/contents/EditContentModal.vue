@@ -35,9 +35,16 @@
 </template>
 
 <style lang="scss">
+  @use "~@/assets/styles/screenSize";
+
   .edit-content-modal__editor {
     .ql-container {
-      min-height: 50vh;
+      height: 50vh;
+      overflow: auto;
+
+      @include screenSize.mobile {
+        height: 40vh;
+      }
     }
   }
 </style>
