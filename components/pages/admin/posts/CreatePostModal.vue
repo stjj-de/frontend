@@ -45,7 +45,6 @@
 </style>
 
 <script>
-  import slugify from "slugify"
   import MyModal from "@/components/MyModal"
   import InputField from "@/components/InputField/InputField"
   import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
@@ -53,6 +52,7 @@
   import { validateSlugAsync } from "@/assets/js/validate-slug.js"
   import GroupSelectField from "@/components/GroupSelectField"
   import { validateSlug } from "@/assets/js/validate-slug"
+  import { slugify } from "@/assets/js/slugify"
 
   export default {
     name: "CreatePostModal",
