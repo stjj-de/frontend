@@ -1,12 +1,8 @@
 <template>
   <div class="index-page">
     <NavigationBar/>
-    <TitleSection :introduction="introduction"/>
-    <TransformInternalLinks
-      class="quill-enduser content formatted index-page__text"
-      tag="div"
-      :html="text"
-    />
+    <TitleSection :content="introduction"/>
+    <ContentOutlet class="index-page__content content" :html="content"/>
     <PostsSection :posts="posts"/>
     <CalendarSection/>
   </div>
@@ -17,13 +13,11 @@
   @use "~@/assets/styles/formatted";
 
   .index-page {
-    overflow: hidden;
     padding-bottom: 80px;
   }
 
-  .index-page__text {
+  .index-page__content {
     margin-top: 100px;
-
     font-size: 1.2rem;
   }
 </style>
@@ -34,15 +28,15 @@
   import PostsSection from "@/components/pages/index/PostsSection"
   import CalendarSection from "@/components/pages/index/CalendarSection"
   import { HOMEPAGE_INTRODUCTION, HOMEPAGE_TOP } from "@/assets/js/contents"
-  import TransformInternalLinks from "@/components/TransformInternalLinks"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "IndexPage",
-    components: { TransformInternalLinks, CalendarSection, PostsSection, TitleSection, NavigationBar },
+    components: { ContentOutlet, CalendarSection, PostsSection, TitleSection, NavigationBar },
     async asyncData({ $api }) {
       return {
         introduction: await $api.contents.get(HOMEPAGE_INTRODUCTION),
-        text: await $api.contents.get(HOMEPAGE_TOP),
+        content: await $api.contents.get(HOMEPAGE_TOP),
         posts: await $api.users.populate(await $api.posts.list({
           fields: PostsSection.POST_FIELDS,
           limit: 2,
@@ -56,7 +50,7 @@
     },
     data: () => ({
       introduction: "",
-      text: "",
+      content: "",
       posts: []
     }),
     head: () => ({

@@ -1,21 +1,10 @@
 <template>
-  <section class="title-section content">
-    <div class="title-section__title">
-      <div class="title-section__title-text">
-        <div class="title-section__line-1">
-          Katholische Kirchengemeinde
-        </div>
-        <div class="title-section__line-2">
-          St. Josef - St. Johannes
-        </div>
-      </div>
-      <BlueBlob class="title-section__blue-blob"/>
+  <section class="title-section">
+    <div class="title-section__side">
+      <ContentOutlet class="title-section__content" :html="content"/>
     </div>
-    <div class="title-section__description">
-      <div class="title-section__introduction-container">
-        <ContentOutlet class="title-section__introduction" :html="introduction"/>
-      </div>
-      <RedBlob class="title-section__red-blob"/>
+    <div class="title-section__side title-section__logo-side">
+      <img class="title-section__logo" alt="Unser Logo" src="/icon.png"/>
     </div>
   </section>
 </template>
@@ -23,113 +12,97 @@
 <style lang="scss">
   @use "~@/assets/styles/screenSize";
 
+  @keyframes title-section__scale-up {
+    from {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   .title-section {
-    margin-top: 20px;
-  }
-
-  .title-section__title {
-    position: relative;
-    height: 100px;
-  }
-
-  .title-section__title-text {
-    position: absolute;
-    top: 70px;
-    right: 40px;
-    z-index: 1;
-
-    text-align: right;
-  }
-
-  .title-section__line-1 {
-    font-size: 2.4rem;
-  }
-
-  .title-section__line-2 {
-    font-size: 3.4rem;
-  }
-
-  .title-section__blue-blob {
-    position: absolute;
-    top: -50px;
-    right: -20%;
-    pointer-events: none;
-    margin-right: 40px;
-    height: 500px;
-  }
-
-  @include screenSize.mobile {
-    .title-section__title {
-      height: 200px;
-    }
-
-    .title-section__title-text {
-      top: 80px;
-      left: unset;
-      right: 10px;
-      width: 100%;
-    }
-
-    .title-section__line-1 {
-      font-size: 2rem;
-    }
-
-    .title-section__line-2 {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-
-    .title-section__blue-blob {
-      top: -40px;
-      height: 450px;
-      right: -200px;
-    }
-  }
-
-  .title-section__description {
-    position: relative;
-    height: 400px;
-  }
-
-  .title-section__introduction-container {
-    position: relative;
-    z-index: 1;
+    height: 60vh;
+    padding: 0 100px;
     display: flex;
+    justify-content: space-around;
+
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .title-section__side {
+    width: 50%;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    min-height: 400px;
+
+    animation: title-section__scale-up 0.8s ease-out both;
+
+    &:first-child {
+      animation-delay: 0ms;
+    }
+
+    &:last-child {
+      animation-delay: 400ms;
+
+      max-width: 500px;
+      align-items: center;
+      margin-top: 10px;
+    }
   }
 
-  .title-section__introduction {
-    font-size: 1.5rem!important;
-    line-height: 2.8rem;
+  .title-section__content {
+    font-size: 2.5rem;
   }
 
-  .title-section__red-blob {
-    height: 600px;
-    position: absolute;
-    top: -50px;
-    left: -210px;
-    pointer-events: none;
+  .title-section__logo {
+    width: 50%;
+    min-width: 200px;
+    max-width: 300px;
   }
 
-  @include screenSize.mobile {
-    .title-section__introduction {
-      font-size: 1.4rem;
-      line-height: 2rem;
+  @media(max-width: 1000px) {
+    .title-section {
+      flex-direction: column-reverse;
+      justify-content: center;
+      align-items: center;
+      padding: 0 50px;
+      height: auto;
+    }
+
+    .title-section__side {
+      &:first-child {
+        width: 100%;
+        animation-delay: 400ms;
+      }
+
+      &:last-child {
+        animation-delay: 0ms;
+      }
+    }
+
+    .title-section__logo {
+      width: 300px;
+    }
+
+    .title-section__content {
+      font-size: 2rem;
     }
   }
 </style>
 
 <script>
-  import BlueBlob from "@/assets/blobs/blue.svg"
-  import RedBlob from "@/assets/blobs/red.svg"
   import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "TitleSection",
-    components: { ContentOutlet, BlueBlob, RedBlob },
+    components: { ContentOutlet },
     props: {
-      introduction: {
+      content: {
         type: String,
         required: true
       }
