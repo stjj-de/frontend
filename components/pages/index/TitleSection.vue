@@ -56,7 +56,7 @@
   }
 
   .title-section__content {
-    font-size: 2.5rem;
+    font-size: 2.5rem !important;
   }
 
   .title-section__logo {
