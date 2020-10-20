@@ -64,9 +64,13 @@
     height: var(--navigation-bar-height);
 
     .navigation-bar--show-background & {
-      background: transparentize(colors.$background, 0.2);
-      backdrop-filter: blur(20px);
+      background: transparentize(colors.$background, 0.03);
       box-shadow: 0 5px 10px 0 transparentize(colors.$background-c, 0.9);
+
+      @supports (backdrop-filter: blur(20px)) {
+        background: transparentize(colors.$background, 0.4);
+        backdrop-filter: blur(20px);
+      }
     }
   }
 
