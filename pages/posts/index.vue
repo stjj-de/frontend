@@ -108,7 +108,7 @@
     }),
     computed: {
       title() {
-        return this.group === null ? "Artikel" : `Artikel von ${this.group.title}`
+        return this.group === null ? "Aktuelles" : `Artikel von ${this.group.title}`
       },
       endReachedMessage() {
         if (this.group === null) {
