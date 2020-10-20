@@ -3,7 +3,7 @@
     <div class="title-section__side">
       <ContentOutlet class="title-section__content" :html="content"/>
     </div>
-    <div class="title-section__side title-section__logo-side">
+    <div class="title-section__side">
       <img class="title-section__logo" alt="Unser Logo" src="/icon.png"/>
     </div>
   </section>
@@ -72,6 +72,7 @@
       align-items: center;
       padding: 0 50px;
       height: auto;
+      margin-top: -10px;
     }
 
     .title-section__side {
@@ -90,7 +91,7 @@
     }
 
     .title-section__content {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
   }
 </style>

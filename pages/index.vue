@@ -2,6 +2,7 @@
   <div class="index-page">
     <NavigationBar/>
     <TitleSection :content="introduction"/>
+    <ImagesSection/>
     <ContentOutlet class="index-page__content content" :html="content"/>
     <PostsSection :posts="posts"/>
     <CalendarSection/>
@@ -17,7 +18,6 @@
   }
 
   .index-page__content {
-    margin-top: 100px;
     font-size: 1.2rem;
   }
 </style>
@@ -29,10 +29,11 @@
   import CalendarSection from "@/components/pages/index/CalendarSection"
   import { HOMEPAGE_INTRODUCTION, HOMEPAGE_TOP } from "@/assets/js/contents"
   import ContentOutlet from "@/components/ContentOutlet"
+  import ImagesSection from "@/components/pages/index/ImagesSection"
 
   export default {
     name: "IndexPage",
-    components: { ContentOutlet, CalendarSection, PostsSection, TitleSection, NavigationBar },
+    components: { ImagesSection, ContentOutlet, CalendarSection, PostsSection, TitleSection, NavigationBar },
     async asyncData({ $api }) {
       return {
         introduction: await $api.contents.get(HOMEPAGE_INTRODUCTION),

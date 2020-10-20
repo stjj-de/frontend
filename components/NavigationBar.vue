@@ -2,7 +2,6 @@
   <div class="navigation-bar" :class="classes">
     <div class="navigation-bar__placeholder"></div>
     <div class="navigation-bar__container-1">
-      <img class="navigation-bar__logo" src="/icon.png" alt="Logo">
       <div class="navigation-bar__container-2">
         <div class="navigation-bar__title-container">
           <h1 class="navigation-bar__title">
