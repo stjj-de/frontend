@@ -151,7 +151,7 @@
   import DateTimeField from "@/components/DateTimeField"
   import MyModal from "@/components/MyModal"
   import LoadingOverlay from "@/components/LoadingOverlay"
-  import { validateSlug } from "@/assets/js/validate-slug.js"
+  import { validateSlug, validateSlugAsync } from "@/assets/js/validate-slug.js"
   import GroupSelectField from "@/components/GroupSelectField"
 
   export default {
@@ -196,13 +196,8 @@
           slug: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Slug ein.",
-            validate: value => {
-              if (value.startsWith("-") || value.endsWith("-"))
-                return "Slugs dürfen nicht mit \"-\" anfangen oder enden."
-
-              return null
-            },
-            validateOrSaveAsync: value => validateSlug(this.$api, value)
+            validate: validateSlug,
+            validateOrSaveAsync: value => validateSlugAsync(this.$api, value)
           }),
           excerpt: new InputFieldCompanion({
             transform: value => value.trim(),

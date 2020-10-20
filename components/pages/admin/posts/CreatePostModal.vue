@@ -50,8 +50,9 @@
   import InputField from "@/components/InputField/InputField"
   import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
   import MyButton from "@/components/MyButton"
-  import { validateSlug } from "@/assets/js/validate-slug.js"
+  import { validateSlugAsync } from "@/assets/js/validate-slug.js"
   import GroupSelectField from "@/components/GroupSelectField"
+  import { validateSlug } from "@/assets/js/validate-slug"
 
   export default {
     name: "CreatePostModal",
@@ -78,7 +79,8 @@
           slug: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Slug ein.",
-            validateOrSaveAsync: value => validateSlug(this.$api, value)
+            validate: validateSlug,
+            validateOrSaveAsync: value => validateSlugAsync(this.$api, value)
           })
         }
       }
