@@ -18,7 +18,7 @@
     @include card.all;
 
     font-size: 1.2rem;
-    padding: 30px
+    padding: 25px 30px
   }
 
   .gottesdienst-card__date {
@@ -30,10 +30,16 @@
     color: transparentize(colors.$background-c, 0.5);
     margin: 0 5px;
   }
+
+  .gottesdienst-card__description {
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
 </style>
 
 <script>
-  import { formatDateWithTimeAndName } from "@/assets/js/date-utils"
+  import { formatShortDateWithTimeAndNameAsSentence } from "@/assets/js/date-utils"
   import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
@@ -46,7 +52,7 @@
       }
     },
     computed: {
-      formattedDate: vm => formatDateWithTimeAndName(vm.gottesdienst.date)
+      formattedDate: vm => formatShortDateWithTimeAndNameAsSentence(vm.gottesdienst.date)
     },
     CHURCH_SERVICE_DATE_FIELDS: ["date", "church", "description"],
     CHURCH_SERVICE_DATE_CHURCH_FIELDS: ["title", "googleMapsID"]

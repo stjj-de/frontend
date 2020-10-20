@@ -20,9 +20,20 @@ export function ensureDateObject(date) {
   return new Date(date)
 }
 
-export function formatDateWithTimeAndName(date) {
-  return format(ensureDateObject(date), "EEEEEE, d.L.yyyy HH:mm", { locale: dateFnsLocale })
+export const formatShortDateWithTimeAndNameAsSentence = date => {
+  const d = ensureDateObject(date)
+
+  const datePart = format(d, "EEEE, d.L", { locale: dateFnsLocale })
+  const timePart = format(d, "HH:mm", { locale: dateFnsLocale })
+
+  return `${datePart} um ${timePart}`
 }
+
+export const formatDateWithTimeAndShortName = date => format(
+  ensureDateObject(date),
+  "EEEEEE, d.L.yyyy HH:mm",
+  { locale: dateFnsLocale }
+)
 
 export function formatDateWithTime(date) {
   return format(ensureDateObject(date), "d.L.yyyy HH:mm", { locale: dateFnsLocale })
