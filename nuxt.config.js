@@ -106,7 +106,7 @@ if (isDevelopmentEnvironment) {
   config.buildModules.push("nuxt-ackee")
   config.ackee = {
     server: "https://analytics.stjj.de",
-    domainId: "200e03a4-d36b-4b24-9b81-0bab7431b46e",
+    domainId: "45431238-4225-4455-9022-cdf4ef7553e1",
     detailed: true
   }
 }
