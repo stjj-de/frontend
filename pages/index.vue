@@ -10,9 +10,6 @@
 </template>
 
 <style scoped lang="scss">
-  @use "~@/assets/styles/quill-enduser";
-  @use "~@/assets/styles/formatted";
-
   .index-page {
     padding-bottom: 80px;
   }

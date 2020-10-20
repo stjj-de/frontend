@@ -4,7 +4,6 @@
 
 <style lang="scss">
   @use "~@/assets/styles/quill-enduser";
-  @use "~@/assets/styles/formatted";
 </style>
 
 <script>

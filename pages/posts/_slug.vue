@@ -11,11 +11,7 @@
           <UserImageWithPopup center :user="post.author"/>
         </div>
       </div>
-      <TransformInternalLinks
-        class="quill-enduser formatted post-page__article"
-        tag="article"
-        :html="post.content"
-      />
+      <ContentOutlet class="quill-enduser formatted post-page__article" :html="post.content" tag="article"/>
     </main>
   </div>
 </template>
@@ -74,14 +70,13 @@
   import { format } from "date-fns"
   import { de as dateFnsLocale } from "date-fns/locale"
   import NavigationBar from "@/components/NavigationBar"
-  import "@/assets/styles/quill-enduser.scss"
-  import TransformInternalLinks from "@/components/TransformInternalLinks"
   import UserImageWithPopup from "@/components/UserImageWithPopup"
   import { createMeta } from "@/assets/js/meta"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "PostPage",
-    components: { UserImageWithPopup, TransformInternalLinks, NavigationBar },
+    components: { ContentOutlet, UserImageWithPopup, NavigationBar },
     async asyncData({ error, app: { $api }, params }) {
       const post = await $api.posts.get(
         `_${params.slug}`,

@@ -6,7 +6,7 @@
 </template>
 
 <style lang="scss">
-  @use "~@/assets/styles/quill-enduser";
+
 </style>
 
 <script>
