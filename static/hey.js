@@ -1,12 +1,5 @@
-const css1 = "color: #FF007D; font-size: 1.1rem; margin-left: 30px;"
-const css2 = "color: #00D3FF; font-size: 1.82rem;"
-const linkCss = "color: #00D3FF; font-size: 1rem; margin-left: 3px;"
-
-console.log(`
-
-%cProudly created by
-%cMoritz Ruth
-
-%c   — https://moritzruth.de
-
-`, css1, css2, linkCss)
+console.log(" ")
+console.log("%cProudly created by", "color: #FF007D; font-size: 18px; margin-left: 30px;")
+console.log("%cMoritz Ruth", "color: #00D3FF; font-size: 30px; margin-left: 30px;")
+console.log("%c— https://moritzruth.de", "font-size: 13.5px; margin-left: 30px;")
+console.log(" ")
