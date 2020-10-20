@@ -6,6 +6,7 @@ export const PFARRBRIEF = "PFARRBRIEF"
 export const IMPRESSUM = "IMPRESSUM"
 export const PRIVACY_POLICY = "PRIVACY_POLICY"
 export const ADMIN_NEWS = "ADMIN_NEWS"
+export const MEDIATHEK = "MEDIATHEK"
 
 export const CONTENTS = {
   [HOMEPAGE_INTRODUCTION]: {
@@ -51,5 +52,9 @@ export const CONTENTS = {
     description: "Wird im Administrationsbereich angezeigt.",
     maxHeading: 2,
     adminOnly: true
+  },
+  [MEDIATHEK]: {
+    title: "Text auf der Mediathek-Seite",
+    maxHeading: 7
   }
 }

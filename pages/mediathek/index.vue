@@ -2,6 +2,7 @@
   <div class="mediathek-page">
     <NavigationBar title="Mediathek"/>
     <main class="content">
+      <ContentOutlet :html="content"/>
       <div v-if="videos" class="mediathek-page__videos">
         <nuxt-link
           v-for="(video, index) in videos"
@@ -139,6 +140,8 @@
   import YoutubeThumbnail from "@/components/YoutubeThumbnail"
   import { formatDateWithOptionalTime } from "@/assets/js/date-utils"
   import MyButton from "@/components/MyButton"
+  import { MEDIATHEK } from "@/assets/js/contents"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   function fetchVideos(offset, api) {
     return api.videos.list({
@@ -152,11 +155,15 @@
 
   export default {
     name: "MediathekPage",
-    components: { MyButton, YoutubeThumbnail, NavigationBar },
+    components: { ContentOutlet, MyButton, YoutubeThumbnail, NavigationBar },
     async asyncData({ app: { $api } }) {
       const { hasMore, items: videos } = await fetchVideos(0, $api)
 
-      return { hasMore, videos }
+      return {
+        hasMore,
+        videos,
+        content: await $api.contents.get(MEDIATHEK)
+      }
     },
     data: () => ({
       loading: false,
