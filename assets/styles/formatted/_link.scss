@@ -3,23 +3,11 @@
 %link {
   color: colors.$blue;
   text-decoration: none;
-  position: relative;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 
-  &::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    height: 2px;
+  transition: 200ms linear border-bottom-color;
+  border-bottom: 2px solid transparentize(colors.$blue, 0.7);
 
-    transition: 200ms linear background;
-    background: transparentize(colors.$blue, 0.7);
-  }
-
-  &:hover::after {
-    background: transparentize(colors.$blue, 0.5);
+  &:hover {
+    border-bottom-color: transparentize(colors.$blue, 0.5);
   }
 }
