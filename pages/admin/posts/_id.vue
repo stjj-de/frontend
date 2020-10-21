@@ -115,8 +115,13 @@
 
   .edit-post-page__editor {
     .ql-container {
-      min-height: 75vh;
+      height: 75vh;
+      overflow: auto;
       font-family: inherit;
+
+      @include screenSize.mobile {
+        height: 70vh;
+      }
     }
   }
 
