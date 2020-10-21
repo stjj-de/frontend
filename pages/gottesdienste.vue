@@ -26,7 +26,7 @@
       width: 100%;
       margin-bottom: 20px;
 
-      @include screenSize.notMobile {
+      @media (min-width: 850px) {
         width: auto;
         flex-grow: 0.5;
         &:nth-child(odd) {

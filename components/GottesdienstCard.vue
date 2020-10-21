@@ -23,6 +23,15 @@
 
   .gottesdienst-card__date {
     margin-top: 0;
+    font-size: 1.7rem;
+
+    @media (max-width: 1000px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 850px) {
+      font-size: 1.6rem;
+    }
   }
 
   .gottesdienst-card__location::after {
