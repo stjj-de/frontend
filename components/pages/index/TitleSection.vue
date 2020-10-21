@@ -91,7 +91,13 @@
     }
 
     .title-section__content {
-      font-size: 1.8rem;
+      font-size: 1.8rem !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .title-section__content {
+      font-size: 1.3rem !important;
     }
   }
 </style>
