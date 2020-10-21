@@ -7,12 +7,14 @@
           Diese Seite existiert nicht.
         </span>
       </template>
-      <span v-else class="error-page__message">
-        {{ error.m || "Ein Fehler ist aufgetreten." }}
-      </span>
-      <p v-if="error.m === undefined" class="error-page__tip">
-        Lade am besten die Seite neu.
-      </p>
+      <template v-else>
+        <span class="error-page__message">
+          {{ error.m || "Ein Fehler ist aufgetreten." }}
+        </span>
+        <p v-if="error.m === undefined" class="error-page__tip">
+          Lade am besten die Seite neu.
+        </p>
+      </template>
       <div class="error-page__back">
         <nuxt-link to="/">
           Zurück zur Startseite

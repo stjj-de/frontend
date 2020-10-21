@@ -1,6 +1,6 @@
 <template>
   <div class="gottesdienst-card">
-    <span class="gottesdienst-card__date heading--3">{{ formattedDate }}</span>
+    <span class="gottesdienst-card__date heading--4">{{ formattedDate }}</span>
     <span class="gottesdienst-card__church">
       Ort: <a :href="`https://goo.gl/maps/${gottesdienst.church.googleMapsID}`" target="_blank">
         {{ gottesdienst.church.title }}

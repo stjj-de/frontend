@@ -23,10 +23,10 @@ export function ensureDateObject(date) {
 export const formatShortDateWithTimeAndNameAsSentence = date => {
   const d = ensureDateObject(date)
 
-  const datePart = format(d, "EEEE, d.L", { locale: dateFnsLocale })
+  const datePart = format(d, "EEEE, d.L.", { locale: dateFnsLocale })
   const timePart = format(d, "HH:mm", { locale: dateFnsLocale })
 
-  return `${datePart} um ${timePart}`
+  return `${datePart} um ${timePart} Uhr`
 }
 
 export const formatDateWithTimeAndShortName = date => format(
