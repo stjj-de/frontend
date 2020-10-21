@@ -42,6 +42,11 @@
     font-size: 3rem;
     font-weight: bold;
     text-align: center;
+    line-height: 1.3;
+
+    @media (max-height: 700px) and (max-width: 400px) {
+      line-height: 1;
+    }
   }
 
   .post-page__separator {
