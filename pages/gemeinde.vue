@@ -12,16 +12,16 @@
         </Accordion>
       </section>
       <section>
-        <ContentOutlet :html="contents.gemeinde"/>
+        <ContentOutlet :html="content"/>
       </section>
       <section>
         <h1>Downloads</h1>
         <ul>
           <li class="gemeinde-page__download">
-            <a class="link" :href="`/files/${contents.pfarrbrief}`" target="_blank">Pfarrbrief</a>
+            <a class="link" href="/files/from-content/pfarrbrief" target="_blank">Pfarrbrief</a>
           </li>
           <li class="gemeinde-page__download">
-            <a class="link" :href="`/files/${contents.messdienerplan}`" target="_blank">Messdienerplan</a>
+            <a class="link" href="/files/from-content/messdienerplan" target="_blank">Messdienerplan</a>
           </li>
         </ul>
       </section>
@@ -45,7 +45,7 @@
 <script>
   import NavigationBar from "@/components/NavigationBar"
   import Accordion from "@/components/Accordion"
-  import { GEMEINDE, MESSDIENERPLAN, PFARRBRIEF } from "@/assets/js/contents"
+  import { GEMEINDE } from "@/assets/js/contents"
   import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
@@ -54,11 +54,7 @@
     async asyncData({ $api }) {
       return {
         groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,
-        contents: {
-          gemeinde: await $api.contents.get(GEMEINDE),
-          pfarrbrief: await $api.contents.get(PFARRBRIEF),
-          messdienerplan: await $api.contents.get(MESSDIENERPLAN)
-        }
+        content: await $api.contents.get(GEMEINDE)
       }
     }
   }
