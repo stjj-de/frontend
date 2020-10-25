@@ -54,16 +54,6 @@
 
     max-width: 300px;
     margin-right: 30px;
-
-    &::v-deep {
-      .vc-day-content:focus {
-        background-color: rgb(117, 211, 239);
-      }
-
-      .is-today .vc-day-content {
-        background-color: rgb(203, 239, 250);
-      }
-    }
   }
 
   .event-calendar__day-date {
@@ -118,10 +108,22 @@
       attributes() {
         if (this.eventsInMonth === null) return []
 
-        return this.eventsInMonth.map(event => ({
+        return [{
+          highlight: {
+            color: "blue",
+            fillMode: "light"
+          },
+          dates: new Date()
+        }, {
+          highlight: {
+            color: "blue",
+            fillMode: "solid"
+          },
+          dates: new Date(this.selectedDay)
+        }, ...this.eventsInMonth.map(event => ({
           dot: event.color.toLowerCase(),
           dates: new Date(event.date)
-        }))
+        }))]
       },
       dayDetailsTransitionName() {
         if (this.previousSelectedDay === null || this.selectedDay === null)
