@@ -15,28 +15,8 @@
 </template>
 
 <style lang="scss">
-  @use "~@/assets/styles/screenSize";
-
-  .gottesdienste-page__gottesdienste {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-
-    & > .gottesdienste-page__gottesdienst {
-      width: 100%;
-      margin-bottom: 20px;
-
-      @media (min-width: 850px) {
-        width: auto;
-        flex-grow: 0.5;
-        &:nth-child(odd) {
-          margin-right: 20px;
-        }
-      }
-    }
-
-    /* Can be replaced with this, once min() is better supported */
-    /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
+  .gottesdienste-page__gottesdienst {
+    margin-bottom: 20px;
   }
 </style>
 

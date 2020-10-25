@@ -14,26 +14,17 @@ export function toFilterStringDate(date, includeDay) {
 }
 
 export function ensureDateObject(date) {
-  if (date instanceof Date)
-    return date
-
+  if (date instanceof Date) return date
   return new Date(date)
 }
 
-export const formatShortDateWithTimeAndNameAsSentence = date => {
-  const d = ensureDateObject(date)
-
-  const datePart = format(d, "EEEE, d.L.", { locale: dateFnsLocale })
-  const timePart = format(d, "HH:mm", { locale: dateFnsLocale })
-
-  return `${datePart} um ${timePart} Uhr`
+export function formatShortDateWithName(date) {
+  return format(ensureDateObject(date), "EEEE, d.L.", { locale: dateFnsLocale })
 }
 
-export const formatDateWithTimeAndShortName = date => format(
-  ensureDateObject(date),
-  "EEEEEE, d.L.yyyy HH:mm",
-  { locale: dateFnsLocale }
-)
+export function formatTime(date) {
+  return format(ensureDateObject(date), "HH:mm", { locale: dateFnsLocale })
+}
 
 export function formatDateWithTime(date) {
   return format(ensureDateObject(date), "d.L.yyyy HH:mm", { locale: dateFnsLocale })
