@@ -56,6 +56,9 @@
         groups: (await $api.groups.list({ limit: 50, fields: ["id", "title", "description"] })).items,
         content: await $api.contents.get(GEMEINDE)
       }
-    }
+    },
+    head: () => ({
+      title: "Gemeinde"
+    })
   }
 </script>
