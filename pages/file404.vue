@@ -5,7 +5,7 @@
 <script>
   export default {
     name: "File404Page",
-    asyncData({ route }) {
+    asyncData({ route, error: showError }) {
       const error = new Error("Fake error for showing the 404 page")
       error.isPageNotFound = true
       error.m = "Diese Datei existiert nicht."
@@ -18,7 +18,7 @@
       }
 
       window.history.replaceState({}, "", path)
-      throw error
+      showError(error)
     }
   }
 </script>
