@@ -106,7 +106,7 @@ const config = {
 // This should be done by Nginx in production
 if (isDevelopmentEnvironment) {
   config.modules.push("@nuxtjs/proxy")
-  config.proxy = ["http://localhost:8000/files", "http://localhost:8000/api"]
+  config.proxy = ["http://localhost:8000/files/", "http://localhost:8000/api/"]
 } else {
   config.buildModules.push("nuxt-ackee")
   config.ackee = {

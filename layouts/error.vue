@@ -1,20 +1,11 @@
 <template>
   <div class="error-page">
     <main class="error-page__content content formatted">
-      <template v-if="isPageNotFound">
-        <Illustration class="error-page__illustration"/>
-        <span class="error-page__message">
-          {{ error.m || "Diese Seite existiert nicht." }}
-        </span>
-      </template>
-      <template v-else>
-        <span class="error-page__message">
-          {{ error.m || "Ein Fehler ist aufgetreten." }}
-        </span>
-        <p v-if="error.m === undefined" class="error-page__tip">
-          Lade am besten die Seite neu.
-        </p>
-      </template>
+      <Illustration v-if="isPageNotFound" class="error-page__illustration"/>
+      <span class="error-page__message">{{ error.m }}</span>
+      <p v-if="isCustomError && !isPageNotFound" class="error-page__tip">
+        Lade am besten die Seite neu.
+      </p>
       <div class="error-page__back">
         <nuxt-link to="/">
           Zurück zur Startseite
@@ -88,11 +79,16 @@
     computed: {
       isCustomError: vm => vm.error.m !== undefined,
       isPageNotFound: vm => vm.error.isPageNotFound ||
-        (!vm.isCustomError && vm.error.message === "This page could not be found")
+        (!vm.isCustomError && vm.error.message === "This page could not be found"),
+      message: vm => vm.error.m || (vm.isPageNotFound ? "Diese Seite existiert nicht." : "Ein Fehler ist aufgetreten.")
+    },
+    beforeMount() {
+      const { fakePath } = this.error
+      if (fakePath) window.history.replaceState({}, document.title, fakePath)
     },
     head() {
       return {
-        title: this.isPageNotFound ? "Diese Seite existiert nicht." : this.error.m || "Ein Fehler ist aufgetreten."
+        title: this.message
       }
     }
   }

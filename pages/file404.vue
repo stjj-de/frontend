@@ -13,11 +13,15 @@
       let path = "/files/"
       if (route.query.id) path += route.query.id
       else {
-        if (route.query.invalid === "false") error.m = "Diese Datei ist gerade nicht verfügbar."
+        if (route.query.invalid === "false") {
+          error.m = "Diese Datei ist gerade nicht verfügbar."
+          error.isPageNotFound = false
+        }
+
         path += `from-content/${route.query.content}`
       }
 
-      window.history.replaceState({}, "", path)
+      error.fakePath = path
       showError(error)
     }
   }
