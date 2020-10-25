@@ -56,7 +56,7 @@
   .video-page__iframe-container {
     height: 0;
     overflow: hidden;
-    padding-top: 591.44px / 1127.34px * 100%;
+    padding-top: 56.35%;
     background: white;
     position: relative;
   }
