@@ -2,7 +2,7 @@
   <div class="error-page">
     <main class="error-page__content content formatted">
       <Illustration v-if="isPageNotFound" class="error-page__illustration"/>
-      <span class="error-page__message">{{ error.m }}</span>
+      <span class="error-page__message">{{ message }}</span>
       <p v-if="isCustomError && !isPageNotFound" class="error-page__tip">
         Lade am besten die Seite neu.
       </p>
