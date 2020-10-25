@@ -120,7 +120,7 @@
             event.__displayedTime = "Ganztägig"
             event.__fullDay = true
           } else {
-            event.__displayedTime = format(dateObjects.start, "HH:mm", { locale: dateFnsLocale })
+            event.__displayedTime = format(dateObjects.start, "HH:mm", { locale: dateFnsLocale }) + " Uhr"
 
             if (event.endDate !== null) {
               let template = ""
@@ -130,18 +130,13 @@
               const includeDayAndMonth = includeYear ||
                 start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth()
 
-              if (includeDayAndMonth)
-                template += "d.L"
-
-              if (includeYear)
-                template += ".y"
-
-              if (template !== "")
-                template += " "
+              if (includeDayAndMonth) template += "d.L."
+              if (includeYear) template += "y"
+              if (template !== "") template += ", "
 
               template += "HH:mm"
 
-              event.__displayedTime += " - " + format(end, template, { locale: dateFnsLocale })
+              event.__displayedTime += " bis " + format(end, template, { locale: dateFnsLocale }) + " Uhr"
             }
 
             event.__fullDay = false
