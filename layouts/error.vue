@@ -4,7 +4,7 @@
       <template v-if="isPageNotFound">
         <Illustration class="error-page__illustration"/>
         <span class="error-page__message">
-          Diese Seite existiert nicht.
+          {{ error.m || "Diese Seite existiert nicht." }}
         </span>
       </template>
       <template v-else>
@@ -87,9 +87,8 @@
     },
     computed: {
       isCustomError: vm => vm.error.m !== undefined,
-      isPageNotFound() {
-        return !this.isCustomError && this.error.message === "This page could not be found"
-      }
+      isPageNotFound: vm => vm.error.isPageNotFound ||
+        (!vm.isCustomError && vm.error.message === "This page could not be found")
     },
     head() {
       return {
