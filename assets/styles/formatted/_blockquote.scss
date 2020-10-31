@@ -1,7 +1,12 @@
 @use "../colors";
 
 %blockquote {
-  border-left: 4px solid transparentize(colors.$background-c, 0.5);
+  border-left: 4px solid transparentize(colors.$blue, 0.6);
   padding-left: 20px;
   margin: 20px 0;
+
+  & ~ %blockquote {
+    padding-top: 20px;
+    margin-top: -20px;
+  }
 }
