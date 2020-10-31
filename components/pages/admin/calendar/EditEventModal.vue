@@ -44,7 +44,9 @@
           :keep-showing-state="fields.relatedPost.transformedValue !== ''"
           :companion="fields.relatedPost"
         />
-        <InputField label="Beschreibung" :companion="fields.description"/>
+        <client-only>
+          <PostEditor v-model="description" :highest-heading="4"/>
+        </client-only>
       </template>
       <template v-slot:secondary-buttons>
         <MyButton
@@ -98,12 +100,14 @@
   import DateTimeField from "@/components/DateTimeField"
   import ConfirmCancelModal from "@/components/ConfirmCancelModal"
   import ConfirmDeleteModal from "@/components/ConfirmDeleteModal"
+  import PostEditor from "@/components/pages/admin/posts/_id/PostEditor"
 
   const today = startOfDay(new Date())
 
   export default {
     name: "EditEventModal",
     components: {
+      PostEditor,
       ConfirmDeleteModal, ConfirmCancelModal, DateTimeField, EventColorPicker, MyButton, InputField, MyModal
     },
     props: {
@@ -123,16 +127,13 @@
         startDate: null,
         endDate: null,
         color: null,
+        description: "",
         relatedPostID: null,
         savedEvent: null,
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
             required: "Bitte gib einen Titel ein."
-          }),
-          description: new InputFieldCompanion({
-            type: "textarea",
-            transform: value => value.trim()
           }),
           startDate: new InputFieldCompanion({
             required: "Bitte wähle einen Startzeitpunkt.",
@@ -170,17 +171,20 @@
       },
       changed() {
         if (!this.isCreateNew && this.savedEvent !== null) {
-          if (this.color !== this.savedEvent.color)
+          if (this.color !== this.savedEvent.color || this.trimmedDescription !== this.savedEvent.description)
             return true
         }
 
+        // noinspection JSObjectNullOrUndefined
         return Object.values(this.fields).some(field => field.changed)
+      },
+      trimmedDescription() {
+        return this.description.trim()
       }
     },
     watch: {
       active() {
-        if (this.active && this.eventId !== null)
-          this.onActivate()
+        if (this.active && this.eventId !== null) this.onActivate()
       },
       startDate() {
         this.validateStartAndEndDate()
@@ -191,8 +195,8 @@
     },
     methods: {
       onActivate() {
+        this.description = ""
         this.fields.title.setValueAndReset("")
-        this.fields.description.setValueAndReset("")
         this.fields.relatedPost.setValueAndReset("")
 
         if (this.isCreateNew) {
@@ -204,16 +208,13 @@
             this.fields.startDate.reset()
             this.fields.endDate.reset()
           })
-        } else
-          this.fetchEvent()
+        } else this.fetchEvent()
 
         this.fields.title.focus()
       },
       onCancel() {
-        if (this.changed)
-          this.confirmCancelModalActive = true
-        else
-          this.close(true)
+        if (this.changed) this.confirmCancelModalActive = true
+        else this.close(true)
       },
       validateStartAndEndDate() {
         if (this.endDate !== null) {
@@ -245,8 +246,8 @@
         this.savedEvent = event
 
         this.fields.title.setValueAndReset(event.title)
-        this.fields.description.setValueAndReset(event.description)
 
+        this.description = event.description
         this.startDate = event.date
         this.endDate = event.endDate
         this.color = event.color
@@ -272,7 +273,7 @@
         const data = {
           title: this.fields.title.transformedValue,
           color: this.color,
-          description: this.fields.description.transformedValue,
+          description: this.trimmedDescription,
           date: this.startDate,
           endDate: this.endDate,
           relatedPost: this.relatedPostID

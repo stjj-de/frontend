@@ -6,6 +6,7 @@
     <vue-editor
       class="quill-enduser post-editor__quill"
       use-custom-image-handler
+      :editor-options="options"
       :value="value"
       :editor-toolbar="editorToolbar"
       @image-added="handleImage"
@@ -60,11 +61,23 @@
           ["bold", "italic", "underline", "strike", "blockquote"],
           ["link", "image"],
           [{ list: "ordered" }, { list: "bullet" }],
-          [{ script: "super" }, { script: "sub" }],
-          [{ color: [] }, { background: [] }],
-          [{ align: "" }, { align: "center" }, { align: "right" }]
+          [{ script: "super" }, { script: "sub" }]
         ],
-        imageLoading: false
+        imageLoading: false,
+        options: {
+          formats: [
+            "header",
+            "bold",
+            "italic",
+            "underline",
+            "strike",
+            "blockquote",
+            "link",
+            "image",
+            "list",
+            "script"
+          ]
+        }
       }
     },
     methods: {

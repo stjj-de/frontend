@@ -158,17 +158,22 @@
   import LoadingOverlay from "@/components/LoadingOverlay"
   import { validateSlug, validateSlugAsync } from "@/assets/js/validate-slug.js"
   import GroupSelectField from "@/components/GroupSelectField"
+  import { isEmptyWithoutHTMLTags } from "@/assets/js/is-empty-without-html-tags"
 
   export default {
     name: "EditPostPage",
     components: { GroupSelectField, LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
-    async asyncData({ $api, params, error, store }) {
+    async asyncData({ $api, params, error: showError, store }) {
       const post = await $api.posts.get(
         params.id,
         ["id", "title", "slug", "group", "excerpt", "publishedAt", "relevantUntil", "content"]
       )
 
-      if (post === null) return error({ m: "Dieser Post existiert nicht." })
+      if (post === null) {
+        const error = new Error("The post does not exist")
+        error.m = "Dieser Artikel existiert nicht."
+        return showError(error)
+      }
 
       await store.state.userPromise
 
@@ -223,7 +228,7 @@
         return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed)
       },
       contentIsEmpty() {
-        return stripTags(this.content, ["img"]).trim() === ""
+        return isEmptyWithoutHTMLTags(this.content)
       },
       contentChanged: vm => vm.content !== vm.savedPost.content && !vm.contentIsEmpty,
       groupChanged() {

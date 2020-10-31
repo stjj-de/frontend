@@ -12,9 +12,7 @@
       <div class="event-calendar-day-details__event-date">
         {{ event.__displayedTime }}
       </div>
-      <p class="event-calendar-day-details__event-description">
-        {{ event.description }}
-      </p>
+      <ContentOutlet class="event-calendar-day-details__event-description" :html="event.description"/>
       <nuxt-link
         v-if="event.relatedPost !== null"
         class="link event-calendar-day-details__event-more"
@@ -74,11 +72,6 @@
     }
   }
 
-  .event-calendar-day-details__event-description {
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
   .event-calendar-day-details__event-more {
     font-size: 1.1rem;
     display: inline-block;
@@ -96,10 +89,11 @@
   import { dateFnsLocale, isFullDay } from "@/assets/js/date-utils"
   import UserImageWithPopup from "@/components/UserImageWithPopup"
   import { getCSSColorForEventColor } from "@/assets/js/event-colors"
+  import ContentOutlet from "@/components/ContentOutlet"
 
   export default {
     name: "EventCalendarDayDetails",
-    components: { UserImageWithPopup },
+    components: { ContentOutlet, UserImageWithPopup },
     props: {
       events: {
         type: Array,
