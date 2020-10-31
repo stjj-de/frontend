@@ -6,7 +6,13 @@
       label="title"
       :options="groups"
       :clearable="userIsEditor"
-    />
+    >
+      <template v-slot:no-options="{ searching }">
+        <template v-if="searching">
+          Keine Ergebnisse gefunden.
+        </template>
+      </template>
+    </v-select>
     <p v-if="!userIsEditor">
       Du kannst nur Gruppen auswählen, für die du die Berechtigung hast.
     </p>

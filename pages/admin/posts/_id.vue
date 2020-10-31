@@ -18,6 +18,22 @@
         <InputField label="Titel" :companion="fields.title"/>
         <InputField label="Slug" :companion="fields.slug"/>
         <GroupSelectField v-model="group" :groups="availableGroups"/>
+        <div v-if="$store.getters.userIsEditor" class="input-field">
+          <span class="input-field__label">Autor</span>
+          <v-select
+            v-model="authorID"
+            label="realName"
+            :options="availableAuthors"
+            :reduce="value => value.id"
+            :clearable="false"
+          >
+            <template v-slot:no-options="{ searching }">
+              <template v-if="searching">
+                Keine Ergebnisse gefunden.
+              </template>
+            </template>
+          </v-select>
+        </div>
         <DateTimeField
           v-model="publishedAt"
           label="Veröffentlichungsdatum"
@@ -148,7 +164,8 @@
 </style>
 
 <script>
-  import stripTags from "striptags"
+  import "vue-select/dist/vue-select.css"
+  import VSelect from "vue-select"
   import InputField from "@/components/InputField/InputField"
   import { InputFieldCompanion } from "@/components/InputField/input-field-companion"
   import PostEditor from "@/components/pages/admin/posts/_id/PostEditor"
@@ -162,11 +179,11 @@
 
   export default {
     name: "EditPostPage",
-    components: { GroupSelectField, LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
+    components: { VSelect, GroupSelectField, LoadingOverlay, MyModal, DateTimeField, MyButton, PostEditor, InputField },
     async asyncData({ $api, params, error: showError, store }) {
       const post = await $api.posts.get(
         params.id,
-        ["id", "title", "slug", "group", "excerpt", "publishedAt", "relevantUntil", "content"]
+        ["id", "title", "slug", "group", "author", "excerpt", "publishedAt", "relevantUntil", "content"]
       )
 
       if (post === null) {
@@ -184,7 +201,13 @@
             limit: 50,
             fields: ["id", "title"]
           })).items
-          : store.state.user.groups
+          : store.state.user.groups,
+        availableAuthors: store.getters.userIsEditor
+          ? (await $api.users.list({
+            limit: 50,
+            fields: ["id", "realName"]
+          })).items
+          : []
       }
     },
     data() {
@@ -195,9 +218,8 @@
         saveLoading: false,
         confirmDeleteModalActive: false,
         deleteLoading: false,
-        savedPost: {},
         group: null,
-        availableGroups: [],
+        authorID: this.$store.state.userID,
         fields: {
           title: new InputFieldCompanion({
             transform: value => value.trim(),
@@ -225,17 +247,19 @@
           this.relevantUntilValid
       },
       changed() {
-        return this.groupChanged || this.contentChanged || Object.values(this.fields).some(field => field.changed)
+        return this.authorChanged || this.groupChanged || this.contentChanged ||
+          Object.values(this.fields).some(field => field.changed)
       },
       contentIsEmpty() {
         return isEmptyWithoutHTMLTags(this.content)
       },
       contentChanged: vm => vm.content !== vm.savedPost.content && !vm.contentIsEmpty,
       groupChanged() {
-        if (this.group === null)
-          return this.savedPost.group !== null
-
+        if (this.group === null) return this.savedPost.group !== null
         return this.group !== this.savedPost.group
+      },
+      authorChanged() {
+        return this.authorID !== this.savedPost.author
       },
       submitButtonText() {
         const now = new Date()
@@ -273,6 +297,7 @@
           this.publishedAt = this.savedPost.publishedAt
           this.relevantUntil = this.savedPost.relevantUntil
           this.group = this.savedPost.group
+          this.authorID = this.savedPost.author
 
           this.$nextTick(() => {
             this.fields.publishedAt.reset()
@@ -281,10 +306,8 @@
         }
       },
       relevantUntilValid() {
-        if (this.relevantUntilValid)
-          this.fields.relevantUntil.setError(null)
-        else
-          this.fields.relevantUntil.setError("\"Relevant bis\" muss nach dem Veröffentlichungsdatum liegen.")
+        if (this.relevantUntilValid) this.fields.relevantUntil.setError(null)
+        else this.fields.relevantUntil.setError("\"Relevant bis\" muss nach dem Veröffentlichungsdatum liegen.")
       }
     },
     methods: {
@@ -298,7 +321,8 @@
           relevantUntil: this.relevantUntil,
           excerpt: this.fields.excerpt.transformedValue,
           group: this.group === null ? null : this.group,
-          content: this.content
+          content: this.content,
+          author: this.$store.getters.userIsEditor ? this.authorID : undefined
         }
 
         await this.$api.posts.update(this.savedPost.id, data)
