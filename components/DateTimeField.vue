@@ -30,6 +30,7 @@
   /* eslint-disable unicorn/no-useless-undefined */
 
   import { Datetime as VueDatetime } from "vue-datetime"
+  import "vue-datetime/dist/vue-datetime.min.css"
   import { format } from "date-fns"
   import InputField from "@/components/InputField/InputField"
   import { dateFnsLocale } from "@/assets/js/date-utils"
