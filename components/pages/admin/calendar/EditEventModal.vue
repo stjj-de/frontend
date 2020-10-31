@@ -45,7 +45,7 @@
           :companion="fields.relatedPost"
         />
         <client-only>
-          <PostEditor v-model="description" :highest-heading="4"/>
+          <PostEditor v-model="description" :highest-heading="7"/>
         </client-only>
       </template>
       <template v-slot:secondary-buttons>
