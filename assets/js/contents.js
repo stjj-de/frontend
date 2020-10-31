@@ -13,7 +13,7 @@ export const CONTENTS = {
     title: "Vorstellung auf der Startseite",
     description:
       "Dieser Text steht auf der Startseite ganz oben und ist sofort sichtbar. " +
-      "Er sollte für eine kurze Vorstellung der Pfarrei genutzt werden.",
+      "Er sollte primär für Links zu wirklich wichtigen Dingen genutzt werden.",
     maxHeading: 7
   },
   [HOMEPAGE_TOP]: {

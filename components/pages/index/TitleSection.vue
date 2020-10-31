@@ -1,7 +1,11 @@
 <template>
   <section class="title-section">
     <div class="title-section__side">
-      <ContentOutlet class="title-section__content" :html="content"/>
+      <div class="title-section__content">
+        Willkommen auf der Webseite der katholischen Kirchengemeinde
+        <span style="white-space: nowrap">St. Josef - St. Johannes.</span>
+        <ContentOutlet class="title-section__content" :html="content"/>
+      </div>
     </div>
     <div class="title-section__side">
       <img class="title-section__logo" alt="Unser Logo" src="/icon.png"/>
