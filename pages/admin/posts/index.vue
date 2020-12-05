@@ -8,10 +8,10 @@
       loading-text="Artikel werden geladen"
       @row-click="id => onRowClick(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Artikel"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           variant="primary"
           @click="createPostModalActive = true"
@@ -113,6 +113,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Artikel / Administration"
+    }),
     async beforeMount() {
       this.table.initialize()
 
@@ -126,9 +129,6 @@
       onRowClick(id) {
         this.$router.push(`/admin/posts/${id}`)
       }
-    },
-    head: () => ({
-      title: "Artikel / Administration"
-    })
+    }
   }
 </script>

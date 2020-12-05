@@ -9,7 +9,7 @@
       :active="active"
       @close="onCancel"
     >
-      <template v-slot:default>
+      <template #default>
         <template v-if="savedVideo !== null">
           <span class="input-field__label">Thumbnail</span>
           <YoutubeThumbnail
@@ -26,7 +26,7 @@
           :companion="fields.publishedAt"
         />
       </template>
-      <template v-slot:secondary-buttons>
+      <template #secondary-buttons>
         <MyButton
           class="edit-video-modal__delete-button"
           variant="danger"
@@ -35,7 +35,7 @@
           Löschen
         </MyButton>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           class="edit-video-modal__cancel"
           @click="onCancel"

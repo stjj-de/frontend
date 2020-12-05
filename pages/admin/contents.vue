@@ -90,6 +90,9 @@
       editModalContentID: null,
       editModalActive: false
     }),
+    head: () => ({
+      title: "Inhalte / Administration"
+    }),
     methods: {
       onEditModalClose() {
         this.editModalActive = false
@@ -104,9 +107,6 @@
           content.file.id = data.id
         }
       }
-    },
-    head: () => ({
-      title: "Inhalte / Administration"
-    })
+    }
   }
 </script>

@@ -7,12 +7,12 @@
     :active="active"
     @close="onCancel"
   >
-    <template v-slot:default>
+    <template #default>
       <slot>
         Diese Aktion kann nicht rückgängig gemacht werden.
       </slot>
     </template>
-    <template v-slot:buttons="{ close: cancel }">
+    <template #buttons="{ close: cancel }">
       <MyButton variant="primary" @click="cancel">
         Abbrechen
       </MyButton>

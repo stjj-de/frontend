@@ -76,6 +76,11 @@
         default: null
       }
     },
+    head() {
+      return {
+        title: this.message
+      }
+    },
     computed: {
       isCustomError: vm => vm.error.m !== undefined,
       isPageNotFound: vm => vm.error.isPageNotFound ||
@@ -85,11 +90,6 @@
     beforeMount() {
       const { fakePath } = this.error
       if (fakePath) window.history.replaceState({}, document.title, fakePath)
-    },
-    head() {
-      return {
-        title: this.message
-      }
     }
   }
 </script>

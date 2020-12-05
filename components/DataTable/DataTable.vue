@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-mutating-props -->
   <div class="data-table">
     <div class="data-table__table" role="table">
       <div class="data-table__head" :style="`min-width: ${companion.bodyWidth}`" role="rowheader">
@@ -40,7 +41,7 @@
             :page-index="companion.pageIndex"
             @row-click="onRowClick"
           >
-            <template v-slot:empty-state>
+            <template #empty-state>
               <slot name="empty-state"/>
             </template>
           </DataTableBody>
@@ -184,6 +185,7 @@
 </style>
 
 <script>
+  /* eslint-disable vue/no-mutating-props */
   import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
   import ArrowRightIcon from "@/assets/icons/arrow-right.svg"
   import ArrowDownIcon from "@/assets/icons/arrow-down.svg"

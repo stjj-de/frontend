@@ -28,7 +28,7 @@
 
 <script>
   /* eslint-disable unicorn/no-useless-undefined */
-
+  /* eslint-disable vue/no-mutating-props */
   import { Datetime as VueDatetime } from "vue-datetime"
   import "vue-datetime/dist/vue-datetime.min.css"
   import { format } from "date-fns"

@@ -9,14 +9,14 @@
       :active="active"
       @close="$emit('close', null)"
     >
-      <template v-slot:default>
+      <template #default>
         <InputField label="YouTube Video ID" placeholder="z. B.: dQw4w9WgXcQ" :companion="videoID"/>
         <span>
           Du kannst auch eine YouTube-URL der Form "https://youtu.be/xxx" oder "https://www.youtube.com/watch?v=xxx"
           einfügen, sie wird dann automatisch gekürzt.
         </span>
       </template>
-      <template v-slot:buttons="{ close }">
+      <template #buttons="{ close }">
         <MyButton @click="close">
           Abbrechen
         </MyButton>

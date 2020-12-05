@@ -9,11 +9,11 @@
       :active="active"
       @close="onCancel"
     >
-      <template v-slot:default>
+      <template #default>
         <InputField label="Titel" :companion="fields.title"/>
         <PostEditor v-model="description"/>
       </template>
-      <template v-if="$store.getters.userIsEditor" v-slot:secondary-buttons>
+      <template v-if="$store.getters.userIsEditor" #secondary-buttons>
         <MyButton
           v-if="!isCreateNew"
           class="edit-group-modal__delete-button"
@@ -23,7 +23,7 @@
           Löschen
         </MyButton>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           @click="onCancel"
         >

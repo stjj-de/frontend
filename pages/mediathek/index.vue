@@ -170,6 +170,9 @@
       hasMore: true,
       videos: []
     }),
+    head: () => ({
+      title: "Mediathek"
+    }),
     methods: {
       formatVideoDate(date) {
         return formatDateWithOptionalTime(date)
@@ -181,9 +184,6 @@
         this.videos.push(...result.items)
         this.loading = false
       }
-    },
-    head: () => ({
-      title: "Mediathek"
-    })
+    }
   }
 </script>

@@ -115,8 +115,8 @@
 
   export default {
     name: "LoginPage",
-    layout: "none",
     components: { MyButton, InputField, ArrowLeftIcon },
+    layout: "none",
     data() {
       return {
         show: false,
@@ -151,6 +151,9 @@
         loading: false
       }
     },
+    head: () => ({
+      title: "Anmelden"
+    }),
     computed: {
       nextURL() {
         return this.$route.query.to || "/admin"
@@ -189,9 +192,6 @@
           this.loading = false
         }
       }
-    },
-    head: () => ({
-      title: "Anmelden"
-    })
+    }
   }
 </script>

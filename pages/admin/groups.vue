@@ -11,10 +11,10 @@
       loading-text="Gruppen werden geladen"
       @row-click="id => onRowClick(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Gruppen"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           v-if="$store.getters.userIsEditor"
           variant="primary"
@@ -81,6 +81,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Gruppen / Administration"
+    }),
     beforeMount() {
       this.table.initialize()
     },
@@ -106,9 +109,6 @@
         this.editModalGroupID = id
         this.editModalActive = true
       }
-    },
-    head: () => ({
-      title: "Gruppen / Administration"
-    })
+    }
   }
 </script>

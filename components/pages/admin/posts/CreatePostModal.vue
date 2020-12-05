@@ -9,7 +9,7 @@
       :loading="loading"
       @close="close"
     >
-      <template v-slot:default>
+      <template #default>
         <InputField
           label="Titel"
           :companion="fields.title"
@@ -22,7 +22,7 @@
         />
         <GroupSelectField v-model="group" :groups="groups"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           @click="close"
         >

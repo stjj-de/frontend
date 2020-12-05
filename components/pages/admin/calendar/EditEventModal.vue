@@ -9,7 +9,7 @@
       :active="active"
       @close="onCancel"
     >
-      <template v-slot:default>
+      <template #default>
         <InputField label="Titel" :companion="fields.title"/>
         <span class="input-field__label edit-event-modal__color-label">Farbe</span>
         <EventColorPicker v-model="color"/>
@@ -48,7 +48,7 @@
           <PostEditor v-model="description" :highest-heading="7"/>
         </client-only>
       </template>
-      <template v-slot:secondary-buttons>
+      <template #secondary-buttons>
         <MyButton
           v-if="!isCreateNew"
           class="edit-event-modal__delete-button"
@@ -58,7 +58,7 @@
           Löschen
         </MyButton>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           @click="onCancel"
         >

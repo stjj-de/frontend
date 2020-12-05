@@ -8,7 +8,7 @@
       :active="active"
       @close="cancel"
     >
-      <template v-slot:default>
+      <template #default>
         <h2 class="heading--5">{{ meta.title }}</h2>
         <client-only>
           <PostEditor
@@ -19,7 +19,7 @@
           />
         </client-only>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           @click="cancel"
         >

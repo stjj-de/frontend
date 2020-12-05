@@ -9,7 +9,7 @@
       :active="active"
       @close="onCancel"
     >
-      <template v-slot:default>
+      <template #default>
         <DateTimeField
           v-model="date"
           label="Datum"
@@ -30,7 +30,7 @@
           <PostEditor v-model="description" :highest-heading="3"/>
         </div>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           class="edit-gottesdienst-modal__cancel"
           @click="onCancel"
@@ -52,10 +52,10 @@
       closable
       :active.sync="confirmCancelModalActive"
     >
-      <template v-slot:default>
+      <template #default>
         Deine Änderungen gehen verloren.
       </template>
-      <template v-slot:buttons="{ close: _close }">
+      <template #buttons="{ close: _close }">
         <MyButton variant="primary" @click="_close">
           Abbrechen
         </MyButton>

@@ -8,10 +8,10 @@
       loading-text="Kirchen werden geladen"
       @row-click="id => onRowClick(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Kirchen"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           v-if="$store.getters.userIsEditor"
           variant="primary"
@@ -68,6 +68,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Kirchen / Administration"
+    }),
     beforeMount() {
       this.table.initialize()
     },
@@ -93,9 +96,6 @@
         this.editModalChurchID = id
         this.editModalActive = true
       }
-    },
-    head: () => ({
-      title: "Kirchen / Administration"
-    })
+    }
   }
 </script>

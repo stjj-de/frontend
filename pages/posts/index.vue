@@ -84,6 +84,7 @@
 
   export default {
     name: "PostsPage",
+    key: route => route.fullPath,
     components: { MyButton, NavigationBar, PostCard },
     async asyncData({ app: { $api }, route, error }) {
       const groupID = route.query.group
@@ -106,6 +107,20 @@
       hasMore: false,
       loading: false
     }),
+    head() {
+      return {
+        title: this.title,
+        meta: [
+          ...createMeta({
+            title: this.title,
+            description: `Die neuesten Artikel ${
+              this.group === null ? "unserer Webseite" : `von ${this.group.title}`
+            }.`,
+            path: "/posts"
+          })
+        ]
+      }
+    },
     computed: {
       title() {
         return this.group === null ? "Aktuelles" : `Artikel von ${this.group.title}`
@@ -121,6 +136,7 @@
           : `Das sind alle Artikel von ${this.group.title}.`
       }
     },
+    watchQuery: ["group"],
     methods: {
       async fetchMore() {
         this.loading = true
@@ -129,22 +145,6 @@
         this.posts.push(...result.items)
         this.loading = false
       }
-    },
-    head() {
-      return {
-        title: this.title,
-        meta: [
-          ...createMeta({
-            title: this.title,
-            description: `Die neuesten Artikel ${
-              this.group === null ? "unserer Webseite" : `von ${this.group.title}`
-            }.`,
-            path: "/posts"
-          })
-        ]
-      }
-    },
-    watchQuery: ["group"],
-    key: route => route.fullPath
+    }
   }
 </script>

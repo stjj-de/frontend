@@ -39,10 +39,10 @@
       loading-text="Termine werden geladen"
       @row-click="id => onRowClick(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Termine"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           variant="primary"
           @click="openEditEventModal('')"
@@ -179,6 +179,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Kalender / Administration"
+    }),
     computed: {
       filterString() {
         switch (this.dateFilter) {
@@ -251,9 +254,6 @@
         this.editModalEventID = id
         this.editModalActive = true
       }
-    },
-    head: () => ({
-      title: "Kalender / Administration"
-    })
+    }
   }
 </script>

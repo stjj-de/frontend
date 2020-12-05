@@ -27,7 +27,7 @@
             :reduce="value => value.id"
             :clearable="false"
           >
-            <template v-slot:no-options="{ searching }">
+            <template #no-options="{ searching }">
               <template v-if="searching">
                 Keine Ergebnisse gefunden.
               </template>
@@ -76,10 +76,10 @@
       :loading="deleteLoading"
       :active.sync="confirmDeleteModalActive"
     >
-      <template v-slot:default>
+      <template #default>
         Diese Aktion kann nicht rückgängig gemacht werden.
       </template>
-      <template v-slot:buttons="{ close: _close }">
+      <template #buttons="{ close: _close }">
         <MyButton
           class="edit-event-modal__cancel"
           variant="primary"
@@ -240,6 +240,9 @@
         }
       }
     },
+    head: () => ({
+      title: "Artikel bearbeiten / Administration"
+    }),
     computed: {
       valid() {
         return !this.contentIsEmpty &&
@@ -339,9 +342,6 @@
         await this.$api.posts.delete(this.savedPost.id)
         await this.$router.push("/admin/posts?delete_success=1")
       }
-    },
-    head: () => ({
-      title: "Artikel bearbeiten / Administration"
-    })
+    }
   }
 </script>

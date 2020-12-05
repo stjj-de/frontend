@@ -68,6 +68,7 @@
 </style>
 
 <script>
+  /* eslint-disable vue/no-mutating-props */
   import GlobalEvents from "vue-global-events"
   import DataTableColumn from "@/components/DataTable/DataTableColumn"
 

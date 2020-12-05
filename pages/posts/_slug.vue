@@ -97,14 +97,6 @@
     data: () => ({
       post: {}
     }),
-    computed: {
-      formattedPublicationDate() {
-        return format(new Date(this.post.publishedAt), "EEEE, d.L.yyyy", { locale: dateFnsLocale })
-      },
-      irrelevant() {
-        return this.post.relevantUntil !== null && Date.parse(this.post.relevantUntil) < Date.now()
-      }
-    },
     head() {
       return {
         title: this.post.title,
@@ -115,6 +107,14 @@
             path: `/posts/${this.post.slug}`
           })
         ]
+      }
+    },
+    computed: {
+      formattedPublicationDate() {
+        return format(new Date(this.post.publishedAt), "EEEE, d.L.yyyy", { locale: dateFnsLocale })
+      },
+      irrelevant() {
+        return this.post.relevantUntil !== null && Date.parse(this.post.relevantUntil) < Date.now()
       }
     }
   }

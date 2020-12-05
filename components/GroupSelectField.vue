@@ -7,7 +7,7 @@
       :options="groups"
       :clearable="userIsEditor"
     >
-      <template v-slot:no-options="{ searching }">
+      <template #no-options="{ searching }">
         <template v-if="searching">
           Keine Ergebnisse gefunden.
         </template>

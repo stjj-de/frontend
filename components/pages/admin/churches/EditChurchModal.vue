@@ -9,7 +9,7 @@
       :active="active"
       @close="onCancel"
     >
-      <template v-slot:default>
+      <template #default>
         <InputField label="Titel" :companion="fields.title"/>
         <InputField label="Google Maps ID" placeholder="z. B. geVDFBDgRSMoJ4SL9" :companion="fields.googleMapsID"/>
         <span>
@@ -18,7 +18,7 @@
           Diesen kannst du einfach hier einfügen, er wird dann automatisch gekürzt.
         </span>
       </template>
-      <template v-if="$store.getters.userIsEditor" v-slot:secondary-buttons>
+      <template v-if="$store.getters.userIsEditor" #secondary-buttons>
         <MyButton
           v-if="!isCreateNew"
           class="edit-church-modal__delete-button"
@@ -28,7 +28,7 @@
           Löschen
         </MyButton>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           @click="onCancel"
         >

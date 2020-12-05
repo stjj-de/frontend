@@ -8,10 +8,10 @@
       loading-text="Videos werden geladen"
       @row-click="id => editVideo(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Videos"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           variant="primary"
           @click="createVideoModalActive = true"
@@ -86,6 +86,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Videos / Administration"
+    }),
     beforeMount() {
       this.table.initialize()
     },
@@ -112,9 +115,6 @@
 
         this.isEditingCreatedVideo = false
       }
-    },
-    head: () => ({
-      title: "Videos / Administration"
-    })
+    }
   }
 </script>

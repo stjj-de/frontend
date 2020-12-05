@@ -148,6 +148,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Dein Account / Administration"
+    }),
     computed: {
       user: vm => vm.$store.state.user,
       imageURL: vm => getUserImageURL(vm.user.image)
@@ -162,9 +165,6 @@
         this.newPasswordField.setValueAndReset("")
         this.newPasswordLoading = false
       }
-    },
-    head: () => ({
-      title: "Dein Account / Administration"
-    })
+    }
   }
 </script>

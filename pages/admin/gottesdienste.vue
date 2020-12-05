@@ -8,10 +8,10 @@
       loading-text="Gottesdienste werden geladen"
       @row-click="id => onRowClick(id)"
     >
-      <template v-slot:empty-state>
+      <template #empty-state>
         <AdminDataTableEmptyState items-name="Gottesdienste"/>
       </template>
-      <template v-slot:buttons>
+      <template #buttons>
         <MyButton
           v-if="$store.getters.userIsEditor"
           variant="primary"
@@ -80,6 +80,9 @@
         })
       }
     },
+    head: () => ({
+      title: "Gottesdienste / Administration"
+    }),
     beforeMount() {
       this.table.initialize()
     },
@@ -105,9 +108,6 @@
         this.editModalChurchServiceDateID = id
         this.editModalActive = true
       }
-    },
-    head: () => ({
-      title: "Gottesdienste / Administration"
-    })
+    }
   }
 </script>

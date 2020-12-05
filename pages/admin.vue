@@ -45,8 +45,8 @@
 
   export default {
     name: "AdminPage",
-    middleware: ["auth"],
     components: { AdminNavigation },
+    middleware: ["auth"],
     async asyncData({ $api, store }) {
       store.commit("setUserPromise", (async () => {
         store.commit("setUser", await $api.groups.populate(
