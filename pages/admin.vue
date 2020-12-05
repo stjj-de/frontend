@@ -60,9 +60,6 @@
       })())
 
       await store.state.userPromise
-    },
-    head: () => ({
-      title: "Verwaltung"
-    })
+    }
   }
 </script>

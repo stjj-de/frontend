@@ -20,6 +20,9 @@
       return {
         content: await $api.contents.get(ADMIN_NEWS)
       }
-    }
+    },
+    head: () => ({
+      title: "Neuigkeiten / Administration"
+    })
   }
 </script>

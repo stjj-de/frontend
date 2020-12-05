@@ -162,6 +162,9 @@
         this.newPasswordField.setValueAndReset("")
         this.newPasswordLoading = false
       }
-    }
+    },
+    head: () => ({
+      title: "Dein Account / Administration"
+    })
   }
 </script>
