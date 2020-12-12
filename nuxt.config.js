@@ -8,7 +8,8 @@ const config = {
   server: {
     host: "0.0.0.0"
   },
-  mode: isDevelopment ? "spa" : "universal",
+  ssr: !isDevelopment,
+
   /*
   ** Headers of the page
   */
@@ -103,8 +104,8 @@ const config = {
   }
 }
 
-// This should be done by Nginx in production
 if (isDevelopmentEnvironment) {
+  // This should be done by the reverse proxy in production
   config.modules.push("@nuxtjs/proxy")
   config.proxy = ["http://localhost:8000/files/", "http://localhost:8000/api/"]
 } else {
