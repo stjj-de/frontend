@@ -8,7 +8,6 @@
           v-for="(video, index) in videos"
           :key="video.id"
           class="mediathek-page__video"
-          tag="div"
           :title="video.title"
           :to="`/mediathek/${video.id}`"
         >
@@ -56,6 +55,9 @@
     // i don't understand this
     // https://dev.to/timhecker/grid-cell-issue-with-white-space-nowrap--text-overflow-ellipsis-52g6
     min-width: 0;
+
+    text-decoration: none;
+    color: inherit;
 
     display: flex;
     flex-direction: column;
