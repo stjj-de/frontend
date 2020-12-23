@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="title-section__side">
-      <img class="title-section__logo" alt="Unser Logo" src="/icon.png"/>
+      <img class="title-section__logo" alt="Unser Logo" src="/icon.jpg"/>
     </div>
   </section>
 </template>
