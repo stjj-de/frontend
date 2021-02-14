@@ -91,7 +91,7 @@
     }
 
     .title-section__logo {
-      width: 300px;
+      margin-bottom: 20px;
     }
 
     .title-section__content {

@@ -2,13 +2,11 @@ export function transformQuillLinks(html) {
   const container = document.createElement("div")
   container.innerHTML = html
   container.querySelectorAll("a").forEach(element => {
-    const href = element.getAttribute("href")
-
-    if (!(href.startsWith("https://") || href.startsWith("http://"))) {
-      // relative
+    if (element.getAttribute("href").startsWith("/")) {
+      // internal
       element.removeAttribute("target")
       element.removeAttribute("rel")
-      element.dataset.routerLink = true
+      element.dataset.routerLink = "true"
     }
   })
 
