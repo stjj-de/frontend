@@ -109,12 +109,12 @@ if (isDevelopmentEnvironment) {
   config.modules.push("@nuxtjs/proxy")
   config.proxy = ["http://localhost:8000/files/", "http://localhost:8000/api/"]
 } else {
-  config.buildModules.push("nuxt-ackee")
-  config.ackee = {
-    server: "https://analytics.stjj.de",
-    domainId: "45431238-4225-4455-9022-cdf4ef7553e1",
-    detailed: true
-  }
+  config.head.script.push({
+    "src": "https://analytics.stjj.de/umami.js",
+    "async": true,
+    "defer": true,
+    "data-website-id": "cbf97914-0251-4750-ba86-4f299d7fd1f4"
+  })
 }
 
 module.exports = config
