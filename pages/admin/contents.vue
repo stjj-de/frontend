@@ -3,6 +3,20 @@
     <h1 class="heading--1">
       Inhalte
     </h1>
+    <section>
+      <h2>Live</h2>
+      <form @submit.prevent="saveLiveVideoId">
+        <InputField
+          class="contents-page__live-video"
+          placeholder="Leer lassen, wenn offline"
+          label="Live-Video-ID"
+          :companion="liveVideoId"
+        />
+        <MyButton is-submit variant="primary" :disabled="!liveVideoId.changed">
+          Speichern
+        </MyButton>
+      </form>
+    </section>
     <section v-for="content in contents" :key="content.id">
       <h2>{{ content.title }}</h2>
       <p v-if="content.description">
@@ -34,6 +48,9 @@
 </template>
 
 <style scoped lang="scss">
+  .contents-page__live-video {
+    max-width: 400px;
+  }
 </style>
 
 <script>
@@ -49,6 +66,8 @@
     PFARRBRIEF, PRIVACY_POLICY
   } from "@/assets/js/contents"
   import FileUploadButton from "@/components/FileUploadButton"
+  import InputField from "@/components/InputField/InputField.vue"
+  import { InputFieldCompanion } from "@/components/InputField/input-field-companion.js"
 
   const ORDER = [
     MESSDIENERPLAN,
@@ -64,9 +83,10 @@
 
   export default {
     name: "ContentsPage",
-    components: { FileUploadButton, EditContentModal, MyButton },
+    components: { InputField, FileUploadButton, EditContentModal, MyButton },
     async asyncData({ $api, store }) {
       return {
+        initialLiveVideoId: await $api.contents.get("LIVE_VIDEO_ID"),
         contents: (await Promise.all(ORDER.map(async id => {
           const meta = CONTENTS[id]
           if (meta.adminOnly) {
@@ -88,11 +108,15 @@
     data: () => ({
       contents: {},
       editModalContentID: null,
-      editModalActive: false
+      editModalActive: false,
+      liveVideoId: new InputFieldCompanion({})
     }),
     head: () => ({
       title: "Inhalte / Administration"
     }),
+    created() {
+      this.liveVideoId.setValueAndReset(this.initialLiveVideoId)
+    },
     methods: {
       onEditModalClose() {
         this.editModalActive = false
@@ -106,6 +130,10 @@
           await this.$api.contents.update(content.id, data.id)
           content.file.id = data.id
         }
+      },
+      async saveLiveVideoId() {
+        await this.$api.contents.update("LIVE_VIDEO_ID", this.liveVideoId.value)
+        this.liveVideoId.reset()
       }
     }
   }
