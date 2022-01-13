@@ -31,21 +31,21 @@
           class="border border-gray-200 shadow-sm rounded-md p-5 flex justify-start justify-between -md:flex-col-reverse relative"
         >
           <div class="flex flex-col justify-center">
-            <div class="font-bold text-4 sm:text-7">
+            <div class="font-bold text-5 sm:text-7 -md:-mt-3 -md:mb-1">
               {{ item.title }}
             </div>
-            <div v-if="item.text" class="text-4 mt-1 sm:mt-2">
+            <div v-if="item.church" class="md:hidden text-orange-500 text-3 sm:text-4 leading-4 whitespace-nowrap">
+              {{ item.church.name }} ({{ item.church.location }})
+            </div>
+            <div v-if="item.text" class="text-4 -md:mt-4">
               <TextWithNewlines :text="item.text"/>
             </div>
           </div>
           <div class="flex-shrink-0 md:ml-4 flex flex-col justify-center md:items-end -md:mb-2">
-            <div v-if="item.willBeStreamed" class="text-s1 uppercase text-red-500 font-bold mb-1">
-              🔴 Live
-            </div>
-            <div class="text-7 sm:text-5 sm:text-8 mb-0.5">
+            <div class="text-6 sm:text-7">
               {{ formatDate(item.date) }}
             </div>
-            <div v-if="item.church" class="text-yellow-500 text-4 leading-5 whitespace-nowrap">
+            <div v-if="item.church" class="-md:hidden text-orange-500 text-4 leading-5 whitespace-nowrap">
               {{ item.church.name }} ({{ item.church.location }})
             </div>
           </div>

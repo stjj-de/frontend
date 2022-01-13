@@ -9,6 +9,7 @@
 ## Todo
 - Make start page links dynamic
 - Page loading indication
+- Global live notification
 - Pfarrbüro Section dynamic
 - Rich Content below videos
 - Responsive images everywhere
