@@ -1,6 +1,6 @@
 <template>
   <MainNavigation/>
-  <div class="max-w-1024px w-100vw px-5 sm:px-12 pb-8 pt-4 mx-auto overflow-hidden">
+  <div class="max-w-1024px w-100vw px-5 sm:px-12 pt-4 pb-12 mx-auto overflow-hidden">
     <router-view v-slot="{ Component }">
       <suspense @pending="startLoading()" @resolve="stopLoading()">
         <!-- The key makes that components are not reused if only params changed -->
