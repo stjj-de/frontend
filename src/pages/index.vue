@@ -112,8 +112,9 @@
 </style>
 
 <script>
-  import { useQuery, gql } from "@urql/vue"
+  import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
+  import query from "../gql/index.graphql"
   import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
   import { useSimplifiedStrapiData } from "../simplifyStrapiData.ts"
   import { getFormattedTitle } from "../util"
@@ -127,85 +128,7 @@
       })
 
       const result = await useQuery({
-        query: gql`
-          query {
-            generalSettings {
-              data {
-                attributes {
-                  acolyteSchedule {
-                    data {
-                      attributes {
-                        url
-                      }
-                    }
-                  }
-
-                  pastors {
-                    person {
-                      data {
-                        attributes {
-                          name
-                          role
-                          image {
-                            data {
-                              attributes {
-                                url
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            churches {
-              data {
-                attributes {
-                  name
-                  location
-                  text
-                  image {
-                    data {
-                      attributes {
-                        url
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            videos(pagination: { limit: 0 }, sort: "publicationDate:desc") {
-              data {
-                attributes {
-                  title
-                  youtubeVideoId
-                  publicationDate
-                }
-              }
-            }
-
-            posts(filters: { featured: { eq: true } }, sort: "publicationDate:desc") {
-              data {
-                attributes {
-                  title
-                  slug
-                  publicationDate
-                  authors {
-                    data {
-                      attributes {
-                        name
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `
+        query
       })
 
       const data = useSimplifiedStrapiData(result.data)

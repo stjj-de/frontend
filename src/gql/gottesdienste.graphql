@@ -1,0 +1,20 @@
+query  {
+    churchServiceDates {
+        data {
+            attributes {
+                title
+                date
+                text
+                willBeStreamed
+                church {
+                    data {
+                        attributes {
+                            name
+                            location
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

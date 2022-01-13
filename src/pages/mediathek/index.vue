@@ -41,8 +41,9 @@
 </style>
 
 <script>
-  import { useQuery, gql } from "@urql/vue"
+  import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
+  import query from "../../gql/mediathek/index.graphql"
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
   import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import { getFormattedTitle } from "../../util"
@@ -63,20 +64,7 @@
       })
 
       const result = await useQuery({
-        query: gql`
-          query {
-            videos(sort: "publicationDate:desc") {
-              data {
-                id
-                attributes {
-                  title
-                  publicationDate
-                  youtubeVideoId
-                }
-              }
-            }
-          }
-        `
+        query
       })
 
       const data = useSimplifiedStrapiData(result.data)

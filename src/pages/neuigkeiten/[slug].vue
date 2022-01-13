@@ -34,9 +34,10 @@
 
 <script>
   import { Head } from "@vueuse/head"
-  import { useQuery, gql } from "@urql/vue"
+  import { useQuery } from "@urql/vue"
   import { useRoute } from "vue-router"
   import { computed } from "vue"
+  import query from "../../gql/neuigkeiten/[slug].graphql"
   import { getFormattedTitle } from "../../util"
   import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import NotFound from "../../components/NotFound.vue"
@@ -55,93 +56,7 @@
       const route = useRoute()
 
       const result = await useQuery({
-        query: gql`
-          query ($slug: String!) {
-            posts(filters: { slug: { eq: $slug } }, pagination: { limit: 1 }) {
-              data {
-                attributes {
-                  title
-                  authors {
-                    data {
-                      id
-                      attributes {
-                        name
-                        image {
-                          data {
-                            attributes {
-                              url
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-
-                  publicationDate
-                  content {
-                    ...on ComponentRichMarkdown {
-                      content
-                    }
-
-                    ...on ComponentRichFile {
-                      label
-                      file {
-                        data {
-                          attributes {
-                            mime
-                            url
-                          }
-                        }
-                      }
-                    }
-
-                    ...on ComponentRichHeading {
-                      level
-                      text
-                    }
-
-                    ...on ComponentRichPicture {
-                      picture {
-                        data {
-                          attributes {
-                            url
-                            alternativeText
-                          }
-                        }
-                      }
-                    }
-
-                    ...on ComponentRichPostLink {
-                      post {
-                        data {
-                          attributes {
-                            title
-                            slug
-                            publicationDate
-
-                            authors {
-                              data {
-                                attributes {
-                                  image {
-                                    data {
-                                      attributes {
-                                        url
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `,
+        query,
         variables: {
           slug: route.params.slug
         }

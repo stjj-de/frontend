@@ -1,0 +1,77 @@
+query {
+    generalSettings {
+        data {
+            attributes {
+                acolyteSchedule {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                }
+
+                pastors {
+                    person {
+                        data {
+                            attributes {
+                                name
+                                role
+                                image {
+                                    data {
+                                        attributes {
+                                            url
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    churches {
+        data {
+            attributes {
+                name
+                location
+                text
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    videos(pagination: { limit: 0 }, sort: "publicationDate:desc") {
+        data {
+            attributes {
+                title
+                youtubeVideoId
+                publicationDate
+            }
+        }
+    }
+
+    posts(filters: { featured: { eq: true } }, sort: "publicationDate:desc") {
+        data {
+            attributes {
+                title
+                slug
+                publicationDate
+                authors {
+                    data {
+                        attributes {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

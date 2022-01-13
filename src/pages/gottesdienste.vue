@@ -60,8 +60,9 @@
 </style>
 
 <script>
-  import { useQuery, gql } from "@urql/vue"
+  import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
+  import query from "../gql/gottesdienste.graphql"
   import { useSimplifiedStrapiData } from "../simplifyStrapiData"
   import YouTubeEmbed from "../components/YouTubeEmbed.vue"
   import { liveVideoId, liveStatusLoading } from "../store"
@@ -86,28 +87,7 @@
       })
 
       const result = await useQuery({
-        query: gql`
-          query  {
-            churchServiceDates {
-              data {
-                attributes {
-                  title
-                  date
-                  text
-                  willBeStreamed
-                  church {
-                    data {
-                      attributes {
-                        name
-                        location
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `
+        query
       })
 
       const data = useSimplifiedStrapiData(result.data)
