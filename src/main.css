@@ -1,0 +1,31 @@
+@layer "base" {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+}
+
+@layer "utilities" {
+  .link {
+    @apply bg-orange-100 hover:bg-orange-200 focus-visible:bg-yellow-200 transition duration-200;
+  }
+}
+
+body {
+  @apply bg-gray-50;
+
+  overflow-x: hidden;
+  width: 100vw;
+  font-size: 16px;
+}
+
+::selection {
+  @apply bg-orange-200;
+}
+
+.section-heading {
+  @apply font-bold font-serif text-10 pb-6;
+
+  & > span {
+    @apply yellow-underlined;
+  }
+}

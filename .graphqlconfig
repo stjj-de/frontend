@@ -1,0 +1,12 @@
+{
+  "name": "Strapi schema",
+  "schemaPath": "introspected_schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Strapi": {
+        "url": "http://localhost:3000/graphql",
+        "introspect": true
+      }
+    }
+  }
+}
