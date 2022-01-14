@@ -1,6 +1,6 @@
 <template>
   <teleport to="#nav">
-    <div class="transition-all duration-200 linear text-8 flex justify-end items-center bg-gray-50" :class="classes">
+    <div class="transition-all duration-200 linear text-8 flex justify-between items-center bg-gray-50" :class="classes">
       <nav
         :class="active ? 'opacity-100' : '-md:opacity-0 -md:pointer-events-none'"
         class="flex items-center top-0 left-0 bg-gray-50 w-100vw
@@ -17,6 +17,12 @@
           {{ item.label }}
         </router-link>
       </nav>
+      <img
+        src="/logo.png"
+        alt="Unser Logo"
+        draggable="false"
+        class="h-full py-2 px-4 align-start"
+      >
       <button
         class="text-gray-800 mr-6 md:hidden flex justify-center items-center relative"
         @click="active = !active"
