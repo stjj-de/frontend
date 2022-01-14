@@ -43,7 +43,7 @@
 <script>
   import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
-  import query from "../../gql/mediathek/index.graphql"
+  import query from "../../gql/pages/mediathek/index.graphql"
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
   import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import { getFormattedTitle } from "../../util"

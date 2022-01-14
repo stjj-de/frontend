@@ -8,4 +8,3 @@
 
 ## Todo
 - Page loading indication
-- Global live notification

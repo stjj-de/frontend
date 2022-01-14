@@ -1,0 +1,9 @@
+query {
+    generalSettings {
+        data {
+            attributes {
+                livestreamVideoId
+            }
+        }
+    }
+}

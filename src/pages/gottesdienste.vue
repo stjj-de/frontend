@@ -39,7 +39,7 @@
             </div>
             <div class="text-4 -md:mt-4">
               <TextWithNewlines v-if="item.text" :text="item.text"/>
-              <div class="text-red-500 text-3">
+              <div v-if="item.willBeStreamed" class="text-red-500 text-3">
                 Wird im Livestream übertragen werden.
               </div>
             </div>
@@ -65,7 +65,7 @@
 <script>
   import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
-  import query from "../gql/gottesdienste.graphql"
+  import query from "../gql/pages/gottesdienste.graphql"
   import { useSimplifiedStrapiData } from "../simplifyStrapiData"
   import YouTubeEmbed from "../components/YouTubeEmbed.vue"
   import { liveVideoId, liveStatusLoading } from "../store"

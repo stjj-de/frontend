@@ -24,7 +24,7 @@
   import { useQuery } from "@urql/vue"
   import { computed } from "vue"
   import { Head } from "@vueuse/head"
-  import query from "../../gql/mediathek/[id].graphql"
+  import query from "../../gql/pages/mediathek/[id].graphql"
   import NotFound from "../../components/NotFound.vue"
   import YouTubeEmbed from "../../components/YouTubeEmbed.vue"
   import { getFormattedTitle } from "../../util"

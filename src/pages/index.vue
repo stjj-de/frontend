@@ -120,7 +120,7 @@
 <script>
   import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
-  import query from "../gql/index.graphql"
+  import query from "../gql/pages/index.graphql"
   import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
   import { useSimplifiedStrapiData } from "../simplifyStrapiData.ts"
   import { getFormattedTitle } from "../util"

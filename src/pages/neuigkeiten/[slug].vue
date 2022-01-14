@@ -37,7 +37,7 @@
   import { useQuery } from "@urql/vue"
   import { useRoute } from "vue-router"
   import { computed } from "vue"
-  import query from "../../gql/neuigkeiten/[slug].graphql"
+  import query from "../../gql/pages/neuigkeiten/[slug].graphql"
   import { getFormattedTitle } from "../../util"
   import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import NotFound from "../../components/NotFound.vue"
