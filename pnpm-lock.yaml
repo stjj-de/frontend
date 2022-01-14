@@ -5,6 +5,7 @@ specifiers:
   '@fontsource/rubik': ^4.5.0
   '@iconify/json': 1.1.444
   '@rollup/plugin-graphql': ^1.1.0
+  '@types/nprogress': ^0.2.0
   '@urql/vue': ^0.6.1
   '@vitejs/plugin-vue': ^2.0.1
   '@vue/compiler-sfc': ^3.1.1
@@ -14,6 +15,7 @@ specifiers:
   eslint-config-awzzm-vue: ^2.0.1
   graphql: ^16.2.0
   marked: ^4.0.10
+  nprogress: ^0.2.0
   typescript: ^4.5.4
   unplugin-icons: ^0.12.23
   vite: ^2.3.7
@@ -32,12 +34,14 @@ dependencies:
   '@vueuse/head': 0.5.1_vue@3.2.26
   graphql: 16.2.0
   marked: 4.0.10
+  nprogress: 0.2.0
   unplugin-icons: 0.12.23_fb6292b47fe9c67e26b404bea724bbe1
   vue: 3.2.26
   vue-router: 4.0.12_vue@3.2.26
 
 devDependencies:
   '@rollup/plugin-graphql': 1.1.0_graphql@16.2.0
+  '@types/nprogress': 0.2.0
   '@vitejs/plugin-vue': 2.0.1_vite@2.7.3+vue@3.2.26
   '@vue/compiler-sfc': 3.2.26
   eslint: 7.32.0
@@ -388,6 +392,10 @@ packages:
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
+    dev: true
+
+  /@types/nprogress/0.2.0:
+    resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
     dev: true
 
   /@types/throttle-debounce/2.1.0:
@@ -2170,6 +2178,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       path-key: 3.1.1
+    dev: false
+
+  /nprogress/0.2.0:
+    resolution: {integrity: sha1-y480xTIT2JVyP8urkH6UIq28r7E=}
     dev: false
 
   /object-inspect/1.11.1:

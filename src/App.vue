@@ -26,48 +26,47 @@
   </div>
 </template>
 
-<style>
-
+<!--suppress CssUnusedSymbol -->
+<style module>
+  .nprogressBar {
+    @apply bg-yellow-400 h-2 absolute top-0 w-100vw z-1000;
+  }
 </style>
 
 <script lang="ts">
-  import { computed, ref, watchEffect } from "vue"
+  import { computed, onMounted, ref, watchEffect, useCssModule } from "vue"
   import { useIntervalFn, whenever } from "@vueuse/core"
-  import { useRouter } from "vue-router"
   import { useQuery } from "@urql/vue"
+  import NProgress from "nprogress"
   import query from "./gql/App.graphql"
   import { liveStatusLoading, liveVideoId, pageComponentLoading } from "./store"
   import MainNavigation from "./components/MainNavigation.vue"
   import ArrowRightIcon from "~icons/ph/arrow-right"
 
-  function useLoading() {
+  function useLoading(progressBarClass: string) {
+    onMounted(() => {
+      NProgress.configure({
+        template: `<div class="${progressBarClass}" role="bar"><div class="peg"></div></div></div>`,
+        trickleSpeed: 100
+      })
+    })
+
     const isLoading = ref(false)
 
     const stopLoading = () => {
       isLoading.value = false
+      NProgress.done()
     }
 
     const startLoading = () => {
       isLoading.value = true
+      NProgress.start()
     }
 
     // Suspense @resolve is also called when the component is not async, so we don't need to handle stopping
     whenever(pageComponentLoading, () => {
       // Runs when a page component is imported
       startLoading()
-    })
-
-    const router = useRouter()
-    let isFirst = true
-
-    router.beforeResolve((to, from, next) => {
-      if (isFirst) {
-        isFirst = false
-
-        // TODO: Hide the initial loading screen
-      }
-
-      next()
     })
 
     return {
@@ -106,7 +105,8 @@
     name: "App",
     components: { MainNavigation, ArrowRightIcon },
     setup() {
-      const { isLoading, startLoading, stopLoading } = useLoading()
+      const styles = useCssModule()
+      const { isLoading, startLoading, stopLoading } = useLoading(styles.nprogressBar)
 
       useLiveStatus()
 
