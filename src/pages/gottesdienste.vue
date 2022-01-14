@@ -34,18 +34,21 @@
             <div class="font-bold text-5 sm:text-7 -md:-mt-3 -md:mb-1">
               {{ item.title }}
             </div>
-            <div v-if="item.church" class="md:hidden text-orange-500 text-3 sm:text-4 leading-4 whitespace-nowrap">
+            <div class="md:hidden text-orange-500 text-3 sm:text-4 leading-4 whitespace-nowrap">
               {{ item.church.name }} ({{ item.church.location }})
             </div>
-            <div v-if="item.text" class="text-4 -md:mt-4">
-              <TextWithNewlines :text="item.text"/>
+            <div class="text-4 -md:mt-4">
+              <TextWithNewlines v-if="item.text" :text="item.text"/>
+              <div class="text-red-500 text-3">
+                Wird im Livestream übertragen werden.
+              </div>
             </div>
           </div>
           <div class="flex-shrink-0 md:ml-4 flex flex-col justify-center md:items-end -md:mb-2">
             <div class="text-6 sm:text-7">
               {{ formatDate(item.date) }}
             </div>
-            <div v-if="item.church" class="-md:hidden text-orange-500 text-4 leading-5 whitespace-nowrap">
+            <div class="-md:hidden text-orange-500 text-4 leading-5 whitespace-nowrap">
               {{ item.church.name }} ({{ item.church.location }})
             </div>
           </div>

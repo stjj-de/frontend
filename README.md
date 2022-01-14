@@ -7,8 +7,5 @@
 - marked is absolute crap to use, but it works and doesn't need 500 dependencies like unified/remark/micromark/...
 
 ## Todo
-- Make start page links dynamic
 - Page loading indication
 - Global live notification
-- Pfarrbüro Section dynamic
-- Responsive images everywhere

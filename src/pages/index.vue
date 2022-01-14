@@ -16,6 +16,26 @@
           <a :href="data.generalSettings.acolyteSchedule.url" class="link">
             📄 Messdienerplan
           </a>
+          <template
+            v-for="link in data.generalSettings.startPageLinks"
+            :key="link.id"
+          >
+            <router-link
+              v-if="link.target.startsWith('/')"
+              class="link"
+              :to="link.target"
+            >
+              {{ link.label }}
+            </router-link>
+            <a
+              v-else
+              class="link"
+              :href="link.target"
+              rel="noopener noreferrer"
+            >
+              {{ link.label }}
+            </a>
+          </template>
         </div>
       </div>
       <div class="flex-grow pt-10 flex flex-col justify-center lg:max-w-90">
@@ -88,21 +108,7 @@
     </section>
     <section>
       <h1 class="section-heading"><span>Pfarrbüro</span></h1>
-      <div class="space-y-4 text-5 leading-8">
-        <p>
-          Unser Pfarrbüro hat
-          Montag bis Freitag von <strong>8:00&nbsp;Uhr bis 12:00&nbsp;Uhr</strong> geöffnet,<br>
-          Montag und Dienstag außerdem zusätzlich
-          von <strong>14:00&nbsp;Uhr bis 17:00&nbsp;Uhr</strong>.
-        </p>
-        <p>
-          Du erreichst uns zudem über folgende Wege:<br>
-        </p>
-        <ul class="list-disc pl-5">
-          <li>Telefon: <a class="link" href="tel:+49682131179">06821 31179</a></li>
-          <li>Email: <a class="link" href="mailto:pfarrbuero@stjj.de">pfarrbuero@stjj.de</a></li>
-        </ul>
-      </div>
+      <RichContent class="text-4" :content="data.generalSettings.officeSectionContent"/>
     </section>
   </main>
 </template>
@@ -118,10 +124,11 @@
   import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
   import { useSimplifiedStrapiData } from "../simplifyStrapiData.ts"
   import { getFormattedTitle } from "../util"
+  import RichContent from "../components/rich/RichContent.vue"
 
   export default {
     name: "IndexPage",
-    components: { HorizontalScrollContainer },
+    components: { RichContent, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")

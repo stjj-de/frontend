@@ -2,6 +2,72 @@ query {
     generalSettings {
         data {
             attributes {
+                startPageLinks {
+                    id
+                    target
+                    label
+                }
+
+                officeSectionContent {
+                    ...on ComponentRichMarkdown {
+                        content
+                    }
+
+                    ...on ComponentRichFile {
+                        label
+                        file {
+                            data {
+                                attributes {
+                                    mime
+                                    url
+                                }
+                            }
+                        }
+                    }
+
+                    ...on ComponentRichHeading {
+                        level
+                        text
+                    }
+
+                    ...on ComponentRichPicture {
+                        picture {
+                            data {
+                                attributes {
+                                    url
+                                    alternativeText
+                                }
+                            }
+                        }
+                    }
+
+                    ...on ComponentRichPostLink {
+                        post {
+                            data {
+                                attributes {
+                                    title
+                                    slug
+                                    publicationDate
+
+                                    authors {
+                                        data {
+                                            attributes {
+                                                image {
+                                                    data {
+                                                        attributes {
+                                                            url
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 acolyteSchedule {
                     data {
                         attributes {

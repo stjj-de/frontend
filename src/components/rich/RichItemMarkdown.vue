@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-2 text-3" :class="$style.root" v-html="rendered"/>
+  <div class="space-y-2" :class="$style.root" v-html="rendered"/>
 </template>
 
 <style module>
