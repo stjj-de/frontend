@@ -62,12 +62,12 @@
           :key="person.name"
           class="w-70 flex-shrink-0 flex flex-col items-center px-8 py-6 bg-white shadow-md rounded-2xl"
         >
-          <img
+          <UploadedImage
             class="rounded-full w-50 h-50 object-cover mb-8"
             draggable="false"
-            :src="person.image.url"
+            :url="person.image.url"
             :alt="person.name"
-          >
+          />
           <div class="text-6 font-bold">
             {{ person.name }}
           </div>
@@ -98,11 +98,11 @@
               {{ church.text }}
             </div>
           </div>
-          <img
+          <UploadedImage
             class="-lg:max-w-120 -lg:mt-8 lg:w-1/2 object-cover"
-            :src="church.image.url"
+            :url="church.image.url"
             :alt="church.name"
-          >
+          />
         </div>
       </div>
     </section>
@@ -125,10 +125,11 @@
   import { useSimplifiedStrapiData } from "../simplifyStrapiData.ts"
   import { getFormattedTitle } from "../util"
   import RichContent from "../components/rich/RichContent.vue"
+  import UploadedImage from "../components/UploadedImage.vue"
 
   export default {
     name: "IndexPage",
-    components: { RichContent, HorizontalScrollContainer },
+    components: { UploadedImage, RichContent, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")

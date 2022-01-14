@@ -1,14 +1,14 @@
 <template>
   <RichCard type="Artikel" :title="data.post.title">
     <div class="flex space-x-1">
-      <img
+      <UploadedImage
         v-for="author in data.post.authors"
         :key="author.id"
         class="rounded-full h-8 w-8 mt-2 mb-2 object-cover shadow-lg"
         draggable="false"
-        :src="author.image.url"
+        :url="author.image.url"
         :alt="author.name"
-      >
+      />
     </div>
     <template #action="{ classes }">
       <router-link
@@ -29,12 +29,13 @@
 </style>
 
 <script>
+  import UploadedImage from "../UploadedImage.vue"
   import RichCard from "./RichCard.vue"
   import ArrowRightIcon from "~icons/ph/arrow-right"
 
   export default {
     name: "RichItemPostLink",
-    components: { RichCard, ArrowRightIcon },
+    components: { UploadedImage, RichCard, ArrowRightIcon },
     props: {
       data: {
         type: Object,

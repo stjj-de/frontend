@@ -6,6 +6,7 @@ import { createHead } from "@vueuse/head"
 import urql, { cacheExchange, createClient, fetchExchange } from "@urql/vue"
 import App from "./App.vue"
 import { pageComponentLoading } from "./store"
+import { getStrapiUrl } from "./util"
 import originalRoutes from "~pages"
 
 const routes = originalRoutes.map(route => {
@@ -39,7 +40,7 @@ const router = createRouter({
 })
 
 const urqlClient = createClient({
-  url: "/graphql",
+  url: getStrapiUrl("/graphql"),
   requestPolicy: "cache-and-network",
   suspense: true,
   exchanges: [

@@ -11,7 +11,7 @@
     <div class="mb-6 mt-3">
       Veröffentlicht am {{ date }}
     </div>
-    <RichContent :increment-heading-levels-by="1" :content="video.richContent"/>
+    <RichContent class="text-4" :increment-heading-levels-by="1" :content="video.richContent"/>
   </main>
 </template>
 

@@ -14,12 +14,5 @@ export default defineConfig({
     windicssPlugin(),
     iconsPlugin(),
     graphqlPlugin()
-  ],
-  server: {
-    proxy: {
-      // Strapi
-      "/uploads": "http://localhost:1337",
-      "/graphql": "http://localhost:1337"
-    }
-  }
+  ]
 })

@@ -13,17 +13,17 @@
           Veröffentlicht am {{ formatDate(post.publicationDate) }}
         </div>
         <div class="flex space-x-2 pt-4">
-          <img
+          <UploadedImage
             v-for="author in post.authors"
             :key="author.id"
             class="rounded-full h-14 w-14 object-cover shadow-lg"
             draggable="false"
-            :src="author.image.url"
+            :url="author.image.url"
             :alt="author.name"
-          >
+          />
         </div>
       </div>
-      <RichContent :content="post.content"/>
+      <RichContent class="text-4" :content="post.content"/>
     </article>
   </main>
 </template>
@@ -42,6 +42,7 @@
   import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import NotFound from "../../components/NotFound.vue"
   import RichContent from "../../components/rich/RichContent.vue"
+  import UploadedImage from "../../components/UploadedImage.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     day: "numeric",
@@ -51,7 +52,7 @@
 
   export default {
     name: "PostPage",
-    components: { RichContent, NotFound, Head },
+    components: { UploadedImage, RichContent, NotFound, Head },
     async setup() {
       const route = useRoute()
 
