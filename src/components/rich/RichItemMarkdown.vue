@@ -1,11 +1,19 @@
 <template>
-  <div class="space-y-2" :class="$style.root" v-html="rendered"/>
+  <div class="space-y-3" :class="$style.root" v-html="rendered"/>
 </template>
 
 <style module>
   .root {
+    :is(ul, ol) + p {
+      @apply !mt-5;
+    }
+
+    p + :is(ul, ol) {
+      @apply !mt-0.5;
+    }
+
     ul {
-      @apply list-disc list-inside;
+      @apply list-disc list-inside pl-1;
     }
 
     ol {

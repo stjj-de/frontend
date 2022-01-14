@@ -1,0 +1,68 @@
+query ($path: String!) {
+    customPages(filters: { path: { eq: $path } }) {
+        data {
+            attributes {
+                title
+                content {
+                    ...on ComponentRichMarkdown {
+                        content
+                    }
+
+                    ...on ComponentRichFile {
+                        label
+                        file {
+                            data {
+                                attributes {
+                                    mime
+                                    url
+                                }
+                            }
+                        }
+                    }
+
+                    ...on ComponentRichHeading {
+                        level
+                        text
+                    }
+
+                    ...on ComponentRichPicture {
+                        picture {
+                            data {
+                                attributes {
+                                    url
+                                    alternativeText
+                                }
+                            }
+                        }
+                    }
+
+                    ...on ComponentRichPostLink {
+                        post {
+                            data {
+                                attributes {
+                                    title
+                                    slug
+                                    publicationDate
+
+                                    authors {
+                                        data {
+                                            attributes {
+                                                image {
+                                                    data {
+                                                        attributes {
+                                                            url
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
