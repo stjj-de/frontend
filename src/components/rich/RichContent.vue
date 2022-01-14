@@ -5,7 +5,11 @@
       :key="`${item.__typename}-${item.id}`"
     >
       <RichItemMarkdown v-if="item.__typename === 'ComponentRichMarkdown'" :data="item"/>
-      <RichItemHeading v-else-if="item.__typename === 'ComponentRichHeading'" :data="item"/>
+      <RichItemHeading
+        v-else-if="item.__typename === 'ComponentRichHeading'"
+        :data="item"
+        :increment-level-by="incrementHeadingLevelsBy"
+      />
       <RichItemPicture v-else-if="item.__typename === 'ComponentRichPicture'" :data="item"/>
       <RichItemPostLink v-else-if="item.__typename === 'ComponentRichPostLink'" :data="item"/>
       <RichItemFile v-else-if="item.__typename === 'ComponentRichFile'" :data="item"/>
@@ -31,6 +35,10 @@
       content: {
         type: Array,
         required: true
+      },
+      incrementHeadingLevelsBy: {
+        type: Number,
+        default: 0
       }
     }
   }

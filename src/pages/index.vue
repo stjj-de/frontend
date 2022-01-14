@@ -108,7 +108,7 @@
     </section>
     <section>
       <h1 class="section-heading"><span>Pfarrbüro</span></h1>
-      <RichContent class="text-4" :content="data.generalSettings.officeSectionContent"/>
+      <RichContent class="text-4" :increment-heading-levels-by="1" :content="data.generalSettings.officeSectionContent"/>
     </section>
   </main>
 </template>

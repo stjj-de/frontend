@@ -4,14 +4,14 @@
   </Head>
   <NotFound v-if="video === null" resource="Dieses Video"/>
   <main v-else>
-    <div class="flex flex-col-reverse">
-      <h1 class="font-sans font-bold text-6 sm:text-8 pt-6">{{ video.title }}</h1>
+    <div class="flex flex-col-reverse items-start">
+      <h1 class="font-serif font-bold font-serif text-8 pt-4"><span>{{ video.title }}</span></h1>
       <YouTubeEmbed :video-id="video.youtubeVideoId"/>
     </div>
-    <div class="mb-6">
+    <div class="mb-6 mt-3">
       Veröffentlicht am {{ date }}
     </div>
-    <RichContent :content="video.richContent"/>
+    <RichContent :increment-heading-levels-by="1" :content="video.richContent"/>
   </main>
 </template>
 

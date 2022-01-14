@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="`h${data.level + pushLevelDown}`"
+    :is="`h${data.level + incrementLevelBy}`"
     :data-level="data.level"
     :class="$style.root"
   >
@@ -46,7 +46,7 @@
         type: Object,
         required: true
       },
-      pushLevelDown: {
+      incrementLevelBy: {
         type: Number,
         default: 0
       }
