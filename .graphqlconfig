@@ -1,10 +1,10 @@
 {
-  "name": "Strapi schema",
+  "name": "Keystone schema",
   "schemaPath": "introspected_schema.graphql",
   "extensions": {
     "endpoints": {
-      "Strapi": {
-        "url": "http://localhost:3000/graphql",
+      "Keystone": {
+        "url": "http://localhost:8000/api/graphql",
         "introspect": true
       }
     }

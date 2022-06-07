@@ -1,143 +1,51 @@
 query {
-    generalSettings {
-        data {
-            attributes {
-                startPageLinks {
-                    id
-                    target
-                    label
-                }
-
-                officeSectionContent {
-                    ...on ComponentRichMarkdown {
-                        content
-                    }
-
-                    ...on ComponentRichFile {
-                        label
-                        file {
-                            data {
-                                attributes {
-                                    mime
-                                    url
-                                }
-                            }
-                        }
-                    }
-
-                    ...on ComponentRichHeading {
-                        level
-                        text
-                    }
-
-                    ...on ComponentRichPicture {
-                        picture {
-                            data {
-                                attributes {
-                                    url
-                                    alternativeText
-                                }
-                            }
-                        }
-                    }
-
-                    ...on ComponentRichPostLink {
-                        post {
-                            data {
-                                attributes {
-                                    title
-                                    slug
-                                    publicationDate
-
-                                    authors {
-                                        data {
-                                            attributes {
-                                                image {
-                                                    data {
-                                                        attributes {
-                                                            url
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                acolyteSchedule {
-                    data {
-                        attributes {
-                            url
-                        }
-                    }
-                }
-
-                pastors {
-                    person {
-                        data {
-                            attributes {
-                                name
-                                role
-                                image {
-                                    data {
-                                        attributes {
-                                            url
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    settingsSingletons {
+        homePageLinks(orderBy: [{ priority: asc }]) {
+            id
+            url
+            text
+            emoji
+        }
+        acolyteSchedule {
+            url
+        }
+        pastors(orderBy: [{ priority: asc }]) {
+            id
+            displayName
+            role
+            image {
+                url
             }
+        }
+        officeSectionContent {
+            document(hydrateRelationships: true)
         }
     }
 
     churches {
-        data {
-            attributes {
-                name
-                location
-                text
-                image {
-                    data {
-                        attributes {
-                            url
-                        }
-                    }
-                }
-            }
+        name
+        location
+        image {
+            url
+        }
+        description {
+            document(hydrateRelationships: true)
         }
     }
 
-    videos(pagination: { limit: 0 }, sort: "publicationDate:desc") {
-        data {
-            attributes {
-                title
-                youtubeVideoId
-                publicationDate
-            }
-        }
+    videos(take: 1, orderBy: [{ publicationDate: desc }]) {
+        id
+        title
+        youtubeVideoId
+        publicationDate
     }
 
-    posts(filters: { featured: { eq: true } }, sort: "publicationDate:desc") {
-        data {
-            attributes {
-                title
-                slug
-                publicationDate
-                authors {
-                    data {
-                        attributes {
-                            name
-                        }
-                    }
-                }
-            }
+    posts(take: 4, where: { featured: { equals: true } }, orderBy: [{ publicationDate: desc }]) {
+        title
+        slug
+        publicationDate
+        authors {
+            displayName
         }
     }
 }

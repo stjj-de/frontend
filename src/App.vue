@@ -80,7 +80,7 @@
     liveStatusLoading.value = true
     liveVideoId.value = null
 
-    const result = useQuery({
+    const { data, executeQuery } = useQuery({
       query,
       context: {
         requestPolicy: "network-only"
@@ -88,14 +88,14 @@
     })
 
     useIntervalFn(() => {
-      result.executeQuery()
+      executeQuery()
     }, 30 * 1000)
 
     watchEffect(() => {
-      if (result.data.value) {
+      if (data.value) {
         liveStatusLoading.value = false
 
-        const id = result.data.value.generalSettings.data.attributes.livestreamVideoId
+        const id = data.value.settingsSingletons[0].livestreamVideoId
         liveVideoId.value = id === "" ? null : id
       }
     })

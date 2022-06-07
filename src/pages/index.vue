@@ -13,63 +13,53 @@
           <router-link :to="`/mediathek/${data.videos[0].id}`" class="link">
             📺 Aktueller Gottesdienst
           </router-link>
-          <a :href="data.generalSettings.acolyteSchedule.url" class="link">
+          <a :href="getBackendUrl(data.settingsSingletons[0].acolyteSchedule.url)" class="link">
             📄 Messdienerplan
           </a>
           <template
-            v-for="link in data.generalSettings.startPageLinks"
+            v-for="link in data.settingsSingletons[0].homePageLinks"
             :key="link.id"
           >
-            <router-link
-              v-if="link.target.startsWith('/')"
-              class="link"
-              :to="link.target"
-            >
-              {{ link.label }}
-            </router-link>
-            <a
-              v-else
-              class="link"
-              :href="link.target"
-              rel="noopener noreferrer"
-            >
-              {{ link.label }}
-            </a>
+            <UnknownLink :to="link.url">
+              {{ link.emoji }} {{ link.text }}
+            </UnknownLink>
           </template>
         </div>
       </div>
       <div class="flex-grow pt-10 flex flex-col justify-center lg:max-w-90">
-        <router-link
-          v-for="post in data.posts"
-          :key="post.slug"
-          :to="`/neuigkeiten/${post.slug}`"
-          class="not-last:border-b-1px border-gray-200 py-3 first:pt-0"
-        >
-          <div class="font-serif text-gray-800 text-5 sm:text-6 mb-1 truncate leading-8">
-            {{ post.title }}
-          </div>
-          <div class="text-3 text-gray-700">
-            {{ post.authors.map(author => author.name).join(", ") }}
-          </div>
-        </router-link>
+        <div class="flex flex-col justify-center">
+          <router-link
+            v-for="post in data.posts"
+            :key="post.slug"
+            :to="`/neuigkeiten/${post.slug}`"
+            class="not-last:border-b-1px border-gray-200 py-3 first:pt-0"
+          >
+            <div class="font-serif text-gray-800 text-5 sm:text-6 mb-1 truncate leading-8">
+              {{ post.title }}
+            </div>
+            <div class="text-2 text-gray-700">
+              {{ post.authors.map(author => author.displayName).join(", ") }}
+            </div>
+          </router-link>
+        </div>
       </div>
     </section>
     <section>
       <h1 class="section-heading"><span>Seelsorger</span></h1>
       <HorizontalScrollContainer :scroll-step-size="220">
         <div
-          v-for="person in data.generalSettings.pastors.map(value => value.person)"
-          :key="person.name"
+          v-for="person in data.settingsSingletons[0].pastors"
+          :key="person.id"
           class="w-70 flex-shrink-0 flex flex-col items-center px-8 py-6 bg-white shadow-md rounded-2xl"
         >
           <UploadedImage
             class="rounded-full w-50 h-50 object-cover mb-8"
             draggable="false"
             :url="person.image.url"
-            :alt="person.name"
+            :alt="person.displayName"
           />
           <div class="text-6 font-bold">
-            {{ person.name }}
+            {{ person.displayName }}
           </div>
           <div class="text-5">
             {{ person.role }}
@@ -94,9 +84,7 @@
             <div class="text-5">
               in {{ church.location }}
             </div>
-            <div class="text-4 leading-7 mt-4">
-              {{ church.text }}
-            </div>
+            <Document class="text-4 mt-4" :data="church.description.document"/>
           </div>
           <UploadedImage
             class="-lg:max-w-120 -lg:mt-8 lg:w-1/2 object-cover"
@@ -108,7 +96,7 @@
     </section>
     <section>
       <h1 class="section-heading"><span>Pfarrbüro</span></h1>
-      <RichContent class="text-4" :increment-heading-levels-by="1" :content="data.generalSettings.officeSectionContent"/>
+      <Document class="text-4" :increment-heading-levels-by="1" :data="data.settingsSingletons[0].officeSectionContent.document"/>
     </section>
   </main>
 </template>
@@ -122,27 +110,26 @@
   import { useHead } from "@vueuse/head"
   import query from "../gql/pages/index.graphql"
   import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
-  import { useSimplifiedStrapiData } from "../simplifyStrapiData.ts"
-  import { getFormattedTitle } from "../util"
-  import RichContent from "../components/rich/RichContent.vue"
+  import { getFormattedTitle, getBackendUrl } from "../util"
   import UploadedImage from "../components/UploadedImage.vue"
+  import UnknownLink from "../components/UnknownLink.vue"
+  import Document from "../components/document/Document.vue"
 
   export default {
     name: "IndexPage",
-    components: { UploadedImage, RichContent, HorizontalScrollContainer },
+    components: { Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")
       })
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query
       })
 
-      const data = useSimplifiedStrapiData(result.data)
-
       return {
-        data
+        data,
+        getBackendUrl
       }
     }
   }

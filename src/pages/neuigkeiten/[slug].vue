@@ -5,25 +5,30 @@
   <NotFound v-if="post === null" resource="Dieser Artikel"/>
   <main v-else>
     <article>
-      <h1 class="font-bold text-10 text-gray-800">
-        {{ post.title }}
-      </h1>
-      <div class="rounded-md border-2 border-gray-200 w-90 p-5 mt-5 mb-10">
-        <div class="text-gray-600 uppercase font-bold text-s1 tracking-wide">
-          Veröffentlicht am {{ formatDate(post.publicationDate) }}
+      <div class="flex flex-col items-center pb-15 space-y-5">
+        <h1 class="font-bold text-10 font-serif text-gray-800 text-center">
+          {{ post.title }}
+        </h1>
+        <div
+          style="background-image: url('/divider-1.svg')"
+          class="h-8 w-full bg-center bg-contain bg-no-repeat opacity-80"
+        />
+        <div class="text-gray-800 text-3">
+          {{ formatDate(post.publicationDate) }}
         </div>
-        <div class="flex space-x-2 pt-4">
+        <div class="pt-2 flex justify-center space-x-4">
           <UploadedImage
             v-for="author in post.authors"
             :key="author.id"
-            class="rounded-full h-14 w-14 object-cover shadow-lg"
+            class="rounded-full h-14 w-14 object-cover shadow-md"
             draggable="false"
             :url="author.image.url"
-            :alt="author.name"
+            :alt="author.displayName"
+            :title="author.displayName"
           />
         </div>
       </div>
-      <RichContent class="text-4" :content="post.content"/>
+      <Document class="text-3" :data="post.content.document"/>
     </article>
   </main>
 </template>
@@ -39,10 +44,9 @@
   import { computed } from "vue"
   import query from "../../gql/pages/neuigkeiten/[slug].graphql"
   import { getFormattedTitle } from "../../util"
-  import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import NotFound from "../../components/NotFound.vue"
-  import RichContent from "../../components/rich/RichContent.vue"
   import UploadedImage from "../../components/UploadedImage.vue"
+  import Document from "../../components/document/Document.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     day: "numeric",
@@ -52,19 +56,18 @@
 
   export default {
     name: "PostPage",
-    components: { UploadedImage, RichContent, NotFound, Head },
+    components: { Document, UploadedImage, NotFound, Head },
     async setup() {
       const route = useRoute()
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query,
         variables: {
           slug: route.params.slug
         }
       })
 
-      const data = useSimplifiedStrapiData(result.data)
-      const post = computed(() => data.value.posts.length === 0 ? null : data.value.posts[0])
+      const post = computed(() => data.value.post)
       const title = computed(() => getFormattedTitle(post.value === null ? "Nicht gefunden" : post.value.title))
 
       return {

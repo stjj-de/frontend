@@ -1,9 +1,5 @@
 query {
-    generalSettings {
-        data {
-            attributes {
-                livestreamVideoId
-            }
-        }
+    settingsSingletons {
+        livestreamVideoId
     }
 }

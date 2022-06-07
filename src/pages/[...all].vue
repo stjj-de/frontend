@@ -4,10 +4,10 @@
   </Head>
   <NotFound v-if="page === null" resource="Diese Seite"/>
   <main v-else>
-    <h1 class="section-heading -mb-5">
+    <h1 class="section-heading">
       <span>{{ page.title }}</span>
     </h1>
-    <RichContent class="text-4" :content="page.content"/>
+    <Document class="text-3" :data="page.content.document"/>
   </main>
 </template>
 
@@ -23,24 +23,22 @@
   import query from "../gql/pages/[...all].graphql"
   import NotFound from "../components/NotFound.vue"
   import { getFormattedTitle } from "../util"
-  import { useSimplifiedStrapiData } from "../simplifyStrapiData"
-  import RichContent from "../components/rich/RichContent.vue"
+  import Document from "../components/document/Document.vue"
 
   export default {
     name: "FallbackPage",
-    components: { RichContent, NotFound, Head },
+    components: { Document, NotFound, Head },
     async setup() {
       const route = useRoute()
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query,
         variables: {
           path: route.path.slice(1)
         }
       })
 
-      const data = useSimplifiedStrapiData(result.data)
-      const page = computed(() => data.value.customPages.length === 0 ? null : data.value.customPages[0])
+      const page = computed(() => data.value.customPage)
 
       return {
         page,

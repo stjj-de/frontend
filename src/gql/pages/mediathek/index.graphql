@@ -1,12 +1,8 @@
 query {
-    videos(sort: "publicationDate:desc") {
-        data {
-            id
-            attributes {
-                title
-                publicationDate
-                youtubeVideoId
-            }
-        }
+    videos(orderBy: [{ publicationDate: desc }]) {
+        id
+        title
+        publicationDate
+        youtubeVideoId
     }
 }

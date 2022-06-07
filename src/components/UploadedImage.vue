@@ -10,7 +10,7 @@
 </style>
 
 <script>
-  import { getStrapiUrl } from "../util"
+  import { getBackendUrl } from "../util"
 
   export default {
     name: "UploadedImage",
@@ -26,7 +26,7 @@
     },
     setup(props) {
       return {
-        src: getStrapiUrl(props.url)
+        src: getBackendUrl(props.url)
       }
     }
   }

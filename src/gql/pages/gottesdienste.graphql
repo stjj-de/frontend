@@ -1,20 +1,14 @@
 query  {
     churchServiceDates {
-        data {
-            attributes {
-                title
-                date
-                text
-                willBeStreamed
-                church {
-                    data {
-                        attributes {
-                            name
-                            location
-                        }
-                    }
-                }
-            }
+        shortDescription
+        date
+        livestreamPlanned
+        longDescription {
+            document(hydrateRelationships: true)
+        }
+        church {
+            name
+            location
         }
     }
 }

@@ -5,13 +5,13 @@
   <NotFound v-if="video === null" resource="Dieses Video"/>
   <main v-else>
     <div class="flex flex-col-reverse items-start">
-      <h1 class="font-serif font-bold font-serif text-8 pt-4"><span>{{ video.title }}</span></h1>
+      <h1 class="font-serif font-bold font-serif text-8 pt-6"><span>{{ video.title }}</span></h1>
       <YouTubeEmbed :video-id="video.youtubeVideoId"/>
     </div>
-    <div class="mb-6 mt-3">
+    <div class="mb-6 mt-3 text-4">
       Veröffentlicht am {{ date }}
     </div>
-    <RichContent class="text-4" :increment-heading-levels-by="1" :content="video.richContent"/>
+    <Document :data="video.description" :increment-headings="1"/>
   </main>
 </template>
 
@@ -28,7 +28,7 @@
   import NotFound from "../../components/NotFound.vue"
   import YouTubeEmbed from "../../components/YouTubeEmbed.vue"
   import { getFormattedTitle } from "../../util"
-  import RichContent from "../../components/rich/RichContent.vue"
+  import Document from "../../components/document/Document.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     day: "numeric",
@@ -38,18 +38,18 @@
 
   export default {
     name: "VideoPage",
-    components: { RichContent, YouTubeEmbed, NotFound, Head },
+    components: { Document, YouTubeEmbed, NotFound, Head },
     async setup() {
       const route = useRoute()
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query,
         variables: {
           id: route.params.id
         }
       })
 
-      const video = computed(() => result.data.value.video.data?.attributes)
+      const video = computed(() => data.value.video)
 
       return {
         video,

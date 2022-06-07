@@ -17,17 +17,19 @@
           v-for="video in data.videos"
           :key="video.id"
           :to="`/mediathek/${video.id}`"
-          class="rounded-md overflow-hidden border-gray-200 border-1"
+          class="rounded-md overflow-hidden border-gray-200 border-1 shadow-lg"
         >
-          <div class="aspect-ratio-9/16">
+          <div class="aspect-ratio-9/16 relative">
             <YouTubeThumbnail class="w-full h-full object-cover" :video-id="video.youtubeVideoId"/>
+            <div class="absolute flex justify-start items-end p-1">
+              <div class="bg-black bg-opacity-80 text-white rounded-md px-2 py-1">
+                {{ formatDate(video.publicationDate) }}
+              </div>
+            </div>
           </div>
           <div class="py-2 px-3" :title="video.title">
-            <div class="font-bold text-3 truncate">
+            <div class="text-3 line-clamp-2">
               {{ video.title }}
-            </div>
-            <div class="text-gray-600">
-              {{ formatDate(video.publicationDate) }}
             </div>
           </div>
         </router-link>
@@ -45,12 +47,11 @@
   import { useHead } from "@vueuse/head"
   import query from "../../gql/pages/mediathek/index.graphql"
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
-  import { useSimplifiedStrapiData } from "../../simplifyStrapiData"
   import { getFormattedTitle } from "../../util"
   import ExternalIcon from "~icons/lucide/external-link"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
-    day: "numeric",
+    day: "2-digit",
     month: "2-digit",
     year: "2-digit"
   })
@@ -63,11 +64,9 @@
         title: getFormattedTitle("Mediathek")
       })
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query
       })
-
-      const data = useSimplifiedStrapiData(result.data)
 
       return {
         data,

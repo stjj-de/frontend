@@ -32,14 +32,14 @@
         >
           <div class="flex flex-col justify-center">
             <div class="font-bold text-5 sm:text-7 -md:-mt-3 -md:mb-1">
-              {{ item.title }}
+              {{ item.shortDescription }}
             </div>
             <div class="md:hidden text-orange-500 text-3 sm:text-4 leading-4 whitespace-nowrap">
               {{ item.church.name }} ({{ item.church.location }})
             </div>
             <div class="text-4 -md:mt-4">
-              <TextWithNewlines v-if="item.text" :text="item.text"/>
-              <div v-if="item.willBeStreamed" class="text-red-500 text-3">
+              <Document v-if="item.longDescription" :data="item.longDescription"/>
+              <div v-if="item.livestreamPlanned" class="text-red-500 text-3">
                 Wird im Livestream übertragen werden.
               </div>
             </div>
@@ -66,12 +66,11 @@
   import { useQuery } from "@urql/vue"
   import { useHead } from "@vueuse/head"
   import query from "../gql/pages/gottesdienste.graphql"
-  import { useSimplifiedStrapiData } from "../simplifyStrapiData"
   import YouTubeEmbed from "../components/YouTubeEmbed.vue"
   import { liveVideoId, liveStatusLoading } from "../store"
-  import TextWithNewlines from "../components/TextWithNewlines.vue"
   import LoadingSpinner from "../components/LoadingSpinner.vue"
   import { getFormattedTitle } from "../util"
+  import Document from "../components/document/Document.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     weekday: "short",
@@ -83,17 +82,15 @@
 
   export default {
     name: "GottesdienstePage",
-    components: { LoadingSpinner, TextWithNewlines, YouTubeEmbed },
+    components: { Document, LoadingSpinner, YouTubeEmbed },
     async setup() {
       useHead({
         title: getFormattedTitle("Gottesdienste")
       })
 
-      const result = await useQuery({
+      const { data } = await useQuery({
         query
       })
-
-      const data = useSimplifiedStrapiData(result.data)
 
       return {
         data,
