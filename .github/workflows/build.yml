@@ -28,5 +28,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: built
+          enable_jekyll: true # disables the .nojekyll file
           commit_message: ${{ github.event.head_commit.message }}
 
