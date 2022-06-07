@@ -39,6 +39,9 @@ const router = createRouter({
   history: createWebHistory()
 })
 
+const app = createApp(App)
+app.use(router)
+
 const urqlClient = createClient({
   url: getBackendUrl("/api/graphql"),
   requestPolicy: "cache-and-network",
@@ -48,12 +51,9 @@ const urqlClient = createClient({
     fetchExchange
   ]
 })
+app.use(urql, urqlClient)
 
 const head = createHead()
-
-const app = createApp(App)
-app.use(urql, urqlClient)
-app.use(router)
 app.use(head)
 
 app.mount("#app")

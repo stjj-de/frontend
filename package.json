@@ -10,29 +10,28 @@
   "devDependencies": {
     "@rollup/plugin-graphql": "^1.1.0",
     "@types/nprogress": "^0.2.0",
-    "@vitejs/plugin-vue": "^2.0.1",
-    "@vue/compiler-sfc": "^3.1.1",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/compiler-sfc": "^3.2.37",
     "eslint": "^7.32.0",
     "eslint-config-awzzm-vue": "^2.0.1",
     "rollup": "^2.75.5",
-    "typescript": "^4.5.4",
-    "vite": "^2.3.7",
-    "vite-plugin-pages": "^0.19.4",
-    "vite-plugin-windicss": "^1.0.4",
-    "windicss": "^3.2.1"
+    "typescript": "4.5.5",
+    "vite": "^2.9.10",
+    "vite-plugin-pages": "^0.23.0",
+    "vite-plugin-windicss": "^1.8.4",
+    "windicss": "^3.5.4"
   },
   "dependencies": {
-    "@fontsource/playfair-display": "^4.5.1",
-    "@fontsource/rubik": "^4.5.0",
-    "@iconify/json": "1.1.444",
-    "@urql/vue": "^0.6.1",
-    "@vueuse/core": "^7.2.2",
-    "@vueuse/head": "^0.5.1",
-    "graphql": "^16.2.0",
-    "marked": "^4.0.10",
+    "@fontsource/playfair-display": "^4.5.10",
+    "@fontsource/rubik": "^4.5.10",
+    "@iconify/json": "^2.1.57",
+    "@urql/vue": "^0.6.2",
+    "@vueuse/core": "^8.6.0",
+    "@vueuse/head": "^0.7.6",
+    "graphql": "^16.5.0",
     "nprogress": "^0.2.0",
-    "unplugin-icons": "^0.12.23",
-    "vue": "^3.2.26",
-    "vue-router": "^4.0.12"
+    "unplugin-icons": "^0.14.3",
+    "vue": "^3.2.37",
+    "vue-router": "^4.0.15"
   }
 }

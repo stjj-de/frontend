@@ -19,7 +19,7 @@ export default defineConfig({
     colors: {
       black: colors.black,
       white: colors.white,
-      gray: colors.warmGray,
+      gray: colors.stone,
       red: colors.red,
       yellow: colors.amber,
       orange: colors.orange,

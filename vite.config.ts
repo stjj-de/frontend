@@ -1,4 +1,4 @@
-import { defineConfig } from "vite"
+import { defineConfig, splitVendorChunkPlugin } from "vite"
 import vuePlugin from "@vitejs/plugin-vue"
 import windicssPlugin from "vite-plugin-windicss"
 import pagesPlugin from "vite-plugin-pages"
@@ -7,6 +7,7 @@ import graphqlPlugin from "@rollup/plugin-graphql"
 
 export default defineConfig({
   plugins: [
+    splitVendorChunkPlugin(),
     vuePlugin(),
     pagesPlugin({
       syncIndex: false
