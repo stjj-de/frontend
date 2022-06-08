@@ -27,7 +27,7 @@
   import query from "../../gql/pages/mediathek/[id].graphql"
   import NotFound from "../../components/NotFound.vue"
   import YouTubeEmbed from "../../components/YouTubeEmbed.vue"
-  import { getFormattedTitle } from "../../util"
+  import { getFormattedTitle } from "../../util/index.ts"
   import Document from "../../components/document/Document.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {

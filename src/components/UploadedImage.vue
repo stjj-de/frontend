@@ -1,6 +1,6 @@
 <template>
   <img
-    :src="src"
+    :src="url"
     :alt="alt"
     draggable="false"
   >
@@ -11,8 +11,6 @@
 </style>
 
 <script>
-  import { getBackendUrl } from "../util"
-
   export default {
     name: "UploadedImage",
     props: {
@@ -23,11 +21,6 @@
       alt: {
         type: String,
         required: true
-      }
-    },
-    setup(props) {
-      return {
-        src: getBackendUrl(props.url)
       }
     }
   }

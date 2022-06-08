@@ -13,9 +13,6 @@
           <router-link :to="`/mediathek/${data.videos[0].id}`" class="link">
             📺 Aktueller Gottesdienst
           </router-link>
-          <a :href="getBackendUrl(data.settingsSingletons[0].acolyteSchedule.url)" class="link">
-            📄 Messdienerplan
-          </a>
           <template
             v-for="link in data.settingsSingletons[0].homePageLinks"
             :key="link.id"
@@ -99,8 +96,7 @@
   import { useHead } from "@vueuse/head"
   import query from "../gql/pages/index.graphql"
   import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
-  import { getFormattedTitle, getBackendUrl } from "../util"
-  import UploadedImage from "../components/UploadedImage.vue"
+  import { getFormattedTitle } from "../util"
   import UnknownLink from "../components/UnknownLink.vue"
   import Document from "../components/document/Document.vue"
   import PersonCard from "../components/PersonCard.vue"
@@ -108,7 +104,7 @@
 
   export default {
     name: "IndexPage",
-    components: { UploadedImageWithShadow, PersonCard, Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
+    components: { UploadedImageWithShadow, PersonCard, Document, UnknownLink, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")
@@ -119,8 +115,7 @@
       })
 
       return {
-        data,
-        getBackendUrl
+        data
       }
     }
   }

@@ -43,7 +43,7 @@
   import { useRoute } from "vue-router"
   import { computed } from "vue"
   import query from "../../gql/pages/neuigkeiten/[slug].graphql"
-  import { getFormattedTitle } from "../../util"
+  import { getFormattedTitle } from "../../util/index.ts"
   import NotFound from "../../components/NotFound.vue"
   import UploadedImage from "../../components/UploadedImage.vue"
   import Document from "../../components/document/Document.vue"

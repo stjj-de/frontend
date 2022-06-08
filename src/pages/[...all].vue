@@ -22,7 +22,7 @@
   import { computed } from "vue"
   import query from "../gql/pages/[...all].graphql"
   import NotFound from "../components/NotFound.vue"
-  import { getFormattedTitle } from "../util"
+  import { getFormattedTitle } from "../util/index.ts"
   import Document from "../components/document/Document.vue"
 
   export default {

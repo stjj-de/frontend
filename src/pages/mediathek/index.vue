@@ -43,7 +43,7 @@
   import { useHead } from "@vueuse/head"
   import query from "../../gql/pages/mediathek/index.graphql"
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
-  import { getFormattedTitle } from "../../util"
+  import { getFormattedTitle } from "../../util/index.ts"
   import Heading from "../../components/Heading.vue"
   import ExternalIcon from "~icons/lucide/external-link"
   import Document from "../../components/document/Document.vue"
