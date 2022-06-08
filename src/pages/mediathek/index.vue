@@ -3,16 +3,7 @@
     <h1 class="section-heading">
       <span>Mediathek</span>
     </h1>
-    <section class="mb-5">
-      <a
-        class="text-6 link"
-        href="https://www.dropbox.com/sh/wg5kxn1ttaecikz/AADQQ9RV1mB8kV6C6jjmakcUa?dl=0"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        📷 Unser Bilderarchiv<ExternalIcon class="text-0.7em ml-2 relative top-0.5"/>
-      </a>
-    </section>
+    <Document class="text-4" :data="data.settingsSingletons[0].mediaLibraryPageContent.document" :increment-headings="1"/>
     <section>
       <Heading semantic="2" visual="1">
         Videos 🎞️
@@ -22,17 +13,17 @@
           v-for="video in data.videos"
           :key="video.id"
           :to="`/mediathek/${video.id}`"
-          class="rounded-md overflow-hidden border-gray-200 border-1 shadow-lg"
+          class="rounded-lg overflow-hidden border-gray-300 border-2 border-dashed p-2"
         >
           <div class="aspect-ratio-9/16 relative">
-            <YouTubeThumbnail class="w-full h-full object-cover" :video-id="video.youtubeVideoId"/>
+            <YouTubeThumbnail class="w-full h-full object-cover rounded-md" :video-id="video.youtubeVideoId"/>
             <div class="absolute flex justify-start items-end p-1">
               <div class="bg-black bg-opacity-80 text-white rounded-md px-2 py-1">
                 {{ formatDate(video.publicationDate) }}
               </div>
             </div>
           </div>
-          <div class="py-2 px-3" :title="video.title">
+          <div class="pt-2 px-1" :title="video.title">
             <div class="text-3 line-clamp-2">
               {{ video.title }}
             </div>
@@ -53,8 +44,9 @@
   import query from "../../gql/pages/mediathek/index.graphql"
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
   import { getFormattedTitle } from "../../util"
-  import ExternalIcon from "~icons/lucide/external-link"
   import Heading from "../../components/Heading.vue"
+  import ExternalIcon from "~icons/lucide/external-link"
+  import Document from "../../components/document/Document.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
@@ -64,7 +56,7 @@
 
   export default {
     name: "MediathekPage",
-    components: { Heading, YouTubeThumbnail, ExternalIcon },
+    components: { Document, Heading, YouTubeThumbnail, ExternalIcon },
     async setup() {
       useHead({
         title: getFormattedTitle("Mediathek")

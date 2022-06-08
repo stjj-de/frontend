@@ -1,5 +1,5 @@
 <template>
-  <img :src="src" alt="Thumbnail des Videos" loading="lazy">
+  <img :src="src" alt="Thumbnail des Videos" loading="lazy" draggable="false">
 </template>
 
 <script>
