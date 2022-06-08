@@ -38,7 +38,7 @@
       </UnknownLink>
       <div
         v-else-if="child.type === 'component-block' && child.component === 'Picture'"
-        class="flex flex-col justify-center items-center space-y-8 pt-4"
+        class="flex flex-col justify-center items-center space-y-8 pt-4 pb-8"
       >
         <div class="relative">
           <UploadedImage
