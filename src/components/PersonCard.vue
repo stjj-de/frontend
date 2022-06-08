@@ -1,8 +1,7 @@
 <template>
-  <div class="flex-shrink-0 flex flex-col items-center px-8 py-6 border-2 border-gray-300 rounded-lg border-dashed">
-    <UploadedImage
+  <div class="flex-shrink-0 flex flex-col items-center px-8 py-6 border-2 border-gray-300 rounded-lg border-dashed relative">
+    <UploadedImageWithShadow
       class="rounded-full w-50 h-50 object-cover mb-8"
-      draggable="false"
       :url="person.image.url"
       :alt="person.displayName"
     />
@@ -37,10 +36,11 @@
   import UploadedImage from "./UploadedImage.vue"
   import PhoneIcon from "~icons/ph/phone"
   import EmailIcon from "~icons/ic/outline-email"
+  import UploadedImageWithShadow from "./UploadedImageWithShadow.vue"
 
   export default {
     name: "PersonCard",
-    components: { UploadedImage, PhoneIcon, EmailIcon },
+    components: { UploadedImageWithShadow, UploadedImage, PhoneIcon, EmailIcon },
     props: {
       person: {
         type: Object,

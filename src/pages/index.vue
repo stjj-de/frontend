@@ -73,11 +73,13 @@
             </div>
             <Document class="text-4 mt-4" :data="church.description.document"/>
           </div>
-          <UploadedImage
-            class="-lg:max-w-120 -lg:mt-8 lg:w-1/2 object-cover"
-            :url="church.image.url"
-            :alt="church.name"
-          />
+          <div class="relative -lg:max-w-120 -lg:mt-8 lg:w-1/2">
+            <UploadedImageWithShadow
+              :url="church.image.url"
+              :alt="church.name"
+              class="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -102,10 +104,11 @@
   import UnknownLink from "../components/UnknownLink.vue"
   import Document from "../components/document/Document.vue"
   import PersonCard from "../components/PersonCard.vue"
+  import UploadedImageWithShadow from "../components/UploadedImageWithShadow.vue"
 
   export default {
     name: "IndexPage",
-    components: { PersonCard, Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
+    components: { UploadedImageWithShadow, PersonCard, Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")

@@ -2,6 +2,7 @@
   <img
     :src="src"
     :alt="alt"
+    draggable="false"
   >
 </template>
 

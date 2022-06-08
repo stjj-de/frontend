@@ -1,6 +1,6 @@
 <template>
   <MainNavigation/>
-  <div class="max-w-1024px w-100vw px-5 sm:px-12 pt-4 pb-12 mx-auto overflow-hidden">
+  <div class="max-w-1024px w-100vw px-5 sm:px-12 pt-4 pb-12 mx-auto">
     <router-view v-slot="{ Component }">
       <suspense @pending="startLoading()" @resolve="stopLoading()">
         <!-- The key makes that components are not reused if only params changed -->
@@ -8,7 +8,7 @@
       </suspense>
     </router-view>
   </div>
-  <footer class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
+  <footer v-if="data" class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
     <div class="h-1px w-80vw bg-gray-200 mb-2"/>
     <UnknownLink
       v-for="link in data.settingsSingletons[0].footerLinks"
