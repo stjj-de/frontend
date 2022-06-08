@@ -1,0 +1,1 @@
+import{_ as r}from"./index.1b27d4dc.js";import{o as t,c as a}from"./vendor.00367f31.js";const o={name:"UploadedImage",props:{url:{type:String,required:!0},alt:{type:String,required:!0}}},c=["src","alt"];function l(n,s,e,d,i,p){return t(),a("img",{src:e.url,alt:e.alt,draggable:"false"},null,8,c)}var u=r(o,[["render",l]]);export{u as U};
