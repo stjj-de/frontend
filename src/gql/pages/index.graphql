@@ -42,7 +42,7 @@ query {
         publicationDate
     }
 
-    posts(take: 4, where: { featured: { equals: true } }, orderBy: [{ publicationDate: desc }]) {
+    posts(take: 5, where: { featured: { equals: true } }, orderBy: [{ publicationDate: desc }]) {
         title
         slug
         publicationDate
