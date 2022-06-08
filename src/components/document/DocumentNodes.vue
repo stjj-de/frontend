@@ -40,10 +40,11 @@
         v-else-if="child.type === 'component-block' && child.component === 'Picture'"
         class="flex flex-col justify-center items-center space-y-8 pt-4"
       >
-        <div class="relative max-h-80vh">
+        <div class="relative">
           <UploadedImage
             :url="child.props.picture.data.file.url"
             :alt="child.props.picture.data.altText"
+            class="max-h-80vh"
           />
         </div>
         <div
