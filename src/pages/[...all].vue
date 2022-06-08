@@ -42,7 +42,7 @@
 
       return {
         page,
-        title: computed(() => getFormattedTitle(page.value === null ? "Nicht gefunden." : page.value.title))
+        title: computed(() => getFormattedTitle(page.value === null ? "Nicht gefunden" : page.value.title))
       }
     }
   }

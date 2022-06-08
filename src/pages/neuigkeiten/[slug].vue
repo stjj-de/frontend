@@ -20,7 +20,7 @@
           <UploadedImage
             v-for="author in post.authors"
             :key="author.id"
-            class="rounded-full h-14 w-14 object-cover shadow-md"
+            class="rounded-full h-16 w-16 object-cover shadow-md"
             draggable="false"
             :url="author.image.url"
             :alt="author.displayName"
