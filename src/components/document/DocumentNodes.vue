@@ -36,6 +36,23 @@
       <UnknownLink v-else-if="child.type === 'link'" :to="child.href">
         <DocumentNodes :data="child.children" :increment-headings="incrementHeadings"/>
       </UnknownLink>
+      <div
+        v-else-if="child.type === 'component-block' && child.component === 'Picture'"
+        class="flex flex-col justify-center items-center space-y-8 pt-4"
+      >
+        <div class="relative max-h-80vh">
+          <UploadedImage
+            :url="child.props.picture.data.file.url"
+            :alt="child.props.picture.data.altText"
+          />
+        </div>
+        <div
+          v-if="child.props.caption"
+          class="text-4 italic max-w-120 text-center"
+        >
+          {{ child.props.caption }}
+        </div>
+      </div>
     </template>
     <template v-else>
       <b v-if="child.bold" class="font-bold"><DocumentNodes :data="[{ ...child, bold: false }]" :increment-headings="incrementHeadings"/></b>
@@ -64,10 +81,11 @@
 <script>
   import UnknownLink from "../UnknownLink.vue"
   import Heading from "../Heading.vue"
+  import UploadedImage from "../UploadedImage.vue"
 
   export default {
     name: "DocumentNodes",
-    components: { Heading, UnknownLink },
+    components: { UploadedImage, Heading, UnknownLink },
     props: {
       data: {
         type: Array,
