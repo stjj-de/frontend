@@ -11,7 +11,7 @@
     <div class="mb-6 mt-3 text-4">
       Veröffentlicht am {{ date }}
     </div>
-    <Document :data="video.description" :increment-headings="1"/>
+    <Document :data="video.description.document" :increment-headings="1"/>
   </main>
 </template>
 

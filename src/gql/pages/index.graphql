@@ -13,6 +13,8 @@ query {
             id
             displayName
             role
+            telephoneNumber
+            emailAddress
             image {
                 url
             }

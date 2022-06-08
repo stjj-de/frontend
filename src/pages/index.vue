@@ -47,24 +47,11 @@
     <section>
       <h1 class="section-heading"><span>Seelsorger</span></h1>
       <HorizontalScrollContainer :scroll-step-size="220">
-        <div
+        <PersonCard
           v-for="person in data.settingsSingletons[0].pastors"
           :key="person.id"
-          class="w-70 flex-shrink-0 flex flex-col items-center px-8 py-6 bg-white shadow-md rounded-2xl"
-        >
-          <UploadedImage
-            class="rounded-full w-50 h-50 object-cover mb-8"
-            draggable="false"
-            :url="person.image.url"
-            :alt="person.displayName"
-          />
-          <div class="text-6 font-bold">
-            {{ person.displayName }}
-          </div>
-          <div class="text-5">
-            {{ person.role }}
-          </div>
-        </div>
+          :person="person"
+        />
         <div class="w-1px h-1 flex-shrink-0"/>
       </HorizontalScrollContainer>
     </section>
@@ -114,10 +101,11 @@
   import UploadedImage from "../components/UploadedImage.vue"
   import UnknownLink from "../components/UnknownLink.vue"
   import Document from "../components/document/Document.vue"
+  import PersonCard from "../components/PersonCard.vue"
 
   export default {
     name: "IndexPage",
-    components: { Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
+    components: { PersonCard, Document, UnknownLink, UploadedImage, HorizontalScrollContainer },
     async setup() {
       useHead({
         title: getFormattedTitle("Start")

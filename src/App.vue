@@ -8,6 +8,16 @@
       </suspense>
     </router-view>
   </div>
+  <footer class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
+    <div class="h-1px w-80vw bg-gray-200 mb-2"/>
+    <UnknownLink
+      v-for="link in data.settingsSingletons[0].footerLinks"
+      :key="link.text"
+      :to="link.url"
+    >
+      {{ link.emoji }} {{ link.text }}
+    </UnknownLink>
+  </footer>
   <div
     class="fixed -lg:bottom-4 -lg:left-4 lg:top-8 lg:right-8 bg-white shadow-md p-4 sm:p-5 rounded-2xl
            transition duration-200 transform z-101 flex space-x-3 sm:space-x-5 items-center"
@@ -38,9 +48,11 @@
   import { useIntervalFn, whenever } from "@vueuse/core"
   import { useQuery } from "@urql/vue"
   import NProgress from "nprogress"
-  import query from "./gql/App.graphql"
+  import livestreamQuery from "./gql/App_livestream.graphql"
+  import initialQuery from "./gql/App_initial.graphql"
   import { liveStatusLoading, liveVideoId, pageComponentLoading } from "./store"
   import MainNavigation from "./components/MainNavigation.vue"
+  import UnknownLink from "./components/UnknownLink.vue"
   import ArrowRightIcon from "~icons/ph/arrow-right"
 
   function useLoading(progressBarClass: string) {
@@ -81,7 +93,7 @@
     liveVideoId.value = null
 
     const { data, executeQuery } = useQuery({
-      query,
+      query: livestreamQuery,
       context: {
         requestPolicy: "network-only"
       }
@@ -103,14 +115,19 @@
 
   export default {
     name: "App",
-    components: { MainNavigation, ArrowRightIcon },
+    components: { UnknownLink, MainNavigation, ArrowRightIcon },
     setup() {
       const styles = useCssModule()
       const { isLoading, startLoading, stopLoading } = useLoading(styles.nprogressBar)
 
       useLiveStatus()
 
+      const { data } = useQuery({
+        query: initialQuery
+      })
+
       return {
+        data,
         startLoading,
         stopLoading,
         isLoading,

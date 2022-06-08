@@ -1,5 +1,8 @@
 <template>
   <main class="space-y-8">
+    <h1 class="section-heading">
+      <span>Mediathek</span>
+    </h1>
     <section class="mb-5">
       <a
         class="text-6 link"
@@ -11,7 +14,9 @@
       </a>
     </section>
     <section>
-      <h1 class="section-heading">Videos 🎞️</h1>
+      <Heading semantic="2" visual="1">
+        Videos 🎞️
+      </Heading>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <router-link
           v-for="video in data.videos"
@@ -49,6 +54,7 @@
   import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
   import { getFormattedTitle } from "../../util"
   import ExternalIcon from "~icons/lucide/external-link"
+  import Heading from "../../components/Heading.vue"
 
   const dateFormat = new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
@@ -58,7 +64,7 @@
 
   export default {
     name: "MediathekPage",
-    components: { YouTubeThumbnail, ExternalIcon },
+    components: { Heading, YouTubeThumbnail, ExternalIcon },
     async setup() {
       useHead({
         title: getFormattedTitle("Mediathek")

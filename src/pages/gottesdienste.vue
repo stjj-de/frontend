@@ -3,7 +3,7 @@
     <section>
       <h1 class="section-heading"><span>Live 👀</span></h1>
       <div class="relative">
-        <p v-if="liveVideoId === null" class="text-4 leading-6 sm:text-6 sm:leading-8 pb-4">
+        <p v-if="liveVideoId === null" class="text-5 leading-6 sm:text-6 sm:leading-8 pb-4">
           Wenn wir live sind, kannst du es dir hier&nbsp;anschauen.<br>
           Die&nbsp;Seite aktualisiert sich&nbsp;automatisch.
         </p>
@@ -38,7 +38,7 @@
               {{ item.church.name }} ({{ item.church.location }})
             </div>
             <div class="text-4 -md:mt-4">
-              <Document v-if="item.longDescription" :data="item.longDescription"/>
+              <Document :data="item.longDescription.document"/>
               <div v-if="item.livestreamPlanned" class="text-red-500 text-3">
                 Wird im Livestream übertragen werden.
               </div>

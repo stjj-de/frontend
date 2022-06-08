@@ -1,0 +1,9 @@
+query {
+    settingsSingletons {
+        footerLinks(orderBy: [{ priority: asc }]) {
+            url
+            emoji
+            text
+        }
+    }
+}

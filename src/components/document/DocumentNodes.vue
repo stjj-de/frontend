@@ -4,14 +4,13 @@
     :key="index"
   >
     <template v-if="child.type">
-      <component
-        :is="`h${child.level + incrementHeadings}`"
+      <Heading
         v-if="child.type === 'heading'"
-        :data-level="child.level"
-        :class="$style.heading"
+        :semantic="child.level + incrementHeadings"
+        :visual="child.level"
       >
         <DocumentNodes :data="child.children" :increment-headings="incrementHeadings"/>
-      </component>
+      </Heading>
       <p v-else-if="child.type === 'paragraph'" class="my-3">
         <DocumentNodes :data="child.children" :increment-headings="incrementHeadings"/>
       </p>
@@ -20,7 +19,7 @@
           v-for="(item, itemIndex) in child.children"
           :key="itemIndex"
         >
-          <DocumentNodes :data="item.children.map(c => c.children[0])" :increment-headings="incrementHeadings"/>
+          <DocumentNodes :data="item.children.flatMap(c => c.children)" :increment-headings="incrementHeadings"/>
         </li>
       </ol>
       <ul v-else-if="child.type === 'unordered-list'" :class="$style.unorderedList">
@@ -28,7 +27,7 @@
           v-for="(item, itemIndex) in child.children"
           :key="itemIndex"
         >
-          <DocumentNodes :data="item.children.map(c => c.children[0])" :increment-headings="incrementHeadings"/>
+          <DocumentNodes :data="item.children.flatMap(c => c.children)" :increment-headings="incrementHeadings"/>
         </li>
       </ul>
       <blockquote v-else-if="child.type === 'blockquote'" :class="$style.blockquote">
@@ -49,34 +48,6 @@
 </template>
 
 <style module>
-  .heading {
-    @apply font-bold mb-4;
-
-    &[data-level="1"] {
-      @apply text-7 text-gray-800;
-    }
-
-    &[data-level="2"] {
-      @apply text-6 text-yellow-600;
-    }
-
-    &[data-level="3"] {
-      @apply text-5 text-gray-800;
-    }
-
-    & + & {
-      @apply -mt-2;
-
-      &[data-level="2"] {
-        @apply -mt-3;
-      }
-    }
-
-    &:not(& + &) {
-      @apply mt-6;
-    }
-  }
-
   .orderedList {
     @apply list-decimal pl-5;
   }
@@ -86,16 +57,17 @@
   }
 
   .blockquote {
-    @apply my-3 pl-7 py-1 border-l-4 border-gray-300 text-4 font-serif max-w-100;
+    @apply my-3 pl-7 py-1 border-l-4 border-gray-300 text-4 font-serif max-w-120;
   }
 </style>
 
 <script>
   import UnknownLink from "../UnknownLink.vue"
+  import Heading from "../Heading.vue"
 
   export default {
     name: "DocumentNodes",
-    components: { UnknownLink },
+    components: { Heading, UnknownLink },
     props: {
       data: {
         type: Array,
