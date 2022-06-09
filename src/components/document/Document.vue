@@ -10,7 +10,7 @@
 
 <style module>
   .root {
-
+    hyphens: auto;
   }
 </style>
 

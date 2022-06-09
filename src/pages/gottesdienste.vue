@@ -14,7 +14,12 @@
         </div>
         <template v-else>
           <div v-if="liveVideoId === null" class="text-5">
-            Zurzeit ist kein Livestream verfügbar.
+            <div class="block pb-2">
+              Zurzeit ist kein Livestream verfügbar.
+            </div>
+            <router-link class="link font-bold" to="/mediathek">
+              ➡️ Vergangene Livestreams anzeigen
+            </router-link>
           </div>
           <div v-else class="mb-10">
             <YouTubeEmbed :video-id="liveVideoId"/>

@@ -10,7 +10,6 @@ body {
   overflow-x: hidden;
   width: 100vw;
   font-size: 16px;
-  hyphens: auto;
 }
 
 ::selection {
@@ -18,7 +17,7 @@ body {
 }
 
 .section-heading {
-  @apply font-bold font-serif text-10 pb-6;
+  @apply font-bold font-serif text-10 pb-6 hyphens-auto;
 
   & > span {
     @apply yellow-underlined;
