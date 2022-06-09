@@ -1,5 +1,5 @@
 query {
-    videos(orderBy: [{ publicationDate: desc }]) {
+    videos(take: 15, orderBy: [{ publicationDate: desc }]) {
         id
         title
         publicationDate
