@@ -10,7 +10,11 @@
           St. Josef — St. Johannes
         </div>
         <div class="text-6 sm:text-8 pt-15 flex flex-col items-start space-y-4">
-          <router-link :to="`/mediathek/${data.videos[0].id}`" class="link">
+          <router-link
+            class="link"
+            :to="`/mediathek/${data.videos[0].id}`"
+            @click.passive="track('home page click', 'latest video')"
+          >
             📺 Aktueller Gottesdienst
           </router-link>
           <template
@@ -28,8 +32,9 @@
           <router-link
             v-for="post in data.posts"
             :key="post.slug"
-            :to="`/neuigkeiten/${post.slug}`"
             class="not-last:border-b-1px border-gray-200 py-3 first:pt-0"
+            :to="`/neuigkeiten/${post.slug}`"
+            @click.passive="track('home page click', 'post')"
           >
             <div class="font-serif text-gray-800 text-5 sm:text-6 mb-1 truncate leading-8">
               {{ post.title }}

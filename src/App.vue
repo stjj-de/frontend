@@ -28,7 +28,11 @@
       <div class="bg-red-500 rounded-full w-4 h-4 animate-pulse ml-2"/>
     </div>
     <div>
-      <router-link class="text-yellow-600 text-5 flex items-center space-x-2" to="/gottesdienste">
+      <router-link
+        class="text-yellow-600 text-5 flex items-center space-x-2"
+        to="/gottesdienste"
+        @click.passive="track('click', 'livestream notification')"
+      >
         <ArrowRightIcon/>
         <div>Zuschauen</div>
       </router-link>

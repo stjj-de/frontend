@@ -58,4 +58,13 @@ app.use(urql, urqlClient)
 const head = createHead()
 app.use(head)
 
+app.mixin({
+  methods: {
+    track(type: string, value: string) {
+      // @ts-expect-error
+      window.umami.trackEvent(value, type)
+    }
+  }
+})
+
 app.mount("#app")
