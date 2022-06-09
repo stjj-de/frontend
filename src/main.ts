@@ -21,15 +21,18 @@ const routes = originalRoutes.map(route => {
       pageComponentLoading.value = false
 
       return value
-    }
+    },
+    props: false
   }
 }) as RouteRecordRaw[]
 
+routes.push({
+  path: "/live",
+  redirect: "/gottesdienste"
+})
+
 const router = createRouter({
-  routes: routes.map(route => ({
-    ...route,
-    props: false
-  })),
+  routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
     if (to.hash) return { el: to.hash }
