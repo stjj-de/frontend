@@ -44,7 +44,7 @@
           <UploadedImage
             :url="child.props.picture.data.file.url"
             :alt="child.props.picture.data.altText"
-            class="max-h-80vh"
+            class="max-h-60vh min-h-100"
           />
         </div>
         <div
