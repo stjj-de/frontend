@@ -1,6 +1,6 @@
 <template>
   <UploadedImage
-    class="absolute filter blur-xl z-0 transform scale-110 opacity-40"
+    class="absolute filter blur-xl z-0 transform scale-110 opacity-30"
     v-bind="$attrs"
     :url="url"
     :alt="alt"
