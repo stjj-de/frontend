@@ -21,7 +21,9 @@
         src="/logo.png"
         alt="Unser Logo"
         draggable="false"
-        class="h-full py-2 px-3 self-start absolute -md:left-0 md:right-0"
+        class="h-full py-2 px-3 self-start absolute -md:left-0 md:right-0 cursor-pointer"
+        role="link"
+        @click="$router.push('/')"
       >
       <button
         class="text-gray-800 mr-6 md:hidden flex justify-center items-center relative"
