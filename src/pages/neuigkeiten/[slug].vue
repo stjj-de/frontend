@@ -28,7 +28,7 @@
           />
         </div>
       </div>
-      <Document class="text-3" :data="post.content.document"/>
+      <Document class="text-4" :data="post.content.document"/>
     </article>
   </main>
 </template>
