@@ -27,3 +27,7 @@ body {
 .link {
   @apply bg-yellow-200 hover:bg-orange-300 focus-visible:bg-orange-300 transition duration-200;
 }
+
+a[href^="mailto:"] {
+  hyphens: none;
+}

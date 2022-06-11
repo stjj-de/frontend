@@ -29,6 +29,33 @@
         </div>
       </div>
       <Document class="text-4" :data="post.content.document"/>
+      <div class="pt-10">
+        <div class="text-gray-400 text-4 font-bold leading-wider pb-4">
+          Geschrieben von
+        </div>
+        <div class="flex flex-wrap items-start gap-4">
+          <div
+            v-for="author in post.authors"
+            :key="author.id"
+            class="flex space-x-5 border-2 border-gray-300 rounded-lg border-dashed p-4 sm:p-6"
+          >
+            <UploadedImage
+              class="rounded-full h-18 w-18 sm:h-25 sm:w-25 object-cover shadow-md"
+              draggable="false"
+              :url="author.image.url"
+              :alt="author.displayName"
+            />
+            <div class="text-5 pt-1 sm:pt-5 pr-2">
+              <div>
+                {{ author.displayName }}
+              </div>
+              <div class="text-gray-600">
+                {{ author.role }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </article>
   </main>
 </template>
