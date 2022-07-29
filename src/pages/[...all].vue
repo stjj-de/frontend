@@ -7,7 +7,7 @@
     <h1 class="section-heading">
       <span>{{ page.title }}</span>
     </h1>
-    <Document class="text-3" :data="page.content.document"/>
+    <Document class="text-4" :data="page.content.document"/>
   </main>
 </template>
 

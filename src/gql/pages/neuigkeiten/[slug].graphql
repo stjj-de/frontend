@@ -5,6 +5,7 @@ query ($slug: String!) {
         authors(orderBy: [{ priority: asc }]) {
             id
             displayName
+            role
             image {
                 url
             }
