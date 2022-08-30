@@ -11,6 +11,7 @@
 <style module>
   .root {
     hyphens: auto;
+    text-align: justify;
   }
 </style>
 
