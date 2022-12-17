@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from "node:url"
 import { defineConfig, splitVendorChunkPlugin } from "vite"
 import vuePlugin from "@vitejs/plugin-vue"
 import windicssPlugin from "vite-plugin-windicss"
@@ -21,6 +22,11 @@ export default defineConfig({
       "/api": "http://localhost:8000",
       "/files": "http://localhost:8000",
       "/images": "http://localhost:8000"
+    }
+  },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url))
     }
   }
 })

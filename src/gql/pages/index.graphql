@@ -1,5 +1,7 @@
 query {
-    settingsSingletons {
+    settings {
+        officeSectionContent
+        
         homePageLinks(orderBy: [{ priority: asc }]) {
             id
             url
@@ -19,19 +21,14 @@ query {
                 url
             }
         }
-        officeSectionContent {
-            document(hydrateRelationships: true)
-        }
     }
 
     churches {
         name
         location
+        description
         image {
             url
-        }
-        description {
-            document(hydrateRelationships: true)
         }
     }
 

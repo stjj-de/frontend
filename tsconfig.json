@@ -1,20 +1,17 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "ESNext",
-    "target": "ES2021",
-    "lib": ["DOM", "ESNext"],
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": false,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
-    "downlevelIteration": true,
-    "forceConsistentCasingInFileNames": true
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowJs": true
   },
-  "include": [
-    "node_modules/**/*",
-    "src/**/*"
+
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
   ]
 }

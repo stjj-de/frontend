@@ -2,6 +2,7 @@ query ($slug: String!) {
     post(where: { slug: $slug }) {
         title
         publicationDate
+        content
         authors(orderBy: [{ priority: asc }]) {
             id
             displayName
@@ -9,9 +10,6 @@ query ($slug: String!) {
             image {
                 url
             }
-        }
-        content {
-            document(hydrateRelationships: true)
         }
     }
 }

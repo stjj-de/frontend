@@ -3,9 +3,7 @@ query  {
         shortDescription
         date
         livestreamPlanned
-        longDescription {
-            document(hydrateRelationships: true)
-        }
+        longDescription
         church {
             name
             location

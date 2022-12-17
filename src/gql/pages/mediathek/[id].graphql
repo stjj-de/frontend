@@ -3,8 +3,6 @@ query ($id: ID!) {
         title
         youtubeVideoId
         publicationDate
-        description {
-            document(hydrateRelationships: true)
-        }
+        description
     }
 }

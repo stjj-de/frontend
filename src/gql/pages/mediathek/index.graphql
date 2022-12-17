@@ -6,9 +6,7 @@ query {
         youtubeVideoId
     }
 
-    settingsSingletons {
-        mediaLibraryPageContent {
-            document(hydrateRelationships: true)
-        }
+    settings {
+        mediaLibraryPageContent
     }
 }

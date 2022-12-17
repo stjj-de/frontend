@@ -1,8 +1,6 @@
 query ($path: String!) {
     customPage(where: { slug: $path }) {
         title
-        content {
-            document(hydrateRelationships: true)
-        }
+        content
     }
 }

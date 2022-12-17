@@ -1,53 +1,44 @@
 <template>
-  <MainNavigation/>
+  <MainNavigation />
   <div class="max-w-1024px w-100vw px-5 sm:px-12 pt-4 pb-12 mx-auto">
     <router-view v-slot="{ Component }">
       <suspense @pending="startLoading()" @resolve="stopLoading()">
-        <!-- The key makes that components are not reused if only params changed -->
-        <component :is="Component" :key="$route.fullPath"/>
+        <!-- The key prevents the component from being reused when only the params were changed -->
+        <component :is="Component" :key="$route.fullPath" />
       </suspense>
     </router-view>
   </div>
-  <footer v-if="data" class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
-    <div class="h-1px w-80vw bg-gray-200 mb-2"/>
-    <UnknownLink
-      v-for="link in data.settingsSingletons[0].footerLinks"
-      :key="link.text"
-      :to="link.url"
-    >
+  <footer v-if="data"
+    class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
+    <div class="h-1px w-80vw bg-gray-200 mb-2" />
+    <UnknownLink v-for="link in data.settings.footerLinks" :key="link.text" :to="link.url">
       {{ link.emoji }} {{ link.text }}
     </UnknownLink>
   </footer>
-  <div
-    class="fixed -lg:bottom-4 -lg:left-4 lg:top-8 lg:right-8 bg-white shadow-md p-4 sm:p-5 rounded-2xl
+  <div class="fixed -lg:bottom-4 -lg:left-4 lg:top-8 lg:right-8 bg-white shadow-md p-4 sm:p-5 rounded-2xl
            transition duration-200 transform z-101 flex space-x-3 sm:space-x-5 items-center"
-    :class="isLive && ($route.path !== '/gottesdienste') ? 'opacity-100 scale-100' : 'opacity-0 scale-0'"
-  >
+    :class="isLive && ($route.path !== '/gottesdienste') ? 'opacity-100 scale-100' : 'opacity-0 scale-0'">
     <div class="text-5 font-bold flex items-center">
       Jetzt live!
-      <div class="bg-red-500 rounded-full w-4 h-4 animate-pulse ml-2"/>
+      <div class="bg-red-500 rounded-full w-4 h-4 animate-pulse ml-2" />
     </div>
     <div>
-      <router-link
-        class="text-yellow-600 text-5 flex items-center space-x-2"
-        to="/gottesdienste"
-        @click.passive="track('click', 'livestream notification')"
-      >
-        <ArrowRightIcon/>
+      <router-link class="text-yellow-600 text-5 flex items-center space-x-2" to="/gottesdienste"
+        @click.passive="trackEvent('click', 'livestream notification')">
+        <ArrowRightIcon />
         <div>Zuschauen</div>
       </router-link>
     </div>
   </div>
 </template>
 
-<!--suppress CssUnusedSymbol -->
-<style module>
+<style module lang="scss">
   .nprogressBar {
     @apply bg-yellow-400 h-2 absolute top-0 w-100vw z-1000;
   }
 </style>
 
-<script lang="ts">
+<script setup lang="ts">
   import { computed, onMounted, ref, watchEffect, useCssModule } from "vue"
   import { useIntervalFn, whenever } from "@vueuse/core"
   import { useQuery } from "@urql/vue"
@@ -117,26 +108,14 @@
     })
   }
 
-  export default {
-    name: "App",
-    components: { UnknownLink, MainNavigation, ArrowRightIcon },
-    setup() {
-      const styles = useCssModule()
-      const { isLoading, startLoading, stopLoading } = useLoading(styles.nprogressBar)
+  const styles = useCssModule()
+  const { isLoading, startLoading, stopLoading } = useLoading(styles.nprogressBar)
 
-      useLiveStatus()
+  useLiveStatus()
 
-      const { data } = useQuery({
-        query: initialQuery
-      })
+  const { data } = useQuery({
+    query: initialQuery
+  })
 
-      return {
-        data,
-        startLoading,
-        stopLoading,
-        isLoading,
-        isLive: computed(() => !liveStatusLoading.value && liveVideoId.value !== null)
-      }
-    }
-  }
+  const isLive = computed(() => !liveStatusLoading.value && liveVideoId.value !== null)
 </script>

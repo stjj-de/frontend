@@ -1,12 +1,14 @@
 import "virtual:windi.css"
 import "./main.css"
-import { createApp, FunctionalComponent } from "vue"
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
+import { createApp } from "vue"
+import { createRouter, createWebHistory } from "vue-router"
 import { createHead } from "@vueuse/head"
 import urql, { cacheExchange, createClient, fetchExchange } from "@urql/vue"
 import App from "./App.vue"
 import { pageComponentLoading } from "./store"
 import originalRoutes from "~pages"
+import type { FunctionalComponent } from "vue"
+import type { RouteRecordRaw } from "vue-router"
 
 const routes = originalRoutes.map(route => {
   if (typeof route.component !== "function") return route
@@ -44,7 +46,7 @@ const router = createRouter({
 const app = createApp(App)
 app.use(router)
 
-const urqlClient = createClient({
+app.use(urql, createClient({
   url: "/api/graphql",
   requestPolicy: "cache-and-network",
   suspense: true,
@@ -52,8 +54,7 @@ const urqlClient = createClient({
     cacheExchange,
     fetchExchange
   ]
-})
-app.use(urql, urqlClient)
+}))
 
 const head = createHead()
 app.use(head)
@@ -61,10 +62,15 @@ app.use(head)
 app.mixin({
   methods: {
     track(type: string, value: string) {
-      // @ts-expect-error
       window.umami.trackEvent(value, type)
     }
   }
 })
+
+declare module "vue" {
+  interface ComponentCustomProperties {
+    trackEvent: (type: string, value: string) => void
+  }
+}
 
 app.mount("#app")
