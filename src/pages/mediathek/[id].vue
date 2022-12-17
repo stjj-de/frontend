@@ -19,43 +19,34 @@
 
 </style>
 
-<script>
-  import { useRoute } from "vue-router"
-  import { useQuery } from "@urql/vue"
-  import { computed } from "vue"
-  import { Head } from "@vueuse/head"
-  import query from "../../gql/pages/mediathek/[id].graphql"
-  import NotFound from "../../components/NotFound.vue"
-  import YouTubeEmbed from "../../components/YouTubeEmbed.vue"
-  import { getFormattedTitle } from "../../util/index.ts"
-  import Document from "../../components/document/Document.vue"
+<script setup lang="ts">
+import { useRoute } from "vue-router"
+import { useQuery } from "@urql/vue"
+import { computed } from "vue"
+import { Head } from "@vueuse/head"
+import query from "../../gql/pages/mediathek/[id].graphql"
+import NotFound from "../../components/NotFound.vue"
+import YouTubeEmbed from "../../components/YouTubeEmbed.vue"
+import { getFormattedTitle } from "../../util"
+import Document from "../../components/document/DocumentRendered.vue"
 
-  const dateFormat = new Intl.DateTimeFormat("de-DE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  })
+const dateFormat = new Intl.DateTimeFormat("de-DE", {
+  day: "numeric",
+  month: "long",
+  year: "numeric"
+})
 
-  export default {
-    name: "VideoPage",
-    components: { Document, YouTubeEmbed, NotFound, Head },
-    async setup() {
-      const route = useRoute()
+const route = useRoute()
 
-      const { data } = await useQuery({
-        query,
-        variables: {
-          id: route.params.id
-        }
-      })
-
-      const video = computed(() => data.value.video)
-
-      return {
-        video,
-        title: computed(() => getFormattedTitle(video.value === null ? "Nicht gefunden" : video.value.title)),
-        date: computed(() => video.value === null ? null : dateFormat.format(new Date(video.value.publicationDate)))
-      }
-    }
+const { data } = await useQuery({
+  query,
+  variables: {
+    id: route.params.id
   }
+})
+
+const video = computed(() => data.value.video)
+
+const title = computed(() => getFormattedTitle(video.value === null ? "Nicht gefunden" : video.value.title))
+const date = computed(() => video.value === null ? null : dateFormat.format(new Date(video.value.publicationDate)))
 </script>

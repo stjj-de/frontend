@@ -8,7 +8,7 @@
   </component>
 </template>
 
-<style module>
+<style module lang="scss">
   .root {
     @apply font-bold mb-4;
 
@@ -38,20 +38,17 @@
   }
 </style>
 
-<script>
-  export default {
-    name: "Heading",
-    props: {
-      semantic: {
-        type: Number,
-        required: true,
-        validate: value => value >= 1 && value <= 6
-      },
-      visual: {
-        type: Number,
-        required: true,
-        validate: value => value >= 1 && value <= 6
-      }
-    }
+<script setup lang="ts">
+defineProps({
+  semantic: {
+    type: Number,
+    required: true,
+    validate: (value: number) => value >= 1 && value <= 6
+  },
+  visual: {
+    type: Number,
+    required: true,
+    validate: (value: number) => value >= 1 && value <= 6
   }
+})
 </script>

@@ -12,17 +12,13 @@
 
 </style>
 
-<script>
-  import ArrowLeftIcon from "~icons/ph/arrow-left"
+<script setup lang="ts">
+import ArrowLeftIcon from "~icons/ph/arrow-left"
 
-  export default {
-    name: "NotFound",
-    components: { ArrowLeftIcon },
-    props: {
-      resource: {
-        type: String,
-        required: true
-      }
-    }
+defineProps({
+  resource: {
+    type: String,
+    required: true
   }
+})
 </script>

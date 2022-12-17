@@ -7,14 +7,11 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: "YouTubeEmbed",
-    props: {
-      videoId: {
-        type: String,
-        required: true
-      }
-    }
+<script setup lang="ts">
+defineProps({
+  videoId: {
+    type: String,
+    required: true
   }
+})
 </script>

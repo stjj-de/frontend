@@ -19,7 +19,7 @@
           v-for="(item, itemIndex) in child.children"
           :key="itemIndex"
         >
-          <DocumentNodes :data="item.children.flatMap(c => c.children)" :increment-headings="incrementHeadings"/>
+          <DocumentNodes :data="item.children.flatMap((c: any) => c.children)" :increment-headings="incrementHeadings"/>
         </li>
       </ol>
       <ul v-else-if="child.type === 'unordered-list'" :class="$style.unorderedList">
@@ -27,7 +27,7 @@
           v-for="(item, itemIndex) in child.children"
           :key="itemIndex"
         >
-          <DocumentNodes :data="item.children.flatMap(c => c.children)" :increment-headings="incrementHeadings"/>
+          <DocumentNodes :data="item.children.flatMap((c: any) => c.children)" :increment-headings="incrementHeadings"/>
         </li>
       </ul>
       <blockquote v-else-if="child.type === 'blockquote'" :class="$style.blockquote">
@@ -65,7 +65,7 @@
   </template>
 </template>
 
-<style module>
+<style module lang="scss">
   .orderedList {
     @apply list-decimal pl-5;
   }
@@ -79,23 +79,20 @@
   }
 </style>
 
-<script>
-  import UnknownLink from "../UnknownLink.vue"
-  import Heading from "../Heading.vue"
-  import UploadedImage from "../UploadedImage.vue"
+<script setup lang="ts">
+import UnknownLink from "../UnknownLink.vue"
+import Heading from "../VisualHeading.vue"
+import UploadedImage from "../UploadedImage.vue"
+import type { PropType } from "vue"
 
-  export default {
-    name: "DocumentNodes",
-    components: { UploadedImage, Heading, UnknownLink },
-    props: {
-      data: {
-        type: Array,
-        required: true
-      },
-      incrementHeadings: {
-        type: Number,
-        required: true
-      }
-    }
+defineProps({
+  data: {
+    type: Array as PropType<any[]>,
+    required: true
+  },
+  incrementHeadings: {
+    type: Number,
+    required: true
   }
+})
 </script>

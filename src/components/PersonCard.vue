@@ -32,20 +32,15 @@
 
 </style>
 
-<script>
-  import UploadedImage from "./UploadedImage.vue"
-  import PhoneIcon from "~icons/ph/phone"
-  import EmailIcon from "~icons/ic/outline-email"
-  import UploadedImageWithShadow from "./UploadedImageWithShadow.vue"
+<script setup lang="ts">
+import PhoneIcon from "~icons/ph/phone"
+import EmailIcon from "~icons/ic/outline-email"
+import UploadedImageWithShadow from "./UploadedImageWithShadow.vue"
 
-  export default {
-    name: "PersonCard",
-    components: { UploadedImageWithShadow, UploadedImage, PhoneIcon, EmailIcon },
-    props: {
-      person: {
-        type: Object,
-        required: true
-      }
-    }
+defineProps({
+  person: {
+    type: Object,
+    required: true
   }
+})
 </script>

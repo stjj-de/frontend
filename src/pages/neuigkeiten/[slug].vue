@@ -64,45 +64,34 @@
 
 </style>
 
-<script>
-  import { Head } from "@vueuse/head"
-  import { useQuery } from "@urql/vue"
-  import { useRoute } from "vue-router"
-  import { computed } from "vue"
-  import query from "../../gql/pages/neuigkeiten/[slug].graphql"
-  import { getFormattedTitle } from "../../util/index.ts"
-  import NotFound from "../../components/NotFound.vue"
-  import UploadedImage from "../../components/UploadedImage.vue"
-  import Document from "../../components/document/Document.vue"
+<script setup lang="ts">
+import { Head } from "@vueuse/head"
+import { useQuery } from "@urql/vue"
+import { useRoute } from "vue-router"
+import { computed } from "vue"
+import query from "../../gql/pages/neuigkeiten/[slug].graphql"
+import { getFormattedTitle } from "../../util"
+import NotFound from "../../components/NotFound.vue"
+import UploadedImage from "../../components/UploadedImage.vue"
+import Document from "../../components/document/DocumentRendered.vue"
 
-  const dateFormat = new Intl.DateTimeFormat("de-DE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  })
+const dateFormat = new Intl.DateTimeFormat("de-DE", {
+  day: "numeric",
+  month: "long",
+  year: "numeric"
+})
 
-  export default {
-    name: "PostPage",
-    components: { Document, UploadedImage, NotFound, Head },
-    async setup() {
-      const route = useRoute()
+const route = useRoute()
 
-      const { data } = await useQuery({
-        query,
-        variables: {
-          slug: route.params.slug
-        }
-      })
-
-      const post = computed(() => data.value.post)
-      const title = computed(() => getFormattedTitle(post.value === null ? "Nicht gefunden" : post.value.title))
-
-      return {
-        data,
-        post,
-        title,
-        formatDate: isoString => dateFormat.format(new Date(isoString))
-      }
-    }
+const { data } = await useQuery({
+  query,
+  variables: {
+    slug: route.params.slug
   }
+})
+
+const post = computed(() => data.value.post)
+const title = computed(() => getFormattedTitle(post.value === null ? "Nicht gefunden" : post.value.title))
+
+const formatDate = (isoString: string) => dateFormat.format(new Date(isoString))
 </script>

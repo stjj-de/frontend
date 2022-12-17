@@ -9,14 +9,11 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: "TextWithNewlines",
-    props: {
-      text: {
-        type: String,
-        required: true
-      }
-    }
+<script setup lang="ts">
+defineProps({
+  text: {
+    type: String,
+    required: true
   }
+})
 </script>

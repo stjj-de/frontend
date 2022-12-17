@@ -18,7 +18,7 @@
             📺 Aktueller Gottesdienst
           </router-link>
           <template
-            v-for="link in data.settingsSingletons[0].homePageLinks"
+            v-for="link in data.settings.homePageLinks"
             :key="link.id"
           >
             <UnknownLink :to="link.url">
@@ -40,7 +40,7 @@
               {{ post.title }}
             </div>
             <div class="text-2 text-gray-700">
-              {{ post.authors.map(author => author.displayName).join(", ") }}
+              {{ post.authors.map((author: any) => author.displayName).join(", ") }}
             </div>
           </router-link>
         </div>
@@ -50,7 +50,7 @@
       <h1 class="section-heading"><span>Seelsorger</span></h1>
       <HorizontalScrollContainer :scroll-step-size="220">
         <PersonCard
-          v-for="person in data.settingsSingletons[0].pastors"
+          v-for="person in data.settings.pastors"
           :key="person.id"
           :person="person"
         />
@@ -87,7 +87,7 @@
     </section>
     <section>
       <h1 class="section-heading"><span>Pfarrbüro</span></h1>
-      <Document class="text-4" :increment-heading-levels-by="1" :data="data.settingsSingletons[0].officeSectionContent.document"/>
+      <Document class="text-4" :increment-heading-levels-by="1" :data="data.settings.officeSectionContent.document"/>
     </section>
   </main>
 </template>
@@ -96,32 +96,22 @@
 
 </style>
 
-<script>
-  import { useQuery } from "@urql/vue"
-  import { useHead } from "@vueuse/head"
-  import query from "../gql/pages/index.graphql"
-  import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
-  import { getFormattedTitle } from "../util"
-  import UnknownLink from "../components/UnknownLink.vue"
-  import Document from "../components/document/Document.vue"
-  import PersonCard from "../components/PersonCard.vue"
-  import UploadedImageWithShadow from "../components/UploadedImageWithShadow.vue"
+<script setup lang="ts">
+import { useQuery } from "@urql/vue"
+import { useHead } from "@vueuse/head"
+import query from "../gql/pages/index.graphql"
+import HorizontalScrollContainer from "../components/HorizontalScrollContainer.vue"
+import { getFormattedTitle } from "../util"
+import UnknownLink from "../components/UnknownLink.vue"
+import Document from "../components/document/DocumentRendered.vue"
+import PersonCard from "../components/PersonCard.vue"
+import UploadedImageWithShadow from "../components/UploadedImageWithShadow.vue"
 
-  export default {
-    name: "IndexPage",
-    components: { UploadedImageWithShadow, PersonCard, Document, UnknownLink, HorizontalScrollContainer },
-    async setup() {
-      useHead({
-        title: getFormattedTitle("Start")
-      })
+useHead({
+  title: getFormattedTitle("Start")
+})
 
-      const { data } = await useQuery({
-        query
-      })
-
-      return {
-        data
-      }
-    }
-  }
+const { data } = await useQuery({
+  query
+})
 </script>

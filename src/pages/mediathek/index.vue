@@ -3,9 +3,9 @@
     <h1 class="section-heading">
       <span>Mediathek</span>
     </h1>
-    <Document class="text-4" :data="data.settingsSingletons[0].mediaLibraryPageContent.document" :increment-headings="1"/>
+    <Document class="text-4" :data="data.settings.mediaLibraryPageContent.document" :increment-headings="1"/>
     <section>
-      <Heading semantic="2" visual="1">
+      <Heading :semantic="2" :visual="1">
         Videos 🎞️
       </Heading>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -38,38 +38,28 @@
 
 </style>
 
-<script>
-  import { useQuery } from "@urql/vue"
-  import { useHead } from "@vueuse/head"
-  import query from "../../gql/pages/mediathek/index.graphql"
-  import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
-  import { getFormattedTitle } from "../../util/index.ts"
-  import Heading from "../../components/Heading.vue"
-  import ExternalIcon from "~icons/lucide/external-link"
-  import Document from "../../components/document/Document.vue"
+<script setup lang="ts">
+import { useQuery } from "@urql/vue"
+import { useHead } from "@vueuse/head"
+import query from "../../gql/pages/mediathek/index.graphql"
+import YouTubeThumbnail from "../../components/YouTubeThumbnail.vue"
+import { getFormattedTitle } from "../../util"
+import Heading from "../../components/VisualHeading.vue"
+import Document from "../../components/document/DocumentRendered.vue"
 
-  const dateFormat = new Intl.DateTimeFormat("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit"
-  })
+const dateFormat = new Intl.DateTimeFormat("de-DE", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit"
+})
 
-  export default {
-    name: "MediathekPage",
-    components: { Document, Heading, YouTubeThumbnail, ExternalIcon },
-    async setup() {
-      useHead({
-        title: getFormattedTitle("Mediathek")
-      })
+useHead({
+  title: getFormattedTitle("Mediathek")
+})
 
-      const { data } = await useQuery({
-        query
-      })
+const { data } = await useQuery({
+  query
+})
 
-      return {
-        data,
-        formatDate: isoString => dateFormat.format(new Date(isoString))
-      }
-    }
-  }
+const formatDate = (isoString: string) => dateFormat.format(new Date(isoString))
 </script>

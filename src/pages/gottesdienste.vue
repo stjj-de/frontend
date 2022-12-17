@@ -67,42 +67,31 @@
 
 </style>
 
-<script>
-  import { useQuery } from "@urql/vue"
-  import { useHead } from "@vueuse/head"
-  import query from "../gql/pages/gottesdienste.graphql"
-  import YouTubeEmbed from "../components/YouTubeEmbed.vue"
-  import { liveVideoId, liveStatusLoading } from "../store"
-  import LoadingSpinner from "../components/LoadingSpinner.vue"
-  import { getFormattedTitle } from "../util/index.ts"
-  import Document from "../components/document/Document.vue"
+<script setup lang="ts">
+import { useQuery } from "@urql/vue"
+import { useHead } from "@vueuse/head"
+import query from "../gql/pages/gottesdienste.graphql"
+import YouTubeEmbed from "../components/YouTubeEmbed.vue"
+import { liveVideoId, liveStatusLoading } from "../store"
+import LoadingSpinner from "../components/LoadingSpinner.vue"
+import { getFormattedTitle } from "../util"
+import Document from "../components/document/DocumentRendered.vue"
 
-  const dateFormat = new Intl.DateTimeFormat("de-DE", {
-    weekday: "short",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit"
-  })
+const dateFormat = new Intl.DateTimeFormat("de-DE", {
+  weekday: "short",
+  day: "numeric",
+  month: "long",
+  hour: "2-digit",
+  minute: "2-digit"
+})
 
-  export default {
-    name: "GottesdienstePage",
-    components: { Document, LoadingSpinner, YouTubeEmbed },
-    async setup() {
-      useHead({
-        title: getFormattedTitle("Gottesdienste")
-      })
+useHead({
+  title: getFormattedTitle("Gottesdienste")
+})
 
-      const { data } = await useQuery({
-        query
-      })
+const { data } = await useQuery({
+  query
+})
 
-      return {
-        data,
-        formatDate: isoString => dateFormat.format(new Date(isoString)),
-        liveVideoId,
-        liveStatusLoading
-      }
-    }
-  }
+const formatDate = (isoString: string) => dateFormat.format(new Date(isoString))
 </script>

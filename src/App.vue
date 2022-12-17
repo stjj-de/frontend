@@ -24,7 +24,7 @@
     </div>
     <div>
       <router-link class="text-yellow-600 text-5 flex items-center space-x-2" to="/gottesdienste"
-        @click.passive="trackEvent('click', 'livestream notification')">
+        @click.passive="track('click', 'livestream notification')">
         <ArrowRightIcon />
         <div>Zuschauen</div>
       </router-link>
@@ -39,83 +39,83 @@
 </style>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref, watchEffect, useCssModule } from "vue"
-  import { useIntervalFn, whenever } from "@vueuse/core"
-  import { useQuery } from "@urql/vue"
-  import NProgress from "nprogress"
-  import livestreamQuery from "./gql/App_livestream.graphql"
-  import initialQuery from "./gql/App_initial.graphql"
-  import { liveStatusLoading, liveVideoId, pageComponentLoading } from "./store"
-  import MainNavigation from "./components/MainNavigation.vue"
-  import UnknownLink from "./components/UnknownLink.vue"
-  import ArrowRightIcon from "~icons/ph/arrow-right"
+import { computed, onMounted, ref, watchEffect, useCssModule } from "vue"
+import { useIntervalFn, whenever } from "@vueuse/core"
+import { useQuery } from "@urql/vue"
+import NProgress from "nprogress"
+import livestreamQuery from "./gql/App_livestream.graphql"
+import initialQuery from "./gql/App_initial.graphql"
+import { liveStatusLoading, liveVideoId, pageComponentLoading } from "./store"
+import MainNavigation from "./components/MainNavigation.vue"
+import UnknownLink from "./components/UnknownLink.vue"
+import ArrowRightIcon from "~icons/ph/arrow-right"
 
-  function useLoading(progressBarClass: string) {
-    onMounted(() => {
-      NProgress.configure({
-        template: `<div class="${progressBarClass}" role="bar"><div class="peg"></div></div></div>`,
-        trickleSpeed: 100
-      })
+function useLoading(progressBarClass: string) {
+  onMounted(() => {
+    NProgress.configure({
+      template: `<div class="${progressBarClass}" role="bar"><div class="peg"></div></div></div>`,
+      trickleSpeed: 100
     })
-
-    const isLoading = ref(false)
-
-    const stopLoading = () => {
-      isLoading.value = false
-      NProgress.done()
-    }
-
-    const startLoading = () => {
-      isLoading.value = true
-      NProgress.start()
-    }
-
-    // Suspense @resolve is also called when the component is not async, so we don't need to handle stopping
-    whenever(pageComponentLoading, () => {
-      // Runs when a page component is imported
-      startLoading()
-    })
-
-    return {
-      isLoading,
-      startLoading,
-      stopLoading
-    }
-  }
-
-  function useLiveStatus() {
-    liveStatusLoading.value = true
-    liveVideoId.value = null
-
-    const { data, executeQuery } = useQuery({
-      query: livestreamQuery,
-      context: {
-        requestPolicy: "network-only"
-      }
-    })
-
-    useIntervalFn(() => {
-      executeQuery()
-    }, 30 * 1000)
-
-    watchEffect(() => {
-      if (data.value) {
-        liveStatusLoading.value = false
-
-        const id = data.value.settingsSingletons[0].livestreamVideoId
-        liveVideoId.value = id === "" ? null : id
-      }
-    })
-  }
-
-  const styles = useCssModule()
-  const { isLoading, startLoading, stopLoading } = useLoading(styles.nprogressBar)
-
-  useLiveStatus()
-
-  const { data } = useQuery({
-    query: initialQuery
   })
 
-  const isLive = computed(() => !liveStatusLoading.value && liveVideoId.value !== null)
+  const isLoading = ref(false)
+
+  const stopLoading = () => {
+    isLoading.value = false
+    NProgress.done()
+  }
+
+  const startLoading = () => {
+    isLoading.value = true
+    NProgress.start()
+  }
+
+  // Suspense @resolve is also called when the component is not async, so we don't need to handle stopping
+  whenever(pageComponentLoading, () => {
+    // Runs when a page component is imported
+    startLoading()
+  })
+
+  return {
+    isLoading,
+    startLoading,
+    stopLoading
+  }
+}
+
+function useLiveStatus() {
+  liveStatusLoading.value = true
+  liveVideoId.value = null
+
+  const { data, executeQuery } = useQuery({
+    query: livestreamQuery,
+    context: {
+      requestPolicy: "network-only"
+    }
+  })
+
+  useIntervalFn(() => {
+    void executeQuery()
+  }, 30 * 1000)
+
+  watchEffect(() => {
+    if (data.value !== undefined) {
+      liveStatusLoading.value = false
+
+      const id = data.value.settings.livestreamVideoId
+      liveVideoId.value = id === "" ? null : id
+    }
+  })
+}
+
+const styles = useCssModule()
+const { startLoading, stopLoading } = useLoading(styles.nprogressBar)
+
+useLiveStatus()
+
+const { data } = useQuery({
+  query: initialQuery
+})
+
+const isLive = computed(() => !liveStatusLoading.value && liveVideoId.value !== null)
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div ref="el" class="flex overflow-x-auto space-x-5 px-1 pb-5 relative z-1" :class="$style.container">
+    <div ref="element" class="flex overflow-x-auto space-x-5 px-1 pb-5 relative z-1" :class="$style.container">
       <slot/>
     </div>
     <div class="cannot-hover:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-between items-center px-1">
@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<style module>
+<style module lang="scss">
   @media (hover: hover) {
     .container {
       &::-webkit-scrollbar {
@@ -36,47 +36,46 @@
   }
 </style>
 
-<script>
-  import { ref, computed } from "vue"
-  import { useEventListener, useWindowSize } from "@vueuse/core"
-  import ArrowLeft from "~icons/mdi-light/arrow-left"
-  import ArrowRight from "~icons/mdi-light/arrow-right"
+<script setup lang="ts">
+import { ref, computed } from "vue"
+import { useEventListener, useWindowSize } from "@vueuse/core"
+import ArrowLeft from "~icons/mdi-light/arrow-left"
+import ArrowRight from "~icons/mdi-light/arrow-right"
 
-  export default {
-    name: "HorizontalScrollContainer",
-    components: { ArrowLeft, ArrowRight },
-    props: {
-      scrollStepSize: {
-        type: Number,
-        default: 100
-      }
-    },
-    setup(props) {
-      const element = ref(null)
-      const scrollPosition = ref(0)
-
-      const windowSize = useWindowSize()
-      useEventListener(element, "scroll", () => {
-        scrollPosition.value = element.value.scrollLeft
-      })
-
-      return {
-        el: element,
-        scrollRight() {
-          element.value.scrollTo({
-            left: element.value.scrollLeft + props.scrollStepSize,
-            behavior: "smooth"
-          })
-        },
-        scrollLeft() {
-          element.value.scrollTo({
-            left: element.value.scrollLeft - props.scrollStepSize,
-            behavior: "smooth"
-          })
-        },
-        showLeft: computed(() => scrollPosition.value > 0),
-        showRight: computed(() => windowSize.width.value && element.value !== null && scrollPosition.value < (element.value.scrollWidth - element.value.clientWidth) - 1)
-      }
-    }
+const props = defineProps({
+  scrollStepSize: {
+    type: Number,
+    default: 100
   }
+})
+
+const element = ref<HTMLElement | null>(null)
+const scrollPosition = ref(0)
+
+const windowSize = useWindowSize()
+useEventListener(element, "scroll", () => {
+  scrollPosition.value = element.value!.scrollLeft
+})
+
+function scrollRight() {
+  element.value!.scrollTo({
+    left: element.value!.scrollLeft + props.scrollStepSize,
+    behavior: "smooth"
+  })
+}
+
+function scrollLeft(): void {
+  element.value!.scrollTo({
+    left: element.value!.scrollLeft - props.scrollStepSize,
+    behavior: "smooth"
+  })
+}
+
+const showLeft = computed(() => scrollPosition.value > 0)
+
+const showRight = computed(() =>
+  typeof windowSize.width.value === "number" && // to make it dependent on the window size
+    element.value !== null &&
+    scrollPosition.value < (element.value.scrollWidth - element.value.clientWidth) - 1
+)
 </script>

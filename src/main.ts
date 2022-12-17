@@ -36,8 +36,8 @@ routes.push({
 const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash }
+    if (savedPosition != null) return savedPosition
+    if (to.hash !== undefined) return { el: to.hash }
     return { top: 0 }
   },
   history: createWebHistory()
@@ -69,7 +69,7 @@ app.mixin({
 
 declare module "vue" {
   interface ComponentCustomProperties {
-    trackEvent: (type: string, value: string) => void
+    track: (type: string, value: string) => void
   }
 }
 

@@ -7,15 +7,6 @@
   </div>
 </template>
 
-<style module>
-
-</style>
-
-<script>
-  import LoaderIcon from "~icons/teenyicons/loader-outline"
-
-  export default {
-    name: "LoadingSpinner",
-    components: { LoaderIcon }
-  }
+<script setup lang="ts">
+import LoaderIcon from "~icons/teenyicons/loader-outline"
 </script>

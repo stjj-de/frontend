@@ -14,22 +14,17 @@
   />
 </template>
 
-<script>
-  import UploadedImage from "./UploadedImage.vue"
+<script setup lang="ts">
+import UploadedImage from "./UploadedImage.vue"
 
-  export default {
-    name: "UploadedImageWithShadow",
-    components: { UploadedImage },
-    inheritAttrs: false,
-    props: {
-      url: {
-        type: String,
-        required: true
-      },
-      alt: {
-        type: String,
-        required: true
-      }
-    }
+defineProps({
+  url: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    required: true
   }
+})
 </script>
