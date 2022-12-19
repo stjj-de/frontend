@@ -1,0 +1,1 @@
+import{_ as o}from"./index.30b79537.js";import{o as t,c}from"./vendor.0083fde3.js";const i=e=>`${e} \u2022 Katholische Kirchengemeinde St. Josef \u2014 St. Johannes`,n={};function r(e,a){return t(),c("div",null," Document placeholder ")}var l=o(n,[["render",r]]);export{l as D,i as g};

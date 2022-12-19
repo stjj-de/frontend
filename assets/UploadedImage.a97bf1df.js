@@ -1,0 +1,1 @@
+import{d as t,o as r,c as a}from"./vendor.0083fde3.js";const l=["src","alt"],s=t({__name:"UploadedImage",props:{url:{type:String,required:!0},alt:{type:String,required:!0}},setup(e){return(n,o)=>(r(),a("img",{src:e.url,alt:e.alt,draggable:"false"},null,8,l))}});export{s as _};
