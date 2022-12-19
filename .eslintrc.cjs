@@ -16,7 +16,8 @@ module.exports = {
       anonymous: "never",
       named: "never",
       asyncArrow: "always"
-    }]
+    }],
+    "@typescript-eslint/no-unused-vars": "warn"
   },
   overrides: [
     {

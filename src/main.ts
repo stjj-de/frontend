@@ -3,12 +3,13 @@ import "./main.css"
 import { createApp } from "vue"
 import { createRouter, createWebHistory } from "vue-router"
 import { createHead } from "@vueuse/head"
-import urql, { cacheExchange, createClient, fetchExchange } from "@urql/vue"
+import urql from "@urql/vue"
 import App from "./App.vue"
 import { pageComponentLoading } from "./store"
 import originalRoutes from "~pages"
 import type { FunctionalComponent } from "vue"
 import type { RouteRecordRaw } from "vue-router"
+import { urqlClient } from "./urql"
 
 const routes = originalRoutes.map(route => {
   if (typeof route.component !== "function") return route
@@ -46,15 +47,7 @@ const router = createRouter({
 const app = createApp(App)
 app.use(router)
 
-app.use(urql, createClient({
-  url: "/api/graphql",
-  requestPolicy: "cache-and-network",
-  suspense: true,
-  exchanges: [
-    cacheExchange,
-    fetchExchange
-  ]
-}))
+app.use(urql, urqlClient)
 
 const head = createHead()
 app.use(head)

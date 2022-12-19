@@ -11,6 +11,7 @@
         </div>
         <div class="text-6 sm:text-8 pt-15 flex flex-col items-start space-y-4">
           <router-link
+            v-if="data.videos.length > 0"
             class="link"
             :to="`/mediathek/${data.videos[0].id}`"
             @click.passive="track('home page click', 'latest video')"

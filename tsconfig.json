@@ -6,9 +6,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "noUnusedLocals": false
   },
-
   "references": [
     {
       "path": "./tsconfig.config.json"

@@ -8,28 +8,17 @@
       </suspense>
     </router-view>
   </div>
-  <footer v-if="data"
-    class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition">
+  <footer
+    v-if="data"
+    class="flex flex-col justify-center items-center space-y-5 py-6 opacity-70 hover:opacity-100 focus-within:opacity-100 transition"
+  >
     <div class="h-1px w-80vw bg-gray-200 mb-2" />
     <UnknownLink v-for="link in data.settings.footerLinks" :key="link.text" :to="link.url">
       {{ link.emoji }} {{ link.text }}
     </UnknownLink>
   </footer>
-  <div class="fixed -lg:bottom-4 -lg:left-4 lg:top-8 lg:right-8 bg-white shadow-md p-4 sm:p-5 rounded-2xl
-           transition duration-200 transform z-101 flex space-x-3 sm:space-x-5 items-center"
-    :class="isLive && ($route.path !== '/gottesdienste') ? 'opacity-100 scale-100' : 'opacity-0 scale-0'">
-    <div class="text-5 font-bold flex items-center">
-      Jetzt live!
-      <div class="bg-red-500 rounded-full w-4 h-4 animate-pulse ml-2" />
-    </div>
-    <div>
-      <router-link class="text-yellow-600 text-5 flex items-center space-x-2" to="/gottesdienste"
-        @click.passive="track('click', 'livestream notification')">
-        <ArrowRightIcon />
-        <div>Zuschauen</div>
-      </router-link>
-    </div>
-  </div>
+  <LiveNotification :is-visible="isLive"/>
+  <LoggedInIndicator/>
 </template>
 
 <style module lang="scss">
@@ -48,7 +37,9 @@ import initialQuery from "./gql/App_initial.graphql"
 import { liveStatusLoading, liveVideoId, pageComponentLoading } from "./store"
 import MainNavigation from "./components/MainNavigation.vue"
 import UnknownLink from "./components/UnknownLink.vue"
-import ArrowRightIcon from "~icons/ph/arrow-right"
+import { fetchAuthenticatedUser } from "./auth"
+import LiveNotification from "./components/LiveNotification.vue"
+import LoggedInIndicator from "./components/LoggedInIndicator.vue"
 
 function useLoading(progressBarClass: string) {
   onMounted(() => {
@@ -111,11 +102,11 @@ function useLiveStatus() {
 const styles = useCssModule()
 const { startLoading, stopLoading } = useLoading(styles.nprogressBar)
 
+void fetchAuthenticatedUser()
+
 useLiveStatus()
 
-const { data } = useQuery({
-  query: initialQuery
-})
+const { data } = useQuery({ query: initialQuery })
 
 const isLive = computed(() => !liveStatusLoading.value && liveVideoId.value !== null)
 </script>

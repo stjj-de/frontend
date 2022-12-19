@@ -25,7 +25,8 @@ export default defineConfig({
       orange: colors.orange,
       green: colors.green,
       blue: colors.blue,
-      violet: colors.fuchsia
+      violet: colors.fuchsia,
+      transparent: colors.transparent
     },
     fontFamily: {
       serif: ["Playfair Display", "serif"],
